@@ -1,0 +1,22 @@
+<project name="ATP" default="compile" basedir=".">
+
+<target name="init">
+	<property name="app.name" value="atp"/>
+	<property name="build.home" value="build"/>
+	<property name="build.classes" value="${build.home}/classes"/>
+    <property environment="env"/>
+</target>
+
+<target name="compile" depends="init" description="Compile the project and place in ${build.classes}.">
+    <mkdir dir="${build.classes}"/>
+    <javac destdir="${build.classes}" debug="on" optimize="on" deprecation="on">
+        <src refid="core.sourcepath"/>
+    </javac>
+</target>
+
+<path id="core.sourcepath">
+    <pathelement path="src/atp"/>
+</path>
+
+</project>
+ 
