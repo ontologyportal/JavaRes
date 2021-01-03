@@ -47,8 +47,10 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
 	 */
 	public Term(String op, Term t1, Term t2) {
 		t = op;
-		subterms.add(t1);
-		subterms.add(t2);
+		if (t1 != null)
+		    subterms.add(t1);
+        if (t2 != null)
+		    subterms.add(t2);
 	}
 	
     /** ***************************************************************
@@ -72,7 +74,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             for (int i = 0; i < subterms.size(); i++) {
                 result.append(subterms.get(i).toString());
                 if (i < subterms.size()-1)
-                    result.append(", ");
+                    result.append(",");
             }
             result.append(')');     
         }
@@ -139,7 +141,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 //lex.next();
             //System.out.println("INFO in Term.parse(): after next token: " + lex.literal);
             if (!lex.type.equals(Lexer.IdentLower) && !lex.type.equals(Lexer.IdentUpper) &&
-                !lex.type.equals(Lexer.DefFunctor) && !lex.type.equals(Lexer.QuotedString) &&
+                !lex.type.equals(Lexer.DefFunctor) && !lex.type.equals(Lexer.SQString) &&
                 !lex.type.equals(Lexer.Number))
                 throw new ParseException("Error in Term.parse(): Expected a word. Found " + 
                         lex.literal + " " + lex.type,lex.input.getLineNumber()); 
@@ -166,7 +168,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 }
                 else {
                     // if (lex.literal.equals("$false"))
-                    if (lex.type.equals(Lexer.DefFunctor) || lex.type.equals(Lexer.QuotedString) || 
+                    if (lex.type.equals(Lexer.DefFunctor) || lex.type.equals(Lexer.SQString) ||
                             lex.type.equals(Lexer.Number))
                         t = lex.literal;
                     else
@@ -341,16 +343,26 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      * Note that pos will be destroyed.
      */
     public Term subterm(ArrayList<Integer> pos) {
-                    
+
+        System.out.println("subterm(): pos: " + pos);
+        System.out.println("subterms: " + this.subterms);
+        ArrayList<Integer> newpos = new ArrayList<>(pos);
         if (pos.size() == 0)
             return this;
-        int index = pos.remove(0).intValue();
-        if (index >= subterms.size())
+        int index = newpos.remove(0);
+        System.out.println("index: " + index);
+        if (index > subterms.size())
             return null;
-        if (pos.size() == 0)
-            return subterms.get(index);
-        else
-            return subterms.get(index).subterm(pos);
+        if (newpos.size() == 0) {
+            if (index == 0)
+                return (new Term()).parse(new Lexer(t));
+            return subterms.get(index-1);
+        }
+        else {
+            if (index == 0)
+                return (new Term()).parse(new Lexer(t));
+            return subterms.get(index-1).subterm(newpos);
+        }
     }
     
     /** ***************************************************************
@@ -377,7 +389,22 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 return false;
         return true;
     }
-    
+
+    /** ***************************************************************
+     */
+    public static boolean termListEqual(ArrayList<Term> l1, ArrayList<Term> l2) {
+
+        if (l1.size() != l2.size())
+            return false;
+        if (l1.size() == 0) // l1 is empty, and so, by the previous test, is l2
+            return true;
+        for (int i = 0; i< l1.size(); i++) {
+            if (!l1.get(i).equals(l2.get(i)))
+                return false;
+        }
+        return true;
+    }
+
     /** ***************************************************************
      */
     @Override public int hashCode() {
@@ -405,302 +432,5 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
         return result;
     }
     
-    /** ***************************************************************
-     * ************ UNIT TESTS *****************
-     * Set up test content.  
-     */
-    String example1 = "X";
-    String example2 = "a";
-    String example3 = "g(a,b)";
-    String example4 = "g(X, f(Y))";     
-    String example5 = "g(X, f(Y))";    
-    String example6 = "f(X,g(a,b))";    
-    String example7 = "g(X)";
-    String example8 = "g(b,b)";  
 
-    Term t1 = null;
-    Term t2 = null;
-    Term t3 = null;
-    Term t4 = null;
-    Term t5 = null;
-    Term t6 = null;
-    Term t7 = null;
-    Term t8 = null;
-    
-    /** ***************************************************************
-     * Set up test content.  
-     */
-    public void setupTests() {       
-        
-        t1 = string2Term(example1);
-        t2 = string2Term(example2);
-        t3 = string2Term(example3);
-        t4 = string2Term(example4);
-        t5 = string2Term(example5);
-        t6 = string2Term(example6);
-        t7 = string2Term(example7);
-        t8 = string2Term(example8);
-    }
-    
-    /** ***************************************************************
-     * Test that parse() is working properly   
-     */
-    public void parseTest() {
-        
-        System.out.println("---------------------");
-        System.out.println("INFO in parseTest()");
-        System.out.println(t1 + " = " + example1);
-        System.out.println(t2 + " = " + example2);
-        System.out.println(t3 + " = " + example3);
-        System.out.println(t4 + " = " + example4);
-        System.out.println(t5 + " = " + example5);
-        System.out.println(t6 + " = " + example6);
-        System.out.println(t7 + " = " + example7);
-        System.out.println(t8 + " = " + example8);
-    }
-    
-    /** ***************************************************************
-     * Test that parse() and toString() are dual. Start with terms, 
-     * so that we are sure to get the canonical string representation.   
-     */
-    public void testToString() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in Term.testToString(): all should be true");
-        Term t = new Term();
-        t = string2Term(t1.toString());
-        System.out.println(t1.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t2.toString());
-        System.out.println(t2.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t3.toString());
-        System.out.println(t3.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t4.toString());
-        System.out.println(t4.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t5.toString());
-        System.out.println(t5.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t6.toString());
-        System.out.println(t6.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t7.toString());
-        System.out.println(t7.toString().equals(t.toString()));
-        t = new Term();
-        t = string2Term(t8.toString());
-        System.out.println(t8.toString().equals(t.toString()));
-    }
-    
-    /** ***************************************************************
-     * Test if the classification function works as expected.  
-     */
-    public void testIsVar() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testIsVar(): first true, rest false");
-        System.out.println(t1.isVar());
-        System.out.println(t2.isVar());
-        System.out.println(t3.isVar());
-        System.out.println(t4.isVar());
-        System.out.println(t5.isVar());
-        System.out.println(t6.isVar());
-    }
-    
-    /** ***************************************************************
-     * Test if the classification function works as expected.  
-     */
-    public void testIsCompound() {
-        
-        System.out.println("---------------------");
-        System.out.println("INFO in testIsCompound(): first false, rest true");
-        System.out.println(t1.isCompound());
-        System.out.println(t2.isCompound());
-        System.out.println(t3.isCompound());
-        System.out.println(t4.isCompound());
-        System.out.println(t5.isCompound());
-        System.out.println(t6.isCompound());
-    }
-    
-    /** ***************************************************************
-     * Test if term equality works as expected.
-     */
-    public void testEquality() {
-        
-        System.out.println("---------------------");
-        System.out.println("INFO in testEquality(): first ones true, last two false");
-        System.out.println(t1.equals(t1));
-        System.out.println(t2.equals(t2));
-        System.out.println(t3.equals(t3));
-        System.out.println(t4.equals(t4));
-        System.out.println(t5.equals(t5));
-        System.out.println(t6.equals(t6));
-        System.out.println(t4.equals(t5));
-        System.out.println(t1.equals(t4));
-        System.out.println(t3.equals(t4));
-    }
-    
-    /** ***************************************************************
-     * Test if term copying works. 
-     */
-    public void testCopy() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testCopy(): all true");
-        Term t = new Term();
-        t = t1.deepCopy();
-        System.out.println(t.equals(t1));
-        t = t2.deepCopy();
-        System.out.println(t.equals(t2));
-        t = t3.deepCopy();
-        System.out.println(t.equals(t3));
-        t = t4.deepCopy();
-        System.out.println(t.equals(t4));
-        t = t5.deepCopy();
-        System.out.println(t.equals(t5));
-        t = t6.deepCopy();
-        System.out.println(t.equals(t6));
-    }
-    
-    /** ***************************************************************
-     * Test if isGround() works as expected. 
-     */
-    public void testIsGround() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testIsGround(): all true");
-        System.out.println(!t1.isGround());
-        System.out.println(t2.isGround());
-        System.out.println(t3.isGround());
-        System.out.println(!t4.isGround());
-        System.out.println(!t5.isGround());
-    }
-
-    /** ***************************************************************
-     * Test the variable collection. 
-     */
-    public void testCollectVars() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testCollectVars(): all true");
-        ArrayList<Term> vars = t1.collectVars();
-        System.out.println(vars.size()==1);
-        vars = t2.collectVars();
-        System.out.println(vars.size()==0);
-        vars = t3.collectVars();
-        System.out.println(vars.size()==0);
-        vars = t4.collectVars();
-        System.out.println(vars.size()==2);
-        vars = t5.collectVars();
-        System.out.println(vars.size()==2);
-
-        System.out.println(vars.contains(Term.string2Term("X")));
-        System.out.println(vars.contains(Term.string2Term("Y")));
-    }
-    
-    /** ***************************************************************
-     * Test the function symbol collection. 
-     */
-    public void testCollectFuns() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testCollectFuns(): all true");
-        ArrayList<String> funs = t1.collectFuns();
-        System.out.println(funs.size() == 0);
-
-        funs = t2.collectFuns();
-        System.out.println(funs.size() == 1 && funs.contains("a"));
-
-        funs = t3.collectFuns();
-        System.out.println(funs.size() == 3 && funs.contains("g") && funs.contains("a") && funs.contains("b"));
-
-        funs = t4.collectFuns();
-        System.out.println(funs.size() == 2 && funs.contains("g") && funs.contains("f"));
-
-        funs = t5.collectFuns();
-        System.out.println(funs.size() == 2 && funs.contains("g") && funs.contains("f"));
-
-        funs = t8.collectFuns();
-        System.out.println(funs.size() == 2 && funs.contains("g") && funs.contains("b"));
-    }
-    
-    /** ***************************************************************
-     * Test signature collection. 
-     */
-    public void testCollectSig() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testCollectSig(): all should be true");
-    	Signature sig = new Signature();
-        sig = t1.collectSig(sig);
-        sig = t2.collectSig(sig);
-        sig = t3.collectSig(sig);
-        sig = t4.collectSig(sig);
-        sig = t5.collectSig(sig);
-        sig = t6.collectSig(sig);
-
-        System.out.println(sig.getArity("f") == 1);
-        System.out.println(sig.getArity("g") == 2);
-        System.out.println(sig.getArity("a") == 0);
-        System.out.println(sig.getArity("b") == 0);
-    }
-    
-    /** ***************************************************************
-     * Test term weight function
-     */
-    public void testTermWeight() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testTermWeight()");
-        System.out.println("Expected: 3 actual: " + t3.weight(1,1));
-        System.out.println("Expected: 6 actual: " + t3.weight(2,1));
-        System.out.println("Expected: 1 actual: " + t1.weight(2,1));
-    }
-    
-    /** ***************************************************************
-     * Test subterm function
-     */
-    public void testSubTerm() {
-
-        // t6 = "f(X,g(a,b))";
-        System.out.println("---------------------");
-        System.out.println("INFO in testSubTerm()");
-        ArrayList<Integer> al = new ArrayList<Integer>();
-        System.out.println("Expected: f(X,g(a,b)) actual: " + t6.subterm(al));
-        al.add(new Integer(0));
-        System.out.println("Expected: X actual: " + t6.subterm(al));
-        al = new ArrayList<Integer>();
-        al.add(new Integer(1));
-        System.out.println("Expected: g(a,b) actual: " + t6.subterm(al));
-        al = new ArrayList<Integer>();
-        al.add(new Integer(1));
-        al.add(new Integer(0));
-        System.out.println("Expected: a actual: " + t6.subterm(al));
-        al = new ArrayList<Integer>();
-        al.add(new Integer(3));
-        al.add(new Integer(0));
-        System.out.println("Expected: null actual: " + t6.subterm(al));
-    }
-
-    /** ***************************************************************
-     * Test method for this class.  
-     */
-    public static void main(String[] args) {
-        
-        Term p = new Term();
-        p.setupTests();
-        p.parseTest();
-        p.testToString();
-        p.testIsVar();
-        p.testIsCompound();
-        p.testEquality();
-        p.testCopy();
-        p.testIsGround();
-        p.testCollectVars();
-        p.testCollectFuns();        
-        p.testCollectSig();
-        p.testTermWeight();
-        p.testSubTerm();
-    }
 }

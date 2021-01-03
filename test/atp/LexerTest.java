@@ -39,7 +39,7 @@ public class LexerTest {
      * Test that comments and whitespace are normally ignored.
      */
     @Test
-    private void testLex() {
+    public void testLex() {
 
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in Lexer.testLex()");
@@ -50,6 +50,7 @@ public class LexerTest {
             System.out.println("INFO in Lexer.testLex(): completed parsing example 1: " + example1);
             ArrayList<String> res2 = lex2.lex();
             System.out.println("INFO in Lexer.testLex(): should be true: " + res1.equals(res2));
+            assertTrue(res1.equals(res2));
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,7 +62,7 @@ public class LexerTest {
      * Test that self.example 1 is split into the expected tokens.
      */
     @Test
-    private void testTerm() {
+    public void testTerm() {
 
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in Lexer.testTerm()");
@@ -102,7 +103,7 @@ public class LexerTest {
      * compare that the strings are the same.
      */
     @Test
-    private void testClause() {
+    public void testClause() {
 
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in Lexer.testClause()");
@@ -111,11 +112,13 @@ public class LexerTest {
             ArrayList<String> toks = lex.lex();
             System.out.println(toks);
             System.out.println("Should be true: (tokens == 20): " + (toks.size() == 20) + " actual: " + toks);
+            assertTrue(toks.size() == 20);
             StringBuffer rebuild = new StringBuffer();
             for (int i = 0; i < toks.size(); i++)
                 rebuild.append(toks.get(i));
             System.out.println(rebuild.toString() + " " + example3);
             System.out.println("Should be true: " + rebuild.toString().equals(example3));
+            assertTrue(rebuild.toString().equals(example3));
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -128,7 +131,7 @@ public class LexerTest {
      * compare that the strings are the same.
      */
     @Test
-    private void testFormula() {
+    public void testFormula() {
 
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in Lexer.testFormula()");
@@ -137,11 +140,13 @@ public class LexerTest {
             ArrayList<String> toks = lex.lex();
             System.out.println(toks);
             System.out.println("Should be true: (tokens == 29): " + (toks.size() == 29));
+            assertTrue(toks.size() == 29);
             StringBuffer rebuild = new StringBuffer();
             for (int i = 0; i < toks.size(); i++)
                 rebuild.append(toks.get(i));
             System.out.println(rebuild.toString());
             System.out.println("Should be true: " + rebuild.toString().equals(example5));
+            assertTrue(rebuild.toString().equals(example5));
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -153,7 +158,7 @@ public class LexerTest {
      * Check the positive case of AcceptLit().
      */
     @Test
-    private void testAcceptLit() {
+    public void testAcceptLit() {
 
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in Lexer.testAcceptLit()");
@@ -185,7 +190,7 @@ public class LexerTest {
      * Provoke different errors.
      */
     @Test
-    private void testErrors() {
+    public void testErrors() {
 
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in Lexer.testErrors(): Should throw three errors");

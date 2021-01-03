@@ -30,7 +30,8 @@ import java.util.*;
 public class Literal {
     
     public Term atom = null;  
-    boolean negated = false;
+    public boolean negated = false;
+    public boolean inferenceLit = true;
 
     /** ***************************************************************
      */
@@ -131,6 +132,11 @@ public class Literal {
      /** ***************************************************************
       */
      public Literal negate() {
+
+         if (isPropTrue())
+            return new Literal(new Term("$false",null,null));
+         else if (isPropFalse())
+            return new Literal(new Term("$true",null,null));
          negated = !negated;
          return this.deepCopy();
      }
@@ -154,6 +160,19 @@ public class Literal {
      public boolean isEquational() {
       
          return atom.getFunc().equals("=");
+     }
+
+     /** ***************************************************************
+      */
+     public boolean isInferenceLit() {
+
+         return inferenceLit;
+     }
+
+     /** ***************************************************************
+      */
+     public void setInferenceLit(boolean litP) {
+         inferenceLit = litP;
      }
 
      /** ***************************************************************
@@ -250,7 +269,7 @@ public class Literal {
                          
          return atom.weight(fweight,vweight);
      }
-     
+
      /** ***************************************************************
       * An atom is either a conventional atom, in which case it's 
       * syntactically identical to a term, or it is an equational literal, 

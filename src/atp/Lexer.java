@@ -47,7 +47,6 @@ public class Lexer {
     public static final String IdentLower     = "Identifier starting with lower case letter";
     public static final String DefFunctor     = "Defined symbol (starting with a $)";
     public static final String Number         = "Positive or negative Integer or real";
-    public static final String QuotedString   = "Quoted string";   
     public static final String FullStop       = ". (full stop)";
     public static final String OpenPar        = "(";
     public static final String ClosePar       = ")";
@@ -68,6 +67,7 @@ public class Lexer {
     public static final String Universal      = "!";
     public static final String Existential    = "?";
     public static final String Negation       = "~";
+    public static final String SQString       = "String in 'single quotes'";
     public static final String EOFToken       = "*EOF*";
 
     public String filename = "";
@@ -186,7 +186,7 @@ public class Lexer {
         tokenDefs.put(Number,      Pattern.compile("-?[0-9]?[0-9\\.]+E?-?[0-9]*"));
         tokenDefs.put(HashComment, Pattern.compile("#[^\\n]*"));
         tokenDefs.put(PerComment,  Pattern.compile("\\%[^\\n]*"));
-        tokenDefs.put(QuotedString,Pattern.compile("'[^']*'"));
+        tokenDefs.put(SQString,Pattern.compile("'[^']*'"));
         
         andOr.add(And);
         andOr.add(Or);

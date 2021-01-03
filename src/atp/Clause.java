@@ -59,13 +59,23 @@ public class Clause {
     }
     
     /** ***************************************************************
-     * Print for use by GraphViz.  Convert vertical bar to HTML code and
-     * just print the formula with no informational wrapper.
      */
     public Clause(ArrayList<Literal> litlist) {
-        literals = litlist;
+
+        for (Literal lit : litlist)
+            if (!lit.isPropFalse())
+                literals.add(lit);
     }
-    
+
+    /** ***************************************************************
+     */
+    public Clause(ArrayList<Literal> litlist, String type, String name) {
+
+        this.type = type;
+        this.name = name;
+        new Clause(litlist);
+    }
+
     /** ***************************************************************
      * Print for use by GraphViz.  Convert vertical bar to HTML code and
      * just print the formula with no informational wrapper.
@@ -380,7 +390,21 @@ public class Clause {
         else
             return null;
     }
-    
+
+    /** ***************************************************************
+     * Return the indicated literal of the clause. Position is an
+     * integer from 0 to litNumber (exclusive).
+     */
+    public ArrayList<Literal> getNegativeLits() {
+
+        ArrayList<Literal> result = new ArrayList<>();
+        for (Literal lit : literals) {
+            if (lit.isNegative())
+                result.add(lit);
+        }
+        return result;
+    }
+
     /** ***************************************************************
      * Insert all variables in self into the set res and return it. 
      */
@@ -391,7 +415,18 @@ public class Clause {
             res.addAll(literals.get(i).collectVars());
         return res;
     }
-    
+
+    /** ***************************************************************
+     * Collect function- and predicate symbols into the signature.
+     */
+    public Signature collectSig() {
+
+        Signature sig = new Signature();
+        for (Literal l : literals)
+            sig = l.collectSig(sig);
+        return sig;
+    }
+
     /** ***************************************************************
      * Collect function- and predicate symbols into the signature. 
      */
@@ -412,7 +447,31 @@ public class Clause {
             res = res + literals.get(i).weight(fweight, vweight);
         return res;
     }
-    
+
+    /** ***************************************************************
+     */
+    public void selectInferenceLits(String selectionFn) {
+
+        ArrayList<Literal> candidates = getNegativeLits();
+        if (candidates == null | candidates.size() == 0)
+            return;
+        // System.out.println("Got: ", candidates);
+
+        for (Literal l : literals)
+            l.setInferenceLit(false);
+
+        ArrayList<Literal> selected = null;
+        if (selectionFn.equals("firstLit"))
+            selected = LitSelection.firstLit(candidates);
+ /**       if (selectionFn.equals("varSizeLit"))
+            selected = varSizeLit(candidates);
+        if (selectionFn.equals("eqResVarSizeLit"))
+            selected = eqResVarSizeLit(candidates);
+  */
+        for (Literal l : selected)
+            l.setInferenceLit(true);
+    }
+
     /** ***************************************************************
      * Return an instantiated copy of self. Name and type are copied
      * and need to be overwritten if that is not desired.
