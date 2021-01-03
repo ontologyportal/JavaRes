@@ -4,18 +4,29 @@
 	<property name="app.name" value="atp"/>
 	<property name="build.home" value="build"/>
 	<property name="build.classes" value="${build.home}/classes"/>
+    <property name="build.lib" value="${build.home}/lib"/>
     <property environment="env"/>
 </target>
 
-<target name="compile" depends="init" description="Compile the project and place in ${build.classes}.">
+<target name="compile" depends="init" description="Compile the project and place in ${build.classes}." >
     <mkdir dir="${build.classes}"/>
-    <javac destdir="${build.classes}" debug="on" optimize="on" deprecation="on">
+    <javac destdir="${build.classes}" debug="on" optimize="on" deprecation="on" classpathref="compile.classpath">
         <src refid="core.sourcepath"/>
     </javac>
+    <copy todir="${build.lib}">
+        <fileset dir="${basedir}/lib" />
+    </copy>
 </target>
 
 <path id="core.sourcepath">
     <pathelement path="src/atp"/>
+    <pathelement path="test/atp"/>
+</path>
+
+<path id="compile.classpath">
+    <fileset dir="${basedir}/lib">
+        <include name="*.jar"/>
+    </fileset>
 </path>
 
 </project>
