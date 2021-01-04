@@ -93,43 +93,4 @@ public class Signature {
 		else
 			return 0;
 	}
-	
-    /** ***************************************************************
-     * Test signature object.
-     */	    
-	public static void test() {
-
-		String s = "cnf(qg1_2,negated_conjecture,~product(X1, Y1, Z1)|~product(X2, Y2, Z1)|~product(Z2, Y1, X1)|~product(Z2, Y2, X2)|equalish(Y1, Y2)).";
-		Clause c = Clause.string2Clause(s);
-		Signature sig = new Signature();
-		c.collectSig(sig); 
-		System.out.println("result: " + sig);
-		sig = new Signature();
-
-	    sig.addFun("mult",2);
-	    sig.addFun("a", 0);
-	    sig.addPred("weird", 4);
-	        
-	    System.out.println(sig + " should be preds[wierd] and funs[mult,a]");
-	    System.out.println("all should be true:");
-	    System.out.println(sig.isPred("weird"));
-	    System.out.println(!sig.isPred("unknown"));
-	    System.out.println(!sig.isPred("a"));
-	    System.out.println(sig.isFun("a"));
-	    System.out.println(sig.isConstant("a"));
-	    System.out.println(!sig.isFun("unknown"));
-	    System.out.println(!sig.isFun("weird"));
-
-	    System.out.println(sig.getArity("a")==0);
-	    System.out.println(sig.getArity("weird")==4);
-	    
-	    
-	}
-	
-    /** ***************************************************************
-     */	    
-	public static void main(String[] args) {
-		test();
-	}
-
 }

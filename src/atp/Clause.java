@@ -450,7 +450,7 @@ public class Clause {
 
     /** ***************************************************************
      */
-    public void selectInferenceLits(String selectionFn) {
+    public void selectInferenceLits(LitSelection.LitSelectors selection) {
 
         ArrayList<Literal> candidates = getNegativeLits();
         if (candidates == null | candidates.size() == 0)
@@ -461,13 +461,13 @@ public class Clause {
             l.setInferenceLit(false);
 
         ArrayList<Literal> selected = null;
-        if (selectionFn.equals("firstLit"))
+        if (selection.equals(LitSelection.LitSelectors.FIRST))
             selected = LitSelection.firstLit(candidates);
- /**       if (selectionFn.equals("varSizeLit"))
-            selected = varSizeLit(candidates);
-        if (selectionFn.equals("eqResVarSizeLit"))
-            selected = eqResVarSizeLit(candidates);
-  */
+        LitSelection ls = new LitSelection();
+        if (selection.equals(LitSelection.LitSelectors.LEASTVARS))
+            selected = ls.varSizeLit(candidates);
+        if (selection.equals(LitSelection.LitSelectors.EQLEASTVARS))
+            selected = ls.eqResVarSizeLit(candidates);
         for (Literal l : selected)
             l.setInferenceLit(true);
     }

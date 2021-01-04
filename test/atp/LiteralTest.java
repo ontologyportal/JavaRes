@@ -106,24 +106,31 @@ public class LiteralTest {
         System.out.println("INFO in testLiterals(): all true");
         System.out.println("a1: " + a1);
         System.out.println("is positive:" + a1.isPositive());
+        assertTrue(a1.isPositive());
         System.out.println("is not equational: " + !a1.isEquational());
+        assertTrue(!a1.isEquational());
         ArrayList vars = a1.collectVars();
         System.out.println("Number of variables. Should be 1 :" + vars.size());
         assertEquals(vars.size(), 1);
 
         System.out.println();
         System.out.println("a2: " + a2);
-        System.out.println("is positive:" + !a2.isNegative());
+        System.out.println("is negative:" + a2.isNegative());
+        assertTrue(a2.isNegative());
         System.out.println("is not equational: " + !a2.isEquational());
+        assertTrue(!a2.isEquational());
         vars = a2.collectVars();
         System.out.println("Number of variables. Should be 1 :" + vars.size());
         assertEquals(vars.size(), 1);
 
         System.out.println();
         System.out.println("a3: " + a3);
-        System.out.println("is positive:" + !a3.isNegative());
+        System.out.println("is positive:" + a3.isNegative());
+        assertTrue(a3.isNegative());
         System.out.println("is equational: " + a3.isEquational());
+        assertTrue(a3.isEquational());
         System.out.println(a3 + " equals " + a4 + " :" + a3.equals(a4));
+        assertEquals(a3,a4);
         vars = a3.collectVars();
         System.out.println("Number of variables. Should be 0 :" + vars.size());
         assertEquals(vars.size(), 0);
@@ -131,7 +138,9 @@ public class LiteralTest {
         System.out.println();
         System.out.println("a4: " + a4);
         System.out.println("is negative:" + a4.isNegative());
+        assertTrue(a4.isNegative());
         System.out.println("is equational: " + a4.isEquational());
+        assertTrue(a4.isEquational());
         System.out.println(a4 + " equals " + a3 + " :" + a4.equals(a3));
         vars = a4.collectVars();
         System.out.println("Number of variables. Should be 0 :" + vars.size());
@@ -140,7 +149,9 @@ public class LiteralTest {
         System.out.println();
         System.out.println("a5: " + a5);
         System.out.println("is positive:" + !a5.isNegative());
+        assertTrue(!a5.isNegative());
         System.out.println("is equational: " + a5.isEquational());
+        assertTrue(a5.isEquational());
         vars = a5.collectVars();
         System.out.println("Number of variables. Should be 1 :" + vars.size());
         assertEquals(vars.size(), 1);
@@ -148,15 +159,19 @@ public class LiteralTest {
         System.out.println();
         System.out.println("a6: " + a6);
         System.out.println("is positive:" + !a6.isNegative());
+        assertTrue(!a6.isNegative());
         System.out.println("is not equational: " + !a6.isEquational());
+        assertTrue(!a6.isEquational());
         vars = a6.collectVars();
         System.out.println("Number of variables. Should be 1 :" + vars.size());
         assertEquals(vars.size(), 1);
 
         System.out.println();
         System.out.println("a7: " + a7);
-        System.out.println("is positive:" + !a7.isNegative());
+        System.out.println("is negative:" + a7.isNegative());
+        assertTrue(a7.isNegative());
         System.out.println("is not equational: " + !a7.isEquational());
+        assertTrue(!a7.isEquational());
         vars = a7.collectVars();
         System.out.println("Number of variables. Should be 1 :" + vars.size());
         assertEquals(vars.size(), 1);
@@ -164,7 +179,9 @@ public class LiteralTest {
         System.out.println();
         System.out.println("a8: " + a8);
         System.out.println("is positive:" + !a8.isNegative());
+        assertTrue(!a8.isNegative());
         System.out.println("is not equational: " + !a8.isEquational());
+        assertTrue(!a8.isEquational());
         vars = a8.collectVars();
         System.out.println("Number of variables. Should be 0 :" + vars.size());
         assertEquals(vars.size(), 0);
@@ -208,9 +225,10 @@ public class LiteralTest {
         System.out.println("input2: " + input2);
         Lexer lex = new Lexer(input2);
         ArrayList<Literal> l2 = Literal.parseLiteralList(lex);
-        System.out.println(l2);
+        System.out.println("result: " + l2);
         System.out.println(l2.size() == 5);
         assertEquals(l2.size(), 5);
+        assertEquals("p(X)",l2.get(0).toString());
         System.out.println();
 
         System.out.println("input3: " + input3);
@@ -308,5 +326,25 @@ public class LiteralTest {
         assertEquals(sig.getArity("b"), 0);
         System.out.println(sig.getArity("p") == 1);
         assertEquals(sig.getArity("p"), 1);
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testPureVarLit() {
+
+        String input7 = "X!=Y";
+        String input8 = "~q(a,g(a)";
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in testPureVarLit(): ");
+        Lexer lex = new Lexer(input7);
+        Literal l = new Literal();
+        l = l.parseLiteral(lex);
+        assertTrue(l.isPureVarLit());
+
+        lex = new Lexer(input8);
+        l = new Literal();
+        l = l.parseLiteral(lex);
+        assertFalse(l.isPureVarLit());
     }
 }

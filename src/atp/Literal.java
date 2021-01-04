@@ -43,7 +43,28 @@ public class Literal {
     public Literal(Term t) {
         atom = t;
     }
-    
+
+    /** ***************************************************************
+     */
+    public Literal(Term atom, boolean negative) {
+
+        if (atom.getFunc().equals("!=")) {
+            this.negated = !negative;
+            this.atom = new Term();
+            this.atom.t = "=";
+            if (atom.subterms != null && atom.subterms.size() > 0)
+                this.atom.subterms.addAll(atom.getArgs());
+        }
+        else {
+            this.negated = negative;
+            this.atom = new Term();
+            this.atom.t = atom.t;
+            if (atom.subterms != null && atom.subterms.size() > 0)
+                this.atom.subterms.addAll(atom.getArgs());
+        }
+        this.setInferenceLit(true);
+    }
+
      /** ***************************************************************
       */
      public String toString() {
@@ -51,7 +72,7 @@ public class Literal {
          StringBuffer result = new StringBuffer();
          if (negated)
              result.append("~");
-         if (!Term.emptyString(atom.getFunc())) {
+         if (atom != null && !Term.emptyString(atom.getFunc())) {
              if (atom.getFunc().equals("=") || atom.getFunc().equals("!="))
                  result.append(atom.getArgs().get(0) + atom.getFunc() + atom.getArgs().get(1));
              else
@@ -161,6 +182,17 @@ public class Literal {
       
          return atom.getFunc().equals("=");
      }
+
+    /** ***************************************************************
+     *         Return True iff the literal is of the form X=Y
+     */
+    public boolean isPureVarLit() {
+
+        if (isEquational())
+            return (atom.getArgs().get(0).isVar()) &&
+                   (atom.getArgs().get(1).isVar());
+        return false;
+    }
 
      /** ***************************************************************
       */
@@ -279,11 +311,11 @@ public class Literal {
       * function symbols "=" and "!=". 
       * The parser must be pointing to the token before the atom.
       */
-     private Literal parseAtom(Lexer lex) {
+     private static Term parseAtom(Lexer lex) {
                 
          //System.out.println("INFO in Literal.parseAtom(): " + lex.literal);  
          try {
-             atom = new Term();
+             Term atom = new Term();
              atom.parse(lex);
              ArrayList<String> tokens = new ArrayList<String>();
              tokens.add(Lexer.EqualSign); 
@@ -297,7 +329,7 @@ public class Literal {
                  rhs = rhs.parse(lex);
                  atom = new Term(op, lhs, rhs);        
              }
-             return this;
+             return new Term(atom);
          }
          catch (Exception ex) {
              System.out.println("Error in Literal.parseAtom(): " + ex.getMessage());
@@ -312,7 +344,7 @@ public class Literal {
       *  followed by an atom. 
       *  @return the Literal.  Note that there is a side effect on this Literal.
       */
-     public Literal parseLiteral(Lexer lex) {
+     public static Literal parseLiteral(Lexer lex) {
                 
          //System.out.println("INFO in Literal.parseLiteral(): " + lex.literal);  
          try {
@@ -321,13 +353,14 @@ public class Literal {
                  lex.next();
                  lex.next();
              }
+             boolean negative = false;
              if (lex.type == Lexer.Negation) {
-                 negated = true;
+                 negative = true;
                  lex.next();   // pointer will be left on the negation
              }
-             this.parseAtom(lex);
+             Term atom = parseAtom(lex);
              //System.out.println("INFO in Literal.parseLiteral(): exiting with pointer at: " + lex.literal);  
-             return this;
+             return new Literal(atom,negative);
          }
          catch (Exception ex) {
              System.out.println("Error in Literal.parseLiteral(): " + ex.getMessage());
@@ -344,15 +377,15 @@ public class Literal {
       */
      public static ArrayList<Literal> parseLiteralList(Lexer lex) {
                 
-         //System.out.println("INFO in Literal.parseLiteralList(): " + lex.literal);  
+         //System.out.println("INFO in Literal.parseLiteralList(): " + lex.literal);
          ArrayList<Literal> res = new ArrayList<Literal>();
          try {
              Literal l = new Literal();
              if (lex.look().equals("$false"))
                  lex.next();
              else {
-                 l.parseLiteral(lex);
-                 res.add(l);
+                 Literal newl = l.parseLiteral(lex);
+                 res.add(newl);
              }
              //if (!l.toString().equals("$false")) 
              //    res.add(l);                          
@@ -362,8 +395,8 @@ public class Literal {
                  if (lex.look().equals("$false"))
                      lex.next();
                  else {
-                     l.parseLiteral(lex);
-                     res.add(l);
+                     Literal newl = l.parseLiteral(lex);
+                     res.add(newl);
                  }                                  
              }
              return res;

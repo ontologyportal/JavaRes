@@ -33,7 +33,7 @@ public class TermTest {
     public static String example1 = "X";
     public static String example2 = "a";
     public static String example3 = "g(a,b)";
-    public static String example4 = "g(X, f(Y))";
+    public static String example4 = "g(X,f(Y))";
     public static String example5 = "g(X, f(Y))";
     public static String example6 = "f(X,g(a,b))";
     public static String example7 = "g(X)";
@@ -47,7 +47,7 @@ public class TermTest {
     public static Term t5 = null;
     public static Term t6 = null;
     public static Term t7 = null;
-    public static  Term t8 = null;
+    public static Term t8 = null;
     public static Term t9 = null;
 
     /** ***************************************************************
@@ -76,14 +76,23 @@ public class TermTest {
         System.out.println("---------------------");
         System.out.println("INFO in parseTest()");
         System.out.println(t1 + " = " + example1);
+        assertEquals(example1,t1.toString());
         System.out.println(t2 + " = " + example2);
+        assertEquals(example2,t2.toString());
         System.out.println(t3 + " = " + example3);
+        assertEquals(example3,t3.toString());
         System.out.println(t4 + " = " + example4);
+        assertEquals(example4,t4.toString());
         System.out.println(t5 + " = " + example5);
+        assertEquals(example4,t5.toString());  // e4 is e5 without extract embedded space
         System.out.println(t6 + " = " + example6);
+        assertEquals(example6,t6.toString());
         System.out.println(t7 + " = " + example7);
+        assertEquals(example7,t7.toString());
         System.out.println(t8 + " = " + example8);
+        assertEquals(example8,t8.toString());
         System.out.println(t9 + " = " + example9);
+        assertEquals(example9,t9.toString());
     }
 
     /** ***************************************************************
@@ -403,13 +412,13 @@ public class TermTest {
         System.out.println("t8: " + funs);
         System.out.println(funs.size() == 2 && funs.contains("g") && funs.contains("b"));
         assertEquals(2,funs.size());
- /**
-  * AP - not sure what a quoted function name means
+
         funs = t9.collectFuns();
         System.out.println("t9: " + funs);
+        System.out.println("t9 operator: " + t9.t);
+        System.out.println("t9 subterms: " + t9.subterms);
         System.out.println(funs.size() == 2 && funs.contains("'g'") && funs.contains("b"));
         assertEquals(2,funs.size());
-  */
     }
 
     /** ***************************************************************

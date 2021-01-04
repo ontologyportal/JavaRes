@@ -48,7 +48,6 @@ public class ClauseTest {
     public static Clause c6 = null;
     public static Clause c7 = null;
 
-
     /** ***************************************************************
      *  Setup function for clause/literal unit tests. Initialize
      *  variables needed throughout the tests.
@@ -83,7 +82,7 @@ public class ClauseTest {
         else
             System.out.println("Failure. " + c1.toString() + " not equal to cnf(test,axiom,p(a)|p(f(X))).");
         System.out.println("c1: " + c1);
-        assertEquals(c1.toString(),"cnf(test,axiom,p(a)|p(f(X))).");
+        assertEquals("cnf(test,axiom,p(a)|p(f(X))).",c1.toString());
 
         lex = new Lexer(str2);
         c2 = Clause.parse(lex);
@@ -101,7 +100,7 @@ public class ClauseTest {
         else
             System.out.println("Failure. " + c3.toString() + " not equal to cnf(test3,lemma,p(a)|~p(f(X))).");
         System.out.println("c3: " + c3);
-        assertEquals(c3.toString(),"cnf(test3,lemma,p(a)|~p(f(X))).");
+        assertEquals("cnf(test3,lemma,p(a)|~p(f(X))).",c3.toString());
 
         lex = new Lexer(str4);
         c4 = Clause.parse(lex);
@@ -110,7 +109,7 @@ public class ClauseTest {
         else
             System.out.println("Failure. " + c4.toString() + " not equal to cnf(taut,p(a)|q(a)|~p(a)).");
         System.out.println("c4: " + c4);
-        assertEquals(c4.toString(),"cnf(taut,axiom,p(a)|q(a)|~p(a)).");
+        assertEquals("cnf(taut,axiom,p(a)|q(a)|~p(a)).",c4.toString());
 
         lex = new Lexer(str5);
         c5 = Clause.parse(lex);
@@ -119,7 +118,7 @@ public class ClauseTest {
         else
             System.out.println("Failure. " + c5.toString() + " not equal to cnf(dup,p(a)|q(a)|p(a)).");
         System.out.println("c5: " + c5);
-        assertEquals(c5.toString(),"cnf(dup,axiom,p(a)|q(a)|p(a)).");
+        assertEquals("cnf(dup,axiom,p(a)|q(a)|p(a)).",c5.toString());
 
         lex = new Lexer(str6);
         c6 = Clause.parse(lex);
@@ -128,7 +127,7 @@ public class ClauseTest {
         else
             System.out.println("Failure. " + c5.toString() + " not equal to cnf(c6,axiom,(f(f(X1,X2),f(X3,g(X4,X5)))!=f(f(g(X4,X5),X3),f(X2,X1))|k(X1,X1)!=k(a,b))).");
         System.out.println("c6: " + c6);
-        assertEquals(c6.toString(),"cnf(c6,axiom,f(f(X1,X2),f(X3,g(X4,X5)))!=f(f(g(X4,X5),X3),f(X2,X1))|k(X1,X1)!=k(a,b)).");
+        assertEquals("cnf(c6,axiom,~f(f(X1,X2),f(X3,g(X4,X5)))=f(f(g(X4,X5),X3),f(X2,X1))|~k(X1,X1)=k(a,b)).",c6.toString());
 
         lex = new Lexer(str7);
         c7 = Clause.parse(lex);
@@ -220,22 +219,20 @@ public class ClauseTest {
     @Test
     public void testInfLits() {
 
-        c2.selectInferenceLits("firstLit");
+        c2.selectInferenceLits(LitSelection.LitSelectors.FIRST);
         for (Literal l : c2.literals)
             assertTrue(l.isInferenceLit());
 
-        c3.selectInferenceLits("firstLit");
+        c3.selectInferenceLits(LitSelection.LitSelectors.FIRST);
         for (Literal l : c3.literals)
             assertEquals(l.isNegative(), l.isInferenceLit());
-                    /*
-        c2.selectInferenceLits("varSizeLit");
+
+        c2.selectInferenceLits(LitSelection.LitSelectors.LEASTVARS);
         for (Literal l : c2.literals)
             assertTrue(l.isInferenceLit());
 
-        c3.selectInferenceLits("varSizeLit");
+        c3.selectInferenceLits(LitSelection.LitSelectors.LEASTVARS);
         for (Literal l : c3.literals)
             assertEquals(l.isNegative(), l.isInferenceLit());
-
-                     */
     }
 }

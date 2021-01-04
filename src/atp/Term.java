@@ -43,6 +43,16 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
 
 	}
 
+    /** ***************************************************************
+     */
+    public Term(Term newTerm) {
+        this.t = newTerm.t;
+        if (newTerm.subterms != null && newTerm.subterms.size() > 0) {
+            for (Term subT : newTerm.subterms)
+                subterms.add(new Term(subT));
+        }
+    }
+
 	/** ***************************************************************
 	 */
 	public Term(String op, Term t1, Term t2) {
@@ -150,7 +160,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 return this;
             }
             else {
-                if (lex.type.equals(Lexer.IdentLower)) {
+                if (lex.type.equals(Lexer.IdentLower) || lex.type.equals(Lexer.SQString) || lex.type.equals(Lexer.DefFunctor)) {
                     //System.out.println("lower case term: " + lex.literal);  
                     t = lex.literal;
                     if (lex.look().equals("(")) {
