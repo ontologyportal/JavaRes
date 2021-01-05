@@ -86,7 +86,8 @@ public class Literal {
      /** ***************************************************************
       */
      public String toKIFString() {
-             
+
+         System.out.println("Literal.toKIFString(): " + this);
          StringBuffer result = new StringBuffer();
          if (negated)
              result.append("(not ");

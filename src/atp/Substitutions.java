@@ -247,7 +247,7 @@ public class Substitutions {
      * different from input variables. However, it is guaranteed that
      * freshVar() will never return the same variable more than once.
      */    
-    private static Term freshVar() {
+    public static Term freshVar() {
 
         Substitutions.freshVarCounter = Substitutions.freshVarCounter + 1;
         return Term.string2Term("X" + Integer.toString(Substitutions.freshVarCounter));
@@ -270,116 +270,5 @@ public class Substitutions {
         return s;
     }
     
-    /** ***************************************************************
-     * ************ UNIT TESTS *****************
-     * Set up test content.  
-     */
-    static String example1 = "f(X, g(Y))";
-    static String example2 = "a";
-    static String example3 = "b";
-    static String example4 = "f(a, g(a))";     
-    static String example5 = "f(a, g(b))";    
-    static String example6 = "X"; 
-    static String example7 = "Y"; 
-    static String example8 = "Z";
-    static String example9 = "f(M)"; 
-    
-    static Term t1 = null;
-    static Term t2 = null;
-    static Term t3 = null;
-    static Term t4 = null;
-    static Term t5 = null;
-    static Term t6 = null;
-    static Term t7 = null;
-    static Term t8 = null;    
-    static Term t9 = null; 
-    
-    static Substitutions s1 = new Substitutions();
-    static Substitutions s2 = new Substitutions();
-    static Substitutions s3 = new Substitutions();
-    
-    /** ***************************************************************
-     * Set up test content.  
-     */
-    public static void setupTests() {
-        
-        t1 = Term.string2Term(example1);
-        t2 = Term.string2Term(example2);
-        t3 = Term.string2Term(example3);
-        t4 = Term.string2Term(example4);
-        t5 = Term.string2Term(example5);
-        t6 = Term.string2Term(example6);
-        t7 = Term.string2Term(example7);
-        t8 = Term.string2Term(example8);
-        t9 = Term.string2Term(example9);
-        s1.subst.put(t6,t2);   // X->a
-        s1.subst.put(t7,t2);   // Y->a
-        s2.subst.put(t6,t2);   // X->a
-        s2.subst.put(t7,t3);   // Y->b
-        s3.subst.put(t8,t9);   // Z->f(M)
-    }
-    
-    /** ***************************************************************
-     * Test basic stuff.  
-     */
-    public static void testSubstBasic() {
-            
-        System.out.println("---------------------");
-        System.out.println("INFO in testSubstBasic()");
-        Substitutions tau = s1.deepCopy();
-        System.out.println("should be true: " + s1 + " equals " + tau + " " + s1.equals(tau));
-        System.out.println("should be true.  Value: " + tau.apply(t6).equals(s1.apply(t6)));        
-        System.out.println("should be true.  Value: " + tau.apply(t7).equals(s1.apply(t7)));        
-        System.out.println("should be true.  Value: " + tau.apply(t8).equals(s1.apply(t8)));
-        System.out.println("should be true.  " + s3 + " -> " + t8 + " = " + t9 + " = " + s3.apply(t8) + " Value: " + t9.equals(s3.apply(t8)));
-    }
-            
-    /** ***************************************************************
-     * Check application of substitutions.  
-     */
-    public static void testSubstApply() {
-        
-        System.out.println("---------------------");
-        System.out.println("INFO in testSubstApply()");
-        System.out.println(s1 + " -> " + t1 + " = " + s1.apply(t1));
-        System.out.println(t4);
-        System.out.println("should be true: " + s1.apply(t1).equals(t4));
-        System.out.println(s2 + " -> " + t1 + " = " + s2.apply(t1));
-        System.out.println(t5);
-        System.out.println("should be true: " + s2.apply(t1).equals(t5));
-    }
 
-    /** *************************************************************** 
-     */
-    public static void testFreshVarSubst() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testSubstApply()");
-        Term var1 = freshVar();
-        Term var2 = freshVar();
-        if (!var1.equals(var2))
-            System.out.println("Correct, " + var1 + " != " + var2);
-        else
-            System.out.println("Failure, " + var1 + " == " + var2);
-        
-        ArrayList<Term> vars = t1.collectVars();
-        Substitutions sigma = freshVarSubst(vars);
-        ArrayList<Term> vars2 = sigma.apply(t1).collectVars();
-        boolean shared = vars.removeAll(vars2);   // if false, intersection is empty set
-        if (!shared)
-            System.out.println("Correct, " + var1 + " & " + var2 + " don't share variables.");
-        else
-            System.out.println("Failure, " + var1 + " & " + var2 + " do share variables.");
-    }
-
-    /** ***************************************************************
-     * Test method for this class.  
-     */
-    public static void main(String[] args) {
-        
-        setupTests();
-        testSubstBasic();
-        testSubstApply();
-        testFreshVarSubst();
-    }
 }

@@ -29,7 +29,15 @@ public class Clausifier {
     public static int skolemCounter = 0;
     public static int axiomCounter = 0;
     public static String typePrefix = "axiom";
-    
+
+    /** ***************************************************************
+     */
+    public static void counterReset() {
+        varCounter = 0;
+        skolemCounter = 0;
+        axiomCounter = 0;
+    }
+
     /** ***************************************************************
      * a->b is the same as -a|b
      */
@@ -109,7 +117,7 @@ public class Clausifier {
      * (a->b)&(b->a)
      * a->b is the same as -a|b
      */
-    private static BareFormula removeImpEq(BareFormula form) {
+    public static BareFormula removeImpEq(BareFormula form) {
 
         if (form.op.equals(Lexer.Implies)) {         
             return removeImp(form);
@@ -139,7 +147,7 @@ public class Clausifier {
      * @param flip when true indicates to change the operator of the given
      * literal
      */
-    private static Literal moveNegationIn(Literal lit, boolean flip) {
+    public static Literal moveNegationIn(Literal lit, boolean flip) {
 
         if (!flip)
             return lit;
@@ -155,7 +163,7 @@ public class Clausifier {
 
     /** ***************************************************************
      */
-    private static BareFormula moveNegationIn(BareFormula form) {
+    public static BareFormula moveNegationIn(BareFormula form) {
         return moveNegationIn(form,false);
     }
     
@@ -185,7 +193,7 @@ public class Clausifier {
      * -?[X]:p becomes ![X]:-p
      * --p becomes p
      */
-    private static BareFormula moveNegationIn(BareFormula form, boolean flip) {       
+    public static BareFormula moveNegationIn(BareFormula form, boolean flip) {
             
         //System.out.println("INFO in Clausifier.moveNegationIn(): " + form + " " + flip);
         BareFormula result = form.deepCopy();
@@ -393,7 +401,7 @@ public class Clausifier {
     
     /** ***************************************************************
      */
-    private static BareFormula moveQuantifiersLeft(BareFormula form) {
+    public static BareFormula moveQuantifiersLeft(BareFormula form) {
         
         BareFormula result = form.deepCopy();
         while (changed) {
@@ -458,7 +466,7 @@ public class Clausifier {
      *     becomes                
      * ![X]:p(X) => (h(skf(X)) & a(X,skf(X)))
      */
-    private static BareFormula skolemization(BareFormula form) {
+    public static BareFormula skolemization(BareFormula form) {
     
         return skolemizationRecurse(form,new HashSet<Term>());
     }   
@@ -466,7 +474,7 @@ public class Clausifier {
     /** ***************************************************************
      * Remove universal quantifiers
      */
-    private static BareFormula removeUQuant(BareFormula form) {
+    public static BareFormula removeUQuant(BareFormula form) {
     
         BareFormula result = form.deepCopy();
         if (form.child1 != null)
@@ -560,7 +568,7 @@ public class Clausifier {
 
     /** ***************************************************************
      */
-    private static BareFormula distributeAndOverOr(BareFormula form) {
+    public static BareFormula distributeAndOverOr(BareFormula form) {
         
         BareFormula result = form.deepCopy();
         changed = true;
@@ -573,7 +581,7 @@ public class Clausifier {
  
     /** ***************************************************************
      */
-    private static ArrayList<BareFormula> separateConjunctions(BareFormula form) {
+    public static ArrayList<BareFormula> separateConjunctions(BareFormula form) {
         
         ArrayList<BareFormula> result = new ArrayList<BareFormula>();
         if (form.op.equals("&")) {
@@ -590,7 +598,7 @@ public class Clausifier {
     /** ***************************************************************
      * (a | b) | c becomes a | b | c
      */
-    private static Clause flatten(BareFormula form) {
+    public static Clause flatten(BareFormula form) {
     
         Clause result = new Clause();
         if (!Term.emptyString(form.op) && !form.op.equals("|")) {
@@ -610,7 +618,7 @@ public class Clausifier {
 
     /** ***************************************************************
      */
-    private static ArrayList<Clause> flattenAll(ArrayList<BareFormula> forms) {
+    public static ArrayList<Clause> flattenAll(ArrayList<BareFormula> forms) {
         
         ArrayList<Clause> result = new ArrayList<Clause>();
         for (int i = 0; i < forms.size(); i++) {
@@ -649,299 +657,5 @@ public class Clausifier {
     
         typePrefix = f.type;        
         return clausify(f.form);
-    }
-
-    /** ***************************************************************
-     * *************** Unit Tests ******************
-     */
-    
-    /** ***************************************************************
-     */
-    private static void testRemoveImpEq() {
-    
-        System.out.println();
-        System.out.println("================== testRemoveImpEq ======================");
-        BareFormula form = BareFormula.string2form("a=>b");
-        System.out.println("input: " + form);
-        form = removeImpEq(form);
-        System.out.println(form);
-        System.out.println();
-        
-        form = BareFormula.string2form("a<=>b");
-        System.out.println("input: " + form);
-        form = removeImpEq(form);
-        System.out.println(form);     
-        System.out.println();
-        
-        form = BareFormula.string2form("((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))");
-        System.out.println("input: " + form);
-        form = removeImpEq(form);
-        System.out.println(form);
-        System.out.println();
-    }
-
-    /** ***************************************************************
-     */
-    private static void testMoveQuantifiersLeft() {
-        
-        System.out.println();
-        System.out.println("================== testMoveQuantifiersLeft ======================");
-        BareFormula form = BareFormula.string2form("p|![X]:q(X)");
-        /*
-        System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
-        System.out.println("result should be ![X]:p | q(X): " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("~((![X]:a(X)) | b(X))");
-        System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
-        System.out.println("result: " + form);
-        System.out.println(); 
-        
-        form = BareFormula.string2form("~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))");
-        System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
-        System.out.println("result: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("( (~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))) | q(g(a), X))");
-        System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
-        System.out.println("result: " + form);
-        System.out.println();
-*/
-        form = BareFormula.string2form("( ( (~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))) | q(g(a), X)) & " +
-                                         "((~q(g(a), X)) | (((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))))");
-        System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
-        System.out.println("result: " + form);
-        System.out.println();
-        
-    } 
-
-    /** ***************************************************************
-     */
-    private static void testMoveNegationIn() {
-        
-        System.out.println();
-        System.out.println("================== testMoveNegationIn ======================");
-        BareFormula form = BareFormula.string2form("~(p | q)");
-        
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result should be -p & -q: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("~(p & q)");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result should be -p | -q: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("~![X]:p");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result should be ?[X]:-p: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("~?[X]:p");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result should be ![X]:-p: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("~~p");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result should be p: " + form);
-        System.out.println(); 
-       
-        form = BareFormula.string2form("(~(?[Y]:p(X, f(Y))))");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("(~(?[X]:(?[Y]:p(X, f(Y)))))");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);        
-        System.out.println("expected result: (![X]:(![Y]:~p(X, f(Y))))");
-        System.out.println("result: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("~(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y)))))");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("result should be ( ((?[X]:(~a(X))|~b(X)) & (![X]:(![Y]:~p(X, f(Y)))) ): ");
-        System.out.println("actual: "+ form);
-        System.out.println();
-        
-        form = BareFormula.string2form("(((~(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y))))))|q(g(a), X))&((~q(g(a), X))|(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y)))))))");
-        System.out.println("input: " + form);
-        form = moveNegationIn(form);
-        System.out.println("expected: ( ( ((( (?[X]:~a(X)) & ~b(X)) & (![X]:(![Y]:~p(X, f(Y)))) )) | q(g(a), X)) & " +
-                                       "((~q(g(a), X)) | (((![X]:a(X))|b(X)) | (?[X]:(?[Y]:p(X, f(Y)))) )))");
-        System.out.println("result: " + form);
-        System.out.println();        
-    } 
-
-    /** ***************************************************************
-     */
-    private static void testStandardizeVariables() {
-        
-        System.out.println();
-        System.out.println("================== testStandardizeVariables ======================");
-        BareFormula form = BareFormula.string2form("~((![X]:a(X)) | b(X))");
-        System.out.println("input: " + form);
-        form = standardizeVariables(form);
-        System.out.println("result should be : ~((![VAR2]:a(VAR2)) | b(VAR1))");
-        System.out.println("actual: "+ form);
-        System.out.println();
-        
-        form = BareFormula.string2form("(((~(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y))))))|q(g(a), X))&((~q(g(a), X))|(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y)))))))");
-        System.out.println("input: " + form);
-        form = standardizeVariables(form);
-        //System.out.println("result should be : ~((![VAR2]:a(VAR2)) | b(VAR1))");
-        System.out.println("actual: "+ form);
-        System.out.println();        
-    }
-    
-    /** ***************************************************************
-     */
-    private static void testSkolemization() {
-        
-        System.out.println();
-        System.out.println("================== testSkolemization ======================");
-        BareFormula form = BareFormula.string2form("(?[VAR0]:(![VAR3]:(![VAR2]:(?[VAR5]:(![VAR1]:(?[VAR4]:((((~a(VAR0)&~b(X))&~p(VAR2, f(VAR1)))|q(g(a), X))&(~q(g(a), X)|((a(VAR3)|b(X))|p(VAR5, f(VAR4)))))))))))");
-        System.out.println("input: " + form);
-        form = skolemization(form);
-        System.out.println("actual: "+ form);
-        System.out.println();
-    }
-    /** ***************************************************************
-     */
-    private static void testDistribute() {
-        
-        System.out.println();
-        System.out.println("================== testDistribute ======================");
-        BareFormula form = BareFormula.string2form("(a & b) | c");
-        /*
-        System.out.println("input: " + form);
-        form = distributeAndOverOr(form);
-        System.out.println("result should be : (a | c) & (b | c)");
-        System.out.println("actual: " + form);
-        System.out.println();
-        
-        form = BareFormula.string2form("(a & b) | (c & d)");
-        System.out.println("input: " + form);
-        form = distributeAndOverOr(form);
-        System.out.println("result should be : (a | c) & (a | d) & (b | c) & (d | b)");
-        System.out.println("actual: " + form);
-        System.out.println();
-        */        
-        KIF.init();
-        form = BareFormula.string2form("(((~holdsAt(VAR2, VAR1)|releasedAt(VAR2, plus(VAR1, n1)))|(happens(skf3, VAR1)&terminates(skf3, VAR2, VAR1)))|holdsAt(VAR2, plus(VAR1, n1)))");
-        System.out.println("input: " + form);
-        form = distributeAndOverOr(form);
-        System.out.println("actual: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-    }
-    
-    /** ***************************************************************
-     */
-    private static void testClausificationSteps(String s) {
-        
-        KIF.init();
-        System.out.println();
-        System.out.println("================== testClausification ======================");
-        BareFormula form = BareFormula.string2form(s);
-        System.out.println("input: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form =   removeImpEq(form);
-        System.out.println("after Remove Implications and Equivalence: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form = moveNegationIn(form);
-        System.out.println("after Move Negation In: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form = standardizeVariables(form);
-        System.out.println("after Standardize Variables: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form = moveQuantifiersLeft(form);
-        System.out.println("after Move Quantifiers: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form = skolemization(form);
-        System.out.println("after Skolemization: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form = removeUQuant(form);
-        System.out.println("after remove universal quantifiers: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        form = distributeAndOverOr(form);
-        System.out.println("after Distribution: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        ArrayList<BareFormula> forms = separateConjunctions(form);
-        System.out.println("after separation: " + forms);
-        System.out.println(KIF.format(form.toKIFString()));
-        System.out.println();
-        ArrayList<Clause> clauses = flattenAll(forms);
-        System.out.println("after flattening: " + clauses);
-        System.out.println();
-    }
-    
-    /** ***************************************************************
-     */
-    private static void testClausification() {
-                
-        //testClausificationSteps("((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))");
-        testClausificationSteps("(![Fluent]:(![Time]:(((holdsAt(Fluent, Time)&(~releasedAt(Fluent, plus(Time, n1))))&(~(?[Event]:(happens(Event, Time)&terminates(Event, Fluent, Time)))))=>holdsAt(Fluent, plus(Time, n1)))))).");
-    }
-    
-    /** ***************************************************************
-     */
-    private static void testClausificationSimple() {
-        
-        System.out.println();
-        System.out.println("================== testClausificationSimple ======================");
-        BareFormula form = BareFormula.string2form("((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))");
-        System.out.println("input: " + form);
-        System.out.println();
-        ArrayList<Clause> result = clausify(form);
-        for (int i = 0; i < result.size(); i++)
-            System.out.println(result.get(i));        
-    }
-    
-    /** ***************************************************************
-     */
-    private static void testFileClaus(String filename) {
-        
-	    System.out.println();
-	    System.out.println("================== testClaus ======================");
-	    ClauseSet cs = Formula.file2clauses(filename); 
-        for (int i = 0; i < cs.clauses.size(); i++)
-            System.out.println(cs.clauses.get(i));  
-    }
-    
-    /** ***************************************************************
-     */
-    public static void main(String[] args) {
-        
-        //testRemoveImpEq();
-        //testMoveNegationIn();
-        //testMoveQuantifiersLeft();
-        //testStandardizeVariables();
-        //testSkolemization();
-        //testDistribute();
-        //testClausification();
-        //testClausificationSimple();
-    	testFileClaus(args[0]);
     }
 }

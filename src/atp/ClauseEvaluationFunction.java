@@ -66,15 +66,7 @@ public abstract class ClauseEvaluationFunction {
      */
     public static ArrayList<ClauseEvaluationFunction> evals = new ArrayList<ClauseEvaluationFunction>();
     public static ArrayList<Integer> ratings = new ArrayList<Integer>();
-    public static String spec = null;
-    public static Clause c1 = new Clause();
-    public static Clause c2 = new Clause();
-    public static Clause c3 = new Clause();
-    public static Clause c4 = new Clause();
-    public static Clause c5 = new Clause();
-    public static Clause c6 = new Clause();
-    public static Clause c7 = new Clause();
-    public static Clause c8 = new Clause();
+
     public static EvalStructure FIFOEval = null;
     public static EvalStructure SymbolCountEval = null;
     public static EvalStructure PickGiven5 = null;
@@ -128,120 +120,5 @@ public abstract class ClauseEvaluationFunction {
        PickGiven2.name = "PickGiven2";
     }
     
-    /** ***************************************************************
-     * Test that FIFO evaluation works as expected.
-     */
-    public static void setup() {
-                    
-        setupEvaluationFunctions();
-        spec = "cnf(c1,axiom,(f(X1,X2)=f(X2,X1))).\n" + 
-               "cnf(c2,axiom,(f(X1,f(X2,X3))=f(f(X1,X2),X3))).\n" +
-               "cnf(c3,axiom,(g(X1,X2)=g(X2,X1))).\n" +
-               "cnf(c4,axiom,(f(f(X1,X2),f(X3,g(X4,X5)))!=f(f(g(X4,X5),X3),f(X2,X1))|k(X1,X1)!=k(a,b))).\n" +
-               "cnf(c5,axiom,(b=c|X1!=X2|X3!=X4|c!=d)).\n" +
-               "cnf(c6,axiom,(a=b|a=c)).\n" +
-               "cnf(c7,axiom,(i(X1)=i(X2))).\n" +
-               "cnf(c8,axiom,(c=d|h(i(a))!=h(i(e)))).\n";
-        
-        Lexer lex = new Lexer(spec); 
-        c1.parse(lex);
-        c2.parse(lex);
-        c3.parse(lex);
-        c4.parse(lex);
-        c5.parse(lex);
-        c6.parse(lex);
-        c7.parse(lex);
-        c8.parse(lex);
-    }
-    
-    /** ***************************************************************
-     * Test that FIFO evaluation works as expected.
-     */
-    public static void testFIFO() {
 
-        FIFOEvaluation eval = new FIFOEvaluation();
-        int e1 = eval.hEval(c1);
-        int e2 = eval.hEval(c2);
-        int e3 = eval.hEval(c3);
-        int e4 = eval.hEval(c4);
-        int e5 = eval.hEval(c5);
-        int e6 = eval.hEval(c6);
-        int e7 = eval.hEval(c7);
-        int e8 = eval.hEval(c8);
-        System.out.println("ClauseEvaluationFunction.testFIFO(): Expecting " + e1 + " < " + e2);
-        System.out.println(e2 + " < " + e3);
-        System.out.println(e3 + " < " + e4);
-        System.out.println(e4 + " < " + e5);
-        System.out.println(e5 + " < " + e6);
-        System.out.println(e6 + " < " + e7);
-        System.out.println(e7 + " < " + e8);
-        
-        assert e1 < e2;
-        assert e2 < e3;
-        assert e3 < e4;
-        assert e4 < e5;
-        assert e5 < e6;
-        assert e6 < e7;
-        assert e7 < e8;
-        System.out.println("INFO in ClauseEvaluationFunction.testFIFO() success");
-    }
-    
-    /** ***************************************************************
-     * Test that symbol counting works as expected.
-     */
-    public static void testSymbolCount() {
-
-        SymbolCountEvaluation eval = new SymbolCountEvaluation(2,1);
-        int e1 = eval.hEval(c1);
-        int e2 = eval.hEval(c2);
-        int e3 = eval.hEval(c3);
-        int e4 = eval.hEval(c4);
-        int e5 = eval.hEval(c5);
-        int e6 = eval.hEval(c6);
-        int e7 = eval.hEval(c7);
-        int e8 = eval.hEval(c8);
-
-        assert e1 == c1.weight(2,1);
-        assert e2 == c2.weight(2,1);
-        assert e3 == c3.weight(2,1);
-        assert e4 == c4.weight(2,1);
-        assert e5 == c5.weight(2,1);
-        assert e6 == c6.weight(2,1);
-        assert e7 == c7.weight(2,1);
-        assert e8 == c8.weight(2,1);     
-        System.out.println("INFO in ClauseEvaluationFunction.testSymbolCount(): success");
-    }
-    
-    /** ***************************************************************
-     * Test composite evaluations.
-     */
-    public static void testEvalStructure() {
-
-        evals = new ArrayList<ClauseEvaluationFunction>();
-        evals.add(new SymbolCountEvaluation(2,1));
-        evals.add(new FIFOEvaluation());
-        ratings = new ArrayList<Integer>();
-        ratings.add(2);
-        ratings.add(1);
-        EvalStructure eval_funs = new EvalStructure(evals,ratings);            
-        ArrayList<Integer> evalRatings = eval_funs.evaluate(c1);
-        assert evalRatings.size() == 2;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 1;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 1;
-        System.out.println("INFO in ClauseEvaluationFunction.testEvalStructure() success");
-    }        
-    /** ***************************************************************
-     * Test method for this class.  
-     */
-    public static void main(String[] args) {
-        
-        setup();
-        testFIFO();
-        testSymbolCount();
-        testEvalStructure();
-    }        
 }

@@ -211,8 +211,8 @@ public class ClauseSet {
         while (lex.type != Lexer.EOFToken) {
             Clause clause = new Clause();
             try {
-                Clause c = clause.parse(lex);
-                if (c == null)
+                clause = Clause.parse(lex);
+                if (clause == null)
                     return 0;
             }
             catch (Exception e) {
@@ -253,51 +253,5 @@ public class ClauseSet {
             }           
         }   
         return null;
-    }
-    
-    /** ***************************************************************
-     */
-    public static void test1() {
-    	
-        System.out.println("---------------------");
-        System.out.println("INFO in test1()");
-        String spec2 = "cnf(humans_are_mortal, axiom, mortal(X)|~human(X)).\n" + 
-        "cnf(socrates_is_human, axiom, human(socrates)).\n" +
-        "cnf(is_socrates_mortal,negated_conjecture,  ~mortal(socrates)).\n";
-        Lexer lex = new Lexer(spec2);        
-        ClauseSet problem = new ClauseSet();
-        problem.parse(lex);
-        System.out.println("ClauseSet test.  Expected: "); 
-        System.out.println(spec2);
-        System.out.println("Actual: ");
-        System.out.println(problem);
-    }
-    
-    /** ***************************************************************
-     * Test that clause set initialization and parsing work.
-     */
-    public static void testClauseSetChanges() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in testClauseSetChanges()");
-        ClauseSet clauses = parseFromFile("/home/apease/Programs/TPTP-v5.3.0/Problems/PUZ/PUZ001-1.p");
-        System.out.println(clauses);
-        int oldlen = clauses.clauses.size();
-        Clause c = clauses.clauses.get(0);
-        clauses.extractClause(c);
-        System.out.println("Should be true: ");
-        System.out.println(clauses.clauses.size() == oldlen-1);
-
-        Signature sig = new Signature();
-        clauses.collectSig(sig);
-        System.out.println(sig);
-    }
-        
-    /** ***************************************************************
-     */
-    public static void main(String[] args) {
-    	
-    	test1();
-    	testClauseSetChanges();
     }
 }
