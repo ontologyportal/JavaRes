@@ -94,21 +94,35 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
     /** ***************************************************************
      */
     public String toKIFString() {
-            
+
+        System.out.println("Term.toKIFString(): " + this);
+        System.out.println("Term.toKIFString(): t: " + t);
+        System.out.println("Term.toKIFString(): subterms: " + subterms);
         StringBuffer result = new StringBuffer();
         if (subterms.size() > 0) 
             result.append('(');
-        result.append(t);
+        if (this.isVar())
+            result.append("?" + t);
+        else {
+            if (KIF.opMap.containsKey(t))
+                result.append(KIF.opMap.get(t));
+            else
+                result.append(t);
+        }
         if (subterms.size() > 0) {
             result.append(" ");
             for (int i = 0; i < subterms.size(); i++) {
-                result.append(subterms.get(i).toString());
+                Term subt = subterms.get(i);
+                if (subt.isVar())
+                    result.append("?" + subt);
+                else
+                    result.append(subt.toKIFString());
                 if (i < subterms.size()-1)
                     result.append(" ");
-            } 
-        }
-        if (subterms.size() > 0) 
+            }
             result.append(')');
+        }
+        System.out.println("Term.toKIFString(): result: " + result);
         return result.toString();
     }
     

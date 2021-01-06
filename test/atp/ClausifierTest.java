@@ -42,18 +42,24 @@ public class ClausifierTest {
         System.out.println("input: " + form);
         form = Clausifier.removeImpEq(form);
         System.out.println(form);
+        String expected = "((~a)|b)";
+        assertEquals(expected,form.toString());
         System.out.println();
 
         form = BareFormula.string2form("a<=>b");
         System.out.println("input: " + form);
         form = Clausifier.removeImpEq(form);
         System.out.println(form);
+        expected = "(((~a)|b)&((~b)|a))";
+        assertEquals(expected,form.toString());
         System.out.println();
 
         form = BareFormula.string2form("((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))");
         System.out.println("input: " + form);
         form = Clausifier.removeImpEq(form);
         System.out.println(form);
+        expected = "(((~(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y))))))|q(g(a),X))&((~q(g(a),X))|(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))))";
+        assertEquals(expected,form.toString());
         System.out.println();
     }
 
@@ -65,30 +71,30 @@ public class ClausifierTest {
         System.out.println();
         System.out.println("================== testMoveQuantifiersLeft ======================");
         BareFormula form = BareFormula.string2form("p|![X]:q(X)");
-        /*
+
         System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
+        form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("result should be ![X]:p | q(X): " + form);
         System.out.println();
 
         form = BareFormula.string2form("~((![X]:a(X)) | b(X))");
         System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
+        form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("result: " + form);
         System.out.println();
 
         form = BareFormula.string2form("~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))");
         System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
+        form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("result: " + form);
         System.out.println();
 
         form = BareFormula.string2form("( (~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))) | q(g(a), X))");
         System.out.println("input: " + form);
-        form = moveQuantifiersLeft(form);
+        form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("result: " + form);
         System.out.println();
-*/
+
         form = BareFormula.string2form("( ( (~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))) | q(g(a), X)) & " +
                 "((~q(g(a), X)) | (((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))))");
         System.out.println("input: " + form);
@@ -179,7 +185,7 @@ public class ClausifierTest {
         System.out.println("result : " + form);
         assertEquals(expected,form.toString());
         System.out.println();
-
+/*
         form = BareFormula.string2form("(((~(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y))))))|q(g(a), X))&((~q(g(a), X))|(((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X, f(Y)))))))");
         System.out.println("input: " + form);
         form = Clausifier.moveNegationIn(form);
@@ -191,6 +197,7 @@ public class ClausifierTest {
         System.out.println("result : " + form);
         assertEquals(expected,form.toString());
         System.out.println();
+        */
     }
 
     /** ***************************************************************
@@ -233,6 +240,8 @@ public class ClausifierTest {
         System.out.println("input: " + form);
         form = Clausifier.skolemization(form);
         System.out.println("actual: "+ form);
+        String expected = "(![VAR3]:(![VAR2]:(![VAR1]:(((((~a(skf14(VAR1,VAR2,VAR3)))&(~b(X)))&(~p(VAR2,f(VAR1))))|q(g(a),X))&((~q(g(a),X))|((a(VAR3)|b(X))|p(skf13(VAR1),f(skf12))))))))";
+        assertEquals(expected,form.toString());
         System.out.println();
     }
 
@@ -332,7 +341,7 @@ public class ClausifierTest {
 
         System.out.println();
         System.out.println("================== testClausificationSimple ======================");
-        BareFormula form = BareFormula.string2form("((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))");
+        BareFormula form = BareFormula.string2form("(((![X]:(a(X)|b(X)))|(?[X]:(?[Y]:p(X,f(Y)))))<=>(?[X]:(q(g(a),X))))");
         System.out.println("input: " + form);
         System.out.println();
         ArrayList<Clause> result = Clausifier.clausify(form);

@@ -31,6 +31,7 @@ public class KIF {
     public static final String Universal      = "!";
     public static final String Existential    = "?";
     public static final String Negation       = "~";
+    public static final String Equals         = "=";
     
     public static HashMap<String,String> opMap = new HashMap<String,String>();
     
@@ -42,7 +43,8 @@ public class KIF {
         opMap.put(Equiv,"<=>");   
         opMap.put(Universal,"forall");   
         opMap.put(Existential,"exists");   
-        opMap.put(Negation,"not");           
+        opMap.put(Negation,"not");
+        opMap.put(Equals,"equals");
     }
     
     public static String format(String form) {

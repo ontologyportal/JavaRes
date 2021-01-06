@@ -40,6 +40,16 @@ public class TermTest {
     public static String example8 = "g(b,b)";
     public static String example9 = "'g'(b,b)";
 
+    public static String kif1 = "?X";
+    public static String kif2 = "a";
+    public static String kif3 = "(g a b)";
+    public static String kif4 = "(g ?X (f ?Y))";
+    // 5
+    public static String kif6 = "(f ?X (g a b))";
+    public static String kif7 = "(g ?X)";
+    public static String kif8 = "(g b b)";
+    // 9
+    
     public static Term t1 = null;
     public static Term t2 = null;
     public static Term t3 = null;
@@ -56,6 +66,7 @@ public class TermTest {
     @BeforeClass
     public static void setupTests() {
 
+        KIF.init();
         t1 = Term.string2Term(example1);
         t2 = Term.string2Term(example2);
         t3 = Term.string2Term(example3);
@@ -142,6 +153,76 @@ public class TermTest {
         assertEquals(t9.toString(),t.toString());
     }
 
+    /** ***************************************************************
+     * Test that parse() and toString() are dual. Start with terms,
+     * so that we are sure to get the canonical string representation.
+     */
+    @Test
+    public void testToKIF() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in Term.testToKIF(): all should be true");
+        System.out.println("input: " + t1);
+        String actual = t1.toKIFString().toString();               // X
+        String expected = kif1;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t1.toKIFString().equals(kif1));
+        assertEquals(kif1,t1.toKIFString());
+
+        System.out.println("input: " + t2);
+        actual = t2.toKIFString().toString();                      // a
+        expected = kif2;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t2.toKIFString().equals(kif2));
+        assertEquals(kif2,t2.toKIFString());
+
+        System.out.println("input: " + t3);
+        actual = t3.toKIFString().toString();                      // g(a,b)
+        expected = kif3;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t3.toKIFString().equals(kif3));
+        assertEquals(kif3,t3.toKIFString());
+
+        System.out.println("input: " + t4);
+        actual = t4.toKIFString().toString();                      // g(X,f(Y))
+        expected = kif4;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t4.toKIFString().equals(kif4));
+        assertEquals(kif4,t4.toKIFString());
+
+        // 5
+
+        System.out.println("input: " + t6);
+        actual = t6.toKIFString().toString();                      // f(X,g(a,b))
+        expected = kif6;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t6.toKIFString().equals(kif6));
+        assertEquals(kif6,t6.toKIFString());
+
+        System.out.println("input: " + t7);
+        actual = t7.toKIFString().toString();                      // g(X)
+        expected = kif7;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t7.toKIFString().equals(kif7));
+        assertEquals(kif7,t7.toKIFString());
+
+        System.out.println("input: " + t8);
+        actual = t8.toKIFString().toString();                      // g(b,b)
+        expected = kif8;
+        System.out.println("actual: " + actual);
+        System.out.println("expected: " + expected);
+        System.out.println(t8.toKIFString().equals(kif8));
+        assertEquals(kif8,t8.toKIFString());
+
+        // 9
+    }
+    
     /** ***************************************************************
      * Test if the classification function works as expected.
      */

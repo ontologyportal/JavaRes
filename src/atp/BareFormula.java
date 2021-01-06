@@ -443,36 +443,65 @@ public class BareFormula {
         }
         return f;
     }
-    
+
     /** ***************************************************************
      * Return a string representation of the formula.
      */
     public String toKIFString() {
 
+        System.out.println("BareFormula.toKIFString(): " + this);
+        System.out.println("BareFormula.toKIFString(): op: " + op);
+        System.out.println("BareFormula.toKIFString(): KIF: " + KIF.opMap.get(op));
+        System.out.println("BareFormula.toKIFString(): child1: " + child1);
+        System.out.println("BareFormula.toKIFString(): lit1: " + lit1);
+        System.out.println("BareFormula.toKIFString(): child2: " + child2);
+        System.out.println("BareFormula.toKIFString(): lit2: " + lit2);
         String arg1 = null;
-        if (child1 != null)        
+        if (child1 != null) {
             arg1 = child1.toKIFString();
-        if (lit1 != null)
+        }
+        if (lit1 != null) {
             arg1 = lit1.toKIFString();
+        }
         String arg2 = null;
         if (child2 != null)        
             arg2 = child2.toKIFString();
-        if (lit2 != null)
+        if (lit2 != null) {
             arg2 = lit2.toKIFString();
-        
-        if (Term.emptyString(op))      
-            return arg1;        
-        if (op.equals(Lexer.Negation))      
-            return "(" + KIF.opMap.get(Lexer.Negation) + " " + arg1 + ")";        
-        if (logOp(op)) 
-            return "(" + KIF.opMap.get(op) + " " + arg1 + " " + arg2 + ")";        
+        }
+
+        if (Term.emptyString(op)) {
+            String result = arg1;
+            System.out.println("BareFormula.toKIFString(): result: " + result);
+            return result;
+        }
+        if (op.equals(Lexer.Negation)) {
+            String result = "(" + KIF.opMap.get(Lexer.Negation) + " " + arg1 + ")";
+            System.out.println("BareFormula.toKIFString(): result: " + result);
+            return result;
+        }
+        if (logOp(op)) {
+            String result = "(" + KIF.opMap.get(op) + " " + arg1 + " " + arg2 + ")";
+            System.out.println("BareFormula.toKIFString(): result: " + result);
+            return result;
+        }
         else {
             if (!op.equals("!") && !op.equals("?")) {
                 System.out.println("Error in BareFormula.toString(): bad operator: " + op);
                 return null;
             }
-            return "(" + KIF.opMap.get(op) + " "  + "(" + arg1 + ") " + arg2 + ")"; 
-        }  
+            if (KIF.opMap.get(op) == null) {
+                String result = "(" + op + " " + "(" + arg1 + ") " + arg2 + ")";
+                System.out.println("BareFormula.toKIFString(): result: " + result);
+                return result;
+            }
+            else {
+                String result = "(" + KIF.opMap.get(op) + " " + "(" + arg1 + ") " + arg2 + ")";
+                System.out.println("BareFormula.toKIFString(): result: " + result);
+                return result;
+            }
+        }
+
     }
         
     /** ***************************************************************

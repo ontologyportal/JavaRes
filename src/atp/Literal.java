@@ -88,21 +88,16 @@ public class Literal {
      public String toKIFString() {
 
          System.out.println("Literal.toKIFString(): " + this);
+         System.out.println("Literal.toKIFString(): atom: " + atom);
+         System.out.println("Literal.toKIFString(): func: " + atom.getFunc());
+         System.out.println("Literal.toKIFString(): args: " + atom.getArgs());
          StringBuffer result = new StringBuffer();
          if (negated)
              result.append("(not ");
-         if (!Term.emptyString(atom.getFunc())) {
-             if (atom.getFunc().equals("="))
-                 result.append("(equals " + atom.getArgs().get(0).toKIFString() + " " + atom.getArgs().get(1).toKIFString() + ")");
-             else if (atom.getFunc().equals("!="))
-                 result.append("(not (equals " + atom.getArgs().get(0).toKIFString() + " " + atom.getArgs().get(1).toKIFString() + "))");
-             else
-                 result.append(atom.getArgs().get(0));
-         }
-         else 
-             result.append(atom.getArgs().get(0).toKIFString());  
+         result.append(atom.toKIFString());
          if (negated)
              result.append(")");
+         System.out.println("Literal.toKIFString(): result: " + result);
          return result.toString();
      }
      

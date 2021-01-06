@@ -33,6 +33,13 @@ public class BareFormulaTest {
             "((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))";
 
     /** ***************************************************************
+     */
+    @BeforeClass
+    public static void init() {
+        KIF.init();
+    }
+
+    /** ***************************************************************
      * Test that basic parsing and functionality works.
      */
     @Test
@@ -69,5 +76,44 @@ public class BareFormulaTest {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testToKIF() {
+
+        String input = "(![Fluent]:(![Time]:(((holdsAt(Fluent,Time)&(~releasedAt(Fluent,plus(Time,n1))))&" +
+                "(~(?[Event]:(happens(Event,Time)&terminates(Event,Fluent,Time)))))=>" +
+                "holdsAt(Fluent,plus(Time,n1)))))";
+        String expected = "(forall (?Fluent)" +
+                " (forall (?Time)" +
+                  " (=>" +
+                    " (and" +
+                      " (and" +
+                        " (holdsAt ?Fluent ?Time)" +
+                        " (not" +
+                          " (releasedAt ?Fluent (plus ?Time n1))))" +
+                      " (not" +
+                        " (exists (?Event)" +
+                          " (and" +
+                            " (happens ?Event ?Time)" +
+                            " (terminates ?Event ?Fluent ?Time)))))" +
+                    " (holdsAt ?Fluent (plus ?Time n1)))))";
+        System.out.println("testToKIF()");
+        System.out.println("expected: " + expected);
+        Lexer lex = new Lexer(input);
+        try {
+            BareFormula f1 = BareFormula.parse(lex);
+            String actual = f1.toKIFString();
+            System.out.println("actual: " + actual);
+            assertEquals(expected,actual);
+        }
+        catch (Exception e) {
+            System.out.println("Error in BareFormula.testNakedFormula()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 }

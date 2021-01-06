@@ -45,6 +45,21 @@ public class LiteralTest {
     public static String input5 = "p(a)|p(f(X))";
     public static String input6 = "foo(bar,vaz)|f(X1,X2)!=g(X4,X5)|k(X1,X1)!=k(a,b)";
 
+    public static String kif1a = "(p ?X)";
+    public static String kif1b = "(not (q (f ?X a) b))";
+    public static String kif1c = "(not (equals a b))";
+    public static String kif1d = "(not (equals a b))";
+    public static String kif1e = "(equals a (f ?X b))";
+    public static String kif1f = "(p ?X)";
+    public static String kif1g = "(not (p ?X))";
+    public static String kif1h = "(p a)";
+
+    public static String kif2 = "(or (p ?X) (or (not (q (f ?X a) b)) (or (equals (not a) b) (or (equals (not a) b) (equals a (f ?X b))))))";
+    public static String kif3 = "false";
+    public static String kif4 = "(or false (or (not (q (f ?X))) false)";
+    public static String kif5= "(or (p a) (p (f ?X)))";
+    public static String kif6 = "(or (foo bar baz) (or (equals (not (f ?X1 ?X2)) (g ?X4 ?X5)) (equals (not (k ?X1 ?X1)) (k a b))))";
+
     /** ***************************************************************
      * Setup function for clause/literal unit tests. Initialize
      * variables needed throughout the tests.
@@ -52,6 +67,7 @@ public class LiteralTest {
     @BeforeClass
     public static void setup() {
 
+        KIF.init();
         Lexer lex = new Lexer(input1);
 
         System.out.println("INFO in Literal.setup(): input: " + input1);
@@ -346,5 +362,76 @@ public class LiteralTest {
         l = new Literal();
         l = l.parseLiteral(lex);
         assertFalse(l.isPureVarLit());
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testToKIF() {
+            /*
+                public static String kif1a = "(p ?X)";
+    public static String kif1b = "(not (q (f ?X a) b))";
+    public static String kif1c = "(equals (not a) b)";
+    public static String kif1d = "(equals (not a) b)";
+    public static String kif1e = "(equals a (f ?X b))";
+    public static String kif1f = "(p ?X)";
+    public static String kif1g = "(not (p ?X))";
+    public static String kif1h = "(p a)";
+
+    public static String kif2 = "(or (p ?X) (or (not (q (f ?X a) b)) (or (equals (not a) b) (or (equals (not a) b) (equals a (f ?X b))))))";
+    public static String kif3 = "false";
+    public static String kif4 = "(or false (or (not (q (f ?X))) false)";
+    public static String kif5= "(or (p a) (p (f ?X)))";
+    public static String kif6 = "(or (foo bar baz) (or (equals (not (f ?X1 ?X2)) (g ?X4 ?X5)) (equals (not (k ?X1 ?X1)) (k a b))))";
+             */
+        System.out.println("-------------------------------------------------");
+        System.out.println("testToKIF()");
+        System.out.println("input: " + a1);
+        System.out.println("expected: " + kif1a);
+        String actual = a1.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1a,actual);
+
+        System.out.println("input: " + a2);
+        System.out.println("expected: " + kif1b);
+        actual = a2.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1b,actual);
+
+        System.out.println("input: " + a3);
+        System.out.println("expected: " + kif1c);
+        actual = a3.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1c,actual);
+
+        System.out.println("input: " + a4);
+        System.out.println("expected: " + kif1d);
+        actual = a4.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1d,actual);
+
+        System.out.println("input: " + a5);
+        System.out.println("expected: " + kif1e);
+        actual = a5.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1e,actual);
+
+        System.out.println("input: " + a6);
+        System.out.println("expected: " + kif1f);
+        actual = a6.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1f,actual);
+
+        System.out.println("input: " + a7);
+        System.out.println("expected: " + kif1g);
+        actual = a7.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1g,actual);
+
+        System.out.println("input: " + a8);
+        System.out.println("expected: " + kif1h);
+        actual = a8.toKIFString();
+        System.out.println("actual: " + actual);
+        assertEquals(kif1h,actual);
     }
 }
