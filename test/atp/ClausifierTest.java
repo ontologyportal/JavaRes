@@ -74,34 +74,27 @@ public class ClausifierTest {
 
         System.out.println("input: " + form);
         form = Clausifier.moveQuantifiersLeft(form);
-        System.out.println("result should be ![X]:p | q(X): " + form);
+        System.out.println("actual: " + form);
+        String expected = "(![X]:(p|q(X)))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
 
         form = BareFormula.string2form("~((![X]:a(X)) | b(X))");
         System.out.println("input: " + form);
         form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("result: " + form);
+        expected = "(![X]:(~(a(X)|b(X))))";
+        assertEquals(expected,form.toString());
         System.out.println();
 
-        form = BareFormula.string2form("~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))");
+        form = BareFormula.string2form("~(((![X]:(a(X)|b(X))))|(?[Y]:(?[Z]:p(Y,f(Z)))))");
         System.out.println("input: " + form);
         form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("result: " + form);
+        expected = "(![X]:(?[Y]:(?[Z]:(~((a(X)|b(X))|p(Y,f(Z)))))))";
+        assertEquals(expected,form.toString());
         System.out.println();
-
-        form = BareFormula.string2form("( (~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))) | q(g(a), X))");
-        System.out.println("input: " + form);
-        form = Clausifier.moveQuantifiersLeft(form);
-        System.out.println("result: " + form);
-        System.out.println();
-
-        form = BareFormula.string2form("( ( (~(((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))) | q(g(a), X)) & " +
-                "((~q(g(a), X)) | (((![X]:a(X)) | b(X)) | (?[X]:(?[Y]:p(X, f(Y)))))))");
-        System.out.println("input: " + form);
-        form = Clausifier.moveQuantifiersLeft(form);
-        System.out.println("result: " + form);
-        System.out.println();
-
     }
 
     /** ***************************************************************
@@ -253,26 +246,35 @@ public class ClausifierTest {
         System.out.println();
         System.out.println("================== testDistribute ======================");
         BareFormula form = BareFormula.string2form("(a & b) | c");
-        /*
+
         System.out.println("input: " + form);
-        form = distributeAndOverOr(form);
-        System.out.println("result should be : (a | c) & (b | c)");
+        form = Clausifier.distributeAndOverOr(form);
+        String expected = "((a|c)&(b|c))";
+        System.out.println("expected : " + expected);
         System.out.println("actual: " + form);
+        assertEquals(expected,form.toString());
         System.out.println();
 
         form = BareFormula.string2form("(a & b) | (c & d)");
         System.out.println("input: " + form);
-        form = distributeAndOverOr(form);
-        System.out.println("result should be : (a | c) & (a | d) & (b | c) & (d | b)");
+        form = Clausifier.distributeAndOverOr(form);
+        System.out.println("result should be : ");
+        expected = "(((c|a)&(d|a))&((c|b)&(d|b)))";
+        System.out.println("expected : " + expected);
         System.out.println("actual: " + form);
+        assertEquals(expected,form.toString());
         System.out.println();
-        */
-        KIF.init();
-        form = BareFormula.string2form("(((~holdsAt(VAR2, VAR1)|releasedAt(VAR2, plus(VAR1, n1)))|(happens(skf3, VAR1)&terminates(skf3, VAR2, VAR1)))|holdsAt(VAR2, plus(VAR1, n1)))");
+
+        form = BareFormula.string2form("(((~holdsAt(VAR2, VAR1)|releasedAt(VAR2, plus(VAR1, n1)))|" +
+                "(happens(skf3, VAR1)&terminates(skf3, VAR2, VAR1)))|holdsAt(VAR2, plus(VAR1, n1)))");
         System.out.println("input: " + form);
         form = Clausifier.distributeAndOverOr(form);
-        System.out.println("actual: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        String result = form.toKIFString();
+        expected = "(and (or (or (happens skf3 ?VAR1) (or (not (holdsAt ?VAR2 ?VAR1)) (releasedAt ?VAR2 (plus ?VAR1 n1)))) (holdsAt ?VAR2 (plus ?VAR1 n1))) " +
+                "(or (or (terminates skf3 ?VAR2 ?VAR1) (or (not (holdsAt ?VAR2 ?VAR1)) (releasedAt ?VAR2 (plus ?VAR1 n1)))) (holdsAt ?VAR2 (plus ?VAR1 n1))))";
+        System.out.println("expected : " + expected);
+        System.out.println("actual: " + result);
+        assertEquals(expected,result);
         System.out.println();
     }
 
@@ -286,42 +288,84 @@ public class ClausifierTest {
         System.out.println("input: " + s);
         BareFormula form = BareFormula.string2form(s);
         System.out.println("input as BareFormula: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        String expected = "(![Fluent]:(![Time]:(((holdsAt(Fluent,Time)&(~releasedAt(Fluent,plus(Time,n1))))&" +
+                "(~(?[Event]:(happens(Event,Time)&terminates(Event,Fluent,Time)))))=>" +
+                "holdsAt(Fluent,plus(Time,n1)))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form =  Clausifier.removeImpEq(form);
         System.out.println("after Remove Implications and Equivalence: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(![Fluent]:(![Time]:((~((holdsAt(Fluent,Time)&(~releasedAt(Fluent,plus(Time,n1))))&" +
+                "(~(?[Event]:(happens(Event,Time)&terminates(Event,Fluent,Time))))))|" +
+                "holdsAt(Fluent,plus(Time,n1)))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form = Clausifier.moveNegationIn(form);
         System.out.println("after Move Negation In: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(![Fluent]:(![Time]:(((~holdsAt(Fluent,Time)|releasedAt(Fluent,plus(Time,n1)))|" +
+                "(?[Event]:(happens(Event,Time)&terminates(Event,Fluent,Time))))|holdsAt(Fluent,plus(Time,n1)))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form = Clausifier.standardizeVariables(form);
         System.out.println("after Standardize Variables: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(![VAR3]:(![VAR2]:(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
+                "(?[VAR1]:(happens(VAR1,VAR2)&terminates(VAR1,VAR3,VAR2))))|holdsAt(VAR3,plus(VAR2,n1)))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("after Move Quantifiers: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(![VAR3]:(![VAR2]:(?[VAR1]:(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
+                "(happens(VAR1,VAR2)&terminates(VAR1,VAR3,VAR2)))|holdsAt(VAR3,plus(VAR2,n1))))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form = Clausifier.skolemization(form);
         System.out.println("after Skolemization: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(![VAR3]:(![VAR2]:(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
+                "(happens(skf4,VAR2)&terminates(skf4,VAR3,VAR2)))|holdsAt(VAR3,plus(VAR2,n1)))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form = Clausifier.removeUQuant(form);
         System.out.println("after remove universal quantifiers: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
+                "(happens(skf4,VAR2)&terminates(skf4,VAR3,VAR2)))|holdsAt(VAR3,plus(VAR2,n1)))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         form = Clausifier.distributeAndOverOr(form);
         System.out.println("after Distribution: " + form);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "(((happens(skf4,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|" +
+                "holdsAt(VAR3,plus(VAR2,n1)))&((terminates(skf4,VAR3,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|holdsAt(VAR3,plus(VAR2,n1))))";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,form.toString());
         System.out.println();
+
         ArrayList<BareFormula> forms = Clausifier.separateConjunctions(form);
         System.out.println("after separation: " + forms);
-        System.out.println(KIF.format(form.toKIFString()));
+        expected = "[((happens(skf4,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|holdsAt(VAR3,plus(VAR2,n1))), " +
+                "((terminates(skf4,VAR3,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|holdsAt(VAR3,plus(VAR2,n1)))]";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,forms.toString());
         System.out.println();
+
         ArrayList<Clause> clauses = Clausifier.flattenAll(forms);
         System.out.println("after flattening: " + clauses);
+        expected = "[cnf(cnf0,axiom,happens(skf4,VAR2)|~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))|holdsAt(VAR3,plus(VAR2,n1)))., " +
+                "cnf(cnf1,axiom,terminates(skf4,VAR3,VAR2)|~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))|holdsAt(VAR3,plus(VAR2,n1))).]";
+        System.out.println("expected: " + expected);
+        assertEquals(expected,clauses.toString());
         System.out.println();
     }
 
@@ -330,8 +374,8 @@ public class ClausifierTest {
     @Test
     public void testClausification() {
 
-        //testClausificationSteps("((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))");
-        testClausificationSteps("(![Fluent]:(![Time]:(((holdsAt(Fluent, Time)&(~releasedAt(Fluent, plus(Time, n1))))&(~(?[Event]:(happens(Event, Time)&terminates(Event, Fluent, Time)))))=>holdsAt(Fluent, plus(Time, n1)))))).");
+        testClausificationSteps("(![Fluent]:(![Time]:(((holdsAt(Fluent, Time)&(~releasedAt(Fluent, plus(Time, n1))))&" +
+                "(~(?[Event]:(happens(Event, Time)&terminates(Event, Fluent, Time)))))=>holdsAt(Fluent, plus(Time, n1)))))).");
     }
 
     /** ***************************************************************
@@ -345,8 +389,30 @@ public class ClausifierTest {
         System.out.println("input: " + form);
         System.out.println();
         ArrayList<Clause> result = Clausifier.clausify(form);
-        for (int i = 0; i < result.size(); i++)
-            System.out.println(result.get(i));
+        assertEquals(4,result.size());
+        Clause res = result.get(0);
+        System.out.println("result: " + res);
+        String r1 = "cnf(cnf0,axiom,~a(skf11(VAR1,VAR2,VAR4,VAR5))|q(g(a),skf10(VAR1,VAR2,VAR5))).";
+        System.out.println("expected: " + r1);
+        assertEquals(r1,res.toString());
+
+        res = result.get(1);
+        System.out.println("result: " + res);
+        String r2 = "cnf(cnf1,axiom,~b(skf11(VAR1,VAR2,VAR4,VAR5))|q(g(a),skf10(VAR1,VAR2,VAR5))).";
+        System.out.println("expected: " + r2);
+        assertEquals(r2,res.toString());
+
+        res = result.get(2);
+        System.out.println("result: " + res);
+        String r3 = "cnf(cnf2,axiom,~p(VAR2,f(VAR1))|q(g(a),skf10(VAR1,VAR2,VAR5))).";
+        System.out.println("expected: " + r3);
+        assertEquals(r3,res.toString());
+
+        res = result.get(3);
+        System.out.println("result: " + res);
+        String r4 = "cnf(cnf3,axiom,~q(g(a),VAR4)|a(VAR5)|b(VAR5)|p(skf9(VAR1),f(skf8))).";
+        System.out.println("expected: " + r4);
+        assertEquals(r4,res.toString());
     }
 
     /** ***************************************************************

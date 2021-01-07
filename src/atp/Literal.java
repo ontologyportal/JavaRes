@@ -87,17 +87,17 @@ public class Literal {
       */
      public String toKIFString() {
 
-         System.out.println("Literal.toKIFString(): " + this);
-         System.out.println("Literal.toKIFString(): atom: " + atom);
-         System.out.println("Literal.toKIFString(): func: " + atom.getFunc());
-         System.out.println("Literal.toKIFString(): args: " + atom.getArgs());
+         //System.out.println("Literal.toKIFString(): " + this);
+         //System.out.println("Literal.toKIFString(): atom: " + atom);
+         //System.out.println("Literal.toKIFString(): func: " + atom.getFunc());
+         //System.out.println("Literal.toKIFString(): args: " + atom.getArgs());
          StringBuffer result = new StringBuffer();
          if (negated)
              result.append("(not ");
          result.append(atom.toKIFString());
          if (negated)
              result.append(")");
-         System.out.println("Literal.toKIFString(): result: " + result);
+         //System.out.println("Literal.toKIFString(): result: " + result);
          return result.toString();
      }
      

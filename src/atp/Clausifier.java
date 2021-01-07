@@ -402,7 +402,8 @@ public class Clausifier {
     /** ***************************************************************
      */
     public static BareFormula moveQuantifiersLeft(BareFormula form) {
-        
+
+        changed = true;
         BareFormula result = form.deepCopy();
         while (changed) {
             changed = false;

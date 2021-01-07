@@ -9,6 +9,7 @@ import org.junit.runners.Suite;
         ClauseEvaluationFunctionTest.class,
         ClauseSetTest.class,
         ClauseTest.class,
+        ClausifierTest.class,
         LexerTest.class,
         LiteralTest.class,
         LitSelectionTest.class,

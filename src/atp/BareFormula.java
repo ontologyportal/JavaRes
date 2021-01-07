@@ -449,13 +449,13 @@ public class BareFormula {
      */
     public String toKIFString() {
 
-        System.out.println("BareFormula.toKIFString(): " + this);
-        System.out.println("BareFormula.toKIFString(): op: " + op);
-        System.out.println("BareFormula.toKIFString(): KIF: " + KIF.opMap.get(op));
-        System.out.println("BareFormula.toKIFString(): child1: " + child1);
-        System.out.println("BareFormula.toKIFString(): lit1: " + lit1);
-        System.out.println("BareFormula.toKIFString(): child2: " + child2);
-        System.out.println("BareFormula.toKIFString(): lit2: " + lit2);
+        //System.out.println("BareFormula.toKIFString(): " + this);
+        //System.out.println("BareFormula.toKIFString(): op: " + op);
+        //System.out.println("BareFormula.toKIFString(): KIF: " + KIF.opMap.get(op));
+        //System.out.println("BareFormula.toKIFString(): child1: " + child1);
+        //System.out.println("BareFormula.toKIFString(): lit1: " + lit1);
+        //System.out.println("BareFormula.toKIFString(): child2: " + child2);
+        //System.out.println("BareFormula.toKIFString(): lit2: " + lit2);
         String arg1 = null;
         if (child1 != null) {
             arg1 = child1.toKIFString();
@@ -472,17 +472,17 @@ public class BareFormula {
 
         if (Term.emptyString(op)) {
             String result = arg1;
-            System.out.println("BareFormula.toKIFString(): result: " + result);
+            //System.out.println("BareFormula.toKIFString(): result: " + result);
             return result;
         }
         if (op.equals(Lexer.Negation)) {
             String result = "(" + KIF.opMap.get(Lexer.Negation) + " " + arg1 + ")";
-            System.out.println("BareFormula.toKIFString(): result: " + result);
+            //System.out.println("BareFormula.toKIFString(): result: " + result);
             return result;
         }
         if (logOp(op)) {
             String result = "(" + KIF.opMap.get(op) + " " + arg1 + " " + arg2 + ")";
-            System.out.println("BareFormula.toKIFString(): result: " + result);
+            //System.out.println("BareFormula.toKIFString(): result: " + result);
             return result;
         }
         else {
@@ -492,12 +492,12 @@ public class BareFormula {
             }
             if (KIF.opMap.get(op) == null) {
                 String result = "(" + op + " " + "(" + arg1 + ") " + arg2 + ")";
-                System.out.println("BareFormula.toKIFString(): result: " + result);
+                //System.out.println("BareFormula.toKIFString(): result: " + result);
                 return result;
             }
             else {
                 String result = "(" + KIF.opMap.get(op) + " " + "(" + arg1 + ") " + arg2 + ")";
-                System.out.println("BareFormula.toKIFString(): result: " + result);
+                //System.out.println("BareFormula.toKIFString(): result: " + result);
                 return result;
             }
         }

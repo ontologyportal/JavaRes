@@ -95,9 +95,9 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      */
     public String toKIFString() {
 
-        System.out.println("Term.toKIFString(): " + this);
-        System.out.println("Term.toKIFString(): t: " + t);
-        System.out.println("Term.toKIFString(): subterms: " + subterms);
+        //System.out.println("Term.toKIFString(): " + this);
+        //System.out.println("Term.toKIFString(): t: " + t);
+        //System.out.println("Term.toKIFString(): subterms: " + subterms);
         StringBuffer result = new StringBuffer();
         if (subterms.size() > 0) 
             result.append('(');
@@ -122,7 +122,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             }
             result.append(')');
         }
-        System.out.println("Term.toKIFString(): result: " + result);
+        //System.out.println("Term.toKIFString(): result: " + result);
         return result.toString();
     }
     
