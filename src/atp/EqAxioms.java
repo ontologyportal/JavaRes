@@ -63,7 +63,13 @@ public class EqAxioms {
 	*/
 
 	public static int axCount = 0;
-	
+
+	/** ***************************************************************
+	 */
+	public static void resetCounter() {
+		axCount = 0;
+	}
+
     /** ***************************************************************
      * Return a list with the three axioms describing an equivalence
      * relation. We are lazy here...
@@ -139,6 +145,7 @@ public class EqAxioms {
      */
 	public static Clause generatePredCompatAx(String p, int arity) {
 
+		//System.out.println("# INFO in EqAxioms.generatePredCompatAx(): pred: " + p);
 		ArrayList<Literal> res = generateEqPremise(arity);
 	    String lterm = "~" + p + "(" + generateVarList("X",arity) + ")";
 	    String rterm = p + "(" + generateVarList("Y",arity) + ")";
@@ -168,7 +175,7 @@ public class EqAxioms {
 	    }
 	    for (String p:sig.preds) {
 	        int arity = sig.getArity(p);
-	        if (arity > 0 && p != "=" && p != "!=") {
+	        if (arity > 0 && !p.equals("=") && !p.equals("!=")) {
 	            Clause c = generatePredCompatAx(p, arity);
 	            res.add(c);
 	        }
@@ -177,71 +184,4 @@ public class EqAxioms {
 	    return res;
 	}
 
-    /** ***************************************************************
-     * Unit Tests
-     ****************************************************************/
-	
-    /** ***************************************************************
-     * Test that the equivalence axioms are generated (or at least
-     * provide coverage).
-     */
-	public static void testEquivAxioms() {
-
-		System.out.println("INFO in EqAxioms.testEquivAxioms(): all should be true");
-		ArrayList<Clause> ax = generateEquivAxioms();
-	    System.out.println(ax);
-	    System.out.println(ax.size() == 3);
-	}
-	
-    /** ***************************************************************
-     * Test variable and premise generation.
-     */
-	public static void testVarStuff() {
-
-		System.out.println("INFO in EqAxioms.testVarStuff(): all should be true");
-        String vars = generateVarList("X", 4);
-        System.out.println(vars.indexOf("X1") >= 0);
-        System.out.println(vars.indexOf("X4") >= 0);
-        System.out.println(vars.indexOf("X5") < 0);
-        System.out.println(vars.indexOf("Y1") < 0);
-        System.out.println(vars.length() == 11);
-        System.out.println(vars);
-
-        ArrayList<Literal> lits = generateEqPremise(3);
-        System.out.println(lits.size() == 3);
-        System.out.println(lits);
-	}
-	
-    /** ***************************************************************
-     * Test that compatibility axioms are generated as expected.
-     */
-	public static void testCompatibility() {
-
-		System.out.println("INFO in EqAxioms.testCompatibility(): all should be true");
-        Clause ax = generateFunCompatAx("f", 3);
-        System.out.println(ax.literals.size() == 4);
-        System.out.println(ax);
-
-        ax = generatePredCompatAx("p", 5);
-        System.out.println(ax.literals.size() == 7);
-        System.out.println(ax);
-
-        Signature sig = new Signature();
-        sig.addFun("f", 2);
-        sig.addPred("p", 3);
-        sig.addFun("a", 0);
-
-        ArrayList<Clause> tmp = generateCompatAxioms(sig);
-          // Note: No axiom for a
-        System.out.println(tmp.size() == 2);
-	}
-	
-    /** ***************************************************************
-     * Test that compatibility axioms are generated as expected.
-     */
-	public static void main (String[] args) {
-		testEquivAxioms();
-		testVarStuff();
-		testCompatibility();
-	}
 }

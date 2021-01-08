@@ -1,0 +1,659 @@
+/*
+Copyright 2010-2011 Adam Pease, apease@articulatesoftware.com
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program ; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+MA  02111-1307 USA
+
+This is a Java rewrite of PyRes - https://github.com/eprover/PyRes
+*/
+package atp;
+
+import org.junit.*;
+
+import java.util.*;
+import static org.junit.Assert.*;
+
+@Deprecated
+public class SmallCNFizationTest {
+
+    /** ***************************************************************
+     * ************ UNIT TESTS *****************
+     */
+    private static BareFormula f1 = null;
+    private static BareFormula f2 = null;
+    private static BareFormula f3 = null;
+    private static BareFormula f4 = null;
+    private static BareFormula f5 = null;
+    private static String testFormulas = null;
+    private static String covformulas = null;
+    private static ArrayList<String> simple_ops = new ArrayList<String>();
+    private static ArrayList<String> nnf_ops = new ArrayList<String>();
+
+    /** ***************************************************************
+     * Setup function for clause/literal unit tests. Initialize
+     * variables needed throughout the tests.
+     */
+    @BeforeClass
+    public static void setup() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.setup()");
+        String formulas = "![X]:(a(X) ~| ~a=b)\n" +
+                "![X]:(a(X)|b(X)|?[X,Y]:(p(X,f(Y))<~>q(g(a),X)))\n" +
+                "![X]:(a(X) <= ~a=b)\n" +
+                "((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))~&q(g(a),X))\n" +
+                "![X]:(a(X)|$true)";
+        Lexer lex = new Lexer(formulas);
+        try {
+            f1 = BareFormula.parse(lex);
+            System.out.println(f1);
+            f2 = BareFormula.parse(lex);
+            System.out.println(f2);
+            f3 = BareFormula.parse(lex);
+            System.out.println(f3);
+            f4 = BareFormula.parse(lex);
+            System.out.println(f4);
+            f5 = BareFormula.parse(lex);
+            System.out.println(f5);
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.setup()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+        String[] ops = {"", "!", "?", "~", "&","|", "=>", "<=>"};
+        simple_ops = new ArrayList(Arrays.asList(ops));
+        String[] ops2 = {"", "!", "?", "&","|"};
+        nnf_ops = new ArrayList(Arrays.asList(ops2));
+
+        covformulas ="(a|$true)\n" +
+                "($true|a)\n" +
+                "(a|$false)\n" +
+                "($false|a)\n" +
+                "(a|a)\n" +
+                "(a&$true)\n" +
+                "($true&a)\n" +
+                "(a&$false)\n" +
+                "($false&a)\n" +
+                "(a&a)\n" +
+                "(a=>$true)\n" +
+                "($true=>a)\n" +
+                "(a=>$false)\n" +
+                "($false=>a)\n" +
+                "(a=>a)\n" +
+                "(a<=>$true)\n" +
+                "($true<=>a)\n" +
+                "(a<=>$false)\n" +
+                "($false<=>a)\n" +
+                "(a<=>a)\n" +
+                "![X]:(a<=>a)\n" +
+                "?[X]:(a<=>a)\n" +
+                "a<=>b";
+
+        testFormulas = "fof(t12_autgroup,conjecture,(\n" +
+                "! [A] :\n" +
+                "( ( ~ v3_struct_0(A)\n" +
+                "& v1_group_1(A)\n" +
+                "& v3_group_1(A)\n" +
+                "& v4_group_1(A)\n" +
+                "& l1_group_1(A) )\n" +
+                "=> r1_tarski(k4_autgroup(A),k1_fraenkel(u1_struct_0(A),u1_struct_0(A))) ) )).\n" +
+                "\n" +
+                "fof(abstractness_v1_group_1,axiom,(\n" +
+                "! [A] :\n" +
+                "( l1_group_1(A)\n" +
+                "=> ( v1_group_1(A)\n" +
+                "=> A = g1_group_1(u1_struct_0(A),u1_group_1(A)) ) ) )).\n" +
+                "\n" +
+                "fof(antisymmetry_r2_hidden,axiom,(\n" +
+                "! [A,B] :\n" +
+                "( r2_hidden(A,B)\n" +
+                "=> ~ r2_hidden(B,A) ) )).\n" +
+                "fof(cc1_fraenkel,axiom,(\n" +
+                "! [A] :\n" +
+                "( v1_fraenkel(A)\n" +
+                "=> ! [B] :\n" +
+                "( m1_subset_1(B,A)\n" +
+                "=> ( v1_relat_1(B)\n" +
+                "& v1_funct_1(B) ) ) ) )).\n" +
+                "\n" +
+                "fof(cc1_funct_1,axiom,(\n" +
+                "! [A] :\n" +
+                "( v1_xboole_0(A)\n" +
+                "=> v1_funct_1(A) ) )).\n" +
+                "\n" +
+                "fof(cc1_funct_2,axiom,(\n" +
+                "! [A,B,C] :\n" +
+                "( m1_relset_1(C,A,B)\n" +
+                "=> ( ( v1_funct_1(C)\n" +
+                "& v1_partfun1(C,A,B) )\n" +
+                "=> ( v1_funct_1(C)\n" +
+                "& v1_funct_2(C,A,B) ) ) ) )).\n" +
+                "fof(testscosko, axiom, (![X]:?[Y]:((p(X)&q(X))|q(X,Y))|a)).";
+    }
+
+    /** ***************************************************************
+     * Test that operator simplification works.
+     */
+    @Test
+    public void testOpSimplification() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testOpSimplification()");
+        System.out.println("Simplifying: " + f1);
+        BareFormula newform = SmallCNFization.formulaOpSimplify(f1.deepCopy());
+        System.out.println("Simplified form: " + newform);
+        //assert(newform != null);
+        ArrayList<String> ops = newform.collectOps();
+        ops.removeAll(simple_ops);
+        if (ops.size() != 0) System.out.println("error: remaining operator " + ops);
+
+        System.out.println();
+        System.out.println("Simplifying: " + f2);
+        BareFormula f = SmallCNFization.formulaOpSimplify(f2);
+        if (f == null)
+            f = f2;
+        ops = f.collectOps();
+        ops.removeAll(simple_ops);
+        if (ops.size() != 0) System.out.println("error: remaining operator " + ops);
+
+        System.out.println();
+        System.out.println("Simplifying: " + f3);
+        f = SmallCNFization.formulaOpSimplify(f3);
+        if (f == null)
+            f = f3;
+        ops = f.collectOps();
+        ops.removeAll(simple_ops);
+        if (ops.size() != 0) System.out.println("error: remaining operator " + ops);
+
+        System.out.println();
+        System.out.println("Simplifying: " + f4);
+        f = SmallCNFization.formulaOpSimplify(f4);
+        if (f == null)
+            f = f4;
+        ops = f.collectOps();
+        ops.removeAll(simple_ops);
+        if (ops.size() != 0) System.out.println("error: remaining operator " + ops);
+
+        System.out.println();
+        System.out.println("Simplifying: " + f5);
+        f = SmallCNFization.formulaOpSimplify(f5);
+        if (f == null)
+            f = f5;
+        ops = f.collectOps();
+        ops.removeAll(simple_ops);
+        if (ops.size() != 0) System.out.println("error: remaining operator " + ops);
+    }
+
+    /** ***************************************************************
+     * A simplified formula has no $true/$false, or it is a literal
+     * (in which case it's either true or false).
+     */
+    public static void checkSimplificationResult(BareFormula f) {
+
+        //System.out.println("INFO in SmallCNFization.checkSimplificationResult(): f: " + f);
+        ArrayList<String> funs = f.collectFuns();
+        //System.out.println(funs);
+        if (funs.contains("$true") || funs.contains("$false")) {
+            if (funs.size() > 1) {
+                System.out.println("Error: not a constant: " + funs);
+                assertTrue(false);
+            }
+        }
+    }
+
+    /** ***************************************************************
+     * Test that simplification works.
+     */
+    @Test
+    public void testSimplification() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testSimplification()");
+        System.out.println("Simplifying: " + f1);
+        BareFormula f = SmallCNFization.formulaOpSimplify(f1);
+        if (f == null)
+            f = f1;
+        f = SmallCNFization.formulaSimplify(f);
+        if (f == null)
+            f = f1;
+        checkSimplificationResult(f);
+
+        //System.out.println();
+        System.out.println("Simplifying: " + f2);
+        f = SmallCNFization.formulaOpSimplify(f2);
+        if (f == null)
+            f = f2;
+        f = SmallCNFization.formulaSimplify(f);
+        if (f == null)
+            f = f2;
+        checkSimplificationResult(f);
+
+        //System.out.println();
+        System.out.println("Simplifying: " + f3);
+        f = SmallCNFization.formulaOpSimplify(f3);
+        if (f == null)
+            f = f3;
+        f = SmallCNFization.formulaSimplify(f);
+        if (f == null)
+            f = f3;
+        checkSimplificationResult(f);
+
+        //System.out.println();
+        System.out.println("Simplifying: " + f4);
+        f = SmallCNFization.formulaOpSimplify(f4);
+        if (f == null)
+            f = f4;
+        f = SmallCNFization.formulaSimplify(f);
+        if (f == null)
+            f = f4;
+        checkSimplificationResult(f);
+
+        //System.out.println();
+        System.out.println("Simplifying: " + f5);
+        f = SmallCNFization.formulaOpSimplify(f5);
+        if (f == null)
+            f = f5;
+        f = SmallCNFization.formulaSimplify(f);
+        if (f == null)
+            f = f5;
+        checkSimplificationResult(f);
+
+        //System.out.println();
+        System.out.println("INFO in SmallCNFizationTest.testSimplification(): check covformulas");
+        try {
+            Lexer lex = new Lexer(covformulas);
+            while (!lex.testTok(Lexer.EOFToken)) {
+                f = BareFormula.parse(lex);
+                System.out.println("Simplifying: " + f);
+                BareFormula newf = SmallCNFization.formulaOpSimplify(f);
+                if (newf == null)
+                    newf = f;
+                f = SmallCNFization.formulaSimplify(newf);
+                if (f == null)
+                    f = newf;
+                checkSimplificationResult(f);
+                //System.out.println();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testSimplification()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * A simplified formula is either $true/$false, or it only
+     * contains &, |, !, ? as operators (~ is shifted into the literals).
+     */
+    public static void checkNNFResult(BareFormula f) {
+
+        System.out.println("INFO in SmallCNFizationTest.checkNNFResult()");
+        System.out.println("NNF:" + f);
+        System.out.println("ops:" + f.collectOps());
+
+        if (f.isPropConst(true) || f.isPropConst(false)) {
+            ArrayList<String> funs = f.collectFuns();
+            if (funs.size() > 1) {
+                System.out.println("Error: not a constant: " + funs);
+                assertTrue(false);
+            }
+        }
+        else {
+            ArrayList<String> ops = f.collectOps();
+            ops.removeAll(nnf_ops);
+            if (ops.size() > 0) {
+                System.out.println("Error: operators other than &, |, !, ?: " + ops);
+                assertTrue(false);
+            }
+        }
+    }
+
+    /** ***************************************************************
+     * Test NNF transformation
+     */
+    @Test
+    public void testNNF() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testNNF()");
+        System.out.println("NNF conversion: " + f1);
+        BareFormula f = SmallCNFization.formulaOpSimplify(f1);
+        if (f == null)
+            f = f1;
+        BareFormula newf = SmallCNFization.formulaSimplify(f);
+        if (newf == null)
+            newf = f;
+        f = SmallCNFization.formulaNNF(newf, true);
+        checkNNFResult(f);
+
+        System.out.println();
+        System.out.println("NNF conversion: " + f2);
+        f = SmallCNFization.formulaOpSimplify(f2);
+        if (f == null)
+            f = f2;
+        newf = SmallCNFization.formulaSimplify(f);
+        if (newf == null)
+            newf = f;
+        f = SmallCNFization.formulaNNF(newf, true);
+        checkNNFResult(f);
+
+        System.out.println();
+        System.out.println("NNF conversion: " + f3);
+        f = SmallCNFization.formulaOpSimplify(f3);
+        if (f == null)
+            f = f3;
+        newf = SmallCNFization.formulaSimplify(f);
+        if (newf == null)
+            newf = f;
+        f = SmallCNFization.formulaNNF(newf, true);
+        checkNNFResult(f);
+
+        System.out.println();
+        System.out.println("NNF conversion: " + f4);
+        f = SmallCNFization.formulaOpSimplify(f4);
+        if (f == null)
+            f = f4;
+        newf = SmallCNFization.formulaSimplify(f);
+        if (newf == null)
+            newf = f;
+        f = SmallCNFization.formulaNNF(newf, true);
+        checkNNFResult(f);
+
+        System.out.println();
+        System.out.println("NNF conversion: " + f5);
+        f = SmallCNFization.formulaOpSimplify(f5);
+        if (f == null)
+            f = f5;
+        newf = SmallCNFization.formulaSimplify(f);
+        if (newf == null)
+            newf = f;
+        f = SmallCNFization.formulaNNF(newf, true);
+        checkNNFResult(f);
+        try {
+            Lexer lex = new Lexer(covformulas);
+            while (!lex.testTok(Lexer.EOFToken)) {
+                BareFormula fnew = BareFormula.parse(lex);
+                f = SmallCNFization.formulaOpSimplify(fnew);
+                if (f == null)
+                    f = fnew;
+                newf = SmallCNFization.formulaSimplify(f);
+                if (newf == null)
+                    newf = f;
+                f = SmallCNFization.formulaNNF(newf, true);
+                checkNNFResult(f);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testNNF()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * Test Miniscoping.
+     */
+    @Test
+    public void testMiniScope() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testMiniScope)");
+        Lexer lex = new Lexer("![X]:(p(X)|q(a))\n" +
+                "?[X]:(p(a)&q(X))\n" +
+                "![X]:(p(X)&q(X))\n" +
+                "?[X]:(p(X)|q(X))\n" +
+                "![X]:(p(X)|q(X))\n" +
+                "![X,Y]:?[Z]:(p(Z)|q(X))");
+
+        boolean[] res = {true, true, true, true, false, true};
+
+        int counter = 0;
+        try {
+            while (!lex.testTok(Lexer.EOFToken)) {
+                boolean expected = res[counter++];
+                BareFormula f = BareFormula.parse(lex);
+                f1 = SmallCNFization.formulaMiniScope(f);
+                System.out.println(f + " " + f1  + " " + expected);
+                assert(expected == (f1 != null));
+                if (f1 != null)
+                    assert(!f1.isQuantified());
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testMiniScope()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * Test variable renaming
+     */
+    @Test
+    public void testRenaming() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testRenaming()");
+        Lexer lex = new Lexer("![X]:(p(X)|![X]:(q(X)&?[X]:r(X)))");
+        BareFormula f = null;
+        try {
+            f = BareFormula.parse(lex);
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testRenaming()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        ArrayList<Term> v1 = f.collectVars();
+        assert((v1.size() == 1) && v1.get(0).equals(Term.string2Term("X")));
+        ArrayList<Term> v2 = f.collectFreeVars();
+        assert(v2.size() == 0);
+
+        f1 = Clausifier.standardizeVariables(f);
+        // f1 = formulaVarRename(f);
+        System.out.println(f + " " + f1);
+
+        v1 = f1.collectVars();
+        assert(v1.size() == 3);
+        v2 = f1.collectFreeVars();
+        assert(v2.size() == 0);
+    }
+
+    /** ***************************************************************
+     * Check if Skolem symbol construction works.
+     */
+    @Test
+    public void testSkolemSymbols() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testSkolemSymbols()");
+        ArrayList<String> symbols = new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            String newsymbol = SmallCNFization.newSkolemSymbol();
+            assert(!symbols.contains(newsymbol));
+            symbols.add(newsymbol);
+        }
+        ArrayList<Term> varlist = new ArrayList<Term>();
+        varlist.add(Term.string2Term("X"));
+        varlist.add(Term.string2Term("Y"));
+        for (int i = 0; i < 10; i++) {
+            Term t = SmallCNFization.newSkolemTerm(varlist);
+            assert(t.isCompound());
+            assert(t.getArgs().equals(varlist));
+        }
+    }
+
+    /** ***************************************************************
+     * Bring formula into miniscoped variable normalized NNF.
+     */
+    public static BareFormula preprocFormula(BareFormula f) {
+
+        f = SmallCNFization.formulaOpSimplify(f);
+        f = SmallCNFization.formulaSimplify(f);
+        f = SmallCNFization.formulaNNF(f,true);
+        f = SmallCNFization.formulaMiniScope(f);
+        // f = formulaVarRename(f);
+        f = Clausifier.standardizeVariables(f);
+        return f;
+    }
+
+    /** ***************************************************************
+     * Test skolemization.
+     */
+    @Test
+    public void testSkolemization() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testSkolemSymbols()");
+        BareFormula f = preprocFormula(f2);
+        f = SmallCNFization.formulaSkolemize(f);
+        assert(!f.collectOps().contains("?"));
+        System.out.println(f);
+
+        f = preprocFormula(f3);
+        f = SmallCNFization.formulaSkolemize(f);
+        assert(!f.collectOps().contains("?"));
+        System.out.println(f);
+
+        f = preprocFormula(f4);
+        f = SmallCNFization.formulaSkolemize(f);
+        assert(!f.collectOps().contains("?"));
+        System.out.println(f);
+    }
+
+    /** ***************************************************************
+     * Test shifting of quantors out.
+     */
+    @Test
+    public void testShiftQuantors() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testShiftQuantors()");
+        BareFormula f = preprocFormula(f2);
+        f = SmallCNFization.formulaSkolemize(f);
+        f = SmallCNFization.formulaShiftQuantorsOut(f);
+        if (f.collectOps().contains("!"))
+            assert(f.op.equals("!"));
+
+        f = preprocFormula(f3);
+        f = SmallCNFization.formulaSkolemize(f);
+        f = SmallCNFization.formulaShiftQuantorsOut(f);
+        if (f.collectOps().contains("!"))
+            assert(f.op.equals("!"));
+
+        f = preprocFormula(f4);
+        f = SmallCNFization.formulaSkolemize(f);
+        f = SmallCNFization.formulaShiftQuantorsOut(f);
+        if (f.collectOps().contains("!"))
+            assert(f.op.equals("!"));
+    }
+
+    /** ***************************************************************
+     * Test ConjunctiveNF.
+     */
+    @Test
+    public void testDistributeDisjunctions() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testDistributeDisjunctions()");
+        BareFormula f = preprocFormula(f2);
+        f = SmallCNFization.formulaSkolemize(f);
+        f = SmallCNFization.formulaShiftQuantorsOut(f);
+        f = SmallCNFization.formulaDistributeDisjunctions(f);
+        System.out.println(f);
+        assert(f.isCNF());
+
+        f = preprocFormula(f3);
+        f = SmallCNFization.formulaSkolemize(f);
+        f = SmallCNFization.formulaShiftQuantorsOut(f);
+        f = SmallCNFization.formulaDistributeDisjunctions(f);
+        System.out.println(f);
+        assert(f.isCNF());
+
+        f = preprocFormula(f4);
+        f = SmallCNFization.formulaSkolemize(f);
+        f = SmallCNFization.formulaShiftQuantorsOut(f);
+        f = SmallCNFization.formulaDistributeDisjunctions(f);
+        System.out.println(f);
+        assert(f.isCNF());
+    }
+
+    /** ***************************************************************
+     * Test conversion of wrapped formulas into conjunctive normal form.
+     */
+    @Test
+    public void testCNFization() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testCNFization()");
+        try {
+            Lexer lex = new Lexer(testFormulas);
+            System.out.println("INFO in SmallCNFizationTest.testCNFization(): testFormulas: " + testFormulas);
+            while (!lex.testTok(Lexer.EOFToken)) {
+                Formula wf = Formula.parse(lex);
+                System.out.println("SmallCNFizationTest.testCNFization(): wf: " + wf);
+                wf = SmallCNFization.wFormulaCNF(wf);
+                System.out.println("SmallCNFizationTest.testCNFization(): rationale: " + wf.rationale);
+                System.out.println("SmallCNFizationTest.testCNFization(): support: " + wf.support);
+                assertTrue(wf.form.isCNF());
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testCNFization()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * Test conversion of wrapped formulas into lists of clauses.
+     */
+    @Test
+    public void testClausification() {
+
+        System.out.println();
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testClausification()");
+        try {
+            Lexer lex = new Lexer(testFormulas);
+            while (!lex.testTok(Lexer.EOFToken)) {
+                Formula wf = Formula.parse(lex);
+                ArrayList<Clause> clauses = SmallCNFization.wFormulaClausify(wf);
+                System.out.println("==================");
+                for (Clause c : clauses)
+                    System.out.println(c);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testClausification()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}

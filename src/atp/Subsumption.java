@@ -53,7 +53,7 @@ public class Subsumption {
     /** ***************************************************************
      * Return True if subsumer subsumes subsumed, False otherwise.
      */ 
-    private static boolean subsumes(Clause subsumer, Clause subsumed) {
+    public static boolean subsumes(Clause subsumer, Clause subsumed) {
 
         if (subsumer.literals.size() > subsumed.literals.size())
             return false;
@@ -94,64 +94,5 @@ public class Subsumption {
         return res;
     }
 
-    /** ***************************************************************
-     * ************ UNIT TESTS *****************
-     */
-    public static Clause c1 = null;
-    public static Clause c2 = null;
-    public static Clause c3 = null;
-    public static Clause c4 = null;
-    public static Clause c5 = null;
-    
-    /** ***************************************************************
-     * Setup function for resolution testing
-     */ 
-    public static void setup() {
 
-        String spec = "cnf(axiom, c1, $false).\n" +
-                    "cnf(axiom, c2, p(a)).\n" +
-                    "cnf(axiom, c3, p(X)).\n" +
-                    "cnf(axiom, c4, p(a)|q(f(X))).\n" +
-                    "cnf(axiom, c5, p(a)|q(f(b))|p(X)).\n";
-
-        Lexer lex = new Lexer(spec);
-            c1 = Clause.parse(lex);
-            System.out.println(c1);
-            c2 = Clause.parse(lex);
-            System.out.println(c2);
-            c3 = Clause.parse(lex);
-            System.out.println(c3);
-            c4 = Clause.parse(lex);
-            System.out.println(c4);
-            c5 = Clause.parse(lex); 
-            System.out.println(c5);
-    }
-    
-    /** ***************************************************************
-     * Test subsumption.
-     */ 
-    public static void testSubsumption() {
-
-        System.out.println("---------------------");
-        System.out.println("INFO in Subsumption.testSubsumption(): all should be true");
-        System.out.println(c1 + " subsumes " + c1 + " = " + subsumes(c1,c1));
-        System.out.println(c2 + " subsumes " + c2 + " = " + subsumes(c2,c2));
-        System.out.println(c3 + " subsumes " + c3 + " = " + subsumes(c3,c3));
-        System.out.println(c4 + " subsumes " + c4 + " = " + subsumes(c4,c4));
-        System.out.println(c1 + " subsumes " + c2 + " = " + subsumes(c1,c2));
-        System.out.println(c2 + " does not subsume " + c1 + " = " + !subsumes(c2,c1));
-        System.out.println(c2 + " does not subsume " + c3 + " = " + !subsumes(c2,c3));
-        System.out.println(c3 + " subsumes " + c2 + " = " + subsumes(c3,c2));
-        System.out.println(c4 + " subsumes " + c5 + " = " + subsumes(c4,c5));        
-        System.out.println(c5 + " does not subsume " + c4 + " = " + !subsumes(c5,c4));
-    }
-    
-    /** ***************************************************************
-     * Test method for this class.  
-     */
-    public static void main(String[] args) {
-        
-        setup();
-        testSubsumption();
-    }
 }

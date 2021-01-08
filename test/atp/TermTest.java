@@ -512,14 +512,40 @@ public class TermTest {
         System.out.println("INFO in testCollectSig(): all should be true");
         Signature sig = new Signature();
         sig = t1.collectSig(sig);
+        System.out.println(sig);
+        assertTrue(sig.funs.size() == 0 && sig.preds.size() == 0);
+
         sig = t2.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a]",sig.funs.toString());
+
         sig = t3.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b]",sig.funs.toString());
+
         sig = t4.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b, f]",sig.funs.toString()); // sig is additive so we get a and b previous term
+
         sig = t5.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b, f]",sig.funs.toString());
+
         sig = t6.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b, f]",sig.funs.toString());
+
         sig = t7.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b, f]",sig.funs.toString());
+
         sig = t8.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b, f]",sig.funs.toString());
+
         sig = t9.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[a, g, b, f, 'g']",sig.funs.toString());
 
         System.out.println(sig.getArity("f") == 1);
         assertEquals(sig.getArity("f"), 1);

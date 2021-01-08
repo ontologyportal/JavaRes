@@ -38,6 +38,8 @@ public class Signature {
 	    res.append(preds.toString() + "\n");
 	    res.append("Functions:\n");
 	    res.append(funs.toString() + "\n");
+		res.append("Arities:\n");
+		res.append(arity.toString() + "\n");
 	    return res.toString();
 	}
 
@@ -92,5 +94,16 @@ public class Signature {
 			return arity.get(f).intValue();
 		else
 			return 0;
+	}
+
+	/** ***************************************************************
+	 */
+	public void compose(Signature sig) {
+
+		if (sig == null)
+			return;
+		this.arity.putAll(sig.arity);
+		this.funs.addAll(sig.funs);
+		this.preds.addAll(sig.preds);
 	}
 }

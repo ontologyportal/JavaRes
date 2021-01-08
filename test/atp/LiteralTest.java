@@ -314,13 +314,33 @@ public class LiteralTest {
         System.out.println("INFO in testSig(): all true");
         Signature sig = new Signature();
         sig = a1.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[p]",sig.preds.toString());
+
         sig = a2.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[p, q]",sig.preds.toString());
+        assertEquals("[f, a, b]",sig.funs.toString());
+
         sig = a3.collectSig(sig);
+        System.out.println(sig);
+
         sig = a4.collectSig(sig);
+        System.out.println(sig);
+
         sig = a5.collectSig(sig);
+        System.out.println(sig);
+
         sig = a6.collectSig(sig);
+        System.out.println(sig);
+
         sig = a7.collectSig(sig);
+        System.out.println(sig);
+
         sig = a8.collectSig(sig);
+        System.out.println(sig);
+        assertEquals("[p, q, =]",sig.preds.toString());
+        assertEquals("[f, a, b]",sig.funs.toString());
 
         sig.addFun("mult", 2);
 

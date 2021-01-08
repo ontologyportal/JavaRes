@@ -368,7 +368,7 @@ public class BareFormula {
     }  
     
     /** ***************************************************************
-     * Return True if self has a proper subformula as the first
+     * Return True if self has a proper subformula as the second
      * argument. This is the case for quantified formulas and binary
      * formulas.
      */
@@ -629,6 +629,42 @@ public class BareFormula {
         if (child2 != null)            
             result.child2 = child2.deepCopy();
         return result;
+    }
+
+    /** ***************************************************************
+     * Return the set of all function and predicate symbols used in
+     *         the formula.
+     */
+    public Signature collectSig(Signature sig) {
+
+        ArrayDeque<BareFormula> todo = new ArrayDeque();
+        todo.push(this);
+        while (todo.size() > 0) {
+            BareFormula f = todo.pop();
+            if (f.isLiteral())
+                f.lit1.collectSig(sig);
+            else if (f.isUnary())
+                todo.push(f.child1);
+            else if (f.isBinary()) {
+                todo.push(f.child1);
+                todo.push(f.child2);
+            }
+            else {
+                assert f.isQuantified();
+                todo.push(f.child2);
+            }
+        }
+        return sig;
+    }
+
+    /** ***************************************************************
+     * Return the set of all function and predicate symbols used in
+     *         the formula.
+     */
+    public Signature collectSig() {
+
+        Signature sig = new Signature();
+        return collectSig(sig);
     }
 
     /** ***************************************************************
