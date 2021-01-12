@@ -30,7 +30,21 @@ public class ClauseSet {
 
     public ArrayList<Clause> clauses = new ArrayList<Clause>();
     public String SZS = "";
-             
+
+    /** ***************************************************************
+     */
+    public ClauseSet() {
+
+    }
+
+    /** ***************************************************************
+     */
+    public ClauseSet(ArrayList<Clause> clauses) {
+
+        for (Clause c : clauses)
+            this.clauses.add(new Clause(c));
+    }
+
     /** ***************************************************************
      * Return a string representation of the clause set.
      */                            
@@ -67,7 +81,13 @@ public class ClauseSet {
 
         clauses.add(clause);
     }
-    
+
+    /** ***************************************************************
+     */
+    public void addClause(Index index, Clause clause) throws Exception {
+        throw new Exception("ClauseSet.addClause must be overrideen");
+    }
+
     /** ***************************************************************
      * Add a clause to the clause set.
      */ 
@@ -110,7 +130,17 @@ public class ClauseSet {
             sig = c.collectSig(sig);
         return sig;    
     }
-    
+    /** ***************************************************************
+     * Collect function- and predicate symbols into the signature.
+     */
+    public Signature collectSig() {
+
+        Signature sig = new Signature();
+        for (Clause c : clauses)
+            sig = c.collectSig(sig);
+        return sig;
+    }
+
     /** ***************************************************************
      * Add equality axioms (if necessary). 
      * @return new clauses if equality is present, unmodified otherwise.

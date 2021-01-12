@@ -91,7 +91,7 @@ public class Resolution {
             Literal l = clause1.literals.get(i); 
             //System.out.println("INFO in Resolution.resolution(): literal " + l);
             if (!l.equals(l1))
-                lits1.add(l.substitute(sigma));
+                lits1.add(l.instantiate(sigma));
             //System.out.println("INFO in Resolution.resolution(): literals " + lits1);
         }
         
@@ -102,7 +102,7 @@ public class Resolution {
             Literal l = clause2.literals.get(i); 
             //System.out.println("INFO in Resolution.resolution(): literal " + l);
             if (!l.equals(l2))
-                lits2.add(l.substitute(sigma));
+                lits2.add(l.instantiate(sigma));
             //System.out.println("INFO in Resolution.resolution(): literals " + lits1);
         }
         //System.out.println("INFO in Resolution.resolution(): uncombined literals " + lits1 + " " + lits2);
@@ -143,7 +143,7 @@ public class Resolution {
         for (int i = 0; i < clause.literals.size(); i++) {
             Literal l = clause.literals.get(i); 
             //if (!l.equals(l2))
-            lits.add(l.substitute(sigma));
+            lits.add(l.instantiate(sigma));
         }
         Clause res = new Clause();
         res.createName();

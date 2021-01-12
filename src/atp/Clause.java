@@ -28,17 +28,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program ; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-MA  02111-1307 USA 
+MA  02111-1307 USA
+
+This code is largely a translation of https://github.com/eprover/PyRes
+
 */
 
 package atp;
-import java.io.*;
 import java.util.*;
-import java.text.*;
 
 /** ***************************************************************
 */
-public class Clause {
+public class Clause extends Derivable {
 
     public static int clauseIDcounter = 0;
     public ArrayList<Literal> literals = new ArrayList<Literal>(); 
@@ -51,13 +52,21 @@ public class Clause {
     public ArrayList<Integer> evaluation = null;                 // Must be the same order as clause evaluation 
                                                                  // function list in EvalStructure.
     public Substitutions subst = new Substitutions();            // The substitutions that support any derived clause.
+    public TreeSet<PredAbstractionPair> predicateAbstraction = null;
 
     /** ***************************************************************
      */
     public Clause() {
-
     }
-    
+
+    /** ***************************************************************
+     */
+    public Clause(Clause c) {
+
+        for (Literal l : c.literals)
+            literals.add(new Literal(l));
+    }
+
     /** ***************************************************************
      */
     public Clause(ArrayList<Literal> litlist) {
@@ -109,7 +118,13 @@ public class Clause {
                 Literal.literalList2String(literals) + ").");
         return result.toString();
     }
-    
+
+    /** ***************************************************************
+     */
+    public static void resetCounter() {
+        clauseIDcounter = 0;
+    }
+
     /** ***************************************************************
      * Create a string representation of the Clause with reference to
      * an inference rule and its supporting axioms if it was generated
@@ -473,6 +488,38 @@ public class Clause {
     }
 
     /** ***************************************************************
+     * The predicate abstraction of a clause is an ordered tuple of
+     * the predicate abstractions of its literals (PredicateAbstractionPairs). As an example, the
+     * predicate abstraction of p(x)|~q(Y)|q(a) would be
+     * ((False, q), (True, p), (True, q)) (assuming True > False and
+     * q > p). We will use this later to implement a simple
+     * subsumption index.
+     */
+    public TreeSet<PredAbstractionPair> predicateAbstraction() {
+
+        if (predicateAbstraction != null)
+            return predicateAbstraction;
+        TreeSet<PredAbstractionPair> res = new TreeSet<>();
+        for (Literal l : literals)
+            res.add(l.predicateAbstraction());
+        return res;
+    }
+
+    /** ***************************************************************
+     * Return an instantiated copy of self. Name and type are copied
+     * and need to be overwritten if that is not desired.
+     */
+    public Clause instantiate(Substitutions subst) {
+
+        ArrayList<Literal> lits = new ArrayList<>();
+        for (Literal l :literals)
+            lits.add(l.instantiate(subst));
+        Clause res = new Clause(lits, type, name);
+        res.setDerivation(this.derivation);
+        return res;
+    }
+
+    /** ***************************************************************
      * Return an instantiated copy of self. Name and type are copied
      * and need to be overwritten if that is not desired.
      */
@@ -483,7 +530,7 @@ public class Clause {
         Clause newC = deepCopy();
         newC.literals = new ArrayList<Literal>();
         for (int i = 0; i < literals.size(); i++)
-            newC.literals.add(literals.get(i).substitute(subst));
+            newC.literals.add(literals.get(i).instantiate(subst));
         //System.out.println("INFO in Clause.instantiate(): " + newC);
         return newC;
     }

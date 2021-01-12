@@ -1,9 +1,15 @@
 This code implements simple, resolution-based theorem provers for
 first-order logic. It is released as free software under the GNU GPL
-version 2, and without any warranty. See the file COPYING for
+version 3, and without any warranty. See the file COPYING for
 details and the individual source headers for copyright information.
 
-It is a translation of eprover/PyRes
+This code is largely a translation of https://github.com/eprover/PyRes , created by Prof.
+Stephan Schulz, from Python into Java, with some additions to support SUMO
+http://www.ontologyportal.org and Sigma https://github.com/ontologyportal/sigmakee
+
+Adam Pease
+apease@articulatesoftware.com
+
 
 
 

@@ -34,7 +34,9 @@ public class KIF {
     public static final String Equals         = "=";
     
     public static HashMap<String,String> opMap = new HashMap<String,String>();
-    
+
+    /** ***************************************************************
+     */
     public static void init() {
         opMap.put(Or,"or");
         opMap.put(And,"and");   
@@ -46,7 +48,9 @@ public class KIF {
         opMap.put(Negation,"not");
         opMap.put(Equals,"equals");
     }
-    
+
+    /** ***************************************************************
+     */
     public static String format(String form) {
 
         String indent = "  ";
@@ -144,13 +148,5 @@ public class KIF {
         result = formatted.toString();
 
         return result;
-    }
-
-    public static void main(String[] args) {
-        
-        init();
-        String ex = "![X]:(a(x) | ~a=b)";
-        BareFormula bf = BareFormula.string2form(ex);
-        System.out.println(KIF.format(bf.toKIFString()));
     }
 }

@@ -790,9 +790,9 @@ public class BareFormula {
         if (child2 != null)
             result.child2 = child2.substitute(subst);
         if (lit1 != null)
-            result.lit1 = lit1.substitute(subst);
+            result.lit1 = lit1.instantiate(subst);
         if (lit2 != null)
-            result.lit2 = lit2.substitute(subst);        
+            result.lit2 = lit2.instantiate(subst);
         return result;
     }
     

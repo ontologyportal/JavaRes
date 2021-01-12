@@ -414,7 +414,6 @@ public class Prover2 {
     }
     
     /** ***************************************************************
-     * Test method for this class.  
      */
     public static void main(String[] args) {
           
