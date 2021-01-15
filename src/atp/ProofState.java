@@ -70,9 +70,11 @@ public class ProofState {
     public long time                = 0;  // in milliseconds
     public Clause res               = null;
     public String SZSresult         = "";  // result as specified by SZS "ontology"
+    public String SZSexpected       = "";  // result as specified by SZS "ontology"
     public String filename          = "";
     public String evalFunctionName  = "";
     public boolean verbose          = false;
+    public Clause conjecture = null;
     
     /** ***************************************************************
      * Initialize the proof state with a set of clauses.
@@ -91,6 +93,9 @@ public class ProofState {
         forward_subsumed     = 0;
         backward_subsumed    = 0;
         time                 = 0;
+        SZSresult = clauses.SZSresult;
+        SZSexpected = clauses.SZSexpected;
+        conjecture = clauses.getConjecture();
     }
     
     /** ***************************************************************
@@ -187,12 +192,13 @@ public class ProofState {
         long t1 = System.currentTimeMillis();
         while (unprocessed.length() > 0) {
             Clause res = processClause();
+            //System.out.println("# ProofState.saturate(): " + res);
             if (res != null) {
                 time = System.currentTimeMillis() - t1;
                 return res;
             }
             if (((System.currentTimeMillis() - t1) / 1000.0) > seconds) {
-                SZSresult = "timeout";
+                SZSresult = "SZS Status: Timeout (TMO)";
                 time = System.currentTimeMillis() - t1;
                 return null;
             }
@@ -212,6 +218,12 @@ public class ProofState {
      */  
     public String generateStatisticsString() {
 
+        try {
+            throw new Exception();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
         StringBuffer sb = new StringBuffer();
         sb.append("# Filename           : " + filename + "\n");
         sb.append("# Initial clauses    : " + initial_clause_count + "\n");
@@ -221,7 +233,9 @@ public class ProofState {
         sb.append("# Tautologies deleted: " + tautologies_deleted + "\n");
         sb.append("# Forward subsumed   : " + forward_subsumed + "\n");
         sb.append("# Backward subsumed  : " + backward_subsumed + "\n");
-        sb.append("# time               : " + time + "\n");
+        sb.append("# SZS Status         : " + SZSresult+ "\n");
+        sb.append("# SZS Expected       : " + SZSexpected + "\n");
+        sb.append("# time               : " + time + "ms\n");
         return sb.toString();
     }
     
@@ -242,6 +256,8 @@ public class ProofState {
         sb.append("Tautologies deleted,");
         sb.append("Forward subsumed,");
         sb.append("Backward subsumed,");
+        sb.append("SZS Status,");
+        sb.append("SZS Expected,");
         sb.append("Time,");
         return sb.toString();
     }
@@ -264,6 +280,8 @@ public class ProofState {
         sb.append(tautologies_deleted + ",");
         sb.append(forward_subsumed + ",");
         sb.append(backward_subsumed + ",");
+        sb.append(SZSresult + ",");
+        sb.append(SZSexpected + ",");
         sb.append(time);
         return sb.toString();
     }

@@ -36,15 +36,15 @@ public class ResControl {
      */
     public static ClauseSet computeAllResolvents(Clause clause, ClauseSet clauseset) {
 
-        System.out.println("computeAllResolvents(): clause: " + clause);
-        System.out.println("computeAllResolvents(): clauseset: " + clauseset);
+        //System.out.println("computeAllResolvents(): clause: " + clause);
+        //System.out.println("computeAllResolvents(): clauseset: " + clauseset);
         ClauseSet res = new ClauseSet();
         for (int lit = 0; lit < clause.length(); lit++) {
             ArrayList<Clause> clauseres = new ArrayList<Clause>();
             ArrayList<Integer> indices = new ArrayList<Integer>();
             clauseset.getResolutionLiterals(clause.getLiteral(lit),clauseres,indices);
             assert clauseres.size() == indices.size();
-            System.out.println("computeAllResolvents(): clauseres: " + clauseres);
+            //System.out.println("computeAllResolvents(): clauseres: " + clauseres);
             for (int i = 0; i < clauseres.size(); i++) {               
                 Clause resolvent = Resolution.resolution(clause, lit, clauseres.get(i), indices.get(i).intValue());
                 if (resolvent != null)
@@ -66,7 +66,7 @@ public class ResControl {
         for (int i = 0; i < clause.length(); i++) {
             for (int j = i+1; j < clause.length(); j++) {
                 Clause fact = Resolution.factor(clause, i, j);
-                System.out.println("INFO in ResControl.computeAllFactors(): adding factor: " + fact);
+                //System.out.println("INFO in ResControl.computeAllFactors(): adding factor: " + fact);
                 if (fact != null)
                     res.add(fact);
             }

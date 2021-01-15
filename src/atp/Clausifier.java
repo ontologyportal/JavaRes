@@ -637,17 +637,27 @@ public class Clausifier {
     public static ArrayList<Clause> clausify(BareFormula bf) {
     
         BareFormula result = bf.deepCopy();
+        //System.out.println("Clausifier.clausify(): formulaOpSimplify with " + result);
         BareFormula newresult = SmallCNFization.formulaOpSimplify(result);
         if (newresult != null)
         	result = newresult;
+        //System.out.println("Clausifier.clausify(): removeImpEq with " + result);
         result = removeImpEq(result);
+        //System.out.println("Clausifier.clausify(): moveNegationIn with " + result);
         result = moveNegationIn(result);
+        //System.out.println("Clausifier.clausify(): standardizeVariables with " + result);
         result = standardizeVariables(result);
+        //System.out.println("Clausifier.clausify(): moveQuantifiersLeft with " + result);
         result = moveQuantifiersLeft(result);
+        //System.out.println("Clausifier.clausify(): skolemization with " + result);
         result = skolemization(result);
+        //System.out.println("Clausifier.clausify(): removeUQuant with " + result);
         result = removeUQuant(result);
+        //System.out.println("Clausifier.clausify(): distributeAndOverOr with " + result);
         result = distributeAndOverOr(result);
+        //System.out.println("Clausifier.clausify(): separateConjunctions with " + result);
         ArrayList<BareFormula> forms = separateConjunctions(result);
+        //System.out.println("Clausifier.clausify(): flattenAll with " + forms);
         ArrayList<Clause> clauses = flattenAll(forms);
         return clauses;
     }

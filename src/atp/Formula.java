@@ -44,6 +44,8 @@ public class Formula {
     public String rationale = "input";                           // If not input, reason for derivation.
     public String status = "";
 
+    public static int maxFormulaCharLen = 2000;
+
     /** ***************************************************************
      */
     public Formula(BareFormula f, String t) {
@@ -131,7 +133,7 @@ public class Formula {
             lex.next();
             lex.next();
             if (lex.type != Lexer.OpenPar)
-                throw new ParseException("#Error in Formula.command2clauses(): expected '(', found " + lex.literal,0);
+                throw new ParseException("# Error in Formula.command2clauses(): expected '(', found " + lex.literal,0);
             lex.next();
             String name = lex.literal;
             if (name.charAt(0) == '\'') {
@@ -141,12 +143,12 @@ public class Formula {
                 else
                     filename = includePath + File.separator + name.substring(1,name.length()-1);
                 File f = new File(filename);
-                System.out.println("#INFO in Formula.command2clauses(): start reading file: " + filename);
+                //System.out.println("# INFO in Formula.command2clauses(): start reading file: " + filename);
                 Lexer lex2 = new Lexer(f);
                 lex2.filename = filename;
-                System.out.println();
+                //System.out.println();
                 ClauseSet newcs = lexer2clauses(lex2,timeout);
-                System.out.println("#INFO in Formula.command2clauses(): completed reading file: " + filename);
+                //System.out.println("# INFO in Formula.command2clauses(): completed reading file: " + filename);
                 lex.next();
                 if (lex.type != Lexer.ClosePar)
                     throw new ParseException("#Error in Formula.command2clauses(): expected ')', found " + lex.literal,0);
@@ -163,7 +165,13 @@ public class Formula {
         }
         else if (id.equals("fof")) {
             Formula f = Formula.parse(lex);
-            //System.out.println("# INFO in Formula.command2clauses(): fof: " + f);
+            String fstring = f.toString();
+            if (fstring.length() > maxFormulaCharLen) {
+                cs.SZSresult = "InputError (INE) input error: clause too large: "; // + fstring;
+                //System.out.println("# INFO in Formula.command2clauses(): fof: " + cs.SZS);
+                return cs;
+            }
+            //System.out.println("# INFO in Formula.command2clauses(): fof: " + fstring);
             if (f.form != null) {
                 cs.addAll(Clausifier.clausify(f));
                 return cs;
@@ -177,11 +185,11 @@ public class Formula {
             return cs; 
         }
         else if (lex.type == Lexer.EOFToken) {
-            System.out.println();
+            //System.out.println();
             return cs;
         }
         else
-            throw new ParseException("#Error in Formula.command2clauses: bad id: " + 
+            throw new ParseException("# Error in Formula.command2clauses: bad id: " +
                     id + " at line " + lex.input.getLineNumber() + " in file " + lex.filename,0);
         return cs;
     }
@@ -196,21 +204,37 @@ public class Formula {
         
         long t1 = System.currentTimeMillis();
         ClauseSet cs = new ClauseSet();
-        System.out.println("# INFO in Formula.lexer2clauses(): reading file: " + lex.filename +
-                " with read timeout: " + timeout); 
-        System.out.print("#");  
+        //System.out.println("# INFO in Formula.lexer2clauses(): reading file: " + lex.filename +
+        //        " with read timeout: " + timeout);
+        //System.out.print("#");
         while (lex.type != Lexer.EOFToken) {
             try {
-                if (lex.input.getLineNumber() % 1000 == 0)
-                    System.out.print(".");
+                //if (lex.input.getLineNumber() % 1000 == 0)
+                //    System.out.print(".");
                 if (((System.currentTimeMillis() - t1) / 1000.0) > timeout) {
-                    System.out.println("# Error in Formula.lexer2clauses(): timeout");
-                    return null;
+                    cs.SZSresult = "SZS Status: error ResourceOut (RSO) reading timeout";
+                    //System.out.println("# Error in Formula.lexer2clauses(): timeout");
+                    return cs;
                 }
                 String id = lex.look();
-                cs.addAll(command2clauses(id,lex,timeout));
+                if (lex.type == Lexer.PerComment || !Term.emptyString(lex.SZS)) {
+                    //System.out.println("# Formula.lexer2clauses(): found comment: " + lex.SZS);
+                    if (!Term.emptyString(lex.SZS))
+                        cs.SZSexpected = lex.SZS;
+                }
+                ClauseSet csnew = command2clauses(id,lex,timeout);
+                if (csnew.SZSresult.toLowerCase().contains("error")) {
+                    //System.out.println("# Error in Formula.lexer2clauses(): " + cs.SZSresult);
+                    cs.SZSresult = csnew.SZSresult;
+                    return cs;
+                }
+                cs.addAll(csnew);
             }
             catch (Exception p) {
+                if (p.getMessage().contains("bad id")) {
+                    cs.SZSresult = "SZS Status: InputError (INE): bad id";
+                    return cs;
+                }
                 System.out.println();
                 System.out.println("# Error in Formula.lexer2clauses()");
                 System.out.println(p.getMessage());
@@ -218,8 +242,7 @@ public class Formula {
                 return cs;
             }
         }
-        System.out.println();
-        cs.SZS = lex.SZS;
+        //System.out.println();
         return cs;
     }
 
@@ -255,7 +278,7 @@ public class Formula {
                 return result;
             }
         }
-        System.out.println();
+        //System.out.println();
         return result;
     }
     
@@ -276,7 +299,10 @@ public class Formula {
             if (fr != null && fin.length() > 0) {
                 Lexer lex = new Lexer(fin);
                 lex.filename = filename;
-                return lexer2clauses(lex);
+                ClauseSet cs = lexer2clauses(lex);
+                //System.out.println("# Formula.file2clauses(): SZSresult " + cs.SZSresult);
+                //System.out.println("# Formula.file2clauses(): SZSexpected " + cs.SZSexpected);
+                return cs;
             }
         }
         catch (IOException e) {

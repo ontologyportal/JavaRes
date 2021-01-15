@@ -370,17 +370,19 @@ public class Lexer {
     /** ***************************************************************
      */
     public void processComment(String line) {
-    	
-        Pattern value = Pattern.compile("\\%\\sStatus[\\s]+([^\\n]*)");
+
+        //System.out.println("INFO in processComment(): " + line);
+        Pattern value = Pattern.compile("\\%\\sStatus[\\s:]+([^\\n]*)");
         //Pattern value = Pattern.compile("\\%\\sStatus");
         Matcher m = value.matcher(line);
         //System.out.println("INFO in processComment(): comment: " + line);
         if (m.lookingAt()) {
+            //System.out.println("INFO in processComment(): found match: " + m.group(1));
         	if (m.group(1).indexOf("Unsatisfiable") > -1 || m.group().indexOf("Theorem") > -1) 
         		SZS = m.group(1);
         	if (m.group(1).indexOf("Satisfiable") > -1 || m.group().indexOf("CounterSatisfiable") > -1) 
         		SZS = m.group(1);        
-        	//System.out.println("# problem SZS status: " + SZS);
+        	//System.out.println("# processComment() problem SZS status: " + SZS);
         }
     }
     

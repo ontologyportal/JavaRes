@@ -29,7 +29,8 @@ import java.text.*;
 public class ClauseSet {
 
     public ArrayList<Clause> clauses = new ArrayList<Clause>();
-    public String SZS = "";
+    public String SZSexpected = ""; // set from a structured comment when reading a TPTP problem file
+    public String SZSresult = "";
 
     /** ***************************************************************
      */

@@ -81,7 +81,8 @@ public class Prover2 {
         "not yet implemented - command line interactive mode.  Run query on file and keep loaded after result. Short timeout recommended.";
 
     public static String errors = "";
-    
+    public static int defaultTimeout = 30;
+
     /** ***************************************************************
      * canonicalize options into a name/value list.
      * If the --allOpts flag is set remove all other subsumption/deletion
@@ -223,22 +224,33 @@ public class Prover2 {
         if (opts.containsKey("timeout"))
             return Integer.parseInt(opts.get("timeout"));
         else
-            return 30;
+            return defaultTimeout;
     }
     
     /** ***************************************************************
      */
     private static void runExperiment(HashMap<String,String> opts, ArrayList<EvalStructure> evals) {
-        
+
+        System.out.println("Prover2.runExperiment(): ");
+        System.out.println("Prover2.runExperiment(): opts: " + opts);
         ProofState.generateMatrixHeaderStatisticsString();
         File dir = new File(opts.get("filename")); 
         String[] children = dir.list();
+        Arrays.sort(children);
         if (children != null) {
             for (int i = 0; i < children.length; i++) {
                 String filename = opts.get("filename") + File.separator + children[i];
                 if (filename.endsWith(".p")) {
-                    System.out.println("# testing file: " + filename);
-                    processTestFile(filename,opts,evals);
+                    //System.out.println("# testing file: " + filename);
+                    ProofState ps = processTestFile(filename,opts,evals);
+                    if (ps == null) {
+                        System.out.println("Error in Prover2.runExperiment() on file: " + filename);
+                        System.out.println("Error reading file or no input clauses in file");
+                        continue;
+                    }
+                    ClauseSet conjectures = new ClauseSet();
+                    conjectures.add(ps.conjecture);
+                    printStateResults(opts,ps,conjectures);
                 }
             }
         }
@@ -247,21 +259,28 @@ public class Prover2 {
     /** ***************************************************************
      */
     public static void printStateResults(HashMap<String,String> opts, ProofState state, ClauseSet query) {
-        
-        //System.out.println("# print results");
+
+        //         System.out.println("# printStateResults(): " + opts);
         boolean dotgraph = false;
-        if (opts.containsKey("dotgraph"))
+        if (opts.containsKey("dotgraph")) {
             System.out.println(state.generateDotGraphProof(state.res));
-        else if (opts.containsKey("proof")) {
-            TreeMap<String,Clause> proof = state.generateProofTree(state.res);
-            if (query != null)
-                System.out.println(state.extractAnswer(proof,query.get(0)));
-            System.out.println("# SZS output start CNFRefutation");
-            System.out.println(state.generateProof(state.res,false));
-            System.out.println("# SZS output end CNFRefutation");
+            return;
         }
-        else if (opts.containsKey("csvstats"))
+        else if (opts.containsKey("proof")) {
+            System.out.println("# printStateResults(): " + state.res);
+            if (state.res != null) {
+                TreeMap<String, Clause> proof = state.generateProofTree(state.res);
+                if (query != null)
+                    System.out.println(state.extractAnswer(proof, query.get(0)));
+                System.out.println("# SZS output start CNFRefutation");
+                System.out.println(state.generateProof(state.res, false));
+                System.out.println("# SZS output end CNFRefutation");
+            }
+        }
+        if (opts.containsKey("csvstats")) {
+            System.out.println(state.generateMatrixHeaderStatisticsString());
             System.out.println(state.generateMatrixStatisticsString());
+        }
         else  // (opts.containsKey("stats"))
             System.out.println(state.generateStatisticsString());
     }
@@ -328,8 +347,8 @@ public class Prover2 {
                             state.evalFunctionName = evals.get(0).name;  
                             state.res = state.saturate(timeout);
                             if (state.res != null) {
-                            	if (cs.SZS.indexOf("Satisfiable") > -1 || cs.SZS.indexOf("CounterSatisfiable") > -1) 
-                            		System.out.println("########### DANGER Proof found for " + cs.SZS + " problem ###############");
+                            	if (cs.SZSexpected.indexOf("Satisfiable") > -1 || cs.SZSexpected.indexOf("CounterSatisfiable") > -1)
+                            		System.out.println("########### DANGER Proof found for " + cs.SZSresult+ " problem ###############");
                                 printStateResults(opts,state,query);
                             }
                             else
@@ -359,13 +378,30 @@ public class Prover2 {
      * options and clause evaluation strategies.
      */
     public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<EvalStructure> evals) {
-        
+
+        //System.out.println("# Prover2.processTestFile(): " + filename);
+        //System.out.println("# Prover2.processTestFile(): " + opts);
         int timeout = getTimeout(opts);
-        ClauseSet cs = Formula.file2clauses(filename,timeout);  
+        //System.out.println("# Prover2.processTestFile(): read file");
+        ClauseSet cs = Formula.file2clauses(filename,timeout);
+        //System.out.println("# Prover2.processTestFile(): read file completed");
+        //if (cs != null) {
+        //    System.out.println("# Prover2.processTestFile(): SZSresult: " + cs.SZSresult);
+        //    System.out.println("# Prover2.processTestFile(): SZSexpected: " + cs.SZSexpected);
+        //}
+        if (cs.SZSresult != null && cs.SZSresult.toLowerCase().contains("error")) {
+            //System.out.println("# Prover2.processTestFile(): read file error");
+            ProofState state = new ProofState(cs,evals.get(0));
+            state.filename = filename;
+            state.conjecture = cs.getConjecture();
+            state.SZSexpected = cs.SZSexpected;
+            state.SZSresult = cs.SZSresult;
+            return state;
+        }
         if (opts.containsKey("eqax"))
             cs = cs.addEqAxioms();
         if (opts.containsKey("sine")) {
-        	System.out.println("# INFO in Prover2.processTestFile(): using sine");
+        	//System.out.println("# INFO in Prover2.processTestFile(): using sine");
             SINE sine = new SINE(cs);
             HashSet<String> syms = cs.getConjectureSymbols();
             if (syms != null && syms.size() > 0) {
@@ -385,11 +421,24 @@ public class Prover2 {
                     for (int j = 0; j < states.size(); j++) {
                         ProofState state = states.get(j);                        
                         state.filename = filename;
-                        state.evalFunctionName = eval.name;                            
-                        state.res = state.saturate(timeout);
+                        state.conjecture = cs.getConjecture();
+                        state.evalFunctionName = eval.name;
+                        //System.out.println("# Prover2.processTestFile(): begin saturation");
+                        try {
+                            state.res = state.saturate(timeout);  // <--- real proving starts here
+                        }
+                        catch(Exception e) {
+                            if (Term.emptyString(state.SZSresult))
+                                state.SZSresult = "# SZS status Error (ERR) " + e.getMessage();
+                            return state;
+                        }
                         if (state.res != null) {
-                        	if (cs.SZS.indexOf("Satisfiable") > -1 || cs.SZS.indexOf("CounterSatisfiable") > -1) 
-                        		System.out.println("########### DANGER Proof found for " + cs.SZS + " problem ###############");
+                            state.SZSexpected = cs.SZSexpected;
+                            state.SZSresult = cs.SZSresult;
+                        	if (cs.SZSresult.indexOf("Satisfiable") > -1 || cs.SZSresult.indexOf("CounterSatisfiable") > -1)
+                        		System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
+                            if (Term.emptyString(state.SZSresult))
+                        	    state.SZSresult = "Unsatisfiable (UNS)";
                             printStateResults(opts,state,null);
                         }
                     }
@@ -398,18 +447,32 @@ public class Prover2 {
                     ProofState state = new ProofState(cs,evals.get(i)); 
                     setStateOptions(state,opts);
                     state.filename = filename;
-                    state.evalFunctionName = eval.name;  
-                    state.res = state.saturate(timeout);
-                    if (state.res != null) {
-                    	if (cs.SZS.indexOf("Satisfiable") > -1 || cs.SZS.indexOf("CounterSatisfiable") > -1) 
-                    		System.out.println("########### DANGER Proof found for " + cs.SZS + " problem ###############");
+                    state.conjecture = cs.getConjecture();
+                    state.evalFunctionName = eval.name;
+                    //System.out.println("# Prover2.processTestFile(): begin saturation");
+                    try {
+                        state.res = state.saturate(timeout);  // <--- real proving starts here
+                    }
+                    catch(Exception e) {
+                        state.SZSresult = "# SZS status Error (ERR) " + e.getMessage();
                         return state;
                     }
-                    else
-                        return null;
+                    if (state.res != null) {
+                    	if (cs.SZSresult.indexOf("Satisfiable") > -1 || cs.SZSresult.indexOf("CounterSatisfiable") > -1)
+                    		System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
+                        if (Term.emptyString(state.SZSresult))
+                            state.SZSresult = "Unsatisfiable (UNS)";
+                        return state;
+                    }
+                    else {
+                        if (Term.emptyString(state.SZSresult))
+                            state.SZSresult = "# SZS status GaveUp";
+                        return state;
+                    }
                 }
             }
-        }            
+        }
+
         return null;
     }
     
@@ -447,14 +510,20 @@ public class Prover2 {
             else {
                 System.out.println("# INFO in Prover2.main(): Processing file " + opts.get("filename"));
                 ProofState state = processTestFile(opts.get("filename"),opts,evals);
-                if (state != null) { 
+                if (state != null && state.res != null) {
                     printStateResults(opts,state,null);
-                    System.out.println("# SZS status Theorem for problem " + opts.get("filename")); 
+                    //System.out.println("# SZS status Theorem for problem " + opts.get("filename"));
                 }
-                else
-                    System.out.println("# SZS status GaveUp for problem " + opts.get("filename"));                    
+                else {
+                    if (Term.emptyString(state.SZSresult))
+                        System.out.println("# SZS status GaveUp for problem " + opts.get("filename"));
+                    else
+                        printStateResults(opts,state,null);
+                }
             }                            
         }
+        else
+            System.out.println(doc);
     }
 }
 
