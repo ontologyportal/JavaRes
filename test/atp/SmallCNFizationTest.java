@@ -27,7 +27,6 @@ import java.text.ParseException;
 import java.util.*;
 import static org.junit.Assert.*;
 
-@Deprecated
 public class SmallCNFizationTest {
 
     /** ***************************************************************
