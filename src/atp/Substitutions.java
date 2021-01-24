@@ -260,12 +260,12 @@ public class Substitutions {
      * that the fresh variables have never been produced by a uniqSubst
      * substitution.
      */    
-    public static Substitutions freshVarSubst(ArrayList<Term> vars) {
+    public static Substitutions freshVarSubst(Collection<Term> vars) {
 
         Substitutions s = new Substitutions();
-        for (int i = 0; i < vars.size(); i++) {
+        for (Term var : vars) {
             Term newVar = freshVar();
-            s.subst.put(vars.get(i),newVar);
+            s.subst.put(var,newVar);
         }
         return s;
     }

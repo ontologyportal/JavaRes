@@ -131,11 +131,11 @@ public class ClauseTest {
 
         lex = new Lexer(str7);
         c7 = Clause.parse(lex);
-        assertEquals(c7.normalizeVarCopy(),c6.normalizeVarCopy());
         System.out.println("c6: " + c6);
         System.out.println("c6 normalized: " + c6.normalizeVarCopy());
         System.out.println("c7: " + c7);
         System.out.println("c7 normalized: " + c7.normalizeVarCopy());
+        assertEquals(c7.normalizeVarCopy(),c6.normalizeVarCopy());
     }
 
     /** ***************************************************************

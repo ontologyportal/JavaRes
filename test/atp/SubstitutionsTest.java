@@ -130,9 +130,9 @@ public class SubstitutionsTest {
         else
             System.out.println("Failure, " + var1 + " == " + var2);
         assertNotEquals(var1,var2);
-        ArrayList<Term> vars = t1.collectVars();
+        SortedSet<Term> vars = t1.collectVars();
         Substitutions sigma = Substitutions.freshVarSubst(vars);
-        ArrayList<Term> vars2 = sigma.apply(t1).collectVars();
+        SortedSet<Term> vars2 = sigma.apply(t1).collectVars();
         boolean shared = vars.removeAll(vars2);   // if false, intersection is empty set
         if (!shared)
             System.out.println("Correct, " + var1 + " & " + var2 + " don't share variables.");

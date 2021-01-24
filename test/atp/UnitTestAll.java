@@ -20,6 +20,7 @@ import org.junit.runners.Suite;
         ResolutionTest.class,
         SignatureTest.class,
         SimpleProofStateTest.class,
+        SmallCNFizationTest.class,
         SubstitutionsTest.class,
         SubsumptionTest.class,
         TermTest.class,

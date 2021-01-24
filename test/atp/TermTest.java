@@ -406,7 +406,7 @@ public class TermTest {
 
         System.out.println("---------------------");
         System.out.println("INFO in testCollectVars(): all true");
-        ArrayList<Term> vars = t1.collectVars();
+        SortedSet<Term> vars = t1.collectVars();
         System.out.println(vars.size() == 1);
         assertEquals(vars.size(), 1);
 

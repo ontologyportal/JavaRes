@@ -238,6 +238,8 @@ public class Prover2 {
         String[] children = dir.list();
         Arrays.sort(children);
         if (children != null) {
+            if (opts.containsKey("csvstats"))
+                System.out.println(ProofState.generateMatrixHeaderStatisticsString());
             for (int i = 0; i < children.length; i++) {
                 String filename = opts.get("filename") + File.separator + children[i];
                 if (filename.endsWith(".p")) {
@@ -278,7 +280,6 @@ public class Prover2 {
             }
         }
         if (opts.containsKey("csvstats")) {
-            System.out.println(state.generateMatrixHeaderStatisticsString());
             System.out.println(state.generateMatrixStatisticsString());
         }
         else  // (opts.containsKey("stats"))

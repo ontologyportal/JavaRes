@@ -32,7 +32,7 @@ subterms.
 "g(X, f(Y))" -> ["g", "X", ["f", "Y"]]
 "g(a,b)"      -> ["g", ["a"], ["b"]]
 */
-public class Term {
+public class Term implements Comparable {
     
 public String t = "";  // lowercase is a constant, uppercase is a variable
 public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not composite
@@ -90,7 +90,26 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
         }
         return result.toString();
     }
-    
+
+    /** ***************************************************************
+     */
+    public int compareTo(Object o) {
+
+        //System.out.println("Term.compareTo(): " + o.getClass().getName());
+        if (!o.getClass().getName().equals("atp.Term"))
+            throw new ClassCastException();
+        Term ot = (Term) o;
+        if (t != ot.t) {
+            return t.compareTo(ot.t);
+        }
+        else {
+            for (int i = 0; i < subterms.size(); i++)
+                if (!subterms.get(i).equals(ot.subterms.get(i)))
+                    return subterms.get(i).compareTo(ot.subterms.get(i));
+        }
+        return 0;
+    }
+
     /** ***************************************************************
      */
     public String toKIFString() {
@@ -258,13 +277,13 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
     
     /** ***************************************************************
      */
-    public ArrayList<Term> collectVars() {
-        
-        ArrayList<Term> result = new ArrayList<Term>();
+    public SortedSet<Term> collectVars() {
+
+        SortedSet<Term> result = new TreeSet<Term>();
         if (isVar())
             result.add(this);
         for (int i = 0; i < subterms.size(); i++) {
-        	ArrayList<Term> newvars = subterms.get(i).collectVars();
+            SortedSet<Term> newvars = subterms.get(i).collectVars();
         	for (Term newv : newvars) {
         		if (!result.contains(newv))
         			result.add(newv);

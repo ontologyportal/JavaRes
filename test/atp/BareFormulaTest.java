@@ -41,6 +41,60 @@ public class BareFormulaTest {
 
     /** ***************************************************************
      * Test that basic parsing and functionality works.
+     * The structure of the example should be
+     *
+     *         Formula
+     *     ![X]:(a(X) ~| ~a=b)
+     *         |                 |
+     * op    literal           Formula
+     * !       X            (a(X) ~| ~a=b)
+     *                        |           |
+     *                    op Literal     Literal
+     *                    ~|  a(X)        ~a=b
+     *                         |           |
+     *                       Atom        negated Atom
+     *                        a(X)        a=b
+     *                        |            |
+     *                       Term        Term
+     *                      |   |        |    |
+     *                     op   args    op    args
+     *                     a     X      =      a,b
+     */
+    @Test
+    public void testParse() {
+
+        String formstr = "![X]:(a(x) | ~a=b)";
+        try {
+            System.out.println("-----------------------------------------");
+            System.out.println("INFO in BareFormula.testParse()");
+            Lexer lex = new Lexer(formstr);
+            System.out.println("Parsing formula: " + formstr);
+            BareFormula f1 = BareFormula.parse(lex);
+            f1 = f1.promoteChildren();
+            System.out.println("INFO in BareFormula.testParse(): f1: " + f1.toStructuredString());
+            System.out.println("op should be !: " + f1.op);
+            assertTrue(f1.op.equals("!"));
+            System.out.println("f1.lit1 != null should be true: " + f1.lit1);
+            assertTrue(f1.lit1 != null);
+            System.out.println("f1.child2 != null should be true: " + f1.child2);
+            assertTrue(f1.child2 != null);
+
+            System.out.println("op should be |: " + f1.child2.op); // a~|b becomes ~a|b
+            assertTrue(f1.child2.op.equals("|"));
+            System.out.println("f1.child2.lit1 != null should be true: " + f1.child2.lit1);
+            assertTrue(f1.child2.lit1 != null);
+            System.out.println("f1.child2.lit2 != null should be true: " + f1.child2.lit2);
+            assertTrue(f1.child2.lit2 != null);
+        }
+        catch (Exception e) {
+            System.out.println("Error in BareFormula.testParse()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * Test that basic parsing and functionality works.
      */
     @Test
     public void testNakedFormula() {

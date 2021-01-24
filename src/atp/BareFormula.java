@@ -91,7 +91,10 @@ public class BareFormula {
     public BareFormula(String s, BareFormula c1) {
      
         op = s;
-        child1 = c1.deepCopy();
+        if (c1 != null)
+            child1 = c1.deepCopy();
+        else
+            Thread.dumpStack();
     }
     
     /** ***************************************************************
@@ -99,7 +102,10 @@ public class BareFormula {
     public BareFormula(String s, Literal l1) {
      
         op = s;
-        lit1 = l1.deepCopy();
+        if (l1 != null)
+            lit1 = l1.deepCopy();
+        else
+            Thread.dumpStack();
     }
     
     /** ***************************************************************
@@ -128,7 +134,19 @@ public class BareFormula {
      */
     public BareFormula(String s, BareFormula c1, BareFormula c2, 
     		Literal l1, Literal l2) {
-     
+
+        if (l1 != null && c1 != null) {
+            System.out.println("Error in BareFormula(): lit1 & child1 are both non-null");
+            System.out.println("Error in BareFormula(): lit1: " + l1);
+            System.out.println("Error in BareFormula(): child1: " + c1);
+            Thread.dumpStack();
+        }
+        if (l2 != null && c2 != null) {
+            System.out.println("Error in BareFormula(): lit2 & child2 are both non-null");
+            System.out.println("Error in BareFormula(): lit2: " + l2);
+            System.out.println("Error in BareFormula(): child2: " + c2);
+            Thread.dumpStack();
+        }
         op = s;
         if (c1 != null)
         	child1 = c1.deepCopy();
@@ -169,8 +187,95 @@ public class BareFormula {
     public boolean isLiteral() {
         
         return Term.emptyString(op) && lit1 != null;
-    }   
-    
+    }
+
+    /** ***************************************************************
+     * allow equations as literals (since they are allowed)
+     */
+    public boolean isEqLiteral() {
+
+        if (Term.emptyString(op) && lit1 != null)
+            return true;
+        if (op.equals("~") && lit1 != null)
+            return true;
+        if (op.equals("=") && lit1 != null && lit2 != null)
+            return true;
+        return false;
+    }
+
+    /** ***************************************************************
+     */
+    private boolean isConstFalse(Literal lit, BareFormula child) {
+
+        //System.out.println("BareFormula.isConstFalse(): " + lit + "  " + child);
+        if (lit != null && lit.atomIsConstFalse())
+            return true;
+        //System.out.println("BareFormula.isConstFalse(): lit null or not true");
+        if (child != null) {
+            //System.out.println("BareFormula.isConstFalse(): childop :" + child.op);
+            if (Term.emptyString(child.op)) {
+                //System.out.println("BareFormula.isConstFalse(): child op null");
+                if (child.lit1.atomIsConstFalse()) {
+                    //System.out.println("BareFormula.isConstFalse(): child:" + child.lit1);
+                    //System.out.println("BareFormula.isConstFalse(): " + child.lit1.atomIsConstFalse());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** ***************************************************************
+     */
+    private boolean isConstTrue(Literal lit, BareFormula child) {
+
+        //System.out.println("BareFormula.isConstTrue(): " + lit + "  " + child);
+        if (lit != null && lit.atomIsConstTrue())
+            return true;
+        //System.out.println("BareFormula.isConstTrue(): lit null or not true");
+        if (child != null) {
+            //System.out.println("BareFormula.isConstTrue(): childop :" + child.op);
+            if (Term.emptyString(child.op)) {
+                //System.out.println("BareFormula.isConstTrue(): child op null");
+                if (child.lit1.atomIsConstTrue()) {
+                    //System.out.println("BareFormula.isConstTrue(): child:" + child.lit1);
+                    //System.out.println("BareFormula.isConstTrue(): " + child.lit1.atomIsConstTrue());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /** ***************************************************************
+     */
+    public boolean lhsIsConstTrue() {
+
+        return isConstTrue(lit1,child1);
+    }
+
+    /** ***************************************************************
+     */
+    public boolean rhsIsConstTrue() {
+
+        return isConstTrue(lit2,child2);
+    }
+
+    /** ***************************************************************
+     */
+    public boolean lhsIsConstFalse() {
+
+        return isConstFalse(lit1,child1);
+    }
+
+    /** ***************************************************************
+     */
+    public boolean rhsIsConstFalse() {
+
+        return isConstFalse(lit2,child2);
+    }
+
+
     /** ***************************************************************
      * a logical operator other than a quantifier,  negation, 'and' or
      * 'or'
@@ -263,11 +368,22 @@ public class BareFormula {
      */
     public boolean isLiteralDisjunction() {
 
+        //System.out.println("BareFormula.isLiteralDisjunction(): op: " + op);
         if (isLiteral())
             return true;
-        if (op == "|")
-            return child1.isLiteralDisjunction() &&
-                   child2.isLiteralDisjunction();
+        if (op == "|") {
+            boolean isLitDis1 = false;
+            if (child1 != null)
+                isLitDis1 = child1.isLiteralDisjunction();
+            else
+                isLitDis1 = true;
+            boolean isLitDis2 = false;
+            if (child2 != null)
+                isLitDis2 = child2.isLiteralDisjunction();
+            else
+                isLitDis2 = true;
+            return isLitDis1 && isLitDis2;
+        }
         return false;
     }
     
@@ -277,6 +393,7 @@ public class BareFormula {
      */
     public boolean isClauseConjunction() {
 
+        //System.out.println("BareFormula.isClauseConjuction(): op: " + op);
         if (isLiteral())
             return true;
         if (op == "|")
@@ -292,6 +409,8 @@ public class BareFormula {
      */
     public boolean isCNF() {
 
+        //System.out.println("BareFormula.isCNF(): this: " + toStructuredString());
+        //System.out.println("BareFormula.isCNF(): op: " + op);
         if (op == "!")
             return child2.isCNF();
         return isClauseConjunction();   
@@ -375,36 +494,82 @@ public class BareFormula {
     public boolean hasSubform2() {
         
         return isQuantified() || isBinary();
-    }  
-    
+    }
+
+    /** ***************************************************************
+     * If this formula is just a literal, return it as a Literal
+     */
+    public Literal toLiteral() {
+
+        //System.out.println("BareFormula.toLiteral(): " + this);
+        if (!isEqLiteral())
+            return null;
+        String thisString = this.toString();
+        if (thisString.charAt(0) == '(' && thisString.charAt(thisString.length()-1) == ')')
+            thisString = thisString.substring(1,thisString.length()-1);
+        Lexer lex = new Lexer(thisString);
+        return Literal.parseLiteral(lex);
+    }
+
     /** ***************************************************************
      * If a BareFormula has no operator, but does have a child rather
      * than a literal, promote its first child. Recursively call on 
      * each child first. Return null if not modified.               
      */
     public BareFormula promoteChildren() {
-    	
-    	System.out.println("INFO in BareFormula.promoteChildren(): " + this);
-    	System.out.println("INFO in BareFormula.promoteChildren(): op: " + op);
+
+        //System.out.println("++++++++");
+    	//System.out.println("INFO in BareFormula.promoteChildren(): (structured print): " + this.toStructuredString());
+    	//System.out.println("INFO in BareFormula.promoteChildren(): op: " + op);
+    	//if (child1 != null)
+//            System.out.println("INFO in BareFormula.promoteChildren(): child1.isLiteral(): " + child1.isEqLiteral());
     	BareFormula newf = deepCopy();
     	BareFormula tempf = null;
     	boolean modified = false;
-    	if (child1 != null) {
-    		tempf = child1.promoteChildren();
+    	if (newf.child1 != null) {
+    		tempf = newf.child1.promoteChildren();
     		if (tempf != null) {
     			modified = true;
     			newf.child1 = tempf;
-    	    	System.out.println("INFO in BareFormula.promoteChildren(): child1 modified");
+    	    	//System.out.println("INFO in BareFormula.promoteChildren(): child1 modified");
     		}
+    		else
+    		    tempf = newf.child1;
+    		if (Term.emptyString(op)) {
+                newf.child1 = tempf.child1;
+                newf.lit1 = tempf.lit1;
+                newf.child2 = tempf.child2;
+                newf.lit2 = tempf.lit2;
+                newf.op = tempf.op;
+                modified = true;
+                //System.out.println("INFO in BareFormula.promoteChildren(): empty op result (structured print): " + newf.toStructuredString());
+            }
     	}
-    	if (child2 != null) {
-    		tempf = child2.promoteChildren();
+        //if (newf.child2 != null)
+        //    System.out.println("INFO in BareFormula.promoteChildren(): child2.isLiteral(): " + newf.child2.isEqLiteral());
+    	if (newf.child2 != null) {
+    		tempf = newf.child2.promoteChildren();
     		if (tempf != null) {
     			modified = true;
     			newf.child2 = tempf;
-    	    	System.out.println("INFO in BareFormula.promoteChildren(): child2 modified");
+    	    	//System.out.println("INFO in BareFormula.promoteChildren(): child2 modified");
     		}
     	}
+    	if (newf.child1 != null && newf.child1.isEqLiteral()) {
+            newf.lit1 = newf.child1.toLiteral();
+            if (newf.op.equals("~")) {
+                newf.op = "";
+                newf.lit1.negate();
+            }
+            newf.child1 = null;
+            modified = true;
+        }
+        if (newf.child2 != null && newf.child2.isEqLiteral()) {
+            newf.lit2 = newf.child2.toLiteral();
+            newf.child2 = null;
+            modified = true;
+        }
+        /*
 		if (lit1 == null && child1 != null && newf.isNoOp()) {
 			BareFormula newnewf = new BareFormula();
 			newnewf.op = newf.child1.op;
@@ -416,12 +581,15 @@ public class BareFormula {
 			modified = true;
 	    	System.out.println("INFO in BareFormula.promoteChildren(): promoting children");
 		}
+         */
 		if (modified) {
-	    	System.out.println("INFO in BareFormula.promoteChildren(): returning: " + newf);
+	    	//System.out.println("INFO in BareFormula.promoteChildren(): returning (structured print): " + newf.toStructuredString());
 			return newf;
 		}
-		else
-			return null;    	
+		else {
+            //System.out.println("INFO in BareFormula.promoteChildren(): not modified");
+            return null;
+        }
     }
     
     /** ***************************************************************
@@ -534,7 +702,39 @@ public class BareFormula {
             return "(" + op + "[" + arg1 + "]:" + arg2 + ")"; 
         }  
     }
-        
+
+    /** ***************************************************************
+     * Return a string representation of the formula with detailed
+     * information to support debugging.
+     */
+    public String toStructuredString() {
+
+        String arg1 = null;
+        if (child1 != null)
+            arg1 = "(child1:" + child1.toStructuredString() + ")";
+        if (lit1 != null)
+            arg1 = lit1.toString();
+        String arg2 = null;
+        if (child2 != null)
+            arg2 = "(child2:" + child2.toStructuredString() + ")";
+        if (lit2 != null)
+            arg2 = lit2.toString();
+
+        if (Term.emptyString(op))
+            return arg1;
+        if (op.equals("~"))
+            return "(~" + arg1 + ")";
+        if (logOp(op))
+            return "(" + arg1 + op + arg2 + ")";
+        else {
+            if (!op.equals("!") && !op.equals("?")) {
+                System.out.println("Error in BareFormula.toString(): bad operator: " + op);
+                return null;
+            }
+            return "(" + op + "[" + arg1 + "]:" + arg2 + ")";
+        }
+    }
+
     /** ***************************************************************
      * Return True if self is structurally equal to other.
      */
@@ -612,22 +812,24 @@ public class BareFormula {
         
         if (lit1 != null && child1 != null) {
             System.out.println("Error in BareFormula.deepCopy(): lit1 & child1 are both non-null");
-            return null;
+            System.out.println("Error in BareFormula.deepCopy(): lit1: " + lit1);
+            System.out.println("Error in BareFormula.deepCopy(): child1: " + child1);
         }
         if (lit2 != null && child2 != null) {
             System.out.println("Error in BareFormula.deepCopy(): lit2 & child2 are both non-null");
-            return null;
+            System.out.println("Error in BareFormula.deepCopy(): lit2: " + lit2);
+            System.out.println("Error in BareFormula.deepCopy(): child2: " + child2);
         }
         BareFormula result = new BareFormula();
         result.op = op;
-        if (lit1 != null)            
-            result.lit1 = lit1.deepCopy();
-        if (lit2 != null)
-            result.lit2 = lit2.deepCopy(); 
-        if (child1 != null)            
+        if (child1 != null)
             result.child1 = child1.deepCopy();
-        if (child2 != null)            
+        else if (lit1 != null)
+            result.lit1 = lit1.deepCopy();
+        if (child2 != null)
             result.child2 = child2.deepCopy();
+        else if (lit2 != null)
+            result.lit2 = lit2.deepCopy();
         return result;
     }
 
@@ -670,9 +872,9 @@ public class BareFormula {
     /** ***************************************************************
      * Return the set of all variables in self.
      */
-    public ArrayList<Term> collectVars() {
+    public SortedSet<Term> collectVars() {
 
-    	ArrayList<Term> res = null;
+        SortedSet<Term> res = null;
         if (isLiteral())
             res = lit1.collectVars();
         else if (isUnary())
@@ -695,10 +897,10 @@ public class BareFormula {
     /** ***************************************************************
      * Return the set of all free variables in self.
      */
-    public ArrayList<Term> collectFreeVars() {
+    public SortedSet<Term> collectFreeVars() {
 
     	//System.out.println("INFO in BareFormula.collectFreeVars(): " + this + "  op: '" + op + "'");
-        ArrayList<Term> res = new ArrayList<Term>();
+        SortedSet<Term> res = new TreeSet<Term>();
         if (isLiteral())
             res = lit1.collectVars();
         else if (isUnary() || Term.emptyString(op)) {
@@ -820,7 +1022,7 @@ public class BareFormula {
         }
         BareFormula result = new BareFormula(quantor,var);
         result.child2 = rest;
-        //System.out.println("INFO in  BareFormula.parseQuantified(): returning: " + result);
+        //System.out.println("INFO in  BareFormula.parseQuantified(): returning: " + result.toStructuredString());
         return result;
     }
 
@@ -836,6 +1038,7 @@ public class BareFormula {
         BareFormula res = null;
         if (lex.testTok(Lexer.quant)) {
             String quantor = lex.lookLit();
+            //System.out.println("INFO in BareFormula.parseUnitaryFormula(): quantifier: " + quantor);
             lex.next();
             lex.acceptTok(Lexer.OpenSquare);
             res = parseQuantified(lex, quantor);
@@ -857,7 +1060,7 @@ public class BareFormula {
             lit = lit.parseLiteral(lex);  // stream pointer looks at token after literal
             res = new BareFormula("",lit);
         }
-        //System.out.println("INFO in BareFormula.parseUnitaryFormula(): returning: " + res);
+        //System.out.println("INFO in BareFormula.parseUnitaryFormula(): returning: " + res.toStructuredString());
         return res;
     }
 
@@ -877,6 +1080,7 @@ public class BareFormula {
             BareFormula newhead = new BareFormula(op,head,next);
             head = newhead;
         }
+        //System.out.println("INFO in BareFormula.parseAssocFormula(): returning: " + head.toStructuredString());
         return head;
     }
 
@@ -886,9 +1090,9 @@ public class BareFormula {
      */
     public static BareFormula parse(Lexer lex) throws IOException, ParseException {
       
-        //System.out.println("INFO in BareFormula.parseRecurse(): token: " + lex.literal);        
+        //System.out.println("INFO in BareFormula.parse(): token: " + lex.literal);
         BareFormula res = parseUnitaryFormula(lex);
-        //System.out.println("INFO in BareFormula.parseRecurse(): returned from unitary with token: " + lex.literal);
+        //System.out.println("INFO in BareFormula.parse(): returned from unitary with token: " + lex.literal);
         
         if (lex.testTok(Lexer.andOr)) 
             res = parseAssocFormula(lex, res.deepCopy());           
@@ -899,6 +1103,7 @@ public class BareFormula {
             BareFormula lhs = res.deepCopy();
             res = new BareFormula(op,lhs,rest);  
         }
+        //System.out.println("INFO in BareFormula.parse(): returning: " + res.toStructuredString());
         return res;
     }
 

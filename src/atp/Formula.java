@@ -53,7 +53,17 @@ public class Formula {
         form = f;
         type = t;
     }
-    
+
+    /** ***************************************************************
+     * Return a string representation of the formula.
+     */
+    public Formula deepCopy() {
+
+        Formula f = new Formula(this.form.deepCopy(),this.type);
+        f.name = this.name;
+        return f;
+    }
+
     /** ***************************************************************
      * Return a string representation of the formula.
      */

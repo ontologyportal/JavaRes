@@ -29,6 +29,7 @@ public class Clausifier {
     public static int skolemCounter = 0;
     public static int axiomCounter = 0;
     public static String typePrefix = "axiom";
+    public static long startTime = 0;
 
     /** ***************************************************************
      */
@@ -493,7 +494,9 @@ public class Clausifier {
      * (a & b) | c becomes (a | c) & (b | c)
      */
     private static BareFormula distributeAndOverOrRecurse(BareFormula form) {
-    
+
+        if (((System.currentTimeMillis() - startTime) / 1000.0) > 30)
+            return null;
         //System.out.println("INFO in Clausifier.distributeAndOverOrRecurse(): " + KIF.format(form.toKIFString()) + " " + changed);
         BareFormula result = form.deepCopy();
         if (form.child1 != null)
@@ -635,7 +638,8 @@ public class Clausifier {
     /** ***************************************************************
      */
     public static ArrayList<Clause> clausify(BareFormula bf) {
-    
+
+        startTime = System.currentTimeMillis();
         BareFormula result = bf.deepCopy();
         //System.out.println("Clausifier.clausify(): formulaOpSimplify with " + result);
         BareFormula newresult = SmallCNFization.formulaOpSimplify(result);
