@@ -7,12 +7,15 @@ import java.util.*;
  *  candidates (a set of clause and literal index pairs) for a given
  *  query literal. The returned literal occurrences have the opposite
  *  polarity of the query literal and the same top symbol (i.e. we
- *  implement a simple version of top symbol hashing).
+ *  implement a simple version of top symbol hashing - "top symbol" is
+ *  the predicate name).
  */
 public class ResolutionIndex extends Index {
 
-    public HashMap<String,HashSet<Literal>> posIdx = new HashMap();
-    public HashMap<String,HashSet<Literal>> negIdx = new HashMap();
+    // the key is the relation symbol
+    // the value is the set of
+    public HashMap<String,HashSet<KVPair>> posIdx = new HashMap();
+    public HashMap<String,HashSet<KVPair>> negIdx = new HashMap();
 
     /** ***************************************************************
      * We use separate Maps for mapping predicate symbols to
@@ -24,65 +27,94 @@ public class ResolutionIndex extends Index {
 
     /** ***************************************************************
      */
-    public void insertData(HashMap<String,HashSet<Literal>> idx,
-                           String topsymbol, Literal payload) {
+    public String toString() {
+
+        return "posIdx: " + posIdx + "\nnegIdx: " + negIdx + "\n";
+    }
+
+    /** ***************************************************************
+     * Insert the payload into the provided index, associating it
+     * with the given top symbol (i.e. the predicate symbol of the
+     * indexed literal). The payload here is a tuple (clause, pos),
+     * where pos is the position of the indexed literal in the clause
+     * (counting from 0).
+     */
+    public void insertData(HashMap<String,HashSet<KVPair>> idx,
+                           String topsymbol, KVPair payload) {
 
         if (!idx.containsKey(topsymbol))
             idx.put(topsymbol, new HashSet<>());
-        HashSet<Literal> existing = idx.get(topsymbol);
+        HashSet<KVPair> existing = idx.get(topsymbol);
         existing.add(payload);
     }
 
     /** ***************************************************************
+     * Remove a payload indexed at topsymbol from the provided
+     * index
      */
-    public void removeData(HashMap<String,HashSet<Literal>> idx,
-                           String topsymbol, Literal payload) {
+    public void removeData(HashMap<String,HashSet<KVPair>> idx,
+                           String topsymbol, KVPair payload) {
 
+        System.out.println("removeData(): removing " + payload + " with " + topsymbol + " from " + idx);
         if (idx.containsKey(topsymbol)) {
-            HashSet<Literal> existing = idx.get(topsymbol);
+            HashSet<KVPair> existing = idx.get(topsymbol);
+            System.out.println("removeData(): removing " + payload + " from " + existing);
             existing.remove(payload);
+            System.out.println("removeData(): after remove " + existing);
         }
+        System.out.println("removeData(): removed " + payload + " from " + idx);
     }
 
     /** ***************************************************************
+     * Insert all inference literals of clause into the appropriate
+     * index (positive or negative, depending on the sign of the
+     * literal).
      */
     public void insertClause(Clause clause) {
 
-        for (Literal lit : clause.literals) {
+        for (int i = 0; i < clause.literals.size(); i++) {
+            Literal lit = clause.literals.get(i);
             if (lit.isInferenceLit()) {
                 if (lit.isPositive())
-                    insertData(posIdx, lit.atom.getFunc(), lit);
+                    insertData(posIdx, lit.atom.getFunc(), new KVPair(clause,i));
                 else
-                   insertData(negIdx, lit.atom.getFunc(), lit);
+                    insertData(negIdx, lit.atom.getFunc(), new KVPair(clause,i));
             }
         }
     }
 
     /** ***************************************************************
+     * Remove all inference literals of the clause from the index.
      */
     public void removeClause(Clause clause) {
 
-        for (Literal lit : clause.literals) {
+        for (int i = 0; i < clause.literals.size(); i++) {
+            Literal lit = clause.literals.get(i);
+            System.out.println("removeClause(): lit: " + lit + " topsymbol: " + lit.atom.getFunc());
             if (lit.isInferenceLit()) {
                 if (lit.isPositive())
-                    removeData(posIdx, lit.atom.getFunc(), lit);
+                    removeData(posIdx, lit.atom.getFunc(), new KVPair(clause,i));
                 else
-                    removeData(negIdx, lit.atom.getFunc(), lit);
+                    removeData(negIdx, lit.atom.getFunc(), new KVPair(clause,i));
             }
         }
     }
 
     /** ***************************************************************
+     * Return a list of resolution candidates for lit. Every
+     * candidate is a pair (clause, pos), where pos is the position
+     * of the literal that potentially unifies with lit (and has the
+     * opposite sign).
      */
-    public HashSet<Literal> getResolutionLiterals(Literal lit) {
+    public HashSet<KVPair> getResolutionLiterals(Literal lit) {
 
-        HashMap<String, HashSet<Literal>> idx = null;
+        HashMap<String, HashSet<KVPair>> idx = null;
         if (lit.isPositive())
             idx = negIdx;
         else
             idx = posIdx;
         if (idx.containsKey(lit.atom.getFunc()))
-            return new HashSet<Literal>(idx.get(lit.atom.getFunc()));
+            return new HashSet<KVPair>(idx.get(lit.atom.getFunc()));
         else
             return new HashSet<>();
     }

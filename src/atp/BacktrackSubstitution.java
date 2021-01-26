@@ -42,8 +42,8 @@ public class BacktrackSubstitution extends Substitutions {
          * should never be called so throw an error.
          */   
         public int hashCode() {
-            assert false : "BacktrackSubstitutions$Binding.hashCode not designed";
-            return 0;
+
+            return key.hashCode() + value.hashCode();
         }        
     }
     
@@ -91,8 +91,11 @@ public class BacktrackSubstitution extends Substitutions {
      * should never be called so throw an error.
      */   
     public int hashCode() {
-        assert false : "BacktrackSubstitutions.hashCode not designed";
-        return 0;
+
+        int result = 0;
+        for (Binding b : bindings)
+            result += b.hashCode();
+        return result;
     }
     
     /** ***************************************************************

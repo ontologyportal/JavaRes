@@ -176,8 +176,22 @@ public class Literal {
      */
     public int hashCode() {
 
-        assert false : "Literal.hashCode not designed";
-        return 0;
+        return atom.hashCode() + (negated ? 1 : 0);
+    }
+
+    /** ***************************************************************
+     */
+    public int compareTo(Object o) {
+
+        System.out.println("Literal.compareTo(): " + o.getClass().getName());
+        if (!o.getClass().getName().equals("atp.Literal"))
+            throw new ClassCastException();
+        Literal l = (Literal) o;
+        if (this.equals(l))
+            return 0;
+        if (this.atom.equals(l.atom) && this.negated != l.negated)
+            return (this.negated == false) ? -1 : 1;
+        return atom.compareTo(l.atom);
     }
 
     /***************************************************************

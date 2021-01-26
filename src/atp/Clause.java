@@ -39,7 +39,7 @@ import java.util.*;
 
 /** ***************************************************************
 */
-public class Clause extends Derivable {
+public class Clause extends Derivable implements Comparable {
 
     public static int clauseIDcounter = 0;
     public ArrayList<Literal> literals = new ArrayList<Literal>(); 
@@ -52,7 +52,7 @@ public class Clause extends Derivable {
     public ArrayList<Integer> evaluation = null;                 // Must be the same order as clause evaluation 
                                                                  // function list in EvalStructure.
     public Substitutions subst = new Substitutions();            // The substitutions that support any derived clause.
-    public TreeSet<PredAbstractionPair> predicateAbstraction = null;
+    public ArrayList<PredAbstractionPair> predicateAbstraction = null;
 
     /** ***************************************************************
      */
@@ -243,13 +243,34 @@ public class Clause extends Derivable {
     }
     
     /** ***************************************************************
-     * should never be called so throw an error.
      */   
     public int hashCode() {
-        assert false : "Clause not designed";
+
+        int result = 0;
+        for (Literal l : literals)
+            result += l.hashCode();
+        result += name.hashCode();
+        return result;
+    }
+
+    /** ***************************************************************
+     */
+    public int compareTo(Object o) {
+
+        System.out.println("Clause.compareTo(): " + o.getClass().getName());
+        if (!o.getClass().getName().equals("atp.Clause"))
+            throw new ClassCastException();
+        Clause c = (Clause) o;
+        if (this.equals(c))
+            return 0;
+        if (literals.size() != c.literals.size())
+            return (literals.size() > c.literals.size()) ? 1 : -1;
+        for (int i = 0; i < literals.size(); i++)
+            if (!literals.get(i).equals(c.literals.get(i)))
+                return literals.get(i).compareTo(c.literals.get(i));
         return 0;
     }
-    
+
     /** ***************************************************************
      */
     public int length() {
@@ -495,13 +516,14 @@ public class Clause extends Derivable {
      * q > p). We will use this later to implement a simple
      * subsumption index.
      */
-    public TreeSet<PredAbstractionPair> predicateAbstraction() {
+    public ArrayList<PredAbstractionPair> predicateAbstraction() {
 
         if (predicateAbstraction != null)
             return predicateAbstraction;
-        TreeSet<PredAbstractionPair> res = new TreeSet<>();
+        ArrayList<PredAbstractionPair> res = new ArrayList<>();
         for (Literal l : literals)
             res.add(l.predicateAbstraction());
+        res.sort(new SubsumptionIndex.PAComparator());
         return res;
     }
 

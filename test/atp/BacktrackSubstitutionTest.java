@@ -84,6 +84,8 @@ public class BacktrackSubstitutionTest {
         boolean res = false;
         if (noRec)
             res = sigma.match_norec(s,t);
+        else
+            res = sigma.match(s,t);
         if (success_expected) {
             if (!res) {
                 System.out.println("failure");
@@ -93,11 +95,15 @@ public class BacktrackSubstitutionTest {
                 System.out.println("failure");
                 assertEquals(t,sigma.apply(s));
             }
-            System.out.println("match_test(): " + sigma.apply(s) + " " + t + " " + sigma);
+            System.out.println("match_test(): success: " + sigma.apply(s) + " " + t + " " + sigma);
         }
         else {
-            if (res)
-                System.out.println("Failure");
+            if (res) {
+                System.out.println("Failure: found a false match: " + res);
+                assertTrue(false);
+            }
+            else
+                System.out.println("match_test(): success - no match found, as expected");
         }
     }
 

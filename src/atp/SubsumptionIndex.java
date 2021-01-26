@@ -22,34 +22,48 @@ public class SubsumptionIndex extends Index {
      * the predicate abstraction in each clause, so it's essentially a
      * bidirectional map
      */
-    public HashMap<TreeSet<PredAbstractionPair>,HashSet<Clause>> predAbstrMap = new HashMap<>();
-    public ArrayList<TreeSet<PredAbstractionPair>> predAbstrArr = new ArrayList<>();
+    public HashMap<ArrayList<PredAbstractionPair>,HashSet<Clause>> predAbstrMap = new HashMap<>();
+    public ArrayList<ArrayList<PredAbstractionPair>> predAbstrArr = new ArrayList<>();
+
+    public static class LengthComparator implements Comparator<ArrayList<PredAbstractionPair>> {
+        @Override
+        public int compare(ArrayList<PredAbstractionPair> a1, ArrayList<PredAbstractionPair> a2) {
+            return a1.size() < a2.size() ? -1 : a1.size() == a2.size() ? 0 : 1;
+        }
+    }
+
+    public static class PAComparator implements Comparator<PredAbstractionPair> {
+        @Override
+        public int compare(PredAbstractionPair pap1, PredAbstractionPair pap2) {
+            return pap1.compareTo(pap2);
+        }
+    }
 
     /** ***************************************************************
      * Insert a clause into the index. If the predicate abstraction
      * already is stored, just add the clause to the associated set
      * of clauses. Otherwise, create a new entry for the pa and add
      * the clause.
+     *
+     * For example, the
+     *    predicate abstraction of p(x)|~q(Y)|q(a) would be
+     *    ((False, q), (True, p), (True, q))
      */
     public void insertClause(Clause clause) {
 
-        TreeSet<PredAbstractionPair> pa = clause.predicateAbstraction();
+        ArrayList<PredAbstractionPair> pa = clause.predicateAbstraction();
+        pa.sort(new PAComparator());
 
         HashSet<Clause> entry = null;
         if (predAbstrMap.containsKey(pa))
             entry = predAbstrMap.get(pa);
-        else {
+        else {  // array and map are kept in sync so this means that array has this entry
             entry = new HashSet<>();
             predAbstrMap.put(pa, entry);
-            int l = pa.size();
-            int i = 0;
-            for (TreeSet<PredAbstractionPair> ts : predAbstrArr)
-                if (ts. size() >= l)
-                    continue;
-                i = i + 1;
-            predAbstrArr.set(i, (pa));
-            entry.add(clause);
+            predAbstrArr.add(pa);
         }
+        entry.add(clause);
+        predAbstrArr.sort(new LengthComparator());
     }
 
     /** ***************************************************************
@@ -60,7 +74,7 @@ public class SubsumptionIndex extends Index {
      */
     public void removeClause(Clause clause) {
 
-        TreeSet<PredAbstractionPair> pa = clause.predicateAbstraction();
+        ArrayList<PredAbstractionPair> pa = clause.predicateAbstraction();
         HashSet<Clause> clauses = predAbstrMap.get(pa);
         clauses.remove(clause);
     }
@@ -71,7 +85,10 @@ public class SubsumptionIndex extends Index {
      */
     public boolean isIndexed(Clause clause) {
 
-        TreeSet<PredAbstractionPair> pa = clause.predicateAbstraction();
+        System.out.println("isIndexed(): " + clause);
+        System.out.println("isIndexed(): index: " + predAbstrMap);
+        ArrayList<PredAbstractionPair> pa = clause.predicateAbstraction();
+        System.out.println("isIndexed(): pa: " + pa);
         if (predAbstrMap.containsKey(pa))
             return predAbstrMap.get(pa).contains(clause);
         return false;
@@ -85,13 +102,13 @@ public class SubsumptionIndex extends Index {
      */
     public ArrayList<Clause> getSubsumingCandidates(Clause queryclause) {
 
-        TreeSet<PredAbstractionPair> pa = queryclause.predicateAbstraction();
+        ArrayList<PredAbstractionPair> pa = queryclause.predicateAbstraction();
         int pa_len = pa.size();
         ArrayList<Clause> res = new ArrayList<>();
-        for (TreeSet<PredAbstractionPair> cpa : predAbstrArr) {
+        for (ArrayList<PredAbstractionPair> cpa : predAbstrArr) {
             if (cpa.size() > pa_len)
                 break;
-            if (predAbstractionIsSubSequence(cpa, pa)) {
+            if (PredAbstractionPair.predAbstractionIsSubSequence(cpa, pa)) {
                 res.addAll(predAbstrMap.get(cpa));
             }
         }
@@ -104,37 +121,16 @@ public class SubsumptionIndex extends Index {
      */
     public ArrayList<Clause> getSubsumedCandidates(Clause queryclause) {
 
-        TreeSet<PredAbstractionPair> pa = queryclause.predicateAbstraction();
+        ArrayList<PredAbstractionPair> pa = queryclause.predicateAbstraction();
         int pa_len = pa.size();
         ArrayList<Clause> res = new ArrayList<>();
-        for (TreeSet<PredAbstractionPair> cpa : predAbstrArr) {
+        for (ArrayList<PredAbstractionPair> cpa : predAbstrArr) {
             if (cpa.size() < pa_len)
                 continue;
-            if (predAbstractionIsSubSequence(pa, cpa))
+            if (PredAbstractionPair.predAbstractionIsSubSequence(pa, cpa))
                 res.addAll(predAbstrMap.get(cpa));
 
         }
         return res;
-    }
-
-    /** ***************************************************************
-     * Check if candidate is a subsequence of superseq. That is a
-     * necessary condition for the clause that produced candidate to
-     * subsume the clause that produced superseq.
-     */
-    public boolean predAbstractionIsSubSequence(TreeSet<PredAbstractionPair> candidate,
-                                                TreeSet<PredAbstractionPair> superseq) {
-
-        int i = 0;
-        int end = superseq.size();
-        for (PredAbstractionPair la : candidate) {
-            while (superseq.toArray()[i] != la) {
-                i = i + 1;
-                if (i >= superseq.size())
-                    return false;
-            }
-            i = i + 1;
-        }
-        return true;
     }
 }

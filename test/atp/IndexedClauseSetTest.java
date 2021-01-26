@@ -40,14 +40,14 @@ public class IndexedClauseSetTest {
 
         System.out.println("---------------------");
         ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
-        System.out.println("testClauseSetChanges() clauses: \n" + clauses);
+        System.out.println("testIndexedClauseSetChanges() clauses: \n" + clauses);
         IndexedClauseSet iclauses = new IndexedClauseSet(clauses);
-        System.out.println(iclauses);
+        System.out.println("Indexed clauses: " + iclauses);
         int oldlen = iclauses.clauses.size();
         Clause c = iclauses.clauses.get(0);
         clauses.extractClause(c);
         assertEquals(iclauses.clauses.size(), oldlen-1);
         Signature sig = clauses.collectSig();
-        System.out.println(sig);
+        System.out.println("Signature: " + sig);
     }
 }

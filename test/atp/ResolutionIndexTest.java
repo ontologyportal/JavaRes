@@ -37,7 +37,6 @@ public class ResolutionIndexTest {
     public static Clause c8 = null;
     public static Clause c9 = null;
 
-
     /** ***************************************************************
      */
     @BeforeClass
@@ -71,38 +70,43 @@ public class ResolutionIndexTest {
     @Test
     public void testResolutionInsertRemove() {
 
+        System.out.println("-------------------------------");
+        System.out.println("testResolutionInsertRemove()");
         ResolutionIndex index = new ResolutionIndex();
         index.insertClause(c1);
         index.insertClause(c2);
 
+        System.out.println("posIdx: " + index.posIdx);
         assertEquals(index.posIdx.size(), 1);
         assertEquals(index.posIdx.get("p").size(), 3);
-        System.out.println(index.posIdx);
+        System.out.println("negIdx: " + index.negIdx);
         assertEquals(index.negIdx.size(), 1);
         assertEquals(index.negIdx.get("p").size(), 1);
-        System.out.println(index.negIdx);
 
         index.insertClause(c3);
         System.out.println("Insert " + c3);
+        System.out.println("posIdx: " + index.posIdx);
         assertEquals(index.posIdx.size(), 2);
         assertEquals(index.posIdx.get("p").size(), 3);
-        System.out.println(index.posIdx);
+        assertEquals(index.posIdx.get("q").size(), 1);
+
+        System.out.println("negIdx: " + index.negIdx);
         assertEquals(index.negIdx.size(), 2);
         assertEquals(index.negIdx.get("p").size(), 1);
         assertEquals(index.negIdx.get("q").size(), 1);
-        assertEquals(index.posIdx.get("q").size(), 1);
-        System.out.println(index.negIdx);
 
         index.removeClause(c3);
         System.out.println("Removed " + c3);
+        System.out.println("posIdx: " + index.posIdx);
+        System.out.println("negIdx: " + index.negIdx);
         assertEquals(index.posIdx.size(), 2);
         assertEquals(index.posIdx.get("p").size(), 3);
-        System.out.println(index.posIdx);
+        assertEquals(index.posIdx.get("q").size(), 0);
+
+        System.out.println("negIdx: " + index.negIdx);
         assertEquals(index.negIdx.size(), 2);
         assertEquals(index.negIdx.get("p").size(), 1);
         assertEquals(index.negIdx.get("q").size(), 0);
-        assertEquals(index.posIdx.get("q").size(), 0);
-        System.out.println(index.negIdx);
     }
 
     /** ***************************************************************
@@ -111,36 +115,42 @@ public class ResolutionIndexTest {
     @Test
     public void testResolutionRetrieval() {
 
+        System.out.println("-------------------------------");
+        System.out.println("testResolutionRetrieval()");
+
         ResolutionIndex index = new ResolutionIndex();
         index.insertClause(c1);
         index.insertClause(c2);
         index.insertClause(c3);
         index.insertClause(c4);
         index.insertClause(c5);
-/*
+
         Literal lit = c6.getLiteral(0);
-        HashSet<Literal> cands = index.getResolutionLiterals(lit);
-        System.out.println(cands);
-        assertTrue(cands.size(), 7);
-        for (Literal i : cands) {
-            l = c.getLiteral(i);
+        HashSet<KVPair> cands = index.getResolutionLiterals(lit);
+        System.out.println("literal: " + lit);
+        System.out.println("index: " + index);
+        System.out.println("resolution literals: " + cands);
+        System.out.println("expected size: " + 8);
+        assertEquals(cands.size(), 8);
+        for (KVPair kvp : cands) {
+            Literal l = kvp.c.getLiteral(kvp.value);
             assertEquals(l.isNegative(), !lit.isNegative());
-            assertEquals(l.atom.getFunc, lit.atom.getFunc());
+            assertEquals(l.atom.getFunc(), lit.atom.getFunc());
         }
         lit = c7.getLiteral(0);
         cands = index.getResolutionLiterals(lit);
         System.out.println(cands);
-        assertTrue(cands.size(), 3);
-        for (c, i) in cands {
-            l = c.getLiteral(i);
+        assertEquals(cands.size(), 3);
+        for (KVPair kvp : cands) {
+            Literal l = kvp.c.getLiteral(kvp.value);
             assertEquals(l.isNegative(), !lit.isNegative());
-            assertEquals(l.atom.getFunc, lit.atom.getFunc());
+            assertEquals(l.atom.getFunc(), lit.atom.getFunc());
         }
         lit = c8.getLiteral(0);
         cands = index.getResolutionLiterals(lit);
         System.out.println(cands);
-        assertEquals(cands,null);
-        */
+        assertEquals(cands.size(),0);
+
 
     }
 }

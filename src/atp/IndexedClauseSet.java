@@ -65,7 +65,7 @@ public class IndexedClauseSet extends ClauseSet {
     /**************************************************************
      * Overwrite the original function with one based on indexing.
      */
-    public HashSet<Literal> getResolutionLiterals(Literal lit) {
+    public HashSet<KVPair> getResolutionLiterals(Literal lit) {
 
         return resIndex.getResolutionLiterals(lit);
     }

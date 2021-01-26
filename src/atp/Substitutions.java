@@ -158,8 +158,8 @@ public class Substitutions {
      * should never be called so throw an error.
      */   
     public int hashCode() {
-        assert false : "Substitutions.hashCode not designed";
-        return 0;
+
+        return subst.hashCode();
     }
     
     /** ***************************************************************
