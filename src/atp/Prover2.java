@@ -251,7 +251,7 @@ public class Prover2 {
                         continue;
                     }
                     ClauseSet conjectures = new ClauseSet();
-                    conjectures.add(ps.conjecture);
+                    conjectures.addClause(ps.conjecture);
                     printStateResults(opts,ps,conjectures);
                 }
             }

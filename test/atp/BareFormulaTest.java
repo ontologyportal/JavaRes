@@ -66,12 +66,12 @@ public class BareFormulaTest {
         String formstr = "![X]:(a(x) | ~a=b)";
         try {
             System.out.println("-----------------------------------------");
-            System.out.println("INFO in BareFormula.testParse()");
+            System.out.println("INFO in BareFormulaTest.testParse()");
             Lexer lex = new Lexer(formstr);
             System.out.println("Parsing formula: " + formstr);
             BareFormula f1 = BareFormula.parse(lex);
             f1 = f1.promoteChildren();
-            System.out.println("INFO in BareFormula.testParse(): f1: " + f1.toStructuredString());
+            System.out.println("INFO in BareFormulaTest.testParse(): f1: " + f1.toStructuredString());
             System.out.println("op should be !: " + f1.op);
             assertTrue(f1.op.equals("!"));
             System.out.println("f1.lit1 != null should be true: " + f1.lit1);
@@ -87,7 +87,7 @@ public class BareFormulaTest {
             assertTrue(f1.child2.lit2 != null);
         }
         catch (Exception e) {
-            System.out.println("Error in BareFormula.testParse()");
+            System.out.println("Error in BareFormulaTest.testParse()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -100,20 +100,20 @@ public class BareFormulaTest {
     public void testNakedFormula() {
 
         try {
-            System.out.println("INFO in BareFormula.testNakedFormula()");
+            System.out.println("INFO in BareFormulaTest.testNakedFormula()");
             Lexer lex = new Lexer(nformulas);
             System.out.println("Parsing formula: " + nformulas);
             BareFormula f1 = BareFormula.parse(lex);
-            System.out.println("INFO in BareFormula.testNakedFormula(): f1: " + f1);
+            System.out.println("INFO in BareFormulaTest.testNakedFormula(): f1: " + f1);
             System.out.println();
 
             //st.pushBack();
             BareFormula f2 = BareFormula.parse(lex);
-            System.out.println("INFO in BareFormula.testNakedFormula(): f2: " + f2);
+            System.out.println("INFO in BareFormulaTest.testNakedFormula(): f2: " + f2);
             System.out.println();
             //st.pushBack();
             BareFormula f3 = BareFormula.parse(lex);
-            System.out.println("INFO in BareFormula.testNakedFormula(): f3: " + f3);
+            System.out.println("INFO in BareFormulaTest.testNakedFormula(): f3: " + f3);
             System.out.println();
             System.out.println("all should be true:");
             System.out.println(f2 + " should be equal " + f3 + ":" + f2.equals(f3));
@@ -126,7 +126,7 @@ public class BareFormulaTest {
             assertNotEquals(f2.toString(),f1.toString());
         }
         catch (Exception e) {
-            System.out.println("Error in BareFormula.testNakedFormula()");
+            System.out.println("Error in BareFormulaTest.testNakedFormula()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -164,7 +164,7 @@ public class BareFormulaTest {
             assertEquals(expected,actual);
         }
         catch (Exception e) {
-            System.out.println("Error in BareFormula.testNakedFormula()");
+            System.out.println("Error in BareFormulaTest.testNakedFormula()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

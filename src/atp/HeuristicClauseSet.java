@@ -57,7 +57,7 @@ public class HeuristicClauseSet extends ClauseSet {
     	else {
 	        ArrayList<Integer> evals = eval_functions.evaluate(clause);
 	        clause.addEval(evals);
-	        super.add(clause);
+	        super.addClause(clause);
     	}
     }
     

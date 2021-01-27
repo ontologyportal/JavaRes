@@ -11,6 +11,7 @@ import org.junit.runners.Suite;
         ClauseSetTest.class,
         ClauseTest.class,
         ClausifierTest.class,
+        EqAxiomsTest.class,
         FormulaTest.class,
         HeuristicClauseSetTest.class,
         IndexedClauseSetTest.class,

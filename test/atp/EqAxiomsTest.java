@@ -38,7 +38,7 @@ public class EqAxiomsTest {
     @Test
     public void testEquivAxioms() {
 
-        System.out.println("INFO in EqAxioms.testEquivAxioms(): all should be true");
+        System.out.println("INFO in EqAxiomsTest.testEquivAxioms(): all should be true");
         ArrayList<Clause> ax = EqAxioms.generateEquivAxioms();
         System.out.println(ax);
         System.out.println(ax.size() == 3);
@@ -51,7 +51,7 @@ public class EqAxiomsTest {
     @Test
     public void testVarStuff() {
 
-        System.out.println("INFO in EqAxioms.testVarStuff(): all should be true");
+        System.out.println("INFO in EqAxiomsTest.testVarStuff(): all should be true");
         String vars = EqAxioms.generateVarList("X", 4);
         System.out.println(vars.indexOf("X1") >= 0);
         assertTrue(vars.indexOf("X1") >= 0);
@@ -77,7 +77,7 @@ public class EqAxiomsTest {
     @Test
     public void testCompatibility() {
 
-        System.out.println("INFO in EqAxioms.testCompatibility(): all should be true");
+        System.out.println("INFO in EqAxiomsTest.testCompatibility(): all should be true");
         Clause ax = EqAxioms.generateFunCompatAx("f", 3);
         System.out.println(ax.literals.size() == 4);
         assertEquals(4,ax.literals.size());

@@ -88,6 +88,7 @@ public class ResolutionIndex extends Index {
      */
     public void removeClause(Clause clause) {
 
+        System.out.println("removeClause(): clause: " + clause);
         for (int i = 0; i < clause.literals.size(); i++) {
             Literal lit = clause.literals.get(i);
             System.out.println("removeClause(): lit: " + lit + " topsymbol: " + lit.atom.getFunc());
@@ -108,13 +109,17 @@ public class ResolutionIndex extends Index {
      */
     public HashSet<KVPair> getResolutionLiterals(Literal lit) {
 
+        System.out.println("ResolutionIndex.getResolutionLiterals(): lit: " + lit);
         HashMap<String, HashSet<KVPair>> idx = null;
         if (lit.isPositive())
             idx = negIdx;
         else
             idx = posIdx;
-        if (idx.containsKey(lit.atom.getFunc()))
-            return new HashSet<KVPair>(idx.get(lit.atom.getFunc()));
+        if (idx.containsKey(lit.atom.getFunc())) {
+            HashSet<KVPair> result = new HashSet<KVPair>(idx.get(lit.atom.getFunc()));
+            System.out.println("ResolutionIndex.getResolutionLiterals(): result: " + result);
+            return result;
+        }
         else
             return new HashSet<>();
     }

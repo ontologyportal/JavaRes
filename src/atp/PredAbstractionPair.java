@@ -45,7 +45,7 @@ public class PredAbstractionPair implements Comparable {
     @Override
     public boolean equals(Object o) {
 
-        System.out.println("KVPair.equals(): " + o.getClass().getName());
+        //System.out.println("PredAbstractionPair.equals(): " + o.getClass().getName());
         if (!o.getClass().getName().equals("atp.PredAbstractionPair"))
             throw new ClassCastException();
         PredAbstractionPair pap = (PredAbstractionPair) o;

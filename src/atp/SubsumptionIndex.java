@@ -85,10 +85,10 @@ public class SubsumptionIndex extends Index {
      */
     public boolean isIndexed(Clause clause) {
 
-        System.out.println("isIndexed(): " + clause);
-        System.out.println("isIndexed(): index: " + predAbstrMap);
+        //System.out.println("isIndexed(): " + clause);
+        //System.out.println("isIndexed(): index: " + predAbstrMap);
         ArrayList<PredAbstractionPair> pa = clause.predicateAbstraction();
-        System.out.println("isIndexed(): pa: " + pa);
+        //System.out.println("isIndexed(): pa: " + pa);
         if (predAbstrMap.containsKey(pa))
             return predAbstrMap.get(pa).contains(clause);
         return false;

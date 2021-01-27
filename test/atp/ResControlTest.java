@@ -66,13 +66,21 @@ public class ResControlTest {
     @Test
     public void testSetResolution() {
 
+        System.out.println("---------------------");
         System.out.println("ResControl.testSetResolution()");
         ClauseSet res = ResControl.computeAllResolvents(conj,cset);
-        String result = res.toString();
-        String expected = "cnf(c4,plain,a|b).\ncnf(c5,plain,b).\ncnf(c6,plain,$false).\n";
+        //String result = res.toString();
+        String expectedStr = "cnf(c4,plain,a|b).\ncnf(c5,plain,b).\ncnf(c6,plain,$false).\n";
+        Lexer lex = new Lexer(expectedStr);
+        ClauseSet expected = new ClauseSet();
+        expected.parse(lex);
         System.out.println("Should see: " + expected);
         System.out.println("Result: " + res);
-        assertEquals(expected,result);
+        if (expected.equals(res))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,res);
     }
 
     /** ***************************************************************
@@ -81,6 +89,7 @@ public class ResControlTest {
     @Test
     public void testFactoring() {
 
+        System.out.println("---------------------");
         System.out.println("testFactoring()");
         ClauseSet res = ResControl.computeAllFactors(fclause);
         String expected = "cnf(c0,plain,p(a)|~q|p(Y)).\ncnf(c1,plain,p(Y)|~q|p(a)).\ncnf(c2,plain,p(X)|~q|p(a)|p(Y)).\ncnf(c3,plain,p(X)|~q|p(a)).\n";
@@ -88,6 +97,10 @@ public class ResControlTest {
         String result = res.toString();
 
         System.out.println("Result: " + res);
+        if (expected.equals(result))
+            System.out.println("success");
+        else
+            System.out.println("fail");
         assertEquals(expected,result);
     }
 }

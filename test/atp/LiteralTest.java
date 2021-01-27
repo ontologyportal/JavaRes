@@ -70,46 +70,46 @@ public class LiteralTest {
         KIF.init();
         Lexer lex = new Lexer(input1);
 
-        System.out.println("INFO in Literal.setup(): input: " + input1);
+        System.out.println("INFO in LiteralTest.setup(): input: " + input1);
         a1 = new Literal();
         a1 = a1.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a1: " + a1);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a1: " + a1);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a2 = new Literal();
         a2 = a2.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a2: " + a2);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a2: " + a2);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a3 = new Literal();
         a3 = a3.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a3: " + a3);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a3: " + a3);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a4 = new Literal();
         a4 = a4.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a4: " + a4);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a4: " + a4);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a5 = new Literal();
         a5 = a5.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a5: " + a5);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a5: " + a5);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a6 = new Literal();
         a6 = a6.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a6: " + a6);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a6: " + a6);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a7 = new Literal();
         a7 = a7.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a7: " + a7);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a7: " + a7);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
 
         a8 = new Literal();
         a8 = a8.parseLiteral(lex);
-        System.out.println("INFO in Literal.setup(): finished parsing a8: " + a8);
-        System.out.println("INFO in Literal.setup(): pointing at token: " + lex.literal);
+        System.out.println("INFO in LiteralTest.setup(): finished parsing a8: " + a8);
+        System.out.println("INFO in LiteralTest.setup(): pointing at token: " + lex.literal);
     }
 
     /** ***************************************************************

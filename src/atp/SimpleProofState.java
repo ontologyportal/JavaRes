@@ -69,12 +69,12 @@ public class SimpleProofState {
 
         newClauses.addAll(resolvents);
 
-        processed.add(given_clause);
+        processed.addClause(given_clause);
         //System.out.println("INFO in SimpleProofState.processClause(): processed clauses: " + processed);
 
         for (int i = 0; i < newClauses.length(); i++) {
             Clause c = newClauses.get(i);
-            unprocessed.add(c);
+            unprocessed.addClause(c);
         }
         return null;
     }

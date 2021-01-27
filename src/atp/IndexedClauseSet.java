@@ -37,18 +37,21 @@ public class IndexedClauseSet extends ClauseSet {
 
         resIndex = new ResolutionIndex();
         subIndex = new SubsumptionIndex();
-        new ClauseSet(clauses.clauses);
+        for (Clause c : clauses.clauses)
+            this.addClause(new Clause(c));
     }
 
     /*************************************************************
      * Add the clause to the indices, then use the superclass
      * function to add it to the actual set.
      */
+    @Override
     public void addClause(Clause clause) {
 
+        System.out.println("IndexedClauseSet.addClause(): adding clause: " + clause);
         resIndex.insertClause(clause);
         subIndex.insertClause(clause);
-        super.add(clause);
+        super.addClause(clause);
     }
 
     /**************************************************************
@@ -67,6 +70,7 @@ public class IndexedClauseSet extends ClauseSet {
      */
     public HashSet<KVPair> getResolutionLiterals(Literal lit) {
 
+        System.out.println("IndexedClauseSet.getResolutionLiterals(): lit: " + lit);
         return resIndex.getResolutionLiterals(lit);
     }
 

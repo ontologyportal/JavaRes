@@ -39,6 +39,7 @@ public class ClauseTest {
     public static String str5 = "";
     public static String str6 = "";
     public static String str7 = "";
+    public static String str8 = "";
 
     public static Clause c1 = null;
     public static Clause c2 = null;
@@ -47,6 +48,7 @@ public class ClauseTest {
     public static Clause c5 = null;
     public static Clause c6 = null;
     public static Clause c7 = null;
+    public static Clause c8 = null;
 
     /** ***************************************************************
      *  Setup function for clause/literal unit tests. Initialize
@@ -62,6 +64,7 @@ public class ClauseTest {
         str5 = "cnf(dup,axiom,p(a)|q(a)|p(a)).";
         str6 = "cnf(c6,axiom,f(f(X1,X2),f(X3,g(X4,X5)))!=f(f(g(X4,X5),X3),f(X2,X1))|k(X1,X1)!=k(a,b)).";
         str7 = "cnf(c7,axiom,f(f(X10,X2),f(X30,g(X4,X5)))!=f(f(g(X4,X5),X30),f(X2,X10))|k(X10,X10)!=k(a,b)).";
+        str8 = "cnf(c8,plain,$false).";
     }
 
     /** ***************************************************************
@@ -72,7 +75,7 @@ public class ClauseTest {
     @Test
     public void testAAAClauses() {
 
-        System.out.println("INFO in Clause.testClauses(): expected results: \n" + str1);
+        System.out.println("INFO in ClauseTest.testClauses(): expected results: \n" + str1);
         System.out.println("results:");
         Lexer lex = new Lexer(str1);
 
@@ -135,7 +138,20 @@ public class ClauseTest {
         System.out.println("c6 normalized: " + c6.normalizeVarCopy());
         System.out.println("c7: " + c7);
         System.out.println("c7 normalized: " + c7.normalizeVarCopy());
+        if (c7.normalizeVarCopy().equals(c6.normalizeVarCopy()))
+            System.out.println("Success");
+        else
+            System.out.println("Failure.");
         assertEquals(c7.normalizeVarCopy(),c6.normalizeVarCopy());
+
+        lex = new Lexer(str8);
+        c8 = Clause.parse(lex);
+        System.out.println("c8: " + c8);
+        if (c8.toString().equals(str8))
+            System.out.println("Success");
+        else
+            System.out.println("Failure.");
+        assertEquals(str8,c8.toString());
     }
 
     /** ***************************************************************
@@ -143,7 +159,7 @@ public class ClauseTest {
     @Test
     public void testWeights() {
 
-        System.out.println("INFO in Clause.testWeights(): ");
+        System.out.println("INFO in ClauseTest.testWeights(): ");
         Clause cf = c1.freshVarCopy();
         assertEquals(cf.weight(2,1), c1.weight(2,1));
         assertEquals(cf.weight(1,1), c1.weight(1,1));

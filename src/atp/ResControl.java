@@ -40,15 +40,12 @@ public class ResControl {
         //System.out.println("computeAllResolvents(): clauseset: " + clauseset);
         ClauseSet res = new ClauseSet();
         for (int lit = 0; lit < clause.length(); lit++) {
-            ArrayList<Clause> clauseres = new ArrayList<Clause>();
-            ArrayList<Integer> indices = new ArrayList<Integer>();
-            clauseset.getResolutionLiterals(clause.getLiteral(lit),clauseres,indices);
-            assert clauseres.size() == indices.size();
+            HashSet<KVPair> reslits = clauseset.getResolutionLiterals(clause.getLiteral(lit));
             //System.out.println("computeAllResolvents(): clauseres: " + clauseres);
-            for (int i = 0; i < clauseres.size(); i++) {               
-                Clause resolvent = Resolution.resolution(clause, lit, clauseres.get(i), indices.get(i).intValue());
+            for (KVPair kvp : reslits) {
+                Clause resolvent = Resolution.resolution(clause, lit, kvp.c, kvp.value);
                 if (resolvent != null)
-                    res.add(resolvent);
+                    res.addClause(resolvent);
             }
         }
         return res;
@@ -68,7 +65,7 @@ public class ResControl {
                 Clause fact = Resolution.factor(clause, i, j);
                 //System.out.println("INFO in ResControl.computeAllFactors(): adding factor: " + fact);
                 if (fact != null)
-                    res.add(fact);
+                    res.addClause(fact);
             }
         }
         return res;

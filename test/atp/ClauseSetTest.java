@@ -31,10 +31,10 @@ public class ClauseSetTest {
     /** ***************************************************************
      */
     @Test
-    public void test1() {
+    public void testParse1() {
 
         System.out.println("---------------------");
-        System.out.println("INFO in test1()");
+        System.out.println("INFO in testParse1()");
         String spec2 = "cnf(humans_are_mortal,axiom,mortal(X)|~human(X)).\n" +
                 "cnf(socrates_is_human,axiom,human(socrates)).\n" +
                 "cnf(is_socrates_mortal,negated_conjecture,~mortal(socrates)).\n";
@@ -46,6 +46,26 @@ public class ClauseSetTest {
         System.out.println("Actual: ");
         System.out.println(problem);
         assertEquals(spec2.toString(),problem.toString());
+        String expectedStr = "cnf(c4,plain,a|b).\ncnf(c5,plain,b).\ncnf(c6,plain,$false).\n";
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testParse2() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in testParse2()");
+        String expectedStr = "cnf(c4,plain,a|b).\ncnf(c5,plain,b).\ncnf(c6,plain,$false).\n";
+        Lexer lex = new Lexer(expectedStr);
+        ClauseSet problem = new ClauseSet();
+        problem.parse(lex);
+        System.out.println("ClauseSet test.  Expected: ");
+        System.out.println(expectedStr);
+        System.out.println("Actual: ");
+        System.out.println(problem);
+        assertEquals(expectedStr,problem.toString());
+
     }
 
     /** ***************************************************************

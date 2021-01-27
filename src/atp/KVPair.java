@@ -13,7 +13,7 @@ public class KVPair implements Comparable {
      */
     public int compareTo(Object o) {
 
-        System.out.println("KVPair.compareTo(): " + o.getClass().getName());
+        //System.out.println("KVPair.compareTo(): " + o.getClass().getName());
         if (!o.getClass().getName().equals("atp.KVPair"))
             throw new ClassCastException();
         KVPair okvp = (KVPair) o;
@@ -32,7 +32,7 @@ public class KVPair implements Comparable {
     @Override
     public boolean equals(Object o) {
 
-        System.out.println("KVPair.equals(): " + o.getClass().getName());
+        //System.out.println("KVPair.equals(): " + o.getClass().getName());
         if (!o.getClass().getName().equals("atp.KVPair"))
             throw new ClassCastException();
         KVPair okvp = (KVPair) o;
@@ -52,6 +52,6 @@ public class KVPair implements Comparable {
     /** ***************************************************************
      */
     public String toString() {
-        return "(" + c.name + "," + value + ")";
+        return "(" + c + "," + value + ")";
     }
 }

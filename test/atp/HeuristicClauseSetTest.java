@@ -128,9 +128,8 @@ public class HeuristicClauseSetTest {
         Literal lit = new Literal();
         StreamTokenizer_s st = new StreamTokenizer_s(new StringReader("p"));
         // !!! lit.parseLiteral(st);
-        cs.getResolutionLiterals(lit, clauseres, indices);
-        System.out.println("clausres: " + clauseres);
-        System.out.println("indices: " + indices);
+        HashSet<KVPair> res = cs.getResolutionLiterals(lit);
+        System.out.println("res: " + res);
         System.out.println();
     }
 }

@@ -145,7 +145,7 @@ public class TestGenerator {
                 System.out.println("# INFO in TestGenerator.processTestFile(): failed to generate seed.");
                 return null;
             }
-            cs.add(c);
+            cs.addClause(c);
             
             ProofState state = new ProofState(cs,evals.get(0)); 
             Prover2.setStateOptions(state,opts);

@@ -43,7 +43,7 @@ public class ClauseSet {
     public ClauseSet(ArrayList<Clause> clauses) {
 
         for (Clause c : clauses)
-            this.clauses.add(new Clause(c));
+            this.addClause(new Clause(c));
     }
 
     /** ***************************************************************
@@ -55,6 +55,23 @@ public class ClauseSet {
         for (int i = 0; i < clauses.size(); i++)
             sb.append(clauses.get(i) + "\n");
        return sb.toString();
+    }
+
+    /** ***************************************************************
+     */
+    public boolean equals(Object o) {
+
+        assert !o.getClass().getName().equals("atp.ClauseSet") : "ClauseSetequals() passed object not of type ClauseSet";
+        ClauseSet oc = (ClauseSet) o;
+        if (clauses.size() != oc.clauses.size())
+            return false;
+        for (Clause clause : oc.clauses)
+            if (!clauses.contains(clause))
+                return false;
+        for (Clause clause : clauses)
+            if (!oc.clauses.contains(clause))
+                return false;
+        return true;
     }
 
     /** ***************************************************************
@@ -78,15 +95,9 @@ public class ClauseSet {
     /** ***************************************************************
      * Add a clause to the clause set.
      */ 
-    public void add(Clause clause) {
+    public void addClause(Clause clause) {
 
         clauses.add(clause);
-    }
-
-    /** ***************************************************************
-     */
-    public void addClause(Index index, Clause clause) throws Exception {
-        throw new Exception("ClauseSet.addClause must be overrideen");
     }
 
     /** ***************************************************************
@@ -94,7 +105,8 @@ public class ClauseSet {
      */ 
     public void addAll(ClauseSet clauseSet) {
 
-        clauses.addAll(clauseSet.clauses);
+        for (Clause c : clauseSet.clauses)
+            addClause(c);
     }
 
     /** ***************************************************************
@@ -102,7 +114,8 @@ public class ClauseSet {
      */ 
     public void addAll(ArrayList<Clause> clauseSet) {
 
-        clauses.addAll(clauseSet);
+        for (Clause c : clauseSet)
+            addClause(c);
     }
 
     /** ***************************************************************
@@ -110,7 +123,8 @@ public class ClauseSet {
      */ 
     public void addAll(HashSet<Clause> clauseSet) {
 
-        clauses.addAll(clauseSet);
+        for (Clause c : clauseSet)
+            addClause(c);
     }
     
     /** ***************************************************************
@@ -151,7 +165,7 @@ public class ClauseSet {
     	Signature sig = new Signature();
         sig = collectSig(sig);
 
-        System.out.println("INFO in ClauseSet.addEqAxioms(): signature: " + sig);
+        //System.out.println("INFO in ClauseSet.addEqAxioms(): signature: " + sig);
         if (sig.isPred("=")) {         
             ArrayList<Clause> res = EqAxioms.generateEquivAxioms();
             res.addAll(EqAxioms.generateCompatAxioms(sig));
@@ -207,7 +221,7 @@ public class ClauseSet {
        
        ClauseSet newcs = new ClauseSet();
        for (int i = 0; i < clauses.size(); i++)
-           newcs.add(clauses.get(i).deepCopy());
+           newcs.addClause(clauses.get(i).deepCopy());
       return newcs;
    }
    
@@ -219,17 +233,16 @@ public class ClauseSet {
      * literal-indices for all clauses.
      * @return a side effect on @param clauseres and @param indices
      */ 
-    public void getResolutionLiterals(Literal lit, ArrayList<Clause> clauseres, ArrayList<Integer> indices) {
+    public HashSet<KVPair> getResolutionLiterals(Literal lit) {
 
-        assert clauseres.size() == 0 : "non empty result variable clauseres passed to ClauseSet.getResolutionLiterals()";
-        assert indices.size() == 0 : "non empty result variable indices passed to ClauseSet.getResolutionLiterals()";
+        HashSet<KVPair> result = new HashSet<>();
         for (int i = 0; i < clauses.size(); i++) {
             Clause c = clauses.get(i);
             for (int j = 0; j < c.length(); j++) {
-                clauseres.add(clauses.get(i));
-                indices.add(new Integer(j));
+                result.add(new KVPair(clauses.get(i),j));
             }
         }
+        return result;
     }
         
     /** ***************************************************************
@@ -252,9 +265,9 @@ public class ClauseSet {
                 e.printStackTrace();
                 return 0;
             }
-
-            if (clause.literals.size() > 0)
-                add(clause);
+            if (lex.type != Lexer.EOFToken) {
+                addClause(clause);
+            }
         }
         return count;
     }

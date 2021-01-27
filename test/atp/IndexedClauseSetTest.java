@@ -45,9 +45,38 @@ public class IndexedClauseSetTest {
         System.out.println("Indexed clauses: " + iclauses);
         int oldlen = iclauses.clauses.size();
         Clause c = iclauses.clauses.get(0);
-        clauses.extractClause(c);
+        iclauses.extractClause(c);
         assertEquals(iclauses.clauses.size(), oldlen-1);
-        Signature sig = clauses.collectSig();
+        Signature sig = iclauses.collectSig();
         System.out.println("Signature: " + sig);
+    }
+
+    /** ***************************************************************
+     * Test the function returning all possible literal positions
+     * of possible resolution partner vie indexing works. The indexed
+     * version should return the clause/position pairs of all
+     * literals with opposite polarity and the same top symbol as the
+     * query literal.
+     */
+    @Test
+    public void testResIndexedPositions() {
+
+        System.out.println("---------------------");
+        ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
+        System.out.println("testResIndexedPositions() clauses: \n" + clauses);
+        IndexedClauseSet iclauses = new IndexedClauseSet(clauses);
+
+        Lexer lexer = new Lexer("hates(X,agatha)");
+        Literal lit = Literal.parseLiteral(lexer);
+        ArrayList<Clause> clauseres = new ArrayList<Clause>();
+        ArrayList<Integer> indices = new ArrayList<>();
+        System.out.println("IndexedClauseSetTest try getResolutionLiterals(): lit: " + lit);
+        HashSet<KVPair> res = iclauses.getResolutionLiterals(lit);
+        System.out.println("Six clauses expected: " + res);
+        if (res.size() == 6)
+            System.out.println("Success");
+        else
+            System.out.println("fail");
+        assertEquals(res.size(), 6);
     }
 }

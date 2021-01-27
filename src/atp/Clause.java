@@ -65,6 +65,8 @@ public class Clause extends Derivable implements Comparable {
 
         for (Literal l : c.literals)
             literals.add(new Literal(l));
+        this.name = c.name;
+        this.type = c.type;
     }
 
     /** ***************************************************************
@@ -232,7 +234,7 @@ public class Clause extends Derivable implements Comparable {
      */
     public boolean equals(Object c_obj) {
        
-        assert !c_obj.getClass().getName().equals("Clause") : "Clause() passed object not of type Clause"; 
+        assert !c_obj.getClass().getName().equals("Clause") : "Clause() passed object not of type Clause";
         Clause c = (Clause) c_obj;
         if (literals.size() != c.literals.size())
             return false;

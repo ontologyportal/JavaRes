@@ -248,7 +248,7 @@ public class FormulaTest {
     public void testProving1() {
 
         System.out.println("---------------------");
-        System.out.println("INFO in testProving1()");
+        System.out.println("INFO in in FormulaTest.testProving1()");
         try {
             String testeq = "fof(axiom1,input,(p(X)=>q(X))). " +
                     "fof(axiom2,input,p(a))." +
@@ -267,7 +267,7 @@ public class FormulaTest {
             assertTrue(result.toString().trim().endsWith("plain,q(a))."));
         }
         catch (Exception e) {
-            System.out.println("Error in testProving1()");
+            System.out.println("Error in in FormulaTest.testProving1()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -279,7 +279,7 @@ public class FormulaTest {
     public void testProving2() {
 
         System.out.println("---------------------");
-        System.out.println("INFO in testProving2()");
+        System.out.println("INFO in FormulaTest.testProving2()");
         try {
             String testeq = "fof(axiom1,input,(p(X)=>q(X))). " +
                     "fof(axiom2,input,p(a))." +
@@ -301,10 +301,10 @@ public class FormulaTest {
                 System.out.println(state);
             else
                 System.out.println("# SZS GaveUp");
-            System.out.println("INFO in testProving2(): done processing");
+            System.out.println("INFO in in FormulaTest.testProving2(): done processing");
         }
         catch (Exception e) {
-            System.out.println("Error in testProving2()");
+            System.out.println("Error in in FormulaTest.testProving2()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

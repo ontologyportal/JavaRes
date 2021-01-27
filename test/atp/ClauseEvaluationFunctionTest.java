@@ -80,7 +80,7 @@ public class ClauseEvaluationFunctionTest {
         int e6 = eval.hEval(c6);
         int e7 = eval.hEval(c7);
         int e8 = eval.hEval(c8);
-        System.out.println("ClauseEvaluationFunction.testFIFO(): Expecting " + e1 + " < " + e2);
+        System.out.println("ClauseEvaluationFunctionTest.testFIFO(): Expecting " + e1 + " < " + e2);
         System.out.println(e2 + " < " + e3);
         System.out.println(e3 + " < " + e4);
         System.out.println(e4 + " < " + e5);
@@ -95,7 +95,7 @@ public class ClauseEvaluationFunctionTest {
         assert e5 < e6;
         assert e6 < e7;
         assert e7 < e8;
-        System.out.println("INFO in ClauseEvaluationFunction.testFIFO() success");
+        System.out.println("INFO in ClauseEvaluationFunctionTest.testFIFO() success");
     }
 
     /** ***************************************************************
@@ -122,7 +122,7 @@ public class ClauseEvaluationFunctionTest {
         assert e6 == c6.weight(2,1);
         assert e7 == c7.weight(2,1);
         assert e8 == c8.weight(2,1);
-        System.out.println("INFO in ClauseEvaluationFunction.testSymbolCount(): success");
+        System.out.println("INFO in ClauseEvaluationFunctionTest.testSymbolCount(): success");
     }
 
     /** ***************************************************************
@@ -146,6 +146,6 @@ public class ClauseEvaluationFunctionTest {
         assert eval_funs.nextEval() == 0;
         assert eval_funs.nextEval() == 0;
         assert eval_funs.nextEval() == 1;
-        System.out.println("INFO in ClauseEvaluationFunction.testEvalStructure() success");
+        System.out.println("INFO in ClauseEvaluationFunctionTest.testEvalStructure() success");
     }
 }

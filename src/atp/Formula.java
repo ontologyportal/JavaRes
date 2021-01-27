@@ -191,7 +191,7 @@ public class Formula {
             Clause clause = new Clause();
             clause = clause.parse(lex);
             //System.out.println("INFO in Formula.command2clauses(): cnf: " + clause);
-            cs.add(clause);
+            cs.addClause(clause);
             return cs; 
         }
         else if (lex.type == Lexer.EOFToken) {

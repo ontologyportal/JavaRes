@@ -78,8 +78,8 @@ public class BacktrackSubstitutionTest {
      */
     public static void match_test(boolean noRec, Term s, Term t, boolean success_expected) {
 
-        System.out.println("INFO in BacktrackSubstitution.match_test(): Trying to match " + s + " onto " + t);
-        System.out.println("INFO in BacktrackSubstitution.match_test(): noRec " + noRec + " success expected " + success_expected);
+        System.out.println("INFO in BacktrackSubstitutionTest.match_test(): Trying to match " + s + " onto " + t);
+        System.out.println("INFO in BacktrackSubstitutionTest.match_test(): noRec " + noRec + " success expected " + success_expected);
         BacktrackSubstitution sigma = new BacktrackSubstitution();
         boolean res = false;
         if (noRec)

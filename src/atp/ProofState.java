@@ -169,7 +169,7 @@ public class ProofState {
         factor_count = factor_count + factors.length();
         resolvent_count = resolvent_count + resolvents.length();
 
-        processed.add(given_clause);
+        processed.addClause(given_clause);
 
         for (Clause c:newClauses.clauses) {
         	if (verbose)
@@ -218,12 +218,6 @@ public class ProofState {
      */  
     public String generateStatisticsString() {
 
-        try {
-            throw new Exception();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
         StringBuffer sb = new StringBuffer();
         sb.append("# Filename           : " + filename + "\n");
         sb.append("# Initial clauses    : " + initial_clause_count + "\n");
