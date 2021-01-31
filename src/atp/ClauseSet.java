@@ -75,6 +75,14 @@ public class ClauseSet {
     }
 
     /** ***************************************************************
+     */
+    public void sort() {
+        for (Clause c : clauses)
+            c.sortLiterals();
+        Collections.sort(clauses);
+    }
+
+    /** ***************************************************************
      * Return number of clauses in set.
      */ 
     public int length() {
@@ -297,5 +305,31 @@ public class ClauseSet {
             }           
         }   
         return null;
+    }
+
+    /** ***************************************************************
+     * side effect of normalizing variables in the clauses
+     */
+    public void normalizeVars() {
+
+        ArrayList<Clause> newClauses = new ArrayList();
+        Substitutions s = new Substitutions();
+        for (Clause c : clauses) {
+            //System.out.println("INFO in Clause.normalizeVars(): clause: " + c);
+            LinkedHashSet<Term> vars = c.collectVars();
+            int varCounter = 0;
+            for (Term oldTerm : vars) {
+                Term newTerm = new Term();
+                newTerm.t = "VAR" + Integer.toString(varCounter++);
+                s.addSubst(oldTerm, newTerm);
+            }
+        }
+        //System.out.println("INFO in Clause.normalizeVars(): subst: " + s);
+        for (Clause c : clauses) {
+            Clause newc = c.deepCopy();
+            c.subst.addAll(s);
+            newClauses.add(c.substitute(s));
+        }
+        clauses = newClauses;
     }
 }

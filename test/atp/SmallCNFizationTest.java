@@ -546,14 +546,14 @@ public class SmallCNFizationTest {
         }
 
         System.out.println("SmallCNFizationTest.testRenaming(): f: " + f);
-        SortedSet<Term> v1 = f.collectVars();
+        LinkedHashSet<Term> v1 = f.collectVars();
         System.out.println("SmallCNFizationTest.testRenaming(): should be one var: " + v1);
         if ((v1.size() == 1) && v1.iterator().next().equals(Term.string2Term("X")))
             System.out.println("Success");
         else
             System.out.println("fail");
         assertTrue((v1.size() == 1) && v1.iterator().next().equals(Term.string2Term("X")));
-        SortedSet<Term> v2 = f.collectFreeVars();
+        LinkedHashSet<Term> v2 = f.collectFreeVars();
         System.out.println("SmallCNFizationTest.testRenaming(): should be no free vars: " + v2);
         if (v2.size() == 0)
             System.out.println("Success");
@@ -603,7 +603,7 @@ public class SmallCNFizationTest {
             assertTrue(!symbols.contains(newsymbol));
             symbols.add(newsymbol);
         }
-        SortedSet<Term> varlist = new TreeSet<Term>();
+        LinkedHashSet<Term> varlist = new LinkedHashSet<Term>();
         varlist.add(Term.string2Term("X"));
         varlist.add(Term.string2Term("Y"));
         for (int i = 0; i < 10; i++) {
@@ -808,6 +808,86 @@ public class SmallCNFizationTest {
         }
         catch (Exception e) {
             System.out.println("Error in SmallCNFizationTest.testClausification()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * Test splitting clauses
+     */
+    @Test
+    public void testSplit() {
+
+        System.out.println("--------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testSplit():");
+        String formstr = "fof(a1,axiom,(((p(VAR12)|q(VAR12,skolem0001(VAR12)))|a)&((q(VAR12)|q(VAR12,skolem0001(VAR12)))|a))).";
+        Lexer lex = new Lexer(formstr);
+        try {
+            Formula wf = Formula.parse(lex);
+            ArrayList<Clause> clauses = SmallCNFization.formulaCNFSplit(wf);
+            System.out.println(clauses);
+            String expected = "[cnf(,axiom,p(VAR12)|q(VAR12,skolem0001(VAR12))|a)., cnf(,axiom,q(VAR12)|q(VAR12,skolem0001(VAR12))|a).]";
+            if (clauses.toString().equals(expected))
+                System.out.println("Success");
+            else
+                System.out.println("fail");
+            assertEquals(expected,clauses.toString());
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testSplit()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     * Compare the simple clausification in R&N AI text implemented in Clausify
+     * with SmallCNF.  Note that we don't use any assert statements to throw
+     * errors since we don't currently have a routine to check for equality
+     * between ClauseSets, ignoring literal order and variable names.
+     */
+    @Test
+    public void testCompare() {
+
+        boolean[] resultsEq = {true,true};
+        System.out.println("--------------------------------");
+        System.out.println("INFO in SmallCNFizationTest.testCompare(): check formulas");
+        BareFormula f = null;
+        try {
+            Lexer lex = new Lexer(testFormulas);
+            while (!lex.testTok(Lexer.EOFToken)) {
+                System.out.println("----");
+                Formula wf = Formula.parse(lex);
+                System.out.println("Formula: " + wf);
+
+                SmallCNFization.countersReset();
+                Formula fCNF = SmallCNFization.wFormulaCNF(wf);
+                ArrayList<Clause> smallCNFclauses = SmallCNFization.formulaCNFSplit(fCNF);
+                //System.out.println("Small CNF clauses: " + smallCNFclauses);
+                ClauseSet smallCNFSet = new ClauseSet(smallCNFclauses);
+                smallCNFSet.sort();
+                smallCNFSet.normalizeVars();
+
+                Clausifier.counterReset();
+                ArrayList<Clause> rAndNClauses = Clausifier.clausify(wf);
+                //System.out.println("Simple CNF clauses: " + rAndNClauses);
+                ClauseSet cNFSet = new ClauseSet(rAndNClauses);
+                cNFSet.sort();
+                cNFSet.normalizeVars();
+
+                System.out.println("SmallCNF result: " + smallCNFSet);
+                System.out.println("Simple CNF result: " + cNFSet);
+
+                if (!smallCNFSet.equals(cNFSet))
+                    System.out.println("testCompare(): fail - Not string equal (but could be logically ok)");
+                else
+                    System.out.println("Success");
+                assertEquals(smallCNFSet,cNFSet);
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Error in SmallCNFizationTest.testCompare()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

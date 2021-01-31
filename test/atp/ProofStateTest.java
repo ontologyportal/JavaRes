@@ -34,13 +34,17 @@ public class ProofStateTest {
     public static String spec3 = "cnf(p_or_q, axiom, p(X)|q(a)).\n" +
             "cnf(taut, axiom, p(X)|~p(X)).\n" +
             "cnf(not_p, axiom, ~p(a)).";
+    public static SearchParams params = null;
 
     /** ***************************************************************
      * Evaluate the result of a saturation compared to the expected result.
      */
     @BeforeClass
     public static void setup() {
+
         ClauseEvaluationFunction.setupEvaluationFunctions();
+        params = new SearchParams();
+        params.delete_tautologies = true;
     }
 
     /** ***************************************************************
@@ -48,9 +52,9 @@ public class ProofStateTest {
      */
     public static void evalSatResult(ClauseSet cs, boolean provable) {
 
-        System.out.println("SimpleProofState.evalSatResult(): problem: " + cs);
-        ProofState prover = new ProofState(cs,ClauseEvaluationFunction.PickGiven5);
-        Clause res = prover.saturate();
+        System.out.println("ProofStateTest.evalSatResult(): problem: " + cs);
+        ProofState prover = new ProofState(cs,params);
+        Clause res = prover.saturate(1);
 
         if (provable) {
             if (res == null)
@@ -74,7 +78,7 @@ public class ProofStateTest {
      */
     public static void evalSatResult(String spec, boolean provable) {
 
-        System.out.println("INFO in ProofState.evalSatResult()");
+        System.out.println("INFO in ProofStateTest.evalSatResult()");
         Lexer lex = new Lexer(spec);
         ClauseSet problem = new ClauseSet();
         problem.parse(lex);
@@ -87,9 +91,9 @@ public class ProofStateTest {
     @Test
     public void testSaturation() {
 
-        System.out.println("INFO in ProofState.testSaturation()");
+        System.out.println("INFO in ProofStateTest.testSaturation()");
         evalSatResult(spec1, true);
         evalSatResult(ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p"), true);
-        //evalSatResult(spec3, false);
+        evalSatResult(spec3, false);
     }
 }

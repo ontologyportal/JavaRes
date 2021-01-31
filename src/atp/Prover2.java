@@ -183,23 +183,31 @@ public class Prover2 {
 
     /** ***************************************************************
      */
-    public static ArrayList<EvalStructure> setAllEvalOptions() {
+    public static ArrayList<SearchParams> setAllEvalOptions() {
         
-        ArrayList<EvalStructure> result = new ArrayList<EvalStructure>();
-        result.add(ClauseEvaluationFunction.FIFOEval);
-        result.add(ClauseEvaluationFunction.SymbolCountEval);
-        result.add(ClauseEvaluationFunction.PickGiven5);
-        result.add(ClauseEvaluationFunction.PickGiven2);
+        ArrayList<SearchParams> result = new ArrayList<SearchParams>();
+        SearchParams sp = new SearchParams();
+        sp.heuristics = ClauseEvaluationFunction.FIFOEval;
+        result.add(sp);
+        sp = new SearchParams();
+        sp.heuristics = ClauseEvaluationFunction.SymbolCountEval;
+        result.add(sp);
+        sp = new SearchParams();
+        sp.heuristics = ClauseEvaluationFunction.PickGiven5;
+        result.add(sp);
+        sp = new SearchParams();
+        sp.heuristics = ClauseEvaluationFunction.PickGiven2;
+        result.add(sp);
         return result;
     }
         
     /** ***************************************************************
      */
-    public static ArrayList<ProofState> setAllStateOptions(ClauseSet clauses, EvalStructure efunctions) {
+    public static ArrayList<ProofState> setAllStateOptions(ClauseSet clauses, SearchParams params) {
         
         ArrayList<ProofState> result = new ArrayList<ProofState>();
         for (int i = 0; i < 8; i++) {
-            ProofState state = new ProofState(clauses,efunctions);
+            ProofState state = new ProofState(clauses,params);
             if ((i & 1) == 0)
                 state.delete_tautologies = false;
             else
@@ -229,7 +237,7 @@ public class Prover2 {
     
     /** ***************************************************************
      */
-    private static void runExperiment(HashMap<String,String> opts, ArrayList<EvalStructure> evals) {
+    private static void runExperiment(HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
         System.out.println("Prover2.runExperiment(): ");
         System.out.println("Prover2.runExperiment(): opts: " + opts);
@@ -290,7 +298,7 @@ public class Prover2 {
      * Process a particular problem file with the given list of subsumption
      * options and clause evaluation strategies.
      */
-    private static void runInteractive(HashMap<String,String> opts, ArrayList<EvalStructure> evals) {
+    private static void runInteractive(HashMap<String,String> opts, ArrayList<SearchParams> evals) {
         
         if (evals == null || evals.size() < 1) {
             System.out.println("Error in Prover2.runInteractive(): no evaluation functions");
@@ -345,7 +353,7 @@ public class Prover2 {
                             ProofState state = new ProofState(csnew,evals.get(0));
                             setStateOptions(state,opts);
                             state.filename = filename;
-                            state.evalFunctionName = evals.get(0).name;  
+                            state.evalFunctionName = evals.get(0).heuristics.name;
                             state.res = state.saturate(timeout);
                             if (state.res != null) {
                             	if (cs.SZSexpected.indexOf("Satisfiable") > -1 || cs.SZSexpected.indexOf("CounterSatisfiable") > -1)
@@ -378,7 +386,7 @@ public class Prover2 {
      * Process a particular problem file with the given list of subsumption
      * options and clause evaluation strategies.
      */
-    public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<EvalStructure> evals) {
+    public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
         //System.out.println("# Prover2.processTestFile(): " + filename);
         //System.out.println("# Prover2.processTestFile(): " + opts);
@@ -416,14 +424,14 @@ public class Prover2 {
             System.out.println("# Clauses:\n" + cs);        
         if (cs != null) {
             for (int i = 0; i < evals.size(); i++) {
-                EvalStructure eval = evals.get(i);
+                SearchParams eval = evals.get(i);
                 if (opts.containsKey("allOpts")) {
                     ArrayList<ProofState> states = setAllStateOptions(cs,evals.get(i));
                     for (int j = 0; j < states.size(); j++) {
                         ProofState state = states.get(j);                        
                         state.filename = filename;
                         state.conjecture = cs.getConjecture();
-                        state.evalFunctionName = eval.name;
+                        state.evalFunctionName = eval.heuristics.name;
                         //System.out.println("# Prover2.processTestFile(): begin saturation");
                         try {
                             state.res = state.saturate(timeout);  // <--- real proving starts here
@@ -449,7 +457,7 @@ public class Prover2 {
                     setStateOptions(state,opts);
                     state.filename = filename;
                     state.conjecture = cs.getConjecture();
-                    state.evalFunctionName = eval.name;
+                    state.evalFunctionName = eval.heuristics.name;
                     //System.out.println("# Prover2.processTestFile(): begin saturation");
                     try {
                         state.res = state.saturate(timeout);  // <--- real proving starts here
@@ -483,24 +491,26 @@ public class Prover2 {
           
         Formula.defaultPath = System.getenv("TPTP");
         System.out.println("Using default include path : " + Formula.defaultPath);
-        if (args[0].equals("-h") || args[0].equals("--help")) {
+        if (args == null || args[0].equals("-h") || args[0].equals("--help")) {
             System.out.println(doc);
             return;
         }
         if (!Term.emptyString(args[0])) {
             ClauseEvaluationFunction.setupEvaluationFunctions();
-            ArrayList<EvalStructure> evals = null;
+            ArrayList<SearchParams> evals = null;
             HashMap<String,String> opts = processOptions(args);  // canonicalize options
             if (opts == null) {
                 System.out.println("Error in Prover2.main(): bad command line options.");
                 return;
             }
                 
-            if (opts.containsKey("allStrat")) 
+            if (opts.containsKey("allStrat") || opts.containsKey("allOpts"))
                 evals = setAllEvalOptions();            
             else {
-                evals = new ArrayList<EvalStructure>();
-                evals.add(ClauseEvaluationFunction.PickGiven5);
+                evals = new ArrayList<SearchParams>();
+                SearchParams sp = new SearchParams();
+                sp.heuristics = ClauseEvaluationFunction.PickGiven5;
+                evals.add(sp);
             }
             boolean dotgraph = false;
 

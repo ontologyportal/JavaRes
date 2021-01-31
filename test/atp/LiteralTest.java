@@ -125,7 +125,7 @@ public class LiteralTest {
         assertTrue(a1.isPositive());
         System.out.println("is not equational: " + !a1.isEquational());
         assertTrue(!a1.isEquational());
-        SortedSet<Term> vars = a1.collectVars();
+        LinkedHashSet<Term> vars = a1.collectVars();
         System.out.println("Number of variables. Should be 1 :" + vars.size());
         assertEquals(vars.size(), 1);
 

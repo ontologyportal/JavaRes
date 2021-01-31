@@ -24,6 +24,7 @@ import org.junit.runners.Suite;
         ResControlTest.class,
         ResolutionTest.class,
         ResolutionIndexTest.class,
+        SearchParamsTest.class,
         SignatureTest.class,
         SimpleProofStateTest.class,
         SmallCNFizationTest.class,

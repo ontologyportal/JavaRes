@@ -82,9 +82,9 @@ public class Clause extends Derivable implements Comparable {
      */
     public Clause(ArrayList<Literal> litlist, String type, String name) {
 
+        this(litlist);
         this.type = type;
         this.name = name;
-        new Clause(litlist);
     }
 
     /** ***************************************************************
@@ -243,7 +243,14 @@ public class Clause extends Derivable implements Comparable {
                 return false;
         return true;
     }
-    
+
+    /** ***************************************************************
+     */
+    public void sortLiterals() {
+
+        Collections.sort(literals);
+    }
+
     /** ***************************************************************
      */   
     public int hashCode() {
@@ -259,7 +266,7 @@ public class Clause extends Derivable implements Comparable {
      */
     public int compareTo(Object o) {
 
-        System.out.println("Clause.compareTo(): " + o.getClass().getName());
+        //System.out.println("Clause.compareTo(): " + o.getClass().getName());
         if (!o.getClass().getName().equals("atp.Clause"))
             throw new ClassCastException();
         Clause c = (Clause) o;
@@ -446,11 +453,11 @@ public class Clause extends Derivable implements Comparable {
     /** ***************************************************************
      * Insert all variables in self into the set res and return it. 
      */
-    public ArrayList<Term> collectVars() {
+    public LinkedHashSet<Term> collectVars() {
 
-        ArrayList<Term> res = new ArrayList<Term>();
-        for (int i = 0; i < literals.size(); i++)
-            res.addAll(literals.get(i).collectVars());
+        LinkedHashSet<Term> res = new LinkedHashSet<Term>();
+        for (Literal l : literals)
+            res.addAll(l.collectVars());
         return res;
     }
 
@@ -564,7 +571,7 @@ public class Clause extends Derivable implements Comparable {
      */
     public Clause freshVarCopy() {
 
-        ArrayList<Term> vars = collectVars();
+        LinkedHashSet<Term> vars = collectVars();
         Substitutions s = Substitutions.freshVarSubst(vars);
         subst.addAll(s);
         return substitute(s);
@@ -577,17 +584,17 @@ public class Clause extends Derivable implements Comparable {
      */
     public Clause normalizeVarCopy() {
 
-        ArrayList<Term> vars = collectVars();
+        LinkedHashSet<Term> vars = collectVars();
         int varCounter = 0;
         Substitutions s = new Substitutions();
-        for (int i = 0; i < vars.size(); i++) {
+        for (Term oldTerm : vars) {
             Term newTerm = new Term();
             newTerm.t = "VAR" + Integer.toString(varCounter++);
-            s.addSubst(vars.get(i), newTerm);
+            s.addSubst(oldTerm, newTerm);
         }
         //System.out.println("INFO in Clause.normalizeVarCopy(): subst: " + s);
         Clause c = deepCopy();
-        subst.addAll(s);
+        c.subst.addAll(s);
         return c.substitute(s);
     }
     

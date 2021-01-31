@@ -79,9 +79,9 @@ public class ProofState {
     /** ***************************************************************
      * Initialize the proof state with a set of clauses.
      */  
-    public ProofState(ClauseSet clauses, EvalStructure efunctions) {
+    public ProofState(ClauseSet clauses, SearchParams params) {
 
-        unprocessed = new HeuristicClauseSet(clauses, efunctions);                                         
+        unprocessed = new HeuristicClauseSet(clauses, params.heuristics);
         processed   = new ClauseSet();
         for (Clause c:clauses.clauses) 
             unprocessed.addClause(c.deepCopy());
@@ -210,7 +210,7 @@ public class ProofState {
      */  
     public Clause saturate() {
 
-        return saturate(32000);
+        return saturate(30);
     }
 
     /** ***************************************************************
@@ -531,7 +531,7 @@ public class ProofState {
  
     /** ***************************************************************
      */  
-    public ArrayList<Term> extractAnswerRecurse(TreeMap<String,Clause> proof, String id, ArrayList<Term> vars) {
+    public ArrayList<Term> extractAnswerRecurse(TreeMap<String,Clause> proof, String id, Collection<Term> vars) {
         
         //System.out.println("INFO in ProofState.extractAnswerRecurse(): checking: " + id);
         ArrayList<Term> newvars = new ArrayList<Term>();
@@ -560,7 +560,7 @@ public class ProofState {
         Clause conjectureNorm = conjecture.normalizeVarCopy();
         //System.out.println("INFO in ProofState.extractAnswer(): conjectureNorm: " + conjectureNorm);
         StringBuffer sb = new StringBuffer();
-        ArrayList<Term> vars = conjecture.collectVars();
+        LinkedHashSet<Term> vars = conjecture.collectVars();
         Iterator<String> it = proof.keySet().iterator();
         String conjectKey = "";
         Clause conjectValue = null;
@@ -583,8 +583,9 @@ public class ProofState {
             return null;          
         }
         sb.append("[");
-        for (int i = 0; i < vars.size(); i++) 
-            sb.append(vars.get(i) + "=" + map.get(i));   
+        int index = 0;
+        for (Term var : vars)
+            sb.append(var + "=" + map.get(index++));
         sb.append("]\n");
         sb.append("# SZS answers Tuple [");
         for (int i = 0; i < vars.size(); i++) {

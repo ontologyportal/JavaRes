@@ -46,6 +46,8 @@ public class Formula {
 
     public static int maxFormulaCharLen = 2000;
 
+    public static boolean smallCNF = true;  // use the SmallCNF algorithm or R&N's Clausifier if false
+
     /** ***************************************************************
      */
     public Formula(BareFormula f, String t) {
@@ -183,7 +185,10 @@ public class Formula {
             }
             //System.out.println("# INFO in Formula.command2clauses(): fof: " + fstring);
             if (f.form != null) {
-                cs.addAll(Clausifier.clausify(f));
+                if (smallCNF)
+                    cs.addAll(SmallCNFization.wFormulaClausify(f));
+                else
+                    cs.addAll(Clausifier.clausify(f));
                 return cs;
             }
         }
@@ -241,7 +246,7 @@ public class Formula {
                 cs.addAll(csnew);
             }
             catch (Exception p) {
-                if (p.getMessage().contains("bad id")) {
+                if (p != null && p.getMessage() != null && p.getMessage().contains("bad id")) {
                     cs.SZSresult = "SZS Status: InputError (INE): bad id";
                     return cs;
                 }

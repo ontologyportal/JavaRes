@@ -59,7 +59,7 @@ import java.util.*;
  * atom - predicate symbol with term arguments
  * literal - atom or negated atom
   */
-public class Literal {
+public class Literal implements Comparable {
 
     public Term atom = null;
     public boolean negated = false;
@@ -181,9 +181,10 @@ public class Literal {
 
     /** ***************************************************************
      */
+    @Override
     public int compareTo(Object o) {
 
-        System.out.println("Literal.compareTo(): " + o.getClass().getName());
+        //System.out.println("Literal.compareTo(): " + o.getClass().getName());
         if (!o.getClass().getName().equals("atp.Literal"))
             throw new ClassCastException();
         Literal l = (Literal) o;
@@ -317,7 +318,7 @@ public class Literal {
 
     /****************************************************************
      */
-    public SortedSet<Term> collectVars() {
+    public LinkedHashSet<Term> collectVars() {
 
         return atom.collectVars();
     }

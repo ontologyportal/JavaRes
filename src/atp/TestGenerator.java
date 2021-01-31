@@ -33,14 +33,14 @@ public class TestGenerator {
     /** ***************************************************************
      */  
     public static Clause instantiateGensyms(Clause c) {
-        
-        ArrayList<Term> vars = c.collectVars();
+
+        LinkedHashSet<Term> vars = c.collectVars();
         if (vars.size() < 1)
             return null;
         Substitutions subst = new Substitutions();
-        for (int i = 0; i < vars.size(); i++) {
+        for (Term var : vars) {
             String newConst = "Gensym" + Integer.toString(gensymCount++);
-            subst.subst.put(vars.get(i),Term.string2Term(newConst));
+            subst.subst.put(var,Term.string2Term(newConst));
         }
         return c.substitute(subst);
     }
@@ -68,7 +68,7 @@ public class TestGenerator {
         int randomInt = 0;
         int safetyCounter = 0;
         Clause c = null;
-        ArrayList<Term> vars = null;
+        LinkedHashSet<Term> vars = null;
         do {
             randomInt = randomGenerator.nextInt(cs.clauses.size());
             c = cs.clauses.get(randomInt);
@@ -130,7 +130,7 @@ public class TestGenerator {
     
     /** ***************************************************************
      */   
-    public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<EvalStructure> evals) {        
+    public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
         int timeout = Prover2.getTimeout(opts);
         ClauseSet cs = Formula.file2clauses(filename,timeout);
@@ -139,7 +139,7 @@ public class TestGenerator {
         else
             System.out.println("# INFO in TestGenerator.processTestFile(): completed file read");
         if (cs != null) {
-            EvalStructure eval = evals.get(0);
+            EvalStructure eval = evals.get(0).heuristics;
             Clause c = seed(cs);
             if (c == null) {
                 System.out.println("# INFO in TestGenerator.processTestFile(): failed to generate seed.");
@@ -168,14 +168,16 @@ public class TestGenerator {
             
         if (!Term.emptyString(args[0])) {
             ClauseEvaluationFunction.setupEvaluationFunctions();
-            ArrayList<EvalStructure> evals = null;
+            ArrayList<SearchParams> evals = null;
             HashMap<String,String> opts = Prover2.processOptions(args);  // canonicalize options
             if (opts == null) {
                 System.out.println("Error in Prover2.main(): bad command line options.");
                 return;
             }                
-            evals = new ArrayList<EvalStructure>();
-            evals.add(ClauseEvaluationFunction.PickGiven5);
+            evals = new ArrayList<SearchParams>();
+            SearchParams sp = new SearchParams();
+            sp.heuristics = ClauseEvaluationFunction.PickGiven5;
+            evals.add(sp);
             
             ProofState state = processTestFile(opts.get("filename"),opts,evals);
             if (state != null) 

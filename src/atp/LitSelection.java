@@ -4,7 +4,7 @@ import java.util.*;
 
 public class LitSelection {
 
-    public enum LitSelectors {FIRST,SMALLEST,LARGEST,LEASTVARS,EQLEASTVARS}
+    public enum LitSelectors {NONE, FIRST,SMALLEST,LARGEST,LEASTVARS,EQLEASTVARS}
 
     /***************************************************************
      */

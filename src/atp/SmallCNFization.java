@@ -64,7 +64,19 @@ import java.util.*;
 public class SmallCNFization extends Clausifier {
 
     private static int skolemCount = 0;
-    
+
+    /** ***************************************************************
+     * Return a new skolem symbol. This is a simple version, not
+     * suitable for a real production system. The symbol is not
+     * guaranteed to be globally fresh. It's the user's
+     * responsibility to ensure that no symbols of the form
+     * "skolemXXXX" are in the input.
+     */
+    public static void countersReset() {
+        skolemCount = 0;
+        Clausifier.varCounter = 0;
+    }
+
     /** ***************************************************************
      * Return a new skolem symbol. This is a simple version, not 
      * suitable for a real production system. The symbol is not
@@ -81,10 +93,11 @@ public class SmallCNFization extends Clausifier {
     /** ***************************************************************
      *  Return a new skolem term for the given (list of) variables.
      */
-    public static Term newSkolemTerm(SortedSet<Term> varlist) {
+    public static Term newSkolemTerm(LinkedHashSet<Term> varlist) {
 
         Term result = new Term();
-        result.t = newSkolemSymbol();
+        // result.t = newSkolemSymbol();
+        result.t = Clausifier.generateSkolemSymbol();
         for (Term v : varlist)
             result.subterms.add(v);
         return result;
@@ -279,9 +292,13 @@ public class SmallCNFization extends Clausifier {
         	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): quantified");
             // ![X] F -> F if X is not free in F
             // ?[X] F -> F if X is not free in F
-            SortedSet<Term> vars = f.collectFreeVars();
+            LinkedHashSet<Term> vars = null;
+            if (f.lit2 != null)
+                vars = f.lit2.collectVars();
+            else
+                f.child2.collectFreeVars();
         	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): vars"  + vars);
-            if (!vars.contains(f.lit1.atom)) {
+            if (vars == null || !vars.contains(f.lit1.atom)) {
             	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): no free vars: " + f);
             	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): lit2: " + f.lit2);
             	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): child2: " + f.child2);
@@ -641,7 +658,7 @@ public class SmallCNFization extends Clausifier {
      * Perform Skolemization of f, which is assumed to be in the scope of
      * the list of variables provided.
      */
-    public static BareFormula formulaRekSkolemize(BareFormula f, SortedSet<Term> variables, Substitutions subst) {
+    public static BareFormula formulaRekSkolemize(BareFormula f, LinkedHashSet<Term> variables, Substitutions subst) {
 
         //System.out.println("INFO in SmallCNFization.formulaRekSkolemize(): f: " + f.toStructuredString());
         //System.out.println("INFO in SmallCNFization.formulaRekSkolemize(): f.op: " + f.op);
@@ -724,7 +741,7 @@ public class SmallCNFization extends Clausifier {
      */
     public static BareFormula formulaSkolemize(BareFormula f) {
 
-        SortedSet<Term> vars = f.collectFreeVars();
+        LinkedHashSet<Term> vars = f.collectFreeVars();
         return formulaRekSkolemize(f, vars, new Substitutions());        
     }
 
@@ -745,7 +762,10 @@ public class SmallCNFization extends Clausifier {
         if (f.isQuantified()) {
             assert f.op.equals("!");
             varlist.add(f.lit1.atom);
-            result = separateQuantors(f.child2, varlist);
+            if (f.child2 != null)
+                result = separateQuantors(f.child2, varlist);
+            else
+                return new BareFormula("",f.lit2);
         }
         else if (!f.isLiteral()) {
             BareFormula arg1 = f.child1;
@@ -847,16 +867,21 @@ public class SmallCNFization extends Clausifier {
         ArrayList<BareFormula> conjuncts = matrix.conj2List();
         //System.out.println("SmallCNFization.formulaCNFSplit(): conjuncts: " + conjuncts);
         for (BareFormula c : conjuncts) {
+            //System.out.println("SmallCNFization.formulaCNFSplit(): c: " + c);
             ArrayList<BareFormula> list = c.disj2List();
             ArrayList<Literal> litlist = new ArrayList<Literal>();
+            //System.out.println("SmallCNFization.formulaCNFSplit(): list: " + list);
             for (BareFormula bf : list) {
                 if (bf.child1 != null || bf.child2 != null)
                     System.out.println("Error in SmallCNFization.formulaCNFSplit(): Non-literal element: " + bf);
                 litlist.add(bf.lit1);
-                Clause clause = new Clause(litlist,f.type,"");
-                res.add(clause);
+                //System.out.println("SmallCNFization.formulaCNFSplit(): litlist: " + litlist);
             }
-        }        
+            Clause clause = new Clause(litlist,f.type,"");
+            //System.out.println("SmallCNFization.formulaCNFSplit(): new clause: " + clause);
+            res.add(clause);
+        }
+        //System.out.println("SmallCNFization.formulaCNFSplit(): return: " + res);
         return res;  
     }
         
@@ -867,11 +892,13 @@ public class SmallCNFization extends Clausifier {
 
         //System.out.println("wFormulaCNF(): input: " + wfinput);
         Formula wf = wfinput.deepCopy();
+        //System.out.println("wFormulaCNF(): wf.form: " + wf.form);
         BareFormula f = formulaOpSimplify(wf.form);
         //System.out.println("wFormulaCNF(): after op simplify: " + f);
         boolean m0 = (f != null);
         if (f == null)
             f = wf.form;
+        //System.out.println("wFormulaCNF(): before simplify: " + f);
         BareFormula newf = formulaSimplify(f);
         //System.out.println("wFormulaCNF(): after  simplify: " + newf);
         boolean m1 = (f != null);
@@ -957,13 +984,39 @@ public class SmallCNFization extends Clausifier {
      */
     public static ArrayList<Clause> wFormulaClausify(Formula wf) {
 
+        //System.out.println("wFormulaClausify(): input: " + wf);
         Formula newf = wFormulaCNF(wf);
         ArrayList<Clause> clauses = formulaCNFSplit(newf);
         for (Clause c : clauses) {
             c.rationale = "split_conjunct";
+            c.name = "cnf" + Integer.toString(Clausifier.axiomCounter++);
             c.support.add(wf.name);
+            //System.out.println("wFormulaClausify(): c: " + c);
         }
         return clauses;
     }
 
+    /** ***************************************************************
+     */
+    public static void printHelp() {
+        System.out.println("Clausify");
+        System.out.println("-h print this help ");
+        System.out.println("-c \"<exp>\" clausify an expression in TPTP form ");
+    }
+
+    /** ***************************************************************
+     */
+    public static void main(String[] args) {
+
+        if (args == null || args.length == 0 || args[0].equals("-h"))
+            printHelp();
+        else if (args.length > 1 && args[0].equals("-c")) {
+            Lexer lex = new Lexer(args[1]);
+            try {
+                Formula f = Formula.parse(lex);
+                System.out.println(wFormulaCNF(f));
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        }
+    }
 }

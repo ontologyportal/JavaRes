@@ -412,19 +412,24 @@ public class Clausifier {
         }
         return result;
     }
-    
+
+    /** ***************************************************************
+     */
+    public static String generateSkolemSymbol() {
+        return "skf" + Integer.toString(varCounter++);
+    }
+
     /** ***************************************************************
      */
     private static Term generateNewSkolem(HashSet<Term> args) {
         
         StringBuffer argList = new StringBuffer();
-        Iterator<Term> it = args.iterator();
-        while (it.hasNext()) {
-            Term t = it.next();
+        for (Term t : args) {
             argList.append(t.toString());
-            if (it.hasNext())
-                argList.append(",");
+            argList.append(",");
         }
+        if (argList.length() > 0)
+            argList.deleteCharAt(argList.length()-1);
         if (argList.length() > 0)
             return Term.string2Term("skf" + Integer.toString(varCounter++) + "(" + argList + ")");
         else
@@ -436,16 +441,23 @@ public class Clausifier {
     private static BareFormula skolemizationRecurse(BareFormula form, 
             HashSet<Term> uList) {
     
-        //System.out.println("INFO in Clausifier.skolemizationRecurse(): " + form);
+        //System.out.println("INFO in Clausifier.skolemizationRecurse(): " + form.toStructuredString());
         //System.out.println(uList);
+        HashSet<Term> newUList = new HashSet<>();
+        for (Term t : uList)
+            newUList.add(t.deepCopy());
+        if (form.op.equals("!")) {
+            //System.out.println("INFO in Clausifier.skolemizationRecurse(): add var: " + form.lit1);
+            newUList.add(form.lit1.atom);
+        }
         BareFormula result = form.deepCopy();
         if (form.child1 != null)
-            result.child1 = skolemizationRecurse(form.child1,uList);
+            result.child1 = skolemizationRecurse(form.child1,newUList);
         if (form.child2 != null)
-            result.child2 = skolemizationRecurse(form.child2,uList);
+            result.child2 = skolemizationRecurse(form.child2,newUList);
         if (form.op.equals("?")) { // existential
             Term var = form.lit1.atom;
-            Term skolem = generateNewSkolem(uList);
+            Term skolem = generateNewSkolem(newUList);
             Substitutions subst = new Substitutions();
             subst.addSubst(var,skolem);
             //System.out.println("calling substitution with: " + subst);
@@ -456,8 +468,6 @@ public class Clausifier {
             //System.out.println("returning result: " + result);
             return result; 
         }
-        if (form.op.equals("!")) // universal
-            uList.add(form.lit1.atom);
         return result;
     }   
     
@@ -672,5 +682,33 @@ public class Clausifier {
     
         typePrefix = f.type;        
         return clausify(f.form);
+    }
+
+    /** ***************************************************************
+     */
+    public static void printHelp() {
+        System.out.println("Clausify");
+        System.out.println("-h print this help ");
+        System.out.println("-c \"<exp>\" clausify an expression in TPTP form ");
+    }
+
+    /** ***************************************************************
+     */
+    public static void main(String[] args) {
+
+        if (args == null || args.length == 0 || args[0].equals("-h"))
+            printHelp();
+        else if (args.length > 1 && args[0].equals("-c")) {
+            Lexer lex = new Lexer(args[1]);
+            try {
+                Formula f = Formula.parse(lex);
+                System.out.println(clausify(f.form));
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        }
+        else {
+            System.out.println("Unrecognized option");
+            printHelp();
+        }
     }
 }

@@ -277,13 +277,13 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
     
     /** ***************************************************************
      */
-    public SortedSet<Term> collectVars() {
+    public LinkedHashSet<Term> collectVars() {
 
-        SortedSet<Term> result = new TreeSet<Term>();
+        LinkedHashSet<Term> result = new LinkedHashSet<Term>();
         if (isVar())
             result.add(this);
         for (int i = 0; i < subterms.size(); i++) {
-            SortedSet<Term> newvars = subterms.get(i).collectVars();
+            LinkedHashSet<Term> newvars = subterms.get(i).collectVars();
         	for (Term newv : newvars) {
         		if (!result.contains(newv))
         			result.add(newv);

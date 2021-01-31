@@ -167,7 +167,9 @@ public class FormulaTest {
             cs = cs.addEqAxioms();
             System.out.println(cs);
             ClauseEvaluationFunction.setupEvaluationFunctions();
-            ProofState state = new ProofState(cs,ClauseEvaluationFunction.PickGiven2);
+            SearchParams sp = new SearchParams();
+            sp.heuristics = ClauseEvaluationFunction.PickGiven2;
+            ProofState state = new ProofState(cs,sp);
             state.evalFunctionName = ClauseEvaluationFunction.PickGiven2.name;
             state.delete_tautologies = true;
             state.forward_subsumption = true;
@@ -290,7 +292,9 @@ public class FormulaTest {
             cs = cs.addEqAxioms();
             System.out.println(cs);
             ClauseEvaluationFunction.setupEvaluationFunctions();
-            ProofState state = new ProofState(cs,ClauseEvaluationFunction.FIFOEval);
+            SearchParams sp = new SearchParams();
+            sp.heuristics = ClauseEvaluationFunction.FIFOEval;
+            ProofState state = new ProofState(cs,sp);
             state.evalFunctionName = ClauseEvaluationFunction.FIFOEval.name;
             state.delete_tautologies = true;
             state.forward_subsumption = true;

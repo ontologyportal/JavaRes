@@ -227,14 +227,20 @@ public class ClausifierTest {
     @Test
     public void testSkolemization() {
 
+        Clausifier.varCounter = 0;
         System.out.println();
         System.out.println("================== testSkolemization ======================");
         BareFormula form = BareFormula.string2form("(?[VAR0]:(![VAR3]:(![VAR2]:(?[VAR5]:(![VAR1]:(?[VAR4]:((((~a(VAR0)&~b(X))&~p(VAR2, f(VAR1)))|q(g(a), X))&(~q(g(a), X)|((a(VAR3)|b(X))|p(VAR5, f(VAR4)))))))))))");
         System.out.println("input: " + form);
         form = Clausifier.skolemization(form);
-        System.out.println("actual: "+ form);
-        String expected = "(![VAR3]:(![VAR2]:(![VAR1]:(((((~a(skf14(VAR1,VAR2,VAR3)))&(~b(X)))&(~p(VAR2,f(VAR1))))|q(g(a),X))&((~q(g(a),X))|((a(VAR3)|b(X))|p(skf13(VAR1),f(skf12))))))))";
-        assertEquals(expected,form.toString());
+        System.out.println("actual: " + form);
+        String expected = "(![VAR3]:(![VAR2]:(![VAR1]:(((((~a(skf2))&(~b(X)))&(~p(VAR2,f(VAR1))))|q(g(a),X))&((~q(g(a),X))|((a(VAR3)|b(X))|p(skf1(VAR2,VAR3),f(skf0(VAR1,VAR2,VAR3)))))))))";
+        System.out.println("expected: " + expected);
+        if (expected.equals(form.toString()))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertTrue(expected.equals(form.toString()));
         System.out.println();
     }
 
@@ -283,6 +289,7 @@ public class ClausifierTest {
     public void testClausificationSteps(String s) {
 
         KIF.init();
+        Clausifier.varCounter = 0;
         System.out.println();
         System.out.println("================== testClausification ======================");
         System.out.println("input: " + s);
@@ -314,56 +321,56 @@ public class ClausifierTest {
 
         form = Clausifier.standardizeVariables(form);
         System.out.println("after Standardize Variables: " + form);
-        expected = "(![VAR3]:(![VAR2]:(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
-                "(?[VAR1]:(happens(VAR1,VAR2)&terminates(VAR1,VAR3,VAR2))))|holdsAt(VAR3,plus(VAR2,n1)))))";
+        expected = "(![VAR2]:(![VAR1]:(((~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1)))|(?[VAR0]:(happens(VAR0,VAR1)&" +
+                "terminates(VAR0,VAR2,VAR1))))|holdsAt(VAR2,plus(VAR1,n1)))))";
         System.out.println("expected: " + expected);
         assertEquals(expected,form.toString());
         System.out.println();
 
         form = Clausifier.moveQuantifiersLeft(form);
         System.out.println("after Move Quantifiers: " + form);
-        expected = "(![VAR3]:(![VAR2]:(?[VAR1]:(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
-                "(happens(VAR1,VAR2)&terminates(VAR1,VAR3,VAR2)))|holdsAt(VAR3,plus(VAR2,n1))))))";
+        expected = "(![VAR2]:(![VAR1]:(?[VAR0]:(((~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1)))|(happens(VAR0,VAR1)&" +
+                "terminates(VAR0,VAR2,VAR1)))|holdsAt(VAR2,plus(VAR1,n1))))))";
         System.out.println("expected: " + expected);
         assertEquals(expected,form.toString());
         System.out.println();
 
         form = Clausifier.skolemization(form);
         System.out.println("after Skolemization: " + form);
-        expected = "(![VAR3]:(![VAR2]:(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
-                "(happens(skf4,VAR2)&terminates(skf4,VAR3,VAR2)))|holdsAt(VAR3,plus(VAR2,n1)))))";
+        expected = "(![VAR2]:(![VAR1]:(((~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1)))|(happens(skf3(VAR1,VAR2),VAR1)&" +
+                "terminates(skf3(VAR1,VAR2),VAR2,VAR1)))|holdsAt(VAR2,plus(VAR1,n1)))))";
         System.out.println("expected: " + expected);
         assertEquals(expected,form.toString());
         System.out.println();
 
         form = Clausifier.removeUQuant(form);
         System.out.println("after remove universal quantifiers: " + form);
-        expected = "(((~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1)))|" +
-                "(happens(skf4,VAR2)&terminates(skf4,VAR3,VAR2)))|holdsAt(VAR3,plus(VAR2,n1)))";
+        expected = "(((~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1)))|(happens(skf3(VAR1,VAR2),VAR1)&" +
+                "terminates(skf3(VAR1,VAR2),VAR2,VAR1)))|holdsAt(VAR2,plus(VAR1,n1)))";
         System.out.println("expected: " + expected);
         assertEquals(expected,form.toString());
         System.out.println();
 
         form = Clausifier.distributeAndOverOr(form);
         System.out.println("after Distribution: " + form);
-        expected = "(((happens(skf4,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|" +
-                "holdsAt(VAR3,plus(VAR2,n1)))&((terminates(skf4,VAR3,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|holdsAt(VAR3,plus(VAR2,n1))))";
+        expected = "(((happens(skf3(VAR1,VAR2),VAR1)|(~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1))))|holdsAt(VAR2,plus(VAR1,n1)))&" +
+                "((terminates(skf3(VAR1,VAR2),VAR2,VAR1)|(~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1))))|holdsAt(VAR2,plus(VAR1,n1))))";
         System.out.println("expected: " + expected);
         assertEquals(expected,form.toString());
         System.out.println();
 
         ArrayList<BareFormula> forms = Clausifier.separateConjunctions(form);
         System.out.println("after separation: " + forms);
-        expected = "[((happens(skf4,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|holdsAt(VAR3,plus(VAR2,n1))), " +
-                "((terminates(skf4,VAR3,VAR2)|(~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))))|holdsAt(VAR3,plus(VAR2,n1)))]";
+        expected = "[((happens(skf3(VAR1,VAR2),VAR1)|(~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1))))|holdsAt(VAR2,plus(VAR1,n1))), " +
+                "((terminates(skf3(VAR1,VAR2),VAR2,VAR1)|(~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1))))|holdsAt(VAR2,plus(VAR1,n1)))]";
         System.out.println("expected: " + expected);
         assertEquals(expected,forms.toString());
         System.out.println();
 
         ArrayList<Clause> clauses = Clausifier.flattenAll(forms);
         System.out.println("after flattening: " + clauses);
-        expected = "[cnf(cnf0,axiom,happens(skf4,VAR2)|~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))|holdsAt(VAR3,plus(VAR2,n1)))., " +
-                "cnf(cnf1,axiom,terminates(skf4,VAR3,VAR2)|~holdsAt(VAR3,VAR2)|releasedAt(VAR3,plus(VAR2,n1))|holdsAt(VAR3,plus(VAR2,n1))).]";
+        expected = "[cnf(cnf0,axiom,happens(skf3(VAR1,VAR2),VAR1)|~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1))|holdsAt(VAR2,plus(VAR1,n1)))., " +
+                "cnf(cnf1,axiom,terminates(skf3(VAR1,VAR2),VAR2,VAR1)|~holdsAt(VAR2,VAR1)|releasedAt(VAR2,plus(VAR1,n1))|holdsAt(VAR2,plus(VAR1,n1))).]";
         System.out.println("expected: " + expected);
         assertEquals(expected,clauses.toString());
         System.out.println();
@@ -374,6 +381,7 @@ public class ClausifierTest {
     @Test
     public void testClausification() {
 
+        Clausifier.varCounter = 0;
         testClausificationSteps("(![Fluent]:(![Time]:(((holdsAt(Fluent, Time)&(~releasedAt(Fluent, plus(Time, n1))))&" +
                 "(~(?[Event]:(happens(Event, Time)&terminates(Event, Fluent, Time)))))=>holdsAt(Fluent, plus(Time, n1)))))).");
     }
@@ -383,6 +391,7 @@ public class ClausifierTest {
     @Test
     public void testClausificationSimple() {
 
+        Clausifier.varCounter = 0;
         System.out.println();
         System.out.println("================== testClausificationSimple ======================");
         BareFormula form = BareFormula.string2form("(((![X]:(a(X)|b(X)))|(?[X]:(?[Y]:p(X,f(Y)))))<=>(?[X]:(q(g(a),X))))");
@@ -392,25 +401,25 @@ public class ClausifierTest {
         assertEquals(4,result.size());
         Clause res = result.get(0);
         System.out.println("result: " + res);
-        String r1 = "cnf(cnf0,axiom,~a(skf11(VAR1,VAR2,VAR4,VAR5))|q(g(a),skf10(VAR1,VAR2,VAR5))).";
+        String r1 = "cnf(cnf0,axiom,~a(skf11)|q(g(a),skf10(VAR4))).";
         System.out.println("expected: " + r1);
         assertEquals(r1,res.toString());
 
         res = result.get(1);
         System.out.println("result: " + res);
-        String r2 = "cnf(cnf1,axiom,~b(skf11(VAR1,VAR2,VAR4,VAR5))|q(g(a),skf10(VAR1,VAR2,VAR5))).";
+        String r2 = "cnf(cnf1,axiom,~b(skf11)|q(g(a),skf10(VAR4))).";
         System.out.println("expected: " + r2);
         assertEquals(r2,res.toString());
 
         res = result.get(2);
         System.out.println("result: " + res);
-        String r3 = "cnf(cnf2,axiom,~p(VAR2,f(VAR1))|q(g(a),skf10(VAR1,VAR2,VAR5))).";
+        String r3 = "cnf(cnf2,axiom,~p(VAR2,f(VAR1))|q(g(a),skf10(VAR4))).";
         System.out.println("expected: " + r3);
         assertEquals(r3,res.toString());
 
         res = result.get(3);
         System.out.println("result: " + res);
-        String r4 = "cnf(cnf3,axiom,~q(g(a),VAR4)|a(VAR5)|b(VAR5)|p(skf9(VAR1),f(skf8))).";
+        String r4 = "cnf(cnf3,axiom,~q(g(a),VAR4)|a(VAR5)|b(VAR5)|p(skf9(VAR2,VAR4,VAR5),f(skf8(VAR1,VAR2,VAR4,VAR5)))).";
         System.out.println("expected: " + r4);
         assertEquals(r4,res.toString());
     }

@@ -872,9 +872,9 @@ public class BareFormula {
     /** ***************************************************************
      * Return the set of all variables in self.
      */
-    public SortedSet<Term> collectVars() {
+    public LinkedHashSet<Term> collectVars() {
 
-        SortedSet<Term> res = null;
+        LinkedHashSet<Term> res = null;
         if (isLiteral())
             res = lit1.collectVars();
         else if (isUnary())
@@ -897,10 +897,10 @@ public class BareFormula {
     /** ***************************************************************
      * Return the set of all free variables in self.
      */
-    public SortedSet<Term> collectFreeVars() {
+    public LinkedHashSet<Term> collectFreeVars() {
 
     	//System.out.println("INFO in BareFormula.collectFreeVars(): " + this + "  op: '" + op + "'");
-        SortedSet<Term> res = new TreeSet<Term>();
+        LinkedHashSet<Term> res = new LinkedHashSet<Term>();
         if (isLiteral())
             res = lit1.collectVars();
         else if (isUnary() || Term.emptyString(op)) {
