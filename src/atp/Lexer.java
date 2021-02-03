@@ -37,7 +37,8 @@ public class Lexer {
 
     public int ttype = 0;
     public String sval = "";
-       
+    public static boolean inBlockComment = false;
+
     public static final String NoToken        = "No Token";
     public static final String WhiteSpace     = "White Space";
     public static final String Newline        = "Newline";
@@ -201,6 +202,8 @@ public class Lexer {
         
         quant.add(Universal);
         quant.add(Existential);
+
+        inBlockComment = false;
     }
     
     /** ***************************************************************
@@ -416,7 +419,28 @@ public class Lexer {
                 try {
                     do {
                         line = input.readLine();
-                    } while (line != null && line.length() == 0);    
+                        if (inBlockComment) {
+                            do {
+                                line = input.readLine();
+                            } while (line != null && line.indexOf("*/") == -1);
+                            if (line != null && line.indexOf("*/") != -1) {
+                                if (line.length() == 2)
+                                    line = "";
+                                else
+                                    line = line.substring(line.indexOf("*/") + 2);
+                            }
+                            line = line.trim();
+                            inBlockComment = false;
+                        }
+                        else {
+                            if (line != null && line.indexOf("/*") != -1) {
+                                inBlockComment = true;
+                                //System.out.println("INFO in Lexer.nextUnfiltered(): in block comment: " + line);
+                                line = line.substring(0,line.indexOf("/*"));
+                                line = line.trim();
+                            }
+                        }
+                    } while (line != null && line.length() == 0);
                     //System.out.println("INFO in Lexer.nextUnfiltered(): " + line);
                     pos = 0;
                 }
