@@ -501,7 +501,7 @@ public class BareFormula {
      */
     public Literal toLiteral() {
 
-        //System.out.println("BareFormula.toLiteral(): " + this);
+        //System.out.println("BareFormula.toLiteral(): " + this.toStructuredString());
         if (!isEqLiteral())
             return null;
         String thisString = this.toString();
@@ -521,8 +521,12 @@ public class BareFormula {
         //System.out.println("++++++++");
     	//System.out.println("INFO in BareFormula.promoteChildren(): (structured print): " + this.toStructuredString());
     	//System.out.println("INFO in BareFormula.promoteChildren(): op: " + op);
+    	if (op.equals("~") && lit1!= null && lit1.negated) {
+    	    op = "";
+    	    lit1.negated = false;
+        }
     	//if (child1 != null)
-//            System.out.println("INFO in BareFormula.promoteChildren(): child1.isLiteral(): " + child1.isEqLiteral());
+       //     System.out.println("INFO in BareFormula.promoteChildren(): child1.isLiteral(): " + child1.isEqLiteral());
     	BareFormula newf = deepCopy();
     	BareFormula tempf = null;
     	boolean modified = false;
@@ -1044,15 +1048,16 @@ public class BareFormula {
             res = parseQuantified(lex, quantor);
         }
         else if (lex.testTok(Lexer.OpenPar)) {
+            //System.out.println("INFO in BareFormula.parseUnitaryFormula(): open par ");
             lex.acceptTok(Lexer.OpenPar);                      
             res = BareFormula.parse(lex);
             lex.acceptTok(Lexer.ClosePar);                
         }
         else if (lex.testTok(Lexer.Negation)) {
+            //System.out.println("INFO in BareFormula.parseUnitaryFormula(): negation ");
             lex.acceptTok(Lexer.Negation);
             BareFormula subform = parseUnitaryFormula(lex);
             res = new BareFormula("~",subform);
-
         }
         else {
             //System.out.println("INFO in BareFormula.parseUnitaryFormula(): (2) token: " + lex.literal);

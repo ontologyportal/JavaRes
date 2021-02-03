@@ -10,6 +10,7 @@ public class SearchParams {
     public boolean delete_tautologies;
     public boolean forward_subsumption;
     public boolean backward_subsumption;
+    public boolean indexing;
     public LitSelection.LitSelectors literal_selection;
 
     /** ***************************************************************
@@ -38,6 +39,8 @@ public class SearchParams {
         //    literals from a set of negative literals (both represented as
         //            lists, not Python sets) as the inference literal.
         literal_selection    = LitSelection.LitSelectors.NONE;
+
+        indexing = false;
     }
 
     /** ***************************************************************
@@ -46,12 +49,14 @@ public class SearchParams {
                         boolean delete_tautologies,
                         boolean forward_subsumption,
                         boolean backward_subsumption,
+                        boolean indexing,
                         LitSelection.LitSelectors literal_selection) {
 
         this.heuristics = heuristics;
         this.delete_tautologies = delete_tautologies;
         this.forward_subsumption = forward_subsumption;
-        this. backward_subsumption = backward_subsumption;
+        this.backward_subsumption = backward_subsumption;
+        this.indexing = indexing;
         this.literal_selection = literal_selection;
     }
 }

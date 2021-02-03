@@ -55,14 +55,14 @@ public class ResolutionIndex extends Index {
     public void removeData(HashMap<String,HashSet<KVPair>> idx,
                            String topsymbol, KVPair payload) {
 
-        System.out.println("removeData(): removing " + payload + " with " + topsymbol + " from " + idx);
+        //System.out.println("removeData(): removing " + payload + " with " + topsymbol + " from " + idx);
         if (idx.containsKey(topsymbol)) {
             HashSet<KVPair> existing = idx.get(topsymbol);
-            System.out.println("removeData(): removing " + payload + " from " + existing);
+            //System.out.println("removeData(): removing " + payload + " from " + existing);
             existing.remove(payload);
-            System.out.println("removeData(): after remove " + existing);
+            //System.out.println("removeData(): after remove " + existing);
         }
-        System.out.println("removeData(): removed " + payload + " from " + idx);
+        //System.out.println("removeData(): removed " + payload + " from " + idx);
     }
 
     /** ***************************************************************
@@ -88,10 +88,10 @@ public class ResolutionIndex extends Index {
      */
     public void removeClause(Clause clause) {
 
-        System.out.println("removeClause(): clause: " + clause);
+        //System.out.println("removeClause(): clause: " + clause);
         for (int i = 0; i < clause.literals.size(); i++) {
             Literal lit = clause.literals.get(i);
-            System.out.println("removeClause(): lit: " + lit + " topsymbol: " + lit.atom.getFunc());
+            //System.out.println("removeClause(): lit: " + lit + " topsymbol: " + lit.atom.getFunc());
             if (lit.isInferenceLit()) {
                 if (lit.isPositive())
                     removeData(posIdx, lit.atom.getFunc(), new KVPair(clause,i));
@@ -109,7 +109,7 @@ public class ResolutionIndex extends Index {
      */
     public HashSet<KVPair> getResolutionLiterals(Literal lit) {
 
-        System.out.println("ResolutionIndex.getResolutionLiterals(): lit: " + lit);
+        //System.out.println("ResolutionIndex.getResolutionLiterals(): lit: " + lit);
         HashMap<String, HashSet<KVPair>> idx = null;
         if (lit.isPositive())
             idx = negIdx;
@@ -117,7 +117,7 @@ public class ResolutionIndex extends Index {
             idx = posIdx;
         if (idx.containsKey(lit.atom.getFunc())) {
             HashSet<KVPair> result = new HashSet<KVPair>(idx.get(lit.atom.getFunc()));
-            System.out.println("ResolutionIndex.getResolutionLiterals(): result: " + result);
+            //System.out.println("ResolutionIndex.getResolutionLiterals(): result: " + result);
             return result;
         }
         else

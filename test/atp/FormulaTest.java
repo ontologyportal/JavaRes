@@ -313,4 +313,89 @@ public class FormulaTest {
             e.printStackTrace();
         }
     }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testParse1() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in FormulaTest.testParse1()");
+
+        String input = "";
+        String expected = "";
+        ClauseSet cs = null;
+        Lexer lex = null;
+
+        Clausifier.counterReset();
+        input = "fof(single_quoted,axiom,( 'A proposition' )).";
+        lex = new Lexer(input);
+        cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        expected = "cnf(cnf0,axiom,'A proposition').";
+        assertEquals(expected,cs.toString().trim());
+
+        input = "fof(single_quoted,axiom,( 'A predicate'(a) )).";
+        lex = new Lexer(input);
+        cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        expected = "cnf(cnf1,axiom,'A predicate'(a)).";
+        assertEquals(expected,cs.toString().trim());
+
+        input = "fof(single_quoted,axiom,( p('A constant') )).";
+        lex = new Lexer(input);
+        cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        expected = "cnf(cnf2,axiom,p('A constant')).";
+        assertEquals(expected,cs.toString().trim());
+
+        input = "fof(single_quoted,axiom,( p('A function'(a)) )).";
+        lex = new Lexer(input);
+        cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        expected = "cnf(cnf3,axiom,p('A function'(a))).";
+        assertEquals(expected,cs.toString().trim());
+
+        input = "fof(single_quoted,axiom,( 'A proposition' | 'A predicate'(a) | p('A constant') | p('A function'(a)) )).";
+        lex = new Lexer(input);
+        cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        expected = "cnf(cnf4,axiom,'A proposition'|'A predicate'(a)|p('A constant')|p('A function'(a))).";
+        assertEquals(expected,cs.toString().trim());
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testParse2() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in FormulaTest.testParse2()");
+        Clausifier.counterReset();
+        String input = "fof(single_quoted,axiom,( p('A \\'quoted \\\\ escape\\'') )).";
+        Lexer lex = new Lexer(input);
+        ClauseSet cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        String expected = "cnf(cnf0,axiom,p('A \\'quoted \\\\ escape\\'')).";
+        assertEquals(expected,cs.toString().trim());
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testParse3() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in FormulaTest.testParse3()");
+        Clausifier.counterReset();
+        String input = "fof(useful_connectives,axiom,(\n" +
+                "    ! [X] :\n" +
+                "      ( ( p(X) <~> ~ s(f) )) )).";
+        Lexer lex = new Lexer(input);
+        ClauseSet cs = Formula.lexer2clauses(lex);
+        System.out.println(cs);
+        String expected = "cnf(cnf0,axiom,~p(X)|s(f)).\n" +
+                "cnf(cnf1,axiom,p(X)|~s(f)).";
+        assertEquals(expected,cs.toString().trim());
+    }
 }

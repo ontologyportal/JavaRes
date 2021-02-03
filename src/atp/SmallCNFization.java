@@ -965,7 +965,7 @@ public class SmallCNFization extends Clausifier {
             f = newf;
         newf = formulaDistributeDisjunctions(f);
         //System.out.println("wFormulaCNF(): after  distribute disjunctions: " + newf);
-        if (!newf.equals(wf.form)) {
+        if (newf != null && !newf.equals(wf.form)) {
             f = newf;
         	Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "distribute";

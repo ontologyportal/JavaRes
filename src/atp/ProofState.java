@@ -75,14 +75,18 @@ public class ProofState {
     public String evalFunctionName  = "";
     public boolean verbose          = false;
     public Clause conjecture = null;
-    
+    public boolean indexed = true;  // use an IndexedClauseSet
+
     /** ***************************************************************
      * Initialize the proof state with a set of clauses.
      */  
     public ProofState(ClauseSet clauses, SearchParams params) {
 
         unprocessed = new HeuristicClauseSet(clauses, params.heuristics);
-        processed   = new ClauseSet();
+        if (indexed)
+            processed = new IndexedClauseSet(clauses);
+        else
+            processed   = new ClauseSet();
         for (Clause c:clauses.clauses) 
             unprocessed.addClause(c.deepCopy());
         initial_clause_count = unprocessed.length();
@@ -242,6 +246,7 @@ public class ProofState {
         sb.append("Delete_tautologies,");
         sb.append("Forward_subsumption,");
         sb.append("Backward_subsumption,");
+        sb.append("Indexed,");
         sb.append("Eval function name,");
         sb.append("Initial clauses,");
         sb.append("Processed clauses,");
@@ -266,6 +271,7 @@ public class ProofState {
         sb.append(delete_tautologies + ",");
         sb.append(forward_subsumption + ",");
         sb.append(backward_subsumption + ",");
+        sb.append(indexed + ",");
         sb.append(evalFunctionName + ",");
         sb.append(initial_clause_count + ",");
         sb.append(proc_clause_count + ",");

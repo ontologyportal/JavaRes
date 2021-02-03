@@ -22,6 +22,9 @@ package atp;
 
 import org.junit.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.*;
 
 public class LexerTest {
@@ -221,4 +224,43 @@ public class LexerTest {
         }
     }
 
+    /** ***************************************************************
+     * test strings and escapes
+     */
+    @Test
+    public void testEscapes() {
+
+        System.out.println("-------------------------------------------------");
+        System.out.println("INFO in Lexer.testEscapes(): ");
+        String ex1 = "'A proposition' | 'A predicate'(a) | p('A constant') | p('A function'(a)) ";
+        String ex2 = "p('A \'quoted \\ escape\'')";
+        Lexer lex = null;
+        try {
+            lex = new Lexer(ex1);
+            Pattern value = Lexer.tokenDefs.get(Lexer.SQString);
+            Matcher m = value.matcher(ex1);
+            System.out.println("INFO in Lexer.nextUnfiltered(): checking: " + ex1);
+            if (m.lookingAt()) {
+                //System.out.println("INFO in Lexer.nextUnfiltered(): got token against source: " + line.substring(pos));
+                String literal = m.group();
+                System.out.println("INFO in Lexer.nextUnfiltered(): got token: " + literal + " with regex: " + value);
+            }
+            else
+                System.out.println("no match");
+
+            m = value.matcher(ex2);
+            System.out.println("INFO in Lexer.nextUnfiltered(): checking: " + ex2);
+            if (m.lookingAt()) {
+                //System.out.println("INFO in Lexer.nextUnfiltered(): got token against source: " + line.substring(pos));
+                String literal = m.group();
+                System.out.println("INFO in Lexer.nextUnfiltered(): got token: " + literal + " with regex: " + value);
+            }
+            else
+                System.out.println("no match");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

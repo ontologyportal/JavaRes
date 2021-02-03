@@ -87,6 +87,10 @@ public class Resolution {
        
         //System.out.println("INFO in Resolution.resolution(): clause1 size " + clause1.literals.size());
         //System.out.println("INFO in Resolution.resolution(): literal 11 " + l1);
+        if (clause1.literals.size() > 1000) {
+            System.out.println("Error in Resolution.resolution(): clause too big: " + clause1);
+            assert clause1.literals.size() < 1000;
+        }
         for (int i = 0; i < clause1.literals.size(); i++) {
             Literal l = clause1.literals.get(i); 
             //System.out.println("INFO in Resolution.resolution(): literal " + l);
@@ -98,6 +102,10 @@ public class Resolution {
         //System.out.println("INFO in Resolution.resolution(): clause2 size " + clause2.literals.size());
         //System.out.println("INFO in Resolution.resolution(): literal 12 " + l2);
         ArrayList<Literal> lits2 = new ArrayList<Literal> ();
+        if (clause2.literals.size() > 1000) {
+            System.out.println("Error in Resolution.resolution(): clause too big: " + clause1);
+            assert clause1.literals.size() < 1000;
+        }
         for (int i = 0; i < clause2.literals.size(); i++) {
             Literal l = clause2.literals.get(i); 
             //System.out.println("INFO in Resolution.resolution(): literal " + l);

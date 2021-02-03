@@ -105,6 +105,7 @@ public class Formula {
         //String name = lex.lookLit();  
         //lex.acceptTok(Lexer.IdentLower);    used to require alphanumeric ID but E generates number ID
         String name = lex.next();   // accept any ID
+        //System.out.println("Formula.parse(): parsing id: " + name);
         lex.acceptTok(Lexer.Comma);
         String type = lex.lookLit();
         if (!type.equals("axiom") && !type.equals("conjecture") && !type.equals("negated_conjecture"))

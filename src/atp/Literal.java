@@ -158,6 +158,8 @@ public class Literal implements Comparable {
      */
     public boolean equals(Object l_obj) {
 
+        if (l_obj == null)
+            return false;
         if (!l_obj.getClass().getName().equals("atp.Literal")) {
             System.out.println("# Error: Literal.equals() passed object not of type Literal:" + l_obj.getClass());
             Exception e = new Exception("DEBUG");

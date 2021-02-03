@@ -187,14 +187,14 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 !lex.type.equals(Lexer.DefFunctor) && !lex.type.equals(Lexer.SQString) &&
                 !lex.type.equals(Lexer.Number))
                 throw new ParseException("Error in Term.parse(): Expected a word. Found " + 
-                        lex.literal + " " + lex.type,lex.input.getLineNumber()); 
+                        lex.literal + " type: " + lex.type, lex.input.getLineNumber());
             if (lex.type.equals(Lexer.IdentUpper)) {
                 t = lex.literal;
                 return this;
             }
             else {
                 if (lex.type.equals(Lexer.IdentLower) || lex.type.equals(Lexer.SQString) || lex.type.equals(Lexer.DefFunctor)) {
-                    //System.out.println("lower case term: " + lex.literal);  
+                    //System.out.println("lower case term: " + lex.literal);
                     t = lex.literal;
                     if (lex.look().equals("(")) {
                         lex.next();
@@ -232,6 +232,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             System.out.println("in file: " + lex.filename);
             ex.printStackTrace();
         }
+        //System.out.println("Term.parse(): returning: " + this);
         return this;
     }  
     

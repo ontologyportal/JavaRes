@@ -81,7 +81,7 @@ public class Lexer {
 
     /** This array contains all of the compiled Pattern objects that
      * will be used by methods in this file. */
-    private static LinkedHashMap<String,Pattern> tokenDefs = new LinkedHashMap<String,Pattern>();
+    public static LinkedHashMap<String,Pattern> tokenDefs = new LinkedHashMap<String,Pattern>();
     
     public static ArrayList<String> andOr = new ArrayList<String>();
     public static ArrayList<String> binaryRel = new ArrayList<String>();
@@ -172,7 +172,7 @@ public class Lexer {
         tokenDefs.put(Implies,     Pattern.compile("=>"));              
         tokenDefs.put(Equiv,       Pattern.compile("<=>"));                  
         tokenDefs.put(BImplies,    Pattern.compile("<="));                  
-        tokenDefs.put(Xor,         Pattern.compile("<~>"));                     
+        tokenDefs.put(Xor,         Pattern.compile("<~>"));
         tokenDefs.put(EqualSign,   Pattern.compile("="));                 
         tokenDefs.put(NotEqualSign, Pattern.compile("!="));                  
         tokenDefs.put(Negation,    Pattern.compile("~"));                   
@@ -186,8 +186,9 @@ public class Lexer {
         tokenDefs.put(Number,      Pattern.compile("-?[0-9]?[0-9\\.]+E?-?[0-9]*"));
         tokenDefs.put(HashComment, Pattern.compile("#[^\\n]*"));
         tokenDefs.put(PerComment,  Pattern.compile("\\%[^\\n]*"));
-        tokenDefs.put(SQString,Pattern.compile("'[^']*'"));
-        
+        //tokenDefs.put(SQString,Pattern.compile("'[^']*'"));
+        tokenDefs.put(SQString,Pattern.compile("'(\\\\'|[^'])*'"));
+
         andOr.add(And);
         andOr.add(Or);
         
@@ -431,18 +432,16 @@ public class Lexer {
                     return EOFToken;
                 }
             }
-            Iterator<String> it = tokenDefs.keySet().iterator();
-            while (it.hasNext()) {  // Go through all the token definitions and process the first one that matches
-                String key = it.next();
+            for (String key : tokenDefs.keySet()) {  // Go through all the token definitions and process the first one that matches
                 Pattern value = tokenDefs.get(key);
                 Matcher m = value.matcher(line.substring(pos));
-                //System.out.println("INFO in Lexer.nextUnfiltered(): checking: " + key + " against: " + source.substring(pos));
+                //System.out.println("INFO in Lexer.nextUnfiltered(): checking: " + key + " against: " + line.substring(pos));
                 if (m.lookingAt()) {
-                    //System.out.println("INFO in Lexer.nextUnfiltered(): got token against source: " + source.substring(pos));
+                    //System.out.println("INFO in Lexer.nextUnfiltered(): got token against source: " + line.substring(pos));
                     literal = line.substring(pos + m.start(),pos + m.end());
                     pos = pos + m.end();
                     type = key;
-                    //System.out.println("INFO in Lexer.nextUnfiltered(): got token: " + literal + " type: " + type + 
+                    //System.out.println("INFO in Lexer.nextUnfiltered(): got token: " + literal + " type: " + type +
                     //        " at pos: " + pos + " with regex: " + value);
                     return m.group();
                 }
@@ -472,201 +471,5 @@ public class Lexer {
             res.add(tok);
         }
         return res;
-    }
-
-    /** ***************************************************************
-     ** ***************************************************************
-     */
-    private static String example1 = "f(X,g(a,b))";
-    private static String example2 = "# Comment\nf(X,g(a,b))";
-    private static String example3 = "cnf(test,axiom,p(a)|p(f(X))).";
-    private static String example4 = "^";
-    private static String example5 = "fof(test,axiom,![X,Y]:?[Z]:~p(X,Y,Z)).";
-    
-    /** ***************************************************************
-     * Test that comments and whitespace are normally ignored. 
-     */
-    private static void testLex() {
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("INFO in Lexer.testLex()");
-        Lexer lex1 = new Lexer(example1);
-        Lexer lex2 = new Lexer(example2);
-        try {
-            ArrayList<String> res1 = lex1.lex();
-            System.out.println("INFO in Lexer.testLex(): completed parsing example 1: " + example1);
-            ArrayList<String> res2 = lex2.lex();
-            System.out.println("INFO in Lexer.testLex(): should be true: " + res1.equals(res2));
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    /** ***************************************************************
-     * Test that self.example 1 is split into the expected tokens. 
-     */
-    private static void testTerm() {
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("INFO in Lexer.testTerm()");
-        Lexer lex1 = new Lexer(example1);
-        try {
-            lex1.acceptTok(IdentLower); // f
-            lex1.acceptTok(OpenPar);    // (
-            lex1.acceptTok(IdentUpper); // X
-            lex1.acceptTok(Comma);      // ,
-            lex1.acceptTok(IdentLower); // g
-            lex1.acceptTok(OpenPar);    // (
-            lex1.acceptTok(IdentLower); // a
-            lex1.acceptTok(Comma);      // ,
-            lex1.acceptTok(IdentLower); // b
-            lex1.acceptTok(ClosePar);   // )
-            lex1.acceptTok(ClosePar);   // )
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    /** ***************************************************************
-     */
-    private static boolean compareArrays(ArrayList<String> s1, ArrayList<String> s2) {
-        
-        if (s1.size() != s2.size())
-            return false;
-        for (int i = 0; i < s1.size(); i++) 
-            if (!s1.get(i).equals(s2.get(i)))
-                return false;
-        return true;
-    }
-    
-    /** ***************************************************************
-     * Perform lexical analysis of a clause, then rebuild it and
-     * compare that the strings are the same. 
-     */
-    private static void testClause() {
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("INFO in Lexer.testClause()");
-        Lexer lex = new Lexer(example3);
-        try {
-            ArrayList<String> toks = lex.lex();
-            System.out.println(toks);
-            System.out.println("Should be true: (tokens == 20): " + (toks.size() == 20) + " actual: " + toks);
-            StringBuffer rebuild = new StringBuffer();
-            for (int i = 0; i < toks.size(); i++)
-                rebuild.append(toks.get(i));
-            System.out.println(rebuild.toString() + " " + example3);
-            System.out.println("Should be true: " + rebuild.toString().equals(example3));
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    /** ***************************************************************
-     * Perform lexical analysis of a formula, then rebuild it and
-     * compare that the strings are the same. 
-     */
-    private static void testFormula() {
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("INFO in Lexer.testFormula()");
-        Lexer lex = new Lexer(example5);
-        try {
-            ArrayList<String> toks = lex.lex();
-            System.out.println(toks);
-            System.out.println("Should be true: (tokens == 29): " + (toks.size() == 29));
-            StringBuffer rebuild = new StringBuffer();
-            for (int i = 0; i < toks.size(); i++)
-                rebuild.append(toks.get(i));
-            System.out.println(rebuild.toString());
-            System.out.println("Should be true: " + rebuild.toString().equals(example5));
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    /** ***************************************************************
-     * Check the positive case of AcceptLit(). 
-     */
-    private static void testAcceptLit() {
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("INFO in Lexer.testAcceptLit()");
-        Lexer lex = new Lexer(example3);
-        try {
-            lex.acceptLit("cnf");
-            lex.acceptLit("(");
-            lex.acceptLit("test");
-            lex.acceptLit(",");
-            lex.acceptLit("axiom");
-            lex.acceptLit(",");
-            lex.acceptLit("p");
-            lex.acceptLit("(");
-            lex.acceptLit("a");
-            lex.acceptLit(")");
-            lex.acceptLit("|");
-            lex.acceptLit("p");
-            lex.acceptLit("(");
-            lex.acceptLit("f");
-            lex.acceptLit("(");
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    /** ***************************************************************
-     * Provoke different errors. 
-     */
-    private static void testErrors() {
-
-        System.out.println("-------------------------------------------------");
-        System.out.println("INFO in Lexer.testErrors(): Should throw three errors");
-        Lexer lex = null;
-        try {
-            lex = new Lexer(example4);
-            lex.look(); 
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        try {
-            lex = new Lexer(example1);
-            lex.checkTok(EqualSign); 
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-        try {
-            lex = new Lexer(example1);
-            lex.checkLit("abc");
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-    
-    /** ***************************************************************
-     */
-    public static void main(String[] args) {
-        
-        testLex();
-        testTerm();
-        testClause();
-        testFormula();
-        testAcceptLit();
-        testErrors();
     }
 }

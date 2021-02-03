@@ -206,7 +206,7 @@ public class Prover2 {
     public static ArrayList<ProofState> setAllStateOptions(ClauseSet clauses, SearchParams params) {
         
         ArrayList<ProofState> result = new ArrayList<ProofState>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 16; i++) {
             ProofState state = new ProofState(clauses,params);
             if ((i & 1) == 0)
                 state.delete_tautologies = false;
@@ -220,6 +220,10 @@ public class Prover2 {
                 state.backward_subsumption = false;
             else
                 state.backward_subsumption = true;
+            if ((i & 8) == 0)
+                state.indexed = false;
+            else
+                state.indexed = true;
             result.add(state);
         }
         return result;
@@ -450,6 +454,11 @@ public class Prover2 {
                         	    state.SZSresult = "Unsatisfiable (UNS)";
                             printStateResults(opts,state,null);
                         }
+                        else {
+                            if (Term.emptyString(state.SZSresult))
+                                state.SZSresult = "# SZS status GaveUp";
+                            printStateResults(opts,state,null);
+                        }
                     }
                 }
                 else {
@@ -526,7 +535,7 @@ public class Prover2 {
                     //System.out.println("# SZS status Theorem for problem " + opts.get("filename"));
                 }
                 else {
-                    if (Term.emptyString(state.SZSresult))
+                    if (state == null || Term.emptyString(state.SZSresult))
                         System.out.println("# SZS status GaveUp for problem " + opts.get("filename"));
                     else
                         printStateResults(opts,state,null);
