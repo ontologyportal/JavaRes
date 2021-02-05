@@ -1,4 +1,141 @@
-JavaRes is a demonstration prover patterned after PyRes [Schulz&Pease, 2020].  In this paper we discuss in more detail the architecture and data structures of this prover and the experience of one of us (Pease) implementing the prover, without prior expertise in writing an FOL prover.  We provide performance metrics relative to PyRes and other well-known provers.  To illustrate the value of JavaRes for learning about theorem proving we also describe implementation of an alternate simple clausification algorithm, graphical proof presentation, implementation of the SInE axiom selection algoithm, and use with the SUMO theory and syntax.
+\documentclass{llncs}
 
-Automated theorem proving is a fascinating and useful discipline but can be mystifying for someone not deeply acquainted with the field.  It should be fair to say that most computer science professionals do not understand the power of inference in FOL and how it provides distinct capabilities from simpler representation such as graphs or description logics.  Part of the reason for this lack of general familiarity may be because the barier to entry in the field remains high, despite many decades of work and publication.  Most publications require a degree of mathematical sophistication to understand, and even with such capability, a reader will not know which data structures to use, or which of the many algorithms with be simplest to implement.
-  We intially began with just an attempt for one of us (Pease) to learn about ATP, motivated by decades of work in formal ontology (Pease, 2011), finding that among many excellent books, including (Harrison) the first steps to understand ATP were too high.  Fortunately, the creator of the Eprover (Schulz), provides the explanations needed to understand how and where to begin, and this grew into creation of PyRes.  To see whether PyRes provided enough structure, we wrote JavaRes and then used it as a platform to implement several extensions and see whether both provers could provide a suitable platform for ATP education.
+\usepackage{booktabs}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+
+\lstset{language=Python,showstringspaces=false}
+
+%\usepackage{caption}
+%\captionsetup[table]{skip=10pt}
+%\setlength{\belowcaptionskip}{-10pt}
+
+%\title{Teaching Automated Theorem Proving by Example: PyRes Pedagogical Prover\\(system description)}
+\title{JavaRes}
+
+\author{Adam Pease\inst{2}
+        \and Stephan Schulz\inst{1}
+  }
+\institute{
+  Articulate Software, USA,
+  \email{\tt apease@articulatesoftware.com}
+  \and
+  DHBW Stuttgart, Germany,
+  \email{\tt schulz@eprover.org}
+}
+
+
+\titlerunning{JavaRes}
+%\authorrunning{Schulz, Cruanes and Vukmirovic}
+
+\renewcommand{\textfraction}{.01}
+\renewcommand{\topfraction}{.99}
+
+\newcommand{\mw}[1]{\ensuremath{\mathit{#1}}}
+\newcommand{\nat}{\ensuremath{\mathbb N}}
+\newcommand{\integer}{\ensuremath{\mathbb Z}}
+\newcommand{\rat}{\ensuremath{\mathbb Q}}
+\newcommand{\real}{\ensuremath{\mathbb R}}
+\newcommand{\eqn}[2]{\ensuremath{#1\!\simeq\!#2}}
+\newcommand{\neqn}[2]{\ensuremath{#1\!\not\simeq\!#2}}
+\newcommand{\ueqn}[2]{\ensuremath{#1\dot{\simeq}#2}}
+
+\newcommand{\limpl}{\rightarrow}
+\newcommand{\limplies}{\rightarrow} % I mistype this too often ;-)
+\newcommand{\ltrue}{\ensuremath{\top}}
+\newcommand{\lfalse}{\ensuremath{\bot}}
+\newcommand{\lequiv}{\ensuremath{\leftrightarrow}}
+
+\newcommand{\terms}{\ensuremath{\mathit{Term(F,V)}}}
+\newcommand{\tops}{\mathop{\mathrm{top}}\nolimits}
+\newcommand{\pos}{\mathop{\mathrm{pos}}\nolimits}
+\newcommand{\gfpf}{\mathop{\mathrm{gfpf}}\nolimits}
+\newcommand{\fpf}{\mathop{\mathrm{fpf}}\nolimits}
+\newcommand{\fp}{\mathop{\mathrm{fp}}\nolimits}
+\newcommand{\text}[1] {\mbox{#1}}
+
+\renewcommand{\textfraction}{.05}
+\renewcommand{\topfraction}{.95}
+\renewcommand{\bottomfraction}{.95}
+
+\newcommand{\GInferenzC}[3]
+{
+\begin{tabular}{c}
+  $#1$ \\
+  \hline
+  \raisebox{-0.4ex}{$#2$} \\
+\end{tabular}
+  #3
+}
+
+\newcommand{\CInferenz}[2]
+{
+\begin{tabular}{c}
+  $#1$ \\
+  \hline
+  \hline
+  \raisebox{-0.4ex}{$#2$} \\
+\end{tabular}
+}
+
+%\pagestyle{empty}
+%\bibliographystyle{alpha}
+\bibliographystyle{splncs04}
+
+\begin{document}
+
+\maketitle
+
+
+JavaRes is a demonstration prover patterned after
+PyRes~\cite{SP:IJCAR-2020}.  In this paper we discuss in more detail
+the architecture and data structures of this prover and the experience
+of one of us (Pease) implementing the prover, without prior expertise
+in writing an FOL prover.  We provide performance metrics relative to
+PyRes and other well-known provers.  To illustrate the value of
+JavaRes for learning about theorem proving we also describe
+implementation of an alternate simple clausification algorithm,
+graphical proof presentation, implementation of the SInE axiom
+selection algoithm, and use with the SUMO theory and syntax.
+
+Automated theorem proving is a fascinating and useful discipline but
+can be mystifying for someone not deeply acquainted with the field.
+It should be fair to say that most computer science professionals do
+not understand the power of inference in FOL and how it provides
+distinct capabilities from simpler representation such as graphs or
+description logics.  Part of the reason for this lack of general
+familiarity may be because the barier to entry in the field remains
+high, despite many decades of work and publication.  Most publications
+require a degree of mathematical sophistication to understand, and
+even with such capability, a reader will not know which data
+structures to use, or which of the many algorithms with be simplest to
+implement.
+
+
+
+We intially began with just an attempt for one of us (Pease) to learn
+about ATP, motivated by decades of work in formal ontology (Pease,
+2011), finding that among many excellent books, including (Harrison)
+the first steps to understand ATP were too high.  Fortunately, the
+creator of the Eprover (Schulz), provides the explanations needed to
+understand how and where to begin, and this grew into creation of
+PyRes.  To see whether PyRes provided enough structure, we wrote
+JavaRes and then used it as a platform to implement several extensions
+and see whether both provers could provide a suitable platform for ATP
+education.
+
+
+\bibliography{stsbib}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% eval: (tex-pdf-mode)
+%%% TeX-master: t
+%%% End:
