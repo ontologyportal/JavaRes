@@ -20,6 +20,8 @@ MA  02111-1307 USA
 */
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import java.text.*;
 
@@ -61,6 +63,8 @@ public class Prover2 {
         "File include path directive.\n" +
         " --experiment\n" +
         "Run an experiment to total times for all tests in a given directory (deprecated, use script instead).\n" +
+        " --categories\n" +
+        "Run an experiment using category files in TPTP directory.\n" +
         " --allOpts\n" +
         "Run all options.  Ignore -tfb command line options and try in all combination.\n" +
         " --allStrat\n" +
@@ -71,6 +75,8 @@ public class Prover2 {
         "Run SInE axiom selection.\n" +
         " --proof\n" +
         "Print proofs. Dotgraph and proof options are mutually exclusive. \n" +
+        " --dotgraph\n" +
+        "Generate the proof in dot format for graphviz\n" +
         " --stats\n" +
         "Print statistics.\n" +
         " --csvstats\n" +
@@ -99,12 +105,16 @@ public class Prover2 {
                     result.put("allOpts", "true");
                 if (arg.equals("--proof"))
                     result.put("proof", "true");
+                if (arg.equals("--dotgraph"))
+                    result.put("dotgraph", "true");
                 if (arg.equals("--stats"))
                     result.put("stats", "true");
                 if (arg.equals("--csvstats"))
                     result.put("csvstats", "true");                  
                 if (arg.equals("--experiment"))
                     result.put("experiment", "true");
+                if (arg.equals("--categories"))
+                    result.put("categories", "true");
                 if (arg.equals("--allStrat"))
                     result.put("allStrat", "true");
                 if (arg.equals("--sine"))
@@ -250,8 +260,6 @@ public class Prover2 {
         String[] children = dir.list();
         Arrays.sort(children);
         if (children != null) {
-            if (opts.containsKey("csvstats"))
-                System.out.println(ProofState.generateMatrixHeaderStatisticsString());
             for (int i = 0; i < children.length; i++) {
                 String filename = opts.get("filename") + File.separator + children[i];
                 if (filename.endsWith(".p")) {
@@ -269,7 +277,91 @@ public class Prover2 {
             }
         }
     }
-    
+
+    /** ***************************************************************
+     * process a file that is a list of TPTP problem files
+     */
+    private static void processProblemList(String filename, HashMap<String,String> opts, ArrayList<SearchParams> evals) {
+
+        String sep = File.separator;
+        String TPTPdir = System.getenv("TPTP");
+        String file = TPTPdir + sep + filename;
+        System.out.println("processProblemList() read category file: " + file);
+        try {
+            LineNumberReader input = new LineNumberReader(new FileReader(file));
+            String line = null;
+            do {
+                line = input.readLine();
+                if (line != null) {
+                    String prefix = line.substring(0,3);
+                    String probFile = TPTPdir + sep + "Problems" + sep + prefix + sep + line;
+                    //System.out.println("processProblemList() process problem file: " + probFile);
+                    ProofState ps = processTestFile(probFile,opts,evals);
+                    ClauseSet conjectures = new ClauseSet();
+                    conjectures.addClause(ps.conjecture);
+                    printStateResults(opts,ps,conjectures);
+                }
+            } while (line != null && line != "");
+        }
+        catch (Exception e) {
+            System.out.println("Error in Prover2.processProblemList(): Error on reading file: " + file);
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     */
+    private static void runCategoryExperiment(HashMap<String,String> opts, ArrayList<SearchParams> evals) {
+
+        System.out.println("Prover2.runCategoryExperiment(): ");
+        System.out.println("Prover2.runCategoryExperiment(): opts: " + opts);
+        ProofState.generateMatrixHeaderStatisticsString();
+        File dir = new File(System.getenv("TPTP"));
+        String[] children = dir.list();  // get the problem list files first.
+        Arrays.sort(children);
+        if (children != null) {
+            for (int i = 0; i < children.length; i++) {
+                if (children[i].endsWith("_probs")) {
+                    System.out.println("*** " + children[i] + " ***");
+                    processProblemList(children[i], opts, evals);
+                }
+            }
+        }
+    }
+
+    /** ***************************************************************
+     */
+    public static void saveProof(HashMap<String,String> opts, ProofState state, ClauseSet query) {
+
+        String sep = File.separator;
+        ZoneId zonedId = ZoneId.of( "America/Los_Angeles" );
+        LocalDate today = LocalDate.now( zonedId );
+        String date = today.toString();
+        String dir = System.getenv("TPTP") + sep + "Output-" + date;
+        System.out.println("saveProof(): in directory " + dir);
+        if (state.res != null) {
+            try {
+                File dirFile = new File(dir);
+                if (!dirFile.exists())
+                    dirFile.mkdir();
+                String inFile = state.filename.substring(state.filename.lastIndexOf("/") + 1);
+                String filename = dir  + sep + inFile + "out";
+                PrintWriter pw = new PrintWriter(filename);
+                TreeMap<String, Clause> proof = state.generateProofTree(state.res);
+                if (query != null)
+                    pw.println(state.extractAnswer(proof, query.get(0)));
+                pw.println("# SZS output start CNFRefutation");
+                pw.println(state.generateProof(state.res, false));
+                pw.println("# SZS output end CNFRefutation");
+                pw.close();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /** ***************************************************************
      */
     public static void printStateResults(HashMap<String,String> opts, ProofState state, ClauseSet query) {
@@ -281,15 +373,19 @@ public class Prover2 {
             return;
         }
         else if (opts.containsKey("proof")) {
-            System.out.println("# printStateResults(): " + state.res);
-            if (state.res != null) {
-                TreeMap<String, Clause> proof = state.generateProofTree(state.res);
-                if (query != null)
-                    System.out.println(state.extractAnswer(proof, query.get(0)));
-                System.out.println("# SZS output start CNFRefutation");
-                System.out.println(state.generateProof(state.res, false));
-                System.out.println("# SZS output end CNFRefutation");
+            if (! opts.containsKey("allOpts") && !opts.containsKey("experiment")) {
+                System.out.println("# printStateResults(): " + state.res);
+                if (state.res != null) {
+                    TreeMap<String, Clause> proof = state.generateProofTree(state.res);
+                    if (query != null)
+                        System.out.println(state.extractAnswer(proof, query.get(0)));
+                    System.out.println("# SZS output start CNFRefutation");
+                    System.out.println(state.generateProof(state.res, false));
+                    System.out.println("# SZS output end CNFRefutation");
+                }
             }
+            else
+                saveProof(opts,state,query);
         }
         if (opts.containsKey("csvstats")) {
             System.out.println(state.generateMatrixStatisticsString());
@@ -525,6 +621,8 @@ public class Prover2 {
 
             if (opts.containsKey("experiment")) 
                 runExperiment(opts,evals);
+            else if (opts.containsKey("categories"))
+                runCategoryExperiment(opts,evals);
             else if (opts.containsKey("interactive"))
                 runInteractive(opts,evals);
             else {

@@ -69,6 +69,7 @@ public class Lexer {
     public static final String Existential    = "?";
     public static final String Negation       = "~";
     public static final String SQString       = "String in 'single quotes'";
+    public static final String DQString       = "String in \"double quotes\"";
     public static final String EOFToken       = "*EOF*";
 
     public String filename = "";
@@ -189,6 +190,7 @@ public class Lexer {
         tokenDefs.put(PerComment,  Pattern.compile("\\%[^\\n]*"));
         //tokenDefs.put(SQString,Pattern.compile("'[^']*'"));
         tokenDefs.put(SQString,Pattern.compile("'(\\\\'|[^'])*'"));
+        tokenDefs.put(DQString,Pattern.compile("\"(\\\\\"|[^\"])*\""));
 
         andOr.add(And);
         andOr.add(Or);
@@ -473,13 +475,13 @@ public class Lexer {
             if (pos + 4 > line.length())
                 if (pos - 4 < 0)
                     throw new ParseException("Error in Lexer.nextUnfiltered(): no matches in token list for " + 
-                            line.substring(0,line.length()) + "... at line " + input.getLineNumber(),pos);
+                            line.substring(0,line.length()) + "... at line " + input.getLineNumber() + " full line " + line,pos);
                 else
-                    throw new ParseException("Error in Lexer.nextUnfiltered(): no matches in token list for " + 
-                            line.substring(pos - 4,line.length()) + "... at line " + input.getLineNumber(),pos);
+                    throw new ParseException("Error in Lexer.nextUnfiltered(): no matches in token list for " +
+                            line.substring(0,line.length()) + "... at line " + input.getLineNumber() + " full line " + line,pos);
             else
-                throw new ParseException("Error in Lexer.nextUnfiltered(): no matches in token list for " + 
-                        line.substring(pos,pos+4) + "... at line " + input.getLineNumber(),pos);
+                throw new ParseException("Error in Lexer.nextUnfiltered(): no matches in token list for " +
+                        line.substring(0,line.length()) + "... at line " + input.getLineNumber() + " full line " + line,pos);
         }
     }
 

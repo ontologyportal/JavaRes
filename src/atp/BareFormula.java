@@ -1094,7 +1094,12 @@ public class BareFormula {
      * of the expression.
      */
     public static BareFormula parse(Lexer lex) throws IOException, ParseException {
-      
+
+        if (level > 10) { // trap pathological cases of nested formulas
+            System.out.println("Error in BareFormula.parse(): too much nesting at line: " + lex.pos + " in " + lex.line);
+            return null;
+        }
+        level++;
         //System.out.println("INFO in BareFormula.parse(): token: " + lex.literal);
         BareFormula res = parseUnitaryFormula(lex);
         //System.out.println("INFO in BareFormula.parse(): returned from unitary with token: " + lex.literal);

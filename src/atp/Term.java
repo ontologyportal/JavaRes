@@ -185,7 +185,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             //System.out.println("INFO in Term.parse(): after next token: " + lex.literal);
             if (!lex.type.equals(Lexer.IdentLower) && !lex.type.equals(Lexer.IdentUpper) &&
                 !lex.type.equals(Lexer.DefFunctor) && !lex.type.equals(Lexer.SQString) &&
-                !lex.type.equals(Lexer.Number))
+                !lex.type.equals(Lexer.DQString) && !lex.type.equals(Lexer.Number))
                 throw new ParseException("Error in Term.parse(): Expected a word. Found " + 
                         lex.literal + " type: " + lex.type, lex.input.getLineNumber());
             if (lex.type.equals(Lexer.IdentUpper)) {
@@ -193,7 +193,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 return this;
             }
             else {
-                if (lex.type.equals(Lexer.IdentLower) || lex.type.equals(Lexer.SQString) || lex.type.equals(Lexer.DefFunctor)) {
+                if (lex.type.equals(Lexer.IdentLower) || lex.type.equals(Lexer.SQString) ||  lex.type.equals(Lexer.DQString) || lex.type.equals(Lexer.DefFunctor)) {
                     //System.out.println("lower case term: " + lex.literal);
                     t = lex.literal;
                     if (lex.look().equals("(")) {
@@ -211,7 +211,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
                 }
                 else {
                     // if (lex.literal.equals("$false"))
-                    if (lex.type.equals(Lexer.DefFunctor) || lex.type.equals(Lexer.SQString) ||
+                    if (lex.type.equals(Lexer.DefFunctor) || lex.type.equals(Lexer.SQString) ||  lex.type.equals(Lexer.DQString) ||
                             lex.type.equals(Lexer.Number))
                         t = lex.literal;
                     else

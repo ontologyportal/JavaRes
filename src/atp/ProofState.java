@@ -471,9 +471,7 @@ public class ProofState {
     public String proof2String(TreeMap<String,Clause> proof) {
     
         StringBuffer sb = new StringBuffer();
-        Iterator<String> it = proof.keySet().iterator();
-        while (it.hasNext()) {
-            String key = it.next();
+        for (String key : proof.keySet()) {
             Clause c = proof.get(key);           
             sb.append(String.format("%-5s", (c.name + ".")) + "\t" + c.toStringJustify() + "\n");
         }
@@ -489,9 +487,7 @@ public class ProofState {
     public String proof2StringTSTP(TreeMap<String,Clause> proof) {
     
         StringBuffer sb = new StringBuffer();
-        Iterator<String> it = proof.keySet().iterator();
-        while (it.hasNext()) {
-            String key = it.next();
+        for (String key : proof.keySet()) {
             Clause c = proof.get(key);
             String type = "plain";
             if (c.rationale.equals("input"))
@@ -517,10 +513,8 @@ public class ProofState {
 
         //System.out.println("\nINFO in ProofState.renumber() clauseMap: " + clauseMap);
         //System.out.println("\nINFO in ProofState.renumber() nameMap: " + nameMap);
-        TreeMap<String,Clause> proof = new TreeMap<String,Clause>();        
-        Iterator<String> it = clauseMap.keySet().iterator();
-        while (it.hasNext()) {
-            String key = it.next();
+        TreeMap<String,Clause> proof = new TreeMap<String,Clause>();
+        for (String key : clauseMap.keySet()) {
             Clause c = clauseMap.get(key);               
             c.name = nameMap.get(c.name);
             if (c.name != null) {
@@ -544,9 +538,7 @@ public class ProofState {
         newvars.addAll(vars);
         Clause c = proof.get(id);
         newvars = c.subst.applyList(newvars);
-        Iterator<String> it = proof.keySet().iterator();
-        while (it.hasNext()) {
-            String key = it.next();
+        for (String key : proof.keySet()) {
             Clause val = proof.get(key);
             for (int i = 0; i < val.support.size(); i++) {
                 if (val.support.get(i).equals(id))
@@ -561,17 +553,17 @@ public class ProofState {
      * negated conjecture.
      */  
     public String extractAnswer(TreeMap<String,Clause> proof, Clause conjecture) {
-        
+
+        if (conjecture == null)
+            return "";
         //System.out.println("INFO in ProofState.extractAnswer(): conjecture: " + conjecture);
         Clause conjectureNorm = conjecture.normalizeVarCopy();
         //System.out.println("INFO in ProofState.extractAnswer(): conjectureNorm: " + conjectureNorm);
         StringBuffer sb = new StringBuffer();
         LinkedHashSet<Term> vars = conjecture.collectVars();
-        Iterator<String> it = proof.keySet().iterator();
         String conjectKey = "";
         Clause conjectValue = null;
-        while (it.hasNext()) {  // find conjecture in proofs
-            String key = it.next();
+        for (String key : proof.keySet()) {
             Clause c = proof.get(key);
             if (c.normalizeVarCopy().equals(conjectureNorm)) {
                 conjectKey = key;
@@ -649,7 +641,8 @@ public class ProofState {
     /** ***************************************************************
      */  
     public String generateDotGraphProof(Clause res) {
-    
+
+        System.out.println("ProofState.generateDotGraphProof()");
         HashMap<String,Clause> clauseMap = new HashMap<String,Clause>();   
         HashMap<String,GraphNode> graph = new HashMap<String,GraphNode>();
         generateProofGraph(res,clauseMap,graph);

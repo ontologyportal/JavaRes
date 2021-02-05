@@ -100,6 +100,7 @@ public class Formula {
      */
     public static Formula parse(Lexer lex) throws IOException, ParseException {
 
+        BareFormula.level = 0; // trap pathological cases of nested formulas with a nesting level counter
         lex.acceptLit("fof");
         lex.acceptTok(Lexer.OpenPar);
         //String name = lex.lookLit();  
