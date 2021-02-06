@@ -30,7 +30,7 @@
 }
 
 
-\titlerunning{JavaRes}
+\titlerunning{JavaRes - Implementing an Educational Prover, from PyRes}
 %\authorrunning{Schulz, Cruanes and Vukmirovic}
 
 \renewcommand{\textfraction}{.01}
@@ -91,7 +91,7 @@
 
 \maketitle
 
-
+\section{Abstract}
 JavaRes is a demonstration prover patterned after
 PyRes~\cite{SP:IJCAR-2020}.  In this paper we discuss in more detail
 the architecture and data structures of this prover and the experience
@@ -103,32 +103,128 @@ implementation of an alternate simple clausification algorithm,
 graphical proof presentation, implementation of the SInE axiom
 selection algoithm, and use with the SUMO theory and syntax.
 
+
+\section{Introduction}
+
 Automated theorem proving is a fascinating and useful discipline but
 can be mystifying for someone not deeply acquainted with the field.
 It should be fair to say that most computer science professionals do
 not understand the power of inference in FOL and how it provides
-distinct capabilities from simpler representation such as graphs or
+distinct capabilities from simpler representations such as graphs or
 description logics.  Part of the reason for this lack of general
-familiarity may be because the barier to entry in the field remains
+familiarity may be because the barrier to entry in the field remains
 high, despite many decades of work and publication.  Most publications
 require a degree of mathematical sophistication to understand, and
 even with such capability, a reader will not know which data
-structures to use, or which of the many algorithms with be simplest to
+structures to use, or which of the many algorithms will be simplest or best to
 implement.
 
-
-
-We intially began with just an attempt for one of us (Pease) to learn
-about ATP, motivated by decades of work in formal ontology (Pease,
-2011), finding that among many excellent books, including (Harrison)
+We initially began with just an attempt for one of us (Pease) to learn
+about automated Theorem Proving (ATP), motivated by decades of work in formal ontology \cite{np01,p11},
+finding that among many excellent books, including \cite{Harrison:HPL-2009}
 the first steps to understand ATP were too high.  Fortunately, the
-creator of the Eprover (Schulz), provides the explanations needed to
+creator of the Eprover (Schulz), provided the explanations needed to
 understand how and where to begin, and this grew into creation of
 PyRes.  To see whether PyRes provided enough structure, we wrote
 JavaRes and then used it as a platform to implement several extensions
 and see whether both provers could provide a suitable platform for ATP
 education.
 
+
+\section{Programming Language Considerations}
+
+Python is dynamically typed, which for flexible and fast implementing, but makes
+for a bit of a mismatch to Java, which is statically typed.  The lack of static
+types can also cause confusion, because the intended types are not
+documented at all points in the code since they are determined dynamically at
+runtime.  Java may hold an advantage for education by requiring clarity in typing
+at compile time.
+
+Java, like Python, also provides call-by-value for simple data types and call-by-reference for
+objects.  This is powerful, but also imposes an obligation on the programmer to
+be mindful of side-effects in methods.  It does allow for use of strategies such as
+shared term rewriting, as in the C++ implementation of Eprover.
+
+\section{Data Structure}
+
+JavaRes mirrors the data structures of PyRes.  At the bottom of the hierarchy, Terms
+are variables (denoted in TPTP syntax as an identifier with an initial capital letter,
+as in 'X' or 'Y'), constants (denoted by an initial lowercase as in 'p' or 'partOf'),
+functions, which can be nested (as in 'p(X)' and 'g(f(a))'), and sentences, which are predicates and
+subterm arguments, like partOf(myWheel,myCar).  Note that once we handle equality, that
+is allowed as a predicate symbol.  Next come Literals,
+which are possibly negated Terms.  Then come Clauses, which are disjunctions of Literals.
+Until this point, the only logical operators considered are equality, negation and disjunction (logical 'or').
+
+All these components have methods for printing themselves, parsing from both TPTP and
+SUO-KIF, using the Lexer class, creating a new copy, testing for equality and sort order. Of the
+classes mentioned so far, only Term, Literal, and Clause are actually used in proving and Formulas
+are parsed and then converted to CNF.  We have Clausifier, which implements the algorithm from
+\cite{RN:AI-95} and SmallCNF which implements \cite{NW:SmallCNF-2001}.
+
+To hold a set of Clauses the prover is working on, we also have the class ClauseSet.
+
+\section{Class Structure}
+
+Several classes implement the machinery of proving.  The most fundamental is that of Substitution,
+which replaces variable with Terms (including other variables).   The class Unification attempts to
+unify the structure of two lists of Terms and results in a set of Substitutions.  Substitutions are
+also created when we rename variables in clauses to ensure that variables in different clauses
+,which are logically different, also have syntactically different names.  The class Resolution
+iterates through Literals in a given pair of Clauses, attempting to find unifiable literals with
+opposite signs.  Resolution also handles factoring, in which a Clause is simplified when one of
+its Literals unifies with another, thereby enabling removal of the more specific Literal, applying
+the resulting Substitution to all remaining Literals.  The class ResControl is simple, finding
+all factors within a given Clause, and all resolvants between a given Clause and ClauseSet.  The class
+SimpleProofState keeps a set of Clauses that
+have already been processed, which is subjected to resolution and factoring, and those Clauses that
+have not yet been processed.  It's primary method, saturate(), keeps calling its processClause()
+method, picking an arbitrary unprocessed Clause for resolution and factoring, and continuing until
+a contradiction is found or there are no more unprocessed clauses to try.  The class Prover1 is
+the top level of our simple prover.  It simply calls SimpleProofState reads in a ClauseSet
+
+\section{Improvements}
+
+We improve on the SimpleProofState class with ProofState. It performs several functions.  In addition
+to saturation, it also holds the state of various options and heuristics for
+the provers, which we will explain shortly, and the derivation of a proof by contradiction,
+consisting of relationships among Clauses that detail how they were derived from the originally
+given Clauses.
+
+We also add above Clauses are the class BareFormula, which can have logical operators (such as quantification, implication, equivalence,
+and conjunction, as well as less common operators such as '<~>').  We have formula wrappers, in the class Formula,
+that include the data seen in TPTP problems, such as the type of the statement ('cnf', 'fof', 'thf' etc),
+the formula name and the type of the formula ('conjecture', 'plain' etc) as well as other data
+that is determined and used during ATP. In order to convert Formulas
+into Clauses, we have the classes Clausify and SmallCNFization, which implement two different algorithm
+for conversion to conjunctive normal form.
+
+We implement the class Prover2 in order to support reading TPTP or SUO-KIF formulas and converting them
+to CNF before saturation.  Prover2 also has routines to handle setting options and returning proofs.  The new
+ProofState class uses a topological sort \cite{DBLP:journals/cacm/Kahn62} to create a linearized proof in
+TSTP format from the proof graph.  It also outputs dot format to supporting rendering of a proof graph
+by GraphViz.  In addition, it employs an algorithm for answer extraction that attempts to search backwards
+from a conjecture with an existentially quantified variable to a supporting clause that contains a binding
+for that variable.
+
+\subsection{Indexing, Heuristics, and SInE}
+
+
+\section{Testing and Examples}
+
+As with TPTP itself, it is very valuable to have many examples.  When examples are implemented as
+unit tests they catch bugs as well as explain how the algorithms are supposed to work at each stage.
+The example provide a sense of purpose for each class, and are as valuable as the algorithms
+themselves.  Often, just having a clear set of examples is sufficient to code at least some version
+of the algorithm needed.  Adding more tests and examples has been a key benefit of the implementation
+of JavaRes, as it showed what obscure bugs might appear, or what non-obvious errors might exist.
+For example, in an early version of unification, the implementation failed to consider all possible
+options,just returning a list of one set of substitutions, rather than all possible substitution.
+This caused a bug that didn't appear until much later, but was easily explained with an example and
+test that should ensure that no future implementer will move forward with an implementation while
+being unaware of this issue, should it arise.  Java tests are implemented in the jUnit framework.
+Whereas Python coders add tests at the end of each class, in Java tests  are separated into their
+own classes.
 
 \bibliography{stsbib}
 

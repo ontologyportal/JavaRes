@@ -257,7 +257,7 @@ public class Substitutions {
      * Create a substitution that maps all variables in var to fresh
      * variables. Note that there is no guarantee that the fresh
      * variables have never been used. However, there is a a guarantee
-     * that the fresh variables have never been produced by a uniqSubst
+     * that the fresh variables have never been produced by a unique
      * substitution.
      */    
     public static Substitutions freshVarSubst(Collection<Term> vars) {
