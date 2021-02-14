@@ -5,6 +5,7 @@
 	<property name="build.home" value="build"/>
 	<property name="build.classes" value="${build.home}/classes"/>
     <property name="build.lib" value="${build.home}/lib"/>
+    <property name="dist" value="dist"/>
     <property environment="env"/>
 </target>
 
@@ -16,6 +17,16 @@
     <copy todir="${build.lib}">
         <fileset dir="${basedir}/lib" />
     </copy>
+</target>
+
+<target name="star" depends="compile" description="Build a StarExec package" >
+    <copy todir="StarExec/bin">
+        <fileset dir="${build.classes}" />
+        <fileset dir="${basedir}/lib" />
+    </copy>
+    <zip destfile="${dist}/JavaRes.zip">
+        <fileset dir="StarExec" />
+    </zip>
 </target>
 
 <path id="core.sourcepath">

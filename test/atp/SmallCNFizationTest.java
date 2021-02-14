@@ -59,14 +59,19 @@ public class SmallCNFizationTest {
                 "![X]:(a(X)|$true)";
         Lexer lex = new Lexer(formulas);
         try {
+            BareFormula.level = 0;
             f1 = BareFormula.parse(lex);
             System.out.println(f1.toStructuredString());
+            BareFormula.level = 0;
             f2 = BareFormula.parse(lex);
             System.out.println(f2);
+            BareFormula.level = 0;
             f3 = BareFormula.parse(lex);
             System.out.println(f3);
+            BareFormula.level = 0;
             f4 = BareFormula.parse(lex);
             System.out.println(f4);
+            BareFormula.level = 0;
             f5 = BareFormula.parse(lex);
             System.out.println(f5);
         }
@@ -317,6 +322,7 @@ public class SmallCNFizationTest {
         try {
             Lexer lex = new Lexer(covformulas);
             while (!lex.testTok(Lexer.EOFToken)) {
+                BareFormula.level = 0;  // reset the counter that traps too much nesting
                 f = BareFormula.parse(lex);
                 System.out.println();
                 System.out.println("***** Simplifying: " + f);
@@ -346,20 +352,20 @@ public class SmallCNFizationTest {
     public static void checkNNFResult(BareFormula f) {
 
         System.out.println("INFO in SmallCNFizationTest.checkNNFResult()");
-        System.out.println("NNF:" + f);
+        System.out.println("NNF:" + f.toStructuredString());
         if (f == null)
             System.out.println("fail: null input: ");
         assertTrue(f != null);
         System.out.println("ops:" + f.collectOps());
 
         if (f.isPropConst(true) || f.isPropConst(false)) {
-            System.out.println("success formula is just $true or $false");
+            System.out.println("success: formula is just $true or $false");
         }
         else {
             ArrayList<String> ops = f.collectOps();
             ops.removeAll(nnf_ops);
             if (ops.size() > 0)
-                System.out.println("Error: operators other than &, |, !, ?: " + ops);
+                System.out.println("fail: operators other than &, |, !, ?: " + ops);
             else
                 System.out.println("Success: only allowed op" + nnf_ops);
             assertTrue(ops.size() == 0);
@@ -372,6 +378,7 @@ public class SmallCNFizationTest {
     @Test
     public void testNNF() {
 
+        BareFormula.level = 0;
         System.out.println();
         System.out.println("-------------------------------------------------");
         System.out.println("INFO in SmallCNFizationTest.testNNF()");
@@ -440,6 +447,7 @@ public class SmallCNFizationTest {
         try {
             Lexer lex = new Lexer(covformulas);
             while (!lex.testTok(Lexer.EOFToken)) {
+                BareFormula.level = 0;
                 BareFormula fnew = BareFormula.parse(lex);
                 System.out.println();
                 System.out.println("***** NNF conversion: " + fnew);
@@ -553,6 +561,7 @@ public class SmallCNFizationTest {
         else
             System.out.println("fail");
         assertTrue((v1.size() == 1) && v1.iterator().next().equals(Term.string2Term("X")));
+
         LinkedHashSet<Term> v2 = f.collectFreeVars();
         System.out.println("SmallCNFizationTest.testRenaming(): should be no free vars: " + v2);
         if (v2.size() == 0)
@@ -567,11 +576,12 @@ public class SmallCNFizationTest {
 
         v1 = f1.collectVars();
         System.out.println("SmallCNFizationTest.testRenaming(): should be three vars: " + v1);
-        if (v2.size() == 3)
+        if (v1.size() == 3)
             System.out.println("Success");
         else
             System.out.println("fail");
         assertTrue(v1.size() == 3);
+
         v2 = f1.collectFreeVars();
         System.out.println("SmallCNFizationTest.testRenaming(): should be no free vars: " + v2);
         if (v2.size() == 0)

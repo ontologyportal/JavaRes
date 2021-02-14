@@ -41,13 +41,16 @@ public class ResControl {
         ClauseSet res = new ClauseSet();
         for (int lit = 0; lit < clause.length(); lit++) {
             HashSet<KVPair> reslits = clauseset.getResolutionLiterals(clause.getLiteral(lit));
-            //System.out.println("computeAllResolvents(): clauseres: " + clauseres);
+            //System.out.println("computeAllResolvents(): reslits: " + reslits);
             for (KVPair kvp : reslits) {
                 Clause resolvent = Resolution.resolution(clause, lit, kvp.c, kvp.value);
-                if (resolvent != null)
+                if (resolvent != null) {
+                    //System.out.println("computeAllResolvents(): add resolvent: " + resolvent);
                     res.addClause(resolvent);
+                }
             }
         }
+        //System.out.println("computeAllResolvents(): return resolvents: " + res);
         return res;
     }
 

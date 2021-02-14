@@ -54,7 +54,11 @@ public class ProofStateTest {
 
         System.out.println("ProofStateTest.evalSatResult(): problem: " + cs);
         ProofState prover = new ProofState(cs,params);
-        Clause res = prover.saturate(1);
+        Clause res = prover.saturate(2);
+        System.out.println("ProofStateTest.evalSatResult(): result: " + res);
+        System.out.println("ProofStateTest.evalSatResult(): expected proof: " + provable);
+
+        System.out.println(prover.generateStatisticsString());
 
         if (provable) {
             if (res == null)
@@ -70,7 +74,7 @@ public class ProofStateTest {
                 System.out.println("# Success: No proof found");
             assertFalse(res != null);
         }
-        System.out.println(prover.generateStatisticsString());
+
     }
 
     /** ***************************************************************
@@ -91,9 +95,14 @@ public class ProofStateTest {
     @Test
     public void testSaturation() {
 
+        System.out.println("-------------------------------------");
         System.out.println("INFO in ProofStateTest.testSaturation()");
         evalSatResult(spec1, true);
-        evalSatResult(ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p"), true);
+        String tptpDir = System.getenv("TPTP");
+        System.out.println("-------");
+        evalSatResult(ClauseSet.parseFromFile(tptpDir + "/Problems/PUZ/PUZ001-1.p"), true);
+        System.out.println("-------");
         evalSatResult(spec3, false);
+        System.out.println();
     }
 }

@@ -102,6 +102,7 @@ public class ClausifierTest {
     @Test
     public void testMoveNegationIn() {
 
+        BareFormula.level = 0;
         System.out.println();
         System.out.println("================== testMoveNegationIn ======================");
         BareFormula form = BareFormula.string2form("~(p | q)");
@@ -114,6 +115,7 @@ public class ClausifierTest {
         assertEquals(expected,form.toString());
         System.out.println();
 
+        BareFormula.level = 0;
         form = BareFormula.string2form("~(p & q)");
         System.out.println("input: " + form);
         form = Clausifier.moveNegationIn(form);
@@ -123,6 +125,7 @@ public class ClausifierTest {
         assertEquals(expected,form.toString());
         System.out.println();
 
+        BareFormula.level = 0;
         form = BareFormula.string2form("~![X]:p");
         System.out.println("input: " + form);
         form = Clausifier.moveNegationIn(form);
@@ -132,6 +135,7 @@ public class ClausifierTest {
         assertEquals(expected,form.toString());
         System.out.println();
 
+        BareFormula.level = 0;
         form = BareFormula.string2form("~?[X]:p");
         System.out.println("input: " + form);
         form = Clausifier.moveNegationIn(form);
@@ -141,6 +145,7 @@ public class ClausifierTest {
         assertEquals(expected,form.toString());
         System.out.println();
 
+        BareFormula.level = 0;
         form = BareFormula.string2form("~~p");
         System.out.println("input: " + form);
         form = Clausifier.moveNegationIn(form);
@@ -228,6 +233,7 @@ public class ClausifierTest {
     public void testSkolemization() {
 
         Clausifier.varCounter = 0;
+        BareFormula.level = 0;
         System.out.println();
         System.out.println("================== testSkolemization ======================");
         BareFormula form = BareFormula.string2form("(?[VAR0]:(![VAR3]:(![VAR2]:(?[VAR5]:(![VAR1]:(?[VAR4]:((((~a(VAR0)&~b(X))&~p(VAR2, f(VAR1)))|q(g(a), X))&(~q(g(a), X)|((a(VAR3)|b(X))|p(VAR5, f(VAR4)))))))))))");
@@ -289,6 +295,7 @@ public class ClausifierTest {
     public void testClausificationSteps(String s) {
 
         KIF.init();
+        BareFormula.level = 0;
         Clausifier.varCounter = 0;
         System.out.println();
         System.out.println("================== testClausification ======================");
@@ -392,6 +399,7 @@ public class ClausifierTest {
     public void testClausificationSimple() {
 
         Clausifier.varCounter = 0;
+        BareFormula.level = 0; // reset counter that traps too many levels
         System.out.println();
         System.out.println("================== testClausificationSimple ======================");
         BareFormula form = BareFormula.string2form("(((![X]:(a(X)|b(X)))|(?[X]:(?[Y]:p(X,f(Y)))))<=>(?[X]:(q(g(a),X))))");

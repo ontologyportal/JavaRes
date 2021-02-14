@@ -190,6 +190,8 @@ public class ProofState {
      * The timeout needs to be made more sophisticated, with a system
      * interrupt, since just processing one clause could take infinite
      * time, and therefore a timeout in this method would never occur.
+     * Note that processing on StarExec should have a timeout of 0, to
+     * allow that system to have control of the timeout.
      */  
     public Clause saturate(int seconds) {
 
@@ -199,10 +201,14 @@ public class ProofState {
             //System.out.println("# ProofState.saturate(): " + res);
             if (res != null) {
                 time = System.currentTimeMillis() - t1;
+                if (conjecture == null)
+                    SZSresult = "Unsatisfiable";
+                else
+                    SZSresult = "Theorem";
                 return res;
             }
-            if (((System.currentTimeMillis() - t1) / 1000.0) > seconds) {
-                SZSresult = "SZS Status: Timeout (TMO)";
+            if (seconds != 0 && ((System.currentTimeMillis() - t1) / 1000.0) > seconds) {
+                SZSresult = "Timeout (TMO)";
                 time = System.currentTimeMillis() - t1;
                 return null;
             }
@@ -224,6 +230,8 @@ public class ProofState {
 
         StringBuffer sb = new StringBuffer();
         sb.append("# Filename           : " + filename + "\n");
+        sb.append("# Indexed            : " + indexed + "\n");
+        sb.append("# Eval function name : " + evalFunctionName + "\n");
         sb.append("# Initial clauses    : " + initial_clause_count + "\n");
         sb.append("# Processed clauses  : " + proc_clause_count + "\n");
         sb.append("# Factors computed   : " + factor_count + "\n");
@@ -231,7 +239,7 @@ public class ProofState {
         sb.append("# Tautologies deleted: " + tautologies_deleted + "\n");
         sb.append("# Forward subsumed   : " + forward_subsumed + "\n");
         sb.append("# Backward subsumed  : " + backward_subsumed + "\n");
-        sb.append("# SZS Status         : " + SZSresult+ "\n");
+        sb.append("# SZS Status " + SZSresult + "\n");
         sb.append("# SZS Expected       : " + SZSexpected + "\n");
         sb.append("# time               : " + time + "ms\n");
         return sb.toString();
@@ -297,10 +305,11 @@ public class ProofState {
         for (int i = 0; i < source.support.size(); i++) {
             Clause w = clauseMap.get(source.support.get(i));
             if (w == null)
-                System.out.println("Error in ProofState.searchProof(): no clause for id " + source.support.get(i));
+                System.out.println("# Error in ProofState.searchProof(): no clause for id " + source.support.get(i));
             else
                 proof.putAll(searchProof(clauseMap,w));
         }
+        //System.out.println("INFO in ProofState.searchProof(): result: " + proof);
         return proof;
     }
        
@@ -385,7 +394,10 @@ public class ProofState {
                 node.pointersToNodes.add(c.name);
                 if (Term.emptyString(node.clause)) {
                     Clause c2 = clauseMap.get(nodeStr);
-                    node.clause = c2.toString(true);
+                    if (c2 == null)
+                        System.out.println("# Error: createGraph() null node for name: " + nodeStr);
+                    else
+                        node.clause = c2.toString(true);
                 }
                 
                 String nodeStr2 = c.name;                   // nodeStr2 points to c
@@ -479,7 +491,7 @@ public class ProofState {
     }
     
     /** ***************************************************************
-     * Generate a TSTP-format proof
+     * Generate a TSTP-format proof, where proof elements look like
      * cnf(c_0_33,hypothesis,
      *     ($true|richer(butler,agatha)),
      *     inference(rw, [status(thm)],[c_0_23,c_0_32,theory(equality)])).
@@ -605,9 +617,10 @@ public class ProofState {
     	//System.out.println("# INFO in ProofState.generateProofGraph()");
         for (int i = 0; i < processed.length(); i++) {
             Clause c = processed.get(i);
-            //System.out.println(c.toStringJustify());
+            //System.out.println("generateProofGraph(): " + c.toStringJustify());
             clauseMap.put(c.name, c);
         }
+        System.out.println();
         clauseMap.putAll(searchProof(clauseMap,res));    // get just the clauses in the proof    
         graph.putAll(createGraph(clauseMap));            // turn into a graph with pointers and backpointers
     }

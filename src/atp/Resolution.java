@@ -66,14 +66,15 @@ public class Resolution {
      */
     public static Clause resolution(Clause clause1, int lit1, Clause clause2, int lit2) {
 
-        //System.out.println("INFO in Resolution.resolution(): resolving (clause1, lit1, clause2, lit2): " + 
+        //System.out.println("INFO in Resolution.resolution(): resolving (clause1, lit1, clause2, lit2): " +
         //        clause1 + " " + lit1 + " " + clause2 + " " + lit2);
         Literal l1 = clause1.getLiteral(lit1);
-        assert l1 != null;
         Literal l2 = clause2.getLiteral(lit2);
-        assert l2 != null;
-        if (l1 == null || l2 == null)
+        //System.out.println("Resolution.resolution(): literals: " + l1 + " " + l2);
+        if (l1 == null || l2 == null) {
             System.out.println("Error in Resolution.resolution(): literals are null " + l1 + " " + l2);
+            return null;
+        }
         if (l1.isNegative() == l2.isNegative())
             return null;
         //System.out.println("INFO in Resolution.resolution():l1 is negative: " + l1.isNegative());

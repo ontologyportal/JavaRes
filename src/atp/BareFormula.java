@@ -507,6 +507,8 @@ public class BareFormula {
         String thisString = this.toString();
         if (thisString.charAt(0) == '(' && thisString.charAt(thisString.length()-1) == ')')
             thisString = thisString.substring(1,thisString.length()-1);
+        if (thisString.startsWith("~~"))
+            thisString = thisString.substring(2);
         Lexer lex = new Lexer(thisString);
         return Literal.parseLiteral(lex);
     }
@@ -519,19 +521,21 @@ public class BareFormula {
     public BareFormula promoteChildren() {
 
         //System.out.println("++++++++");
-    	//System.out.println("INFO in BareFormula.promoteChildren(): (structured print): " + this.toStructuredString());
+    	//System.out.println("INFO in BareFormula.promoteChildren(): input (structured print): " + this.toStructuredString());
     	//System.out.println("INFO in BareFormula.promoteChildren(): op: " + op);
-    	if (op.equals("~") && lit1!= null && lit1.negated) {
-    	    op = "";
-    	    lit1.negated = false;
+    	if (op.equals("~") && lit1 != null) {
+            BareFormula result = new BareFormula("", lit1.negate());
+            //System.out.println("INFO in BareFormula.promoteChildren(): returning : " + result.toStructuredString());
+            return result;
         }
     	//if (child1 != null)
-       //     System.out.println("INFO in BareFormula.promoteChildren(): child1.isLiteral(): " + child1.isEqLiteral());
+        //     System.out.println("INFO in BareFormula.promoteChildren(): child1.isLiteral(): " + child1.isEqLiteral());
     	BareFormula newf = deepCopy();
     	BareFormula tempf = null;
     	boolean modified = false;
     	if (newf.child1 != null) {
     		tempf = newf.child1.promoteChildren();
+            //System.out.println("INFO in BareFormula.promoteChildren(): after promote children tempf: " + tempf);
     		if (tempf != null) {
     			modified = true;
     			newf.child1 = tempf;
@@ -540,13 +544,17 @@ public class BareFormula {
     		else
     		    tempf = newf.child1;
     		if (Term.emptyString(op)) {
-                newf.child1 = tempf.child1;
-                newf.lit1 = tempf.lit1;
-                newf.child2 = tempf.child2;
-                newf.lit2 = tempf.lit2;
-                newf.op = tempf.op;
-                modified = true;
                 //System.out.println("INFO in BareFormula.promoteChildren(): empty op result (structured print): " + newf.toStructuredString());
+                return tempf;
+            }
+            else if (op.equals("~") && child1.isLiteral()) {
+                newf = this.deepCopy();
+                newf.lit1 = newf.child1.toLiteral();
+                newf.lit1 = newf.lit1.negate();
+                newf.op = "";
+                modified = true;
+                //System.out.println("INFO in BareFormula.promoteChildren(): returning negated literal (structured print): " + newf.toStructuredString());
+                return newf;
             }
     	}
         //if (newf.child2 != null)
@@ -567,6 +575,7 @@ public class BareFormula {
             }
             newf.child1 = null;
             modified = true;
+            //System.out.println("INFO in BareFormula.promoteChildren(): newf modified: " + newf.toStructuredString());
         }
         if (newf.child2 != null && newf.child2.isEqLiteral()) {
             newf.lit2 = newf.child2.toLiteral();
@@ -591,7 +600,7 @@ public class BareFormula {
 			return newf;
 		}
 		else {
-            //System.out.println("INFO in BareFormula.promoteChildren(): not modified");
+            //System.out.println("INFO in BareFormula.promoteChildren(): " + this.toStructuredString() + " not modified, returning");
             return null;
         }
     }
@@ -950,7 +959,8 @@ public class BareFormula {
     public ArrayList<String> collectOps() {
         
         ArrayList<String> res = new ArrayList<String>();
-        res.add(op);
+        if (!Term.emptyString(op))
+            res.add(op);
     	if (child1 != null)
     		res.addAll(child1.collectOps());
     	if (child2 != null)
@@ -1095,7 +1105,7 @@ public class BareFormula {
      */
     public static BareFormula parse(Lexer lex) throws IOException, ParseException {
 
-        if (level > 10) { // trap pathological cases of nested formulas
+        if (level > 20) { // trap pathological cases of nested formulas
             System.out.println("Error in BareFormula.parse(): too much nesting at line: " + lex.pos + " in " + lex.line);
             return null;
         }
@@ -1122,6 +1132,7 @@ public class BareFormula {
      */
     public static BareFormula string2form(String s) {
 
+        BareFormula.level = 0;
         try {
             Lexer lex = new Lexer(s);
             return BareFormula.parse(lex);

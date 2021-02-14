@@ -257,11 +257,12 @@ public class FormulaTest {
                     "fof(conj,conjecture,?[X]:q(x)).";
             Lexer lex = new Lexer(testeq);
             ClauseSet cs = Formula.lexer2clauses(lex);
-            System.out.println(cs);
+            System.out.println("testProving1(): clauses: " + cs);
             ClauseEvaluationFunction.setupEvaluationFunctions();
             ClauseSet result = ResControl.computeAllResolvents(cs.get(0), cs);
-            System.out.println(result.toString());
+            System.out.println("testProving1(): result: " + result.toString());
             System.out.println("done");
+            System.out.println("expecting to end with 'plain,q(a)).'");
             if (result.toString().trim().endsWith("plain,q(a))."))
                 System.out.println("Success!");
             else
@@ -375,8 +376,13 @@ public class FormulaTest {
         String input = "fof(single_quoted,axiom,( p('A \\'quoted \\\\ escape\\'') )).";
         Lexer lex = new Lexer(input);
         ClauseSet cs = Formula.lexer2clauses(lex);
-        System.out.println(cs);
+        System.out.println("result: " + cs);
         String expected = "cnf(cnf0,axiom,p('A \\'quoted \\\\ escape\\'')).";
+        System.out.println("expected: " + expected);
+        if (cs.toString().equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
         assertEquals(expected,cs.toString().trim());
     }
 
@@ -393,9 +399,15 @@ public class FormulaTest {
                 "      ( ( p(X) <~> ~ s(f) )) )).";
         Lexer lex = new Lexer(input);
         ClauseSet cs = Formula.lexer2clauses(lex);
-        System.out.println(cs);
+        System.out.println("result: " + cs);
         String expected = "cnf(cnf0,axiom,~p(X)|s(f)).\n" +
                 "cnf(cnf1,axiom,p(X)|~s(f)).";
+        System.out.println("expected: " + expected);
+        System.out.println("from input: " + input);
+        if (cs.toString().trim().equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
         assertEquals(expected,cs.toString().trim());
     }
 }

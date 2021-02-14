@@ -44,7 +44,7 @@ public class Prover2 {
         "\n" +
         " -to\n" +
         "--timeout\n" +
-        "Must be followed by an integer, which is a timeout in seconds.\n" +
+        "Must be followed by an integer, which is a timeout in seconds. A '0' value indicates no timeout limit.\n" +
         "\n" +
         " -t\n" +
         "--delete-tautologies\n" +
@@ -103,31 +103,31 @@ public class Prover2 {
             if (arg.startsWith("--")) {
                 if (arg.equals("--allOpts"))
                     result.put("allOpts", "true");
-                if (arg.equals("--proof"))
+                else if (arg.equals("--proof"))
                     result.put("proof", "true");
-                if (arg.equals("--dotgraph"))
+                else if (arg.equals("--dotgraph"))
                     result.put("dotgraph", "true");
-                if (arg.equals("--stats"))
+                else if (arg.equals("--stats"))
                     result.put("stats", "true");
-                if (arg.equals("--csvstats"))
-                    result.put("csvstats", "true");                  
-                if (arg.equals("--experiment"))
+                else if (arg.equals("--csvstats"))
+                    result.put("csvstats", "true");
+                else if (arg.equals("--experiment"))
                     result.put("experiment", "true");
-                if (arg.equals("--categories"))
+                else if (arg.equals("--categories"))
                     result.put("categories", "true");
-                if (arg.equals("--allStrat"))
+                else if (arg.equals("--allStrat"))
                     result.put("allStrat", "true");
-                if (arg.equals("--sine"))
+                else if (arg.equals("--sine"))
                     result.put("sine", "true");
-                if (arg.equals("--eqax"))
+                else if (arg.equals("--eqax"))
                     result.put("eqax", "true");
-                if (arg.equals("--delete-tautologies"))
+                else if (arg.equals("--delete-tautologies"))
                     result.put("delete-tautologies","true");
-                if (arg.equals("--forward-subsumption"))
+                else if (arg.equals("--forward-subsumption"))
                     result.put("forward-subsumption","true");
-                if (arg.equals("--backward_subsumption"))
+                else if (arg.equals("--backward_subsumption"))
                     result.put("backward_subsumption","true");
-                if (arg.equals("--timeout")) {
+                else if (arg.equals("--timeout")) {
                     try {
                          int val = Integer.parseInt(args[i+1]);
                     }
@@ -136,22 +136,24 @@ public class Prover2 {
                     }
                     result.put("timeout",args[i+1]);
                 }
+                else
+                    System.out.println("Error in processOptions(): unrecognized option: " + arg);
             }
             else if (arg.startsWith("-")) {
                 for (int j = 1; j < arg.length(); j++) {
                     if (arg.charAt(j) == 't')
                         result.put("delete-tautologies","true");
-                    if (arg.charAt(j) == 'f')
+                    else if (arg.charAt(j) == 'f')
                         result.put("forward-subsumption","true");
-                    if (arg.charAt(j) == 'b')
+                    else if (arg.charAt(j) == 'b')
                         result.put("backward_subsumption","true");
-                    if (arg.charAt(j) == 'd')
+                    else if (arg.charAt(j) == 'd')
                         result.put("dotgraph","true");
-                    if (arg.charAt(j) == 'v')
+                    else if (arg.charAt(j) == 'v')
                         result.put("verbose","true");
-                    if (arg.charAt(j) == 'c')
+                    else if (arg.charAt(j) == 'c')
                         result.put("interactive","true");
-                    if (arg.equals("-to")) {
+                    else if (arg.equals("-to")) {
                         try {
                              int val = Integer.parseInt(args[i+1]);
                         }
@@ -160,8 +162,10 @@ public class Prover2 {
                         }
                         result.put("timeout",args[i+1]);
                     }
-                    if (arg.equals("-i"))                         
-                        Formula.includePath = args[i+1];                    
+                    else if (arg.equals("-i"))
+                        Formula.includePath = args[i+1];
+                    else
+                        System.out.println("Error in processOptions(): unrecognized option: " + arg.charAt(j));
                 }
             }
             else
@@ -364,6 +368,44 @@ public class Prover2 {
 
     /** ***************************************************************
      */
+    public static ProofState computeStateResults(HashMap<String,String> opts, ProofState state, ClauseSet cs, String filename, SearchParams eval) {
+
+        int timeout = getTimeout(opts);
+        state.filename = filename;
+        state.conjecture = cs.getConjecture();
+        state.evalFunctionName = eval.heuristics.name;
+        //System.out.println("# Prover2.processTestFile(): begin saturation");
+        try {
+            state.res = state.saturate(timeout);  // <--- real proving starts here
+        }
+        catch (Exception e) {
+            if (Term.emptyString(state.SZSresult))
+                state.SZSresult = "Error (ERR) " + e.getMessage();
+            return state;
+        }
+        if (state.res != null) {
+            state.SZSexpected = cs.SZSexpected;
+            if (Term.emptyString(state.SZSresult)) {
+                state.SZSresult = cs.SZSresult;
+                if (cs.SZSexpected.indexOf("Satisfiable") > -1 || cs.SZSexpected.indexOf("CounterSatisfiable") > -1)
+                    System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
+                if (Term.emptyString(state.SZSresult))
+                    state.SZSresult = "Unsatisfiable (UNS)";
+                if (state.SZSresult.equals("Unsatisfiable (UNS)") && Term.emptyString(state.conjecture))
+                    state.SZSresult = "Theorem (THM)";
+            }
+            //printStateResults(opts,state,null);
+        }
+        else {
+            if (Term.emptyString(state.SZSresult))
+                state.SZSresult = "GaveUp";
+            //printStateResults(opts,state,null);
+        }
+        return state;
+    }
+
+    /** ***************************************************************
+     */
     public static void printStateResults(HashMap<String,String> opts, ProofState state, ClauseSet query) {
 
         //         System.out.println("# printStateResults(): " + opts);
@@ -452,16 +494,7 @@ public class Prover2 {
                             csnew.addAll(query);
                             ProofState state = new ProofState(csnew,evals.get(0));
                             setStateOptions(state,opts);
-                            state.filename = filename;
-                            state.evalFunctionName = evals.get(0).heuristics.name;
-                            state.res = state.saturate(timeout);
-                            if (state.res != null) {
-                            	if (cs.SZSexpected.indexOf("Satisfiable") > -1 || cs.SZSexpected.indexOf("CounterSatisfiable") > -1)
-                            		System.out.println("########### DANGER Proof found for " + cs.SZSresult+ " problem ###############");
-                                printStateResults(opts,state,query);
-                            }
-                            else
-                                System.out.println("# SZS Satisfiable");
+                            ProofState newstate = computeStateResults(opts,state,cs,filename,evals.get(0));
                         }
                     }
                     else if (command.equals("$assert"))
@@ -523,70 +556,24 @@ public class Prover2 {
         if (opts.containsKey("verbose"))         	
             System.out.println("# Clauses:\n" + cs);        
         if (cs != null) {
-            for (int i = 0; i < evals.size(); i++) {
-                SearchParams eval = evals.get(i);
+            for (SearchParams eval : evals) {
                 if (opts.containsKey("allOpts")) {
-                    ArrayList<ProofState> states = setAllStateOptions(cs,evals.get(i));
-                    for (int j = 0; j < states.size(); j++) {
-                        ProofState state = states.get(j);                        
-                        state.filename = filename;
-                        state.conjecture = cs.getConjecture();
-                        state.evalFunctionName = eval.heuristics.name;
-                        //System.out.println("# Prover2.processTestFile(): begin saturation");
-                        try {
-                            state.res = state.saturate(timeout);  // <--- real proving starts here
-                        }
-                        catch(Exception e) {
-                            if (Term.emptyString(state.SZSresult))
-                                state.SZSresult = "# SZS status Error (ERR) " + e.getMessage();
-                            return state;
-                        }
-                        if (state.res != null) {
-                            state.SZSexpected = cs.SZSexpected;
-                            state.SZSresult = cs.SZSresult;
-                        	if (cs.SZSresult.indexOf("Satisfiable") > -1 || cs.SZSresult.indexOf("CounterSatisfiable") > -1)
-                        		System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
-                            if (Term.emptyString(state.SZSresult))
-                        	    state.SZSresult = "Unsatisfiable (UNS)";
-                            printStateResults(opts,state,null);
-                        }
-                        else {
-                            if (Term.emptyString(state.SZSresult))
-                                state.SZSresult = "# SZS status GaveUp";
-                            printStateResults(opts,state,null);
-                        }
+                    ArrayList<ProofState> states = setAllStateOptions(cs,eval);
+                    for (ProofState state : states) {
+                        ProofState newstate = computeStateResults(opts,state,cs,filename,eval);
+                        if (newstate != null)
+                            return newstate;
                     }
                 }
                 else {
-                    ProofState state = new ProofState(cs,evals.get(i)); 
+                    ProofState state = new ProofState(cs,eval);
                     setStateOptions(state,opts);
-                    state.filename = filename;
-                    state.conjecture = cs.getConjecture();
-                    state.evalFunctionName = eval.heuristics.name;
-                    //System.out.println("# Prover2.processTestFile(): begin saturation");
-                    try {
-                        state.res = state.saturate(timeout);  // <--- real proving starts here
-                    }
-                    catch(Exception e) {
-                        state.SZSresult = "# SZS status Error (ERR) " + e.getMessage();
-                        return state;
-                    }
-                    if (state.res != null) {
-                    	if (cs.SZSresult.indexOf("Satisfiable") > -1 || cs.SZSresult.indexOf("CounterSatisfiable") > -1)
-                    		System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
-                        if (Term.emptyString(state.SZSresult))
-                            state.SZSresult = "Unsatisfiable (UNS)";
-                        return state;
-                    }
-                    else {
-                        if (Term.emptyString(state.SZSresult))
-                            state.SZSresult = "# SZS status GaveUp";
-                        return state;
-                    }
+                    ProofState newstate = computeStateResults(opts,state,cs,filename,eval);
+                    if (newstate != null)
+                        return newstate;
                 }
             }
         }
-
         return null;
     }
     
@@ -628,6 +615,7 @@ public class Prover2 {
             else {
                 System.out.println("# INFO in Prover2.main(): Processing file " + opts.get("filename"));
                 ProofState state = processTestFile(opts.get("filename"),opts,evals);
+                //System.out.println("# INFO in Prover2.main(): state: " + state);
                 if (state != null && state.res != null) {
                     printStateResults(opts,state,null);
                     //System.out.println("# SZS status Theorem for problem " + opts.get("filename"));

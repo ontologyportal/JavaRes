@@ -75,7 +75,7 @@ public class ClauseTest {
     @Test
     public void testAAAClauses() {
 
-        System.out.println("INFO in ClauseTest.testClauses(): expected results: \n" + str1);
+        System.out.println("INFO in ClauseTest.testAAAClauses(): expected results: \n" + str1);
         System.out.println("results:");
         Lexer lex = new Lexer(str1);
 
@@ -125,12 +125,13 @@ public class ClauseTest {
 
         lex = new Lexer(str6);
         c6 = Clause.parse(lex);
-        if (c6.toString().equals("cnf(c6,axiom,p(a)|q(a)|p(a))."))
+        String expected = "cnf(c6,axiom,~f(f(X1,X2),f(X3,g(X4,X5)))=f(f(g(X4,X5),X3),f(X2,X1))|~k(X1,X1)=k(a,b)).";
+        if (c6.toString().equals(expected))
             System.out.println("Success");
         else
-            System.out.println("Failure. " + c5.toString() + " not equal to cnf(c6,axiom,(f(f(X1,X2),f(X3,g(X4,X5)))!=f(f(g(X4,X5),X3),f(X2,X1))|k(X1,X1)!=k(a,b))).");
+            System.out.println("Failure. " + c6.toString() + " not equal to " + expected);
         System.out.println("c6: " + c6);
-        assertEquals("cnf(c6,axiom,~f(f(X1,X2),f(X3,g(X4,X5)))=f(f(g(X4,X5),X3),f(X2,X1))|~k(X1,X1)=k(a,b)).",c6.toString());
+        assertEquals(expected,c6.toString());
 
         lex = new Lexer(str7);
         c7 = Clause.parse(lex);

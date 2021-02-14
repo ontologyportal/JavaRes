@@ -1,0 +1,4 @@
+JavaRes is a Java based FOL prover for educational and demonstration purposes
+It was written by Adam Pease
+and is mostly just a translation from PyRes by Stephan Schulz
+See our paper on PyRes for more information in CADE 2020

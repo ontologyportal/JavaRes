@@ -191,6 +191,7 @@ public class Formula {
                     cs.addAll(SmallCNFization.wFormulaClausify(f));
                 else
                     cs.addAll(Clausifier.clausify(f));
+                //System.out.println("# INFO in Formula.command2clauses(): result: " + cs);
                 return cs;
             }
         }

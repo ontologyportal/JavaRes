@@ -1,0 +1,37 @@
+#!/bin/tcsh
+
+setenv HERE `dirname $0`
+setenv TPTP `dirname $1`
+
+
+set FileLine = `grep -m 1 '^% File ' $1`
+if ("$FileLine" != "") then
+    set Problem = `expr "$FileLine" : "^% File *: *\(.*\)"`
+else
+    set Problem = `basename $1`" : TPTP v0.0.0. Released v0.0.0."
+endif
+echo    "% Problem    : $Problem"
+set SPCLine=`grep "^% SPC " $1`
+if ("$SPCLine" != "") then
+    set ProblemSPC = `expr "$SPCLine" : "^% SPC  *: *\([^ ]*\)"`
+else
+    set ProblemSPC = ""
+endif
+if ("$ProblemSPC" == "" || \
+    `expr "$ProblemSPC" : "FOF_.*"` || \
+    `expr "$ProblemSPC" : "CNF_.*"`) then
+    echo -n "% Command    : " ; echo "java -Xmx15G -cp $HERE atp.Prover2 --eqax --proof --forward-subsumption --backward_subsumption --delete-tautologies --timeout 0 %s"
+    /home/starexec/bin/GetComputerInfo -p THIS Model CPUModel RAMPerCPU OS | \
+    sed -e "s/Computer     /% Computer   /" \
+        -e "s/Model        /% Model      /" \
+        -e "s/CPUModel     /% CPU        /" \
+        -e "s/RAMPerCPU    /% Memory     /" \
+        -e "s/OS           /% OS         /"
+    echo -n "% CPULimit   : " ; echo "$STAREXEC_CPU_LIMIT"
+    echo -n "% WCLimit    : " ; echo "$STAREXEC_WALLCLOCK_LIMIT"
+    echo -n "% DateTime   : " ; date
+    echo "% CPUTime    : "
+    java -Xmx15G -cp $HERE atp.Prover2 --eqax --proof --forward-subsumption --backward_subsumption --delete-tautologies --timeout 0 $1
+else
+    echo "% SZS status Inappropriate"
+endif

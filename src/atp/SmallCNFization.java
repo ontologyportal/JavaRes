@@ -379,14 +379,15 @@ public class SmallCNFization extends Clausifier {
      */
     public static BareFormula rootFormulaNNF(BareFormula f, boolean polarity) {
 
-//       	System.out.println("INFO in SmallCNFization.rootFormulaNNF(): " + f.toStructuredString());
+      	//System.out.println("INFO in SmallCNFization.rootFormulaNNF(): " + f.toStructuredString());
+        //System.out.println("INFO in SmallCNFization.rootFormulaNNF(): " + polarity);
        	//if (f.child1 != null) {
 //            System.out.println("INFO in SmallCNFization.rootFormulaNNF(): child1: " + f.child1.toStructuredString());
 //            System.out.println("INFO in SmallCNFization.rootFormulaNNF(): child1.op: " + f.child1.op);
 //        }
-       	//System.out.println("INFO in SmallCNFization.rootFormulaNNF(): op: " + f.op);
-        //System.out.println("INFO in SmallCNFization.rootFormulaNNF(): op is ~: " + f.op.equals("~"));
-        //System.out.println("INFO in SmallCNFization.rootFormulaNNF(): has literal: " + (f.lit1 != null));
+//       	System.out.println("INFO in SmallCNFization.rootFormulaNNF(): op: " + f.op);
+//        System.out.println("INFO in SmallCNFization.rootFormulaNNF(): op is ~: " + f.op.equals("~"));
+//        System.out.println("INFO in SmallCNFization.rootFormulaNNF(): has literal: " + (f.lit1 != null));
         boolean normalform = false;
         boolean modified = false;
 
@@ -475,17 +476,21 @@ public class SmallCNFization extends Clausifier {
     public static BareFormula formulaNNF(BareFormula f, boolean polarity) {
 
     	//System.out.println();
-       	//System.out.println("INFO in SmallCNFization.formulaNNF(): " + f);
-        //System.out.println("INFO in SmallCNFization.formulaNNF():polarity: " + polarity);
+       	//System.out.println("INFO in SmallCNFization.formulaNNF(): input: " + f.toStructuredString());
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): polarity: " + polarity);
 
         boolean normalform = false;
         boolean modified   = false;
         boolean m = false;
         BareFormula fprime = f.deepCopy();
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): fprime: " + fprime.toStructuredString());
         BareFormula newf = fprime.promoteChildren();
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): fprime after promote: " + fprime.toStructuredString());
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): newf after promote: " + newf);
         if (newf == null)
-        	newf = fprime;
-       	//System.out.println("INFO in SmallCNFization.formulaNNF(): after promotion: " + newf.toStructuredString());
+        	newf = f.deepCopy();
+       	//System.out.println("INFO in SmallCNFization.formulaNNF(): newf after promotion: " + newf.toStructuredString());
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): original f after promotion: " + f.toStructuredString());
         while (!normalform) {
             //System.out.println("INFO in SmallCNFization.formulaNNF(): top of loop: " + newf.toStructuredString());
             normalform = true;
@@ -550,7 +555,7 @@ public class SmallCNFization extends Clausifier {
                     fnew = new BareFormula(fnew.op, handle1, handle2,fnew.lit1,fnew.lit2);
                     //System.out.println("INFO in SmallCNFization.formulaNNF(): modified" );
                 }
-                //else
+//                else
                     //System.out.println("INFO in SmallCNFization.formulaNNF(): not modified" );
             }
            	modified = modified || m;
@@ -558,8 +563,12 @@ public class SmallCNFization extends Clausifier {
         }
         if (!modified)
             return null;
-        //System.out.println("INFO in SmallCNFization.formulaNNF(): returning: " + newf);
-        //System.out.println("INFO in SmallCNFization.formulaNNF(): from input: " + f);
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): returning: " + newf.toStructuredString());
+        fprime = newf.promoteChildren();
+        if (fprime != null)
+            newf = fprime;
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): returning after promote: " + newf.toStructuredString());
+        //System.out.println("INFO in SmallCNFization.formulaNNF(): from input: " + f.toStructuredString());
         return newf;
     }
     
