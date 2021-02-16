@@ -20,7 +20,7 @@ endif
 if ("$ProblemSPC" == "" || \
     `expr "$ProblemSPC" : "FOF_.*"` || \
     `expr "$ProblemSPC" : "CNF_.*"`) then
-    echo -n "% Command    : " ; echo "java -Xmx15G -cp $HERE atp.Prover2 --eqax --proof --forward-subsumption --backward_subsumption --delete-tautologies --timeout 0 %s"
+    echo -n "% Command    : " ; echo "java -Xmx15G -cp $HERE atp.Prover2 -i $TPTP --eqax --proof --forward-subsumption --backward_subsumption --delete-tautologies --timeout 0 %s"
     /home/starexec/bin/GetComputerInfo -p THIS Model CPUModel RAMPerCPU OS | \
     sed -e "s/Computer     /% Computer   /" \
         -e "s/Model        /% Model      /" \
@@ -31,7 +31,7 @@ if ("$ProblemSPC" == "" || \
     echo -n "% WCLimit    : " ; echo "$STAREXEC_WALLCLOCK_LIMIT"
     echo -n "% DateTime   : " ; date
     echo "% CPUTime    : "
-    java -Xmx15G -cp $HERE atp.Prover2 --eqax --proof --forward-subsumption --backward_subsumption --delete-tautologies --timeout 0 $1
+    java -Xmx15G -cp $HERE atp.Prover2 -i $TPTP --eqax --proof --forward-subsumption --backward_subsumption --delete-tautologies --timeout 0 $1
 else
     echo "% SZS status Inappropriate"
 endif

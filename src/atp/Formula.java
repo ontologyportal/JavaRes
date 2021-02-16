@@ -157,7 +157,9 @@ public class Formula {
                 else
                     filename = includePath + File.separator + name.substring(1,name.length()-1);
                 File f = new File(filename);
-                //System.out.println("# INFO in Formula.command2clauses(): start reading file: " + filename);
+                System.out.println("# INFO in Formula.command2clauses(): include file: " + filename);
+                if (!f.exists())
+                    throw new IOException("# Error in Formula.command2clauses(): no file " + filename);
                 Lexer lex2 = new Lexer(f);
                 lex2.filename = filename;
                 //System.out.println();
@@ -165,10 +167,10 @@ public class Formula {
                 //System.out.println("# INFO in Formula.command2clauses(): completed reading file: " + filename);
                 lex.next();
                 if (lex.type != Lexer.ClosePar)
-                    throw new ParseException("#Error in Formula.command2clauses(): expected ')', found " + lex.literal,0);
+                    throw new ParseException("# Error in Formula.command2clauses(): expected ')', found " + lex.literal,0);
                 lex.next();
                 if (lex.type != Lexer.FullStop)
-                    throw new ParseException("#Error in Formula.command2clauses(): expected '.', found " + lex.literal,0);
+                    throw new ParseException("# Error in Formula.command2clauses(): expected '.', found " + lex.literal,0);
                 if (newcs != null)
                     return newcs;
                 else
@@ -230,7 +232,7 @@ public class Formula {
                 //if (lex.input.getLineNumber() % 1000 == 0)
                 //    System.out.print(".");
                 if (((System.currentTimeMillis() - t1) / 1000.0) > timeout) {
-                    cs.SZSresult = "SZS Status: error ResourceOut (RSO) reading timeout";
+                    cs.SZSresult = "SZS status ResourceOut (RSO) reading timeout";
                     //System.out.println("# Error in Formula.lexer2clauses(): timeout");
                     return cs;
                 }
@@ -250,7 +252,7 @@ public class Formula {
             }
             catch (Exception p) {
                 if (p != null && p.getMessage() != null && p.getMessage().contains("bad id")) {
-                    cs.SZSresult = "SZS Status: InputError (INE): bad id";
+                    cs.SZSresult = "SZS status InputError (INE): bad id";
                     return cs;
                 }
                 System.out.println();

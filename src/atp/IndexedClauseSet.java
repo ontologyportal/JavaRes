@@ -33,12 +33,10 @@ public class IndexedClauseSet extends ClauseSet {
     /**************************************************************
      * Create the two indices and call the superclass initializer.
      */
-    public IndexedClauseSet(ClauseSet clauses) {
+    public IndexedClauseSet() {
 
         resIndex = new ResolutionIndex();
         subIndex = new SubsumptionIndex();
-        for (Clause c : clauses.clauses)
-            this.addClause(new Clause(c));
     }
 
     /*************************************************************

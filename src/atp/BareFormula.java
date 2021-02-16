@@ -824,14 +824,17 @@ public class BareFormula {
     public BareFormula deepCopy() {
         
         if (lit1 != null && child1 != null) {
-            System.out.println("Error in BareFormula.deepCopy(): lit1 & child1 are both non-null");
+            System.out.println("Error in BareFormula.deepCopy(): lit1 & child1 are both non-null : " + this.toStructuredString());
             System.out.println("Error in BareFormula.deepCopy(): lit1: " + lit1);
             System.out.println("Error in BareFormula.deepCopy(): child1: " + child1);
+            Thread.dumpStack();
+
         }
         if (lit2 != null && child2 != null) {
-            System.out.println("Error in BareFormula.deepCopy(): lit2 & child2 are both non-null");
+            System.out.println("Error in BareFormula.deepCopy(): lit2 & child2 are both non-null: " + this.toStructuredString());
             System.out.println("Error in BareFormula.deepCopy(): lit2: " + lit2);
             System.out.println("Error in BareFormula.deepCopy(): child2: " + child2);
+            Thread.dumpStack();
         }
         BareFormula result = new BareFormula();
         result.op = op;

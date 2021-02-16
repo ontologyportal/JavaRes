@@ -66,7 +66,9 @@ public class HeuristicClauseSetTest {
         System.out.println("file input: " + input);
         System.out.println();
         ClauseEvaluationFunction.setupEvaluationFunctions();
-        HeuristicClauseSet cs = new HeuristicClauseSet(input,ClauseEvaluationFunction.PickGiven2);
+        HeuristicClauseSet cs = new HeuristicClauseSet(ClauseEvaluationFunction.PickGiven2);
+        for (Clause c : input.clauses)
+            cs.addClause(c);
         int parsed = cs.length();
         if (parsed == 12)
             System.out.println("Successful test, parsed clauses size = 12");
@@ -102,7 +104,9 @@ public class HeuristicClauseSetTest {
         System.out.println();
 
         System.out.println("================part2==========================");
-        cs = new HeuristicClauseSet(input,ClauseEvaluationFunction.PickGiven2);
+        cs = new HeuristicClauseSet(ClauseEvaluationFunction.PickGiven2);
+        for (Clause ccc : input.clauses)
+            cs.addClause(ccc);
         c = cs.extractBest();
         while (c != null) {
             System.out.println(c);
@@ -122,7 +126,9 @@ public class HeuristicClauseSetTest {
 
         System.out.println("---------------------");
         ClauseSet input = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
-        HeuristicClauseSet cs = new HeuristicClauseSet(input,ClauseEvaluationFunction.PickGiven2);
+        HeuristicClauseSet cs = new HeuristicClauseSet(ClauseEvaluationFunction.PickGiven2);
+        for (Clause c : input.clauses)
+            cs.addClause(c);
         ArrayList<Clause> clauseres = new ArrayList<Clause>();
         ArrayList<Integer> indices = new ArrayList<Integer>();
         Literal lit = new Literal();

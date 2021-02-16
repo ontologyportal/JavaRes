@@ -37,11 +37,9 @@ public class HeuristicClauseSet extends ClauseSet {
     /** ***************************************************************
      * Initialize the clause. 
      */    
-    public HeuristicClauseSet(ClauseSet cs, EvalStructure efunctions) {
+    public HeuristicClauseSet(EvalStructure efunctions) {
 
         eval_functions = efunctions;
-        for (int i = 0; i < cs.length(); i++)
-            addClause(cs.get(i));                
     }   
 
     /** ***************************************************************
@@ -67,6 +65,7 @@ public class HeuristicClauseSet extends ClauseSet {
      */    
     public Clause extractBestByEval(int heuristic_index) {
 
+        //System.out.println("HeuristicClauseSet.extractBestByEval(): clauses: " + clauses);
         if (clauses.size() > 0) {
             int best = 0;
             Clause c = clauses.get(0);
@@ -81,6 +80,7 @@ public class HeuristicClauseSet extends ClauseSet {
                     best = i;
                 }
             }
+            //System.out.println("HeuristicClauseSet.extractBestByEval(): removing: " + clauses.get(best));
             return clauses.remove(best);
         }
         else

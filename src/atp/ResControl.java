@@ -28,11 +28,24 @@ import java.text.*;
 public class ResControl {
  
     /** ***************************************************************
-     * Compute all binary resolvents between a given clause and all
-     * clauses in clauseset. This is used when integrating a new clause 
-     * into the processed part of the proof state, where all possible
-     * resolvents between the new clause and the already processed
-     * clauses are computed. [Note: Explain  better]  
+     Compute all binary resolvents between a given clause and all
+     clauses in clauseset.
+
+     In the "given-clause algorithm", the proof state is represented by
+     two sets of clauses, the set of _processed_ clauses, and the set
+     of _unprocessed_ clauses. Originally, all clauses are
+     unprocessed. The main invariant is that at all times, all the
+     generating inferences between processed clauses have been computed
+     and added to the proof state. The algorithm moves one clause at a
+     time from unprocessed, and adds it to processed (unless the clause
+     is redundant).
+
+     This function is used when integrating a new clause into the
+     processed part of the proof state. It computes all the resolvents
+     between a single clause (the new "given clause") and a clause set
+     (the _processed clauses_). These clauses need to be added to the
+     proof state to maintain the invariant. Since they are new, they
+     will be added to the set of unprocessed clauses.
      */
     public static ClauseSet computeAllResolvents(Clause clause, ClauseSet clauseset) {
 

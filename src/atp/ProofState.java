@@ -78,15 +78,19 @@ public class ProofState {
     public boolean indexed = true;  // use an IndexedClauseSet
 
     /** ***************************************************************
+     */
+    public ProofState() {}
+
+    /** ***************************************************************
      * Initialize the proof state with a set of clauses.
      */  
     public ProofState(ClauseSet clauses, SearchParams params) {
 
-        unprocessed = new HeuristicClauseSet(clauses, params.heuristics);
+        unprocessed = new HeuristicClauseSet(params.heuristics);
         if (indexed)
-            processed = new IndexedClauseSet(clauses);
+            processed = new IndexedClauseSet();
         else
-            processed   = new ClauseSet();
+            processed = new ClauseSet();
         for (Clause c:clauses.clauses) 
             unprocessed.addClause(c.deepCopy());
         initial_clause_count = unprocessed.length();
@@ -131,16 +135,20 @@ public class ProofState {
      */  
     public Clause processClause() {
 
+        //System.out.println("# processClause(): unprocessed before extract: " + unprocessed);
         Clause given_clause = unprocessed.extractBest();
+        //System.out.println("# processClause(): unprocessed after extract: " + unprocessed);
         given_clause = given_clause.freshVarCopy();
-        //System.out.println("#" + given_clause.toStringJustify());
+        //System.out.println("# processClause(): given clause: " + given_clause.toStringJustify());
         if (given_clause.isEmpty())
             // We have found an explicit contradiction
             return given_clause;
         if (delete_tautologies && given_clause.isTautology()) {
             tautologies_deleted = tautologies_deleted + 1;
+            //System.out.println("# processClause(): tautology");
             return null;        
         }
+        //System.out.println("# processClause(): processed: " + processed);
         if (forward_subsumption && Subsumption.forwardSubsumption(processed, given_clause)) {
             //  If the given clause is subsumed by an already processed
             //  clause, all relevant inferences will already have been
@@ -148,6 +156,7 @@ public class ProofState {
             //  the given clause. We keep count of how many clauses
             //  we have removed this way.
             forward_subsumed = forward_subsumed + 1;
+            //System.out.println("# processClause(): forward_subsumed");
             return null;
         }
 
@@ -162,6 +171,7 @@ public class ProofState {
             //  processed clauses are typically, if not universally, more
             //  general than the new given clause).
             int tmp = Subsumption.backwardSubsumption(given_clause, processed);
+            //System.out.println("# processClause(): backward_subsumed");
             backward_subsumed = backward_subsumed + tmp;
         }
         ClauseSet newClauses = new ClauseSet();
@@ -169,6 +179,8 @@ public class ProofState {
         newClauses.addAll(factors);
         ClauseSet resolvents = ResControl.computeAllResolvents(given_clause, processed);
         newClauses.addAll(resolvents);
+
+        //System.out.println("# ProofState.processClause(): new clauses from factors and resolvants: " + newClauses);
         proc_clause_count = proc_clause_count + 1;
         factor_count = factor_count + factors.length();
         resolvent_count = resolvent_count + resolvents.length();
@@ -177,7 +189,7 @@ public class ProofState {
 
         for (Clause c:newClauses.clauses) {
         	if (verbose)
-        		System.out.println("# ProofState.processClause(): Adding clause: " + c);
+        		System.out.println("# ProofState.processClause(): Adding clause to unprocessed: " + c);
             unprocessed.addClause(c);
         }
         return null;
@@ -239,7 +251,7 @@ public class ProofState {
         sb.append("# Tautologies deleted: " + tautologies_deleted + "\n");
         sb.append("# Forward subsumed   : " + forward_subsumed + "\n");
         sb.append("# Backward subsumed  : " + backward_subsumed + "\n");
-        sb.append("# SZS Status " + SZSresult + "\n");
+        sb.append("# SZS status " + SZSresult + "\n");
         sb.append("# SZS Expected       : " + SZSexpected + "\n");
         sb.append("# time               : " + time + "ms\n");
         return sb.toString();

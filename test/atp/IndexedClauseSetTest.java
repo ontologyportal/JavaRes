@@ -41,7 +41,9 @@ public class IndexedClauseSetTest {
         System.out.println("---------------------");
         ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
         System.out.println("testIndexedClauseSetChanges() clauses: \n" + clauses);
-        IndexedClauseSet iclauses = new IndexedClauseSet(clauses);
+        IndexedClauseSet iclauses = new IndexedClauseSet();
+        for (Clause clau : clauses.clauses)
+            iclauses.addClause(clau);
         System.out.println("Indexed clauses: " + iclauses);
         int oldlen = iclauses.clauses.size();
         Clause c = iclauses.clauses.get(0);
@@ -64,8 +66,9 @@ public class IndexedClauseSetTest {
         System.out.println("---------------------");
         ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
         System.out.println("testResIndexedPositions() clauses: \n" + clauses);
-        IndexedClauseSet iclauses = new IndexedClauseSet(clauses);
-
+        IndexedClauseSet iclauses = new IndexedClauseSet();
+        for (Clause clau : clauses.clauses)
+            iclauses.addClause(clau);
         Lexer lexer = new Lexer("hates(X,agatha)");
         Literal lit = Literal.parseLiteral(lexer);
         ArrayList<Clause> clauseres = new ArrayList<Clause>();

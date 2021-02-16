@@ -534,7 +534,7 @@ public class Literal implements Comparable {
      */
     public boolean match(Literal other, BacktrackSubstitution subst) {
 
-        //System.out.println("Literal.match(): this: " + this + " other: " + other + " op: " + op);
+        //System.out.println("Literal.match(): this: " + this + " other: " + other);
         if (this.isNegative() != other.isNegative())
             return false;
         else

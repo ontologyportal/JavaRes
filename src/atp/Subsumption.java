@@ -55,6 +55,7 @@ public class Subsumption {
      */ 
     public static boolean subsumes(Clause subsumer, Clause subsumed) {
 
+        //System.out.println("subsumes(): subsumer " + subsumer + " subsumed " + subsumed);
         if (subsumer.literals.size() > subsumed.literals.size())
             return false;
         BacktrackSubstitution subst = new BacktrackSubstitution();
@@ -66,6 +67,7 @@ public class Subsumption {
      */ 
     public static boolean forwardSubsumption(ClauseSet cs, Clause clause) {
 
+        //System.out.println("forwardSubsumption(): check " + cs + " against\n" + clause);
         for (int i = 0; i < cs.length(); i++) {
             Clause c = cs.get(i);
             if (subsumes(c, clause))
