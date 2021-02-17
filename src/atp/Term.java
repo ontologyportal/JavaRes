@@ -168,8 +168,31 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             ex.printStackTrace();
         }
         return null;
-    }  
-    
+    }
+
+    /** ***************************************************************
+     */
+    public Term parseKIFTermList(KIFLexer lex) {
+
+        try {
+            //System.out.println("in Term.parseKIFTermList(): " + lex.literal);
+            Term newT = new Term();
+            t = lex.literal;
+            while (!lex.look().equals(")")) {
+                newT = new Term();
+                subterms.add(newT.parseKIF(lex));
+                //System.out.println("in Term.parseKIFTermList(): next token: " + lex.literal);
+            }
+            return this;
+        }
+        catch (Exception ex) {
+            System.out.println("Error in Term.parseKIFTermList(): " + ex.getMessage());
+            System.out.println("Error in Term.parseKIFTermList(): token:" + lex.literal);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     /** ***************************************************************
      * This routine expects the tokenizer to be set before the starting token.
      * A term is either a variable or a function, where a function can have
@@ -234,8 +257,69 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
         }
         //System.out.println("Term.parse(): returning: " + this);
         return this;
-    }  
-    
+    }
+
+    /** ***************************************************************
+     * This routine expects the tokenizer to be set before the starting token.
+     * A term is either a variable or a function, where a function can have
+     * 0 arguments, and therefore be just a constant.
+     */
+    public Term parseKIF(KIFLexer lex) {
+
+        try {
+            //System.out.println("INFO in Term.parseKIF(): before next token: " + lex.literal);
+            lex.next();
+            //if (!lex.type.equals(Lexer.IdentLower) && !lex.type.equals(Lexer.IdentUpper))
+            //lex.next();
+            //System.out.println("INFO in Term.parseKIF(): after next token: " + lex.literal);
+            if (!lex.type.equals(KIFLexer.IdentLower) && !lex.type.equals(KIFLexer.IdentUpper) &&
+                    !lex.type.equals(KIFLexer.OpenPar) && !lex.type.equals(KIFLexer.RegularVar) &&
+                    !lex.type.equals(KIFLexer.DQString) && !lex.type.equals(KIFLexer.Number) &&
+                    !lex.type.equals(KIFLexer.RowVar))
+                throw new ParseException("Error in Term.parseKIF(): Expected a word. Found " +
+                        lex.literal + " type: " + lex.type, lex.input.getLineNumber());
+            if (lex.type.equals(KIFLexer.IdentUpper) || lex.type.equals(KIFLexer.IdentLower)  ||
+                    lex.type.equals(KIFLexer.RowVar) || lex.type.equals(KIFLexer.RegularVar)) {
+                t = lex.literal;
+                return this;
+            }
+            else {
+                if (lex.type.equals(KIFLexer.OpenPar)) {
+                    //System.out.println("INFO in Term.parseKIF(): open paren: " + lex.literal);
+                    lex.next();
+                    parseKIFTermList(lex);
+                    if (!lex.literal.equals(")"))
+                        throw new ParseException("Error in Term.parseKIF(): Close paren expected. Found " +
+                                lex.literal + " " + lex.type,lex.input.getLineNumber());
+                    //System.out.println("INFO in Term.parse(): got close paren: " + lex.literal);
+                    return this;
+                }
+                else {
+                    // if (lex.literal.equals("$false"))
+                    if ( lex.type.equals(Lexer.DQString) || lex.type.equals(Lexer.Number))
+                        t = lex.literal;
+                    else
+                    if (lex.type == Lexer.EOFToken)
+                        return this;
+                    else
+                        throw new ParseException("Error in Term.parseKIF(): Identifier " + lex.literal + " with type " + lex.type +
+                                " doesn't start with upper or lower case letter.",lex.input.getLineNumber());
+                }
+            }
+        }
+        catch (ParseException ex) {
+            if (lex.literal == lex.EOFToken)
+                return this;
+            System.out.println("Error in Term.parseKIF(): " + ex.getMessage());
+            System.out.println("Error in Term.parseKIF(): word token:" + lex.literal);
+            System.out.println("encountered at line: " + ex.getErrorOffset());
+            System.out.println("in file: " + lex.filename);
+            ex.printStackTrace();
+        }
+        //System.out.println("Term.parseKIF(): returning: " + this);
+        return this;
+    }
+
     /** ***************************************************************
      */
     public static Term string2Term(String s) {
@@ -244,7 +328,16 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
         Lexer lex = new Lexer(s);
         return t.parse(lex);
     }
-    
+
+    /** ***************************************************************
+     */
+    public static Term kifString2Term(String s) {
+
+        Term t = new Term();
+        KIFLexer lex = new KIFLexer(s);
+        return t.parseKIF(lex);
+    }
+
     /** ***************************************************************
      * Check if the term is a variable. This assumes that t is a
      * well-formed term.

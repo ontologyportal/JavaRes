@@ -107,6 +107,35 @@ public class TermTest {
     }
 
     /** ***************************************************************
+     * Test that parseKIF() is working properly
+     */
+    @Test
+    public void parseKIFTest() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in parseKIFTest()");
+        System.out.println("INFO in parseKIFTest(): parsing kif1: " + kif1);
+        Term k1 = Term.kifString2Term(kif1);
+        System.out.println(k1 + " = " + kif1);
+        assertEquals(kif1,k1.toKIFString());
+
+        System.out.println("INFO in parseKIFTest(): parsing kif2: " + kif2);
+        Term k2 = Term.kifString2Term(kif2);
+        System.out.println(k2 + " = " + kif2);
+        assertEquals(kif2,k2.toKIFString());
+
+        System.out.println("INFO in parseKIFTest(): parsing kif3: " + kif3);
+        Term k3 = Term.kifString2Term(kif3);
+        System.out.println(k3 + " = " + kif3);
+        assertEquals(kif3,k3.toKIFString());
+
+        System.out.println("INFO in parseKIFTest(): parsing kif4: " + kif4);
+        Term k4 = Term.kifString2Term(kif4);
+        System.out.println(k4 + " = " + kif4);
+        assertEquals(kif4,k4.toKIFString());
+    }
+
+    /** ***************************************************************
      * Test that parse() and toString() are dual. Start with terms,
      * so that we are sure to get the canonical string representation.
      */

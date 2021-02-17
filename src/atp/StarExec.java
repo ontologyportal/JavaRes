@@ -18,6 +18,10 @@ MA  02111-1307 USA
 
 JavaRes is mainly a reimplementation of PyRes by Stephan Schulz
 
+StarExec.java contains utilities to prepare for and process results
+from tests run on the StarExec cluster and well as other general
+purpose utilities
+
 */
 package atp;
 import java.io.*;
@@ -61,7 +65,7 @@ public class StarExec {
 
         //System.out.println("parseResultsFile(): file: " + f);
         Pattern pexpected = Pattern.compile("# SZS Expected\\s*: (.*)");
-        Pattern pactual = Pattern.compile("# SZS Status\\s*(.*)");
+        Pattern pactual = Pattern.compile("# SZS status\\s*(.*)");
         Pattern ptime = Pattern.compile("# time\\s*: (\\d*)ms");
 
         ProofState ps = new ProofState();

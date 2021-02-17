@@ -418,6 +418,20 @@ public class Literal implements Comparable {
         return null;
     }
 
+    /**************************************************************
+     * An atom is either a conventional atom, in which case it's
+     * syntactically identical to a term, or it is an equational literal,
+     * where is KIF it's also syntactically identical.
+     * In either case, we represent the atom as a first-order
+     * term. Equational literals are represented at terms with faux
+     * function symbols "="
+     * The parser must be pointing to the token before the atom.
+     */
+    private static Term parseKIFAtom(KIFLexer lex) {
+
+        return (new Term()).parseKIF(lex);
+    }
+
     /***************************************************************
      * Parse a literal. A literal is an optional negation sign '~',
      * followed by an atom.
@@ -445,6 +459,40 @@ public class Literal implements Comparable {
         catch (Exception ex) {
             System.out.println("Error in Literal.parseLiteral(): " + ex.getMessage());
             System.out.println("Error in Literal.parseLiteral(): token:" + lex.type + " " + lex.literal);
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    /***************************************************************
+     * Parse a literal. A literal is an optional negation
+     * followed by an atom.
+     *
+     * @return the Literal.  Note that there is a side effect on this Literal.
+     */
+    public static Literal parseKIFLiteral(KIFLexer lex) {
+
+        System.out.println("INFO in Literal.parseKIFLiteral(): " + lex.literal);
+        try {
+            String p = lex.look();
+            System.out.println("INFO in Literal.parseKIFLiteral(): p: " + p);
+            if (p.equals(KIFLexer.OpenPar)) {
+                String s = lex.look();
+                System.out.println("INFO in Literal.parseKIFLiteral(): s: " + s);
+                boolean negative = false;
+                if (lex.type == KIFLexer.Negation) {
+                    negative = true;
+                    lex.next();   // pointer will be left on the negation
+                }
+                Term atom = parseKIFAtom(lex);
+                System.out.println("INFO in Literal.parseLiteral(): exiting with pointer at: " + lex.literal);
+                return new Literal(atom, negative);
+            }
+            else throw new Exception();
+        }
+        catch (Exception ex) {
+            System.out.println("Error in Literal.parseKIFLiteral(): " + ex.getMessage());
+            System.out.println("Error in Literal.parseKIFLiteral(): token:" + lex.type + " " + lex.literal);
             ex.printStackTrace();
         }
         return null;
