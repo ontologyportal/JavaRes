@@ -323,6 +323,8 @@ public class SmallCNFization extends Clausifier {
 
     	BareFormula f = input.deepCopy();
     	//System.out.println("INFO in SmallCNFization.formulaSimplify(): " + f.toStructuredString());
+        //System.out.println("formulaSimplify(): child1: " + f.child1);
+        //System.out.println("formulaSimplify(): lit1: " + f.lit1);
         if (f.isLiteral())
             return null;
 
@@ -341,12 +343,16 @@ public class SmallCNFization extends Clausifier {
             	f.child2 = child2;
         }    
     	//System.out.println("INFO in SmallCNFization.formulaSimplify(): before promote children");
+        //System.out.println("formulaSimplify(): child1: " + f.child1);
+        //System.out.println("formulaSimplify(): lit1: " + f.lit1);
         BareFormula simpf = f.promoteChildren();
     	if (simpf != null) {
     		f = simpf;
     		modified = true;
     	}
     	//System.out.println("INFO in SmallCNFization.formulaSimplify(): after promote children: " + f);
+        //System.out.println("formulaSimplify(): child1: " + f.child1);
+        //System.out.println("formulaSimplify(): lit1: " + f.lit1);
         boolean topmod = true;
         while (topmod) {
             //System.out.println("INFO in SmallCNFization.formulaSimplify(): in loop before topsimplify: " + f);
@@ -366,10 +372,14 @@ public class SmallCNFization extends Clausifier {
             	topmod = false;
             modified = modified || (newf != null);
         	//System.out.println("INFO in SmallCNFization.formulaSimplify(): in loop: " + f);
+            //System.out.println("formulaSimplify(): child1: " + f.child1);
+            //System.out.println("formulaSimplify(): lit1: " + f.lit1);
         }
         if (!modified)
             return null;
         //System.out.println("INFO in SmallCNFization.formulaSimplify(): returning: " + f.toStructuredString());
+        //System.out.println("formulaSimplify(): child1: " + f.child1);
+        //System.out.println("formulaSimplify(): lit1: " + f.lit1);
         return f;
     }
 
@@ -903,16 +913,20 @@ public class SmallCNFization extends Clausifier {
         Formula wf = wfinput.deepCopy();
         //System.out.println("wFormulaCNF(): wf.form: " + wf.form);
         BareFormula f = formulaOpSimplify(wf.form);
-        //System.out.println("wFormulaCNF(): after op simplify: " + f);
         boolean m0 = (f != null);
         if (f == null)
             f = wf.form;
+        //System.out.println("wFormulaCNF(): after op simplify: " + f);
+        //System.out.println("wFormulaCNF(): after op simplify child1: " + f.child1);
+        //System.out.println("wFormulaCNF(): after op simplify lit1: " + f.lit1);
         //System.out.println("wFormulaCNF(): before simplify: " + f);
         BareFormula newf = formulaSimplify(f);
         //System.out.println("wFormulaCNF(): after  simplify: " + newf);
         boolean m1 = (f != null);
         if (newf != null)
             f = newf;
+        //System.out.println("wFormulaCNF(2): after op simplify child1: " + f.child1);
+        //System.out.println("wFormulaCNF(2): after op simplify lit1: " + f.lit1);
         if (m0 || m1) {
             Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "fof_simplification";

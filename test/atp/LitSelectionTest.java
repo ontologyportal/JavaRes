@@ -37,49 +37,79 @@ public class LitSelectionTest {
 
         System.out.println("testLitSelect(): from " + str1);
         Lexer lex = new Lexer(str1);
-        ArrayList<Literal> ll1 = Literal.parseLiteralList(lex);
-        Literal l1 = ll1.get(0);
-        Literal l2 = ll1.get(1);
-        Literal l3 = ll1.get(2);
-        Literal l4 = ll1.get(3);
+        ArrayList<Literal> example = Literal.parseLiteralList(lex);
+        Literal l1 = example.get(0);  // first and smallest and fewest vars (tie with l4)
+        Literal l2 = example.get(1);  // largest
+        Literal l3 = example.get(2);  // most vars
+        Literal l4 = example.get(3);  // fewest vars: 0, in tie with l1
+        System.out.println("testLitSelect(): test literals: " + l1 + "  " + l2 + "  " + l3 + "  " + l4 + "  ");
 
-        ArrayList<Literal> ll = LitSelection.firstLit(ll1);
-        assertEquals(1,ll.size());
-        Literal l = ll.get(0);
-        assertEquals(l1, l);
+        ArrayList<Literal> actual = LitSelection.firstLit(example);
+        assertEquals(1,actual.size());  // always check to ensure there's just one result for this example
+        System.out.println("testLitSelect(): first literal: " + actual);
+        Literal expected = l1;
+        if (actual.get(0).equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,actual.get(0));
 
         LitSelection ls = new LitSelection();
-        ll = ls.smallestLit(ll1);
-        assertEquals(1,ll.size());
-        l = ll.get(0);
-        assertEquals(l1, l);
+        actual = ls.smallestLit(example);
+        assertEquals(1,actual.size());
+        System.out.println("testLitSelect(): smallest literal: " + actual);
+        expected = l1;
+        if (actual.get(0).equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,actual.get(0));
 
-        ll = ls.largestLit(ll1);
-        assertEquals(1,ll.size());
-        l = ll.get(0);
-        assertEquals(l2, l);
+        actual = ls.largestLit(example);
+        assertEquals(1,actual.size());
+        System.out.println("testLitSelect(): largest literal: " + actual);
+        expected = l2;
+        if (actual.get(0).equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,actual.get(0));
 
-        ll = ls.varSizeLit(ll1);
-        assertEquals(1,ll.size());
-        l = ll.get(0);
-        assertEquals(l4, l);
+        actual = ls.varSizeLit(example);
+        assertEquals(1,actual.size());
+        System.out.println("testLitSelect(): fewest variables: " + actual);
+        expected = l4;
+        if (actual.get(0).equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,actual.get(0));
 
-        ll = ls.eqResVarSizeLit(ll1);
-        assertEquals(1,ll.size());
-        l = ll.get(0);
-        System.out.println("Should be equal: " + l3 + " and " + l);
-        //assertEquals(l3, l);
+        actual = ls.eqResVarSizeLit(example);
+        assertEquals(1,actual.size());
+        System.out.println("testLitSelect(): smallest equational literal: " + actual);
+        expected = l3;
+        if (actual.get(0).equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,actual.get(0));
 
-        System.out.println("testLitSelect(): from " + str2);
+        System.out.println("\ntestLitSelect(): from " + str2);
         lex = new Lexer(str2);
-        ll1 = Literal.parseLiteralList(lex);
-        l1 = ll1.get(0);
-        l2 = ll1.get(1);
-        l3 = ll1.get(2);
-        ll = ls.eqResVarSizeLit(ll1);
-        assertEquals(1,ll.size());
-        l = ll.get(0);
-        assertEquals(l3, l);
+        example = Literal.parseLiteralList(lex);
+        l1 = example.get(0);
+        l2 = example.get(1);
+        l3 = example.get(2);
+        actual = ls.eqResVarSizeLit(example);
+        assertEquals(1,actual.size());
+        System.out.println("testLitSelect(): second example: smallest equational literal (or fewest vars): " + actual);
+        expected = l3;
+        if (actual.get(0).equals(expected))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,actual.get(0));
     }
 
 }

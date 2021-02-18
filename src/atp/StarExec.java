@@ -111,10 +111,40 @@ public class StarExec {
 
     /***************************************************************
      */
+    public static void execPyRes(String filename) {
+
+        ArrayList<String> output = new ArrayList<>();
+        try {
+            ProcessBuilder _builder;
+            Process _pyres;
+            String cmd = "timeout 300 python3 /home/apease/workspace/PyRes/pyres-fof.py -tifbp -HPickGiven5 -nlargest --silent ";
+            ArrayList<String> commands = new ArrayList<>(Arrays.asList(
+                    "timeout", "30", "python3", "/home/apease/workspace/PyRes/pyres-fof.py",
+                    " -tifbp", "-HPickGiven5", "-nlargest", "--silent", filename));
+
+            System.out.println("execPyRes(): command: " + commands);
+            _builder = new ProcessBuilder(commands);
+            _builder.redirectErrorStream(false);
+            _pyres = _builder.start();
+            System.out.println("EProver(): process: " + _pyres);
+            BufferedReader _reader = new BufferedReader(new InputStreamReader(_pyres.getInputStream()));
+            String line = null;
+            while ((line = _reader.readLine()) != null) {
+                output.add(line);
+            }
+        }
+        catch (Exception e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    /***************************************************************
+     */
     public static void showHelp() {
 
         System.out.println(" -c <file> : build a collection of TPTP problems ");
         System.out.println("      and put in a subdir of the same name as the file");
+        System.out.println(" -p <file> : run PyRes");
         System.out.println("  -h : show help");
     }
 
@@ -130,8 +160,14 @@ public class StarExec {
             else
                 showHelp();
         }
-        else if (args.length == 2 && args[0].equals("-c"))
-            buildCatCollection(args[1]);
+        else if (args.length == 2) {
+            if (args[0].equals("-c"))
+                buildCatCollection(args[1]);
+            else if (args[0].equals("-p"))
+                execPyRes(args[1]);
+            else
+                showHelp();
+        }
         else
             showHelp();
 

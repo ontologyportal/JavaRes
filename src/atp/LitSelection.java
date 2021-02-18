@@ -35,6 +35,9 @@ public class LitSelection {
     }
 
     /***************************************************************
+     * @return the literal with the largest literal weight (@see Literal.weight()).
+     * Return the last element only, even if there might be a tie in the
+     * weight metric for several literals.
      */
     public ArrayList<Literal> largestLit(ArrayList<Literal> litlist) {
 
@@ -59,6 +62,8 @@ public class LitSelection {
     }
 
     /***************************************************************
+     * @return the literal with the fewest variables.  Return the first
+     * element only, even if there might be a tie in the variable count.
      */
     public ArrayList<Literal> varSizeLit(ArrayList<Literal> litlist) {
 

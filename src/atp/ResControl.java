@@ -53,13 +53,15 @@ public class ResControl {
         //System.out.println("computeAllResolvents(): clauseset: " + clauseset);
         ClauseSet res = new ClauseSet();
         for (int lit = 0; lit < clause.length(); lit++) {
-            HashSet<KVPair> reslits = clauseset.getResolutionLiterals(clause.getLiteral(lit));
-            //System.out.println("computeAllResolvents(): reslits: " + reslits);
-            for (KVPair kvp : reslits) {
-                Clause resolvent = Resolution.resolution(clause, lit, kvp.c, kvp.value);
-                if (resolvent != null) {
-                    //System.out.println("computeAllResolvents(): add resolvent: " + resolvent);
-                    res.addClause(resolvent);
+            if (clause.getLiteral(lit).isInferenceLit()) {
+                HashSet<KVPair> reslits = clauseset.getResolutionLiterals(clause.getLiteral(lit));
+                //System.out.println("computeAllResolvents(): reslits: " + reslits);
+                for (KVPair kvp : reslits) {
+                    Clause resolvent = Resolution.resolution(clause, lit, kvp.c, kvp.value);
+                    if (resolvent != null) {
+                        //System.out.println("computeAllResolvents(): add resolvent: " + resolvent);
+                        res.addClause(resolvent);
+                    }
                 }
             }
         }
@@ -77,11 +79,13 @@ public class ResControl {
 
         ClauseSet res = new ClauseSet();
         for (int i = 0; i < clause.length(); i++) {
-            for (int j = i+1; j < clause.length(); j++) {
-                Clause fact = Resolution.factor(clause, i, j);
-                //System.out.println("INFO in ResControl.computeAllFactors(): adding factor: " + fact);
-                if (fact != null)
-                    res.addClause(fact);
+            if (clause.getLiteral(i).isInferenceLit()) {
+                for (int j = i + 1; j < clause.length(); j++) {
+                    Clause fact = Resolution.factor(clause, i, j);
+                    //System.out.println("INFO in ResControl.computeAllFactors(): adding factor: " + fact);
+                    if (fact != null)
+                        res.addClause(fact);
+                }
             }
         }
         return res;

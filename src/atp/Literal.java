@@ -370,11 +370,11 @@ public class Literal implements Comparable {
     /**************************************************************
      * Return the weight of the term,  counting fweight for each function symbol
      * occurrence, vweight for each variable occurrence. Examples:
-     * termWeight(f(a,b), 1, 1) = 3
-     * termWeight(f(a,b), 2, 1) = 6
-     * termWeight(f(X,Y), 2, 1) = 4
-     * termWeight(X, 2, 1)      = 1
-     * termWeight(g(a), 3, 1)   = 6
+     * termWeight(f(a,b), 1, 1) = 3  - three symbols, weight of 1 = 1*3=3
+     * termWeight(f(a,b), 2, 1) = 6  - three symbols, weight of 2 = 2*3=6
+     * termWeight(f(X,Y), 2, 1) = 4  - one symbol, two variables 1*2 + 2*1 = 4
+     * termWeight(X, 2, 1)      = 1  - one variable with a weight of one = 1
+     * termWeight(g(a), 3, 1)   = 6  - two symbols with a weight of 3 = 6
      */
     public int weight(int fweight, int vweight) {
 

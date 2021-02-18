@@ -35,5 +35,10 @@ public class FIFOEvaluation extends ClauseEvaluationFunction {
         fifocounter = fifocounter + 1;
         return fifocounter;
     }
-    
+
+    /** ***************************************************************
+     */
+    public String toString() {
+        return name;
+    }
 }

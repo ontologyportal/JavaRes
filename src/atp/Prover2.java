@@ -158,8 +158,10 @@ public class Prover2 {
                         result.put("backward_subsumption","true");
                     else if (arg.charAt(j) == 'd')
                         result.put("dotgraph","true");
-                    else if (arg.charAt(j) == 'v')
-                        result.put("verbose","true");
+                    else if (arg.charAt(j) == 'v') {
+                        result.put("verbose", "true");
+                        ProofState.verbose = true;
+                    }
                     else if (arg.charAt(j) == 'c')
                         result.put("interactive","true");
                     else if (arg.equals("-to")) {
@@ -649,8 +651,9 @@ public class Prover2 {
      */
     public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
-        System.out.println("# Prover2.processTestFile(): " + filename);
-        System.out.println("# Prover2.processTestFile(): " + opts);
+        System.out.println("# Prover2.processTestFile(): filename: " + filename);
+        System.out.println("# Prover2.processTestFile(): opts: " + opts);
+        System.out.println("# Prover2.processTestFile(): evals: " + evals);
         int timeout = getTimeout(opts);
         //System.out.println("# Prover2.processTestFile(): read file");
         ClauseSet cs = Formula.file2clauses(filename,timeout);
@@ -668,7 +671,7 @@ public class Prover2 {
             state.SZSresult = cs.SZSresult;
             return state;
         }
-        if (opts.containsKey("eqax"))
+        if (opts.containsKey("eqax") && cs.containsEquality())
             cs = cs.addEqAxioms();
         if (opts.containsKey("sine")) {
         	//System.out.println("# INFO in Prover2.processTestFile(): using sine");

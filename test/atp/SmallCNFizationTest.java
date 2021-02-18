@@ -109,7 +109,7 @@ public class SmallCNFizationTest {
                 "?[X]:(a<=>a)\n" +
                 "a<=>b";
 
-        testFormulas = "fof(t12_autgroup,conjecture,(\n" +
+        testFormulas =  "fof(t12_autgroup,conjecture,(\n" +
                 "! [A] :\n" +
                     "( ( ~ v3_struct_0(A)\n" +
                     "& v1_group_1(A)\n" +
@@ -148,7 +148,14 @@ public class SmallCNFizationTest {
                             "& v1_partfun1(C,A,B) )\n" +
                             "=> ( v1_funct_1(C)\n" +
                                 "& v1_funct_2(C,A,B) ) ) ) )).\n" +
-                "fof(testscosko, axiom, (![X]:?[Y]:((p(X)&q(X))|q(X,Y))|a)).";
+                "fof(testscosko, axiom, (![X]:?[Y]:((p(X)&q(X))|q(X,Y))|a)).\n" +
+                "\n" +
+                "fof(fc1_funct_1,axiom,(" +
+                "    ![A]:(" +
+                "        ![B]:((((v1_relat_1(A)&v1_funct_1(A))&v1_relat_1(B))&v1_funct_1(B))=>" +
+                "                (v1_relat_1(k5_relat_1(A,B))&v1_funct_1(k5_relat_1(A,B))))))).\n" +
+                "\n" +
+                "fof(event_9,axiom,(~accept_team(muslimcountrybhumanitarianorganization,countrycmedicalorganization,towna,n4))).";
     }
 
     /** ***************************************************************
@@ -809,11 +816,12 @@ public class SmallCNFizationTest {
         try {
             Lexer lex = new Lexer(testFormulas);
             while (!lex.testTok(Lexer.EOFToken)) {
-                Formula wf = Formula.parse(lex);
-                ArrayList<Clause> clauses = SmallCNFization.wFormulaClausify(wf);
                 System.out.println("==================");
+                Formula wf = Formula.parse(lex);
+                System.out.println("SmallCNFizationTest.testClausification(): input: " + wf);
+                ArrayList<Clause> clauses = SmallCNFization.wFormulaClausify(wf);
                 for (Clause c : clauses)
-                    System.out.println("SmallCNFizationTest.testClausification(): clause: " + c);
+                    System.out.println("SmallCNFizationTest.testClausification(): resulting clause: " + c);
             }
         }
         catch (Exception e) {
@@ -853,9 +861,7 @@ public class SmallCNFizationTest {
 
     /** ***************************************************************
      * Compare the simple clausification in R&N AI text implemented in Clausify
-     * with SmallCNF.  Note that we don't use any assert statements to throw
-     * errors since we don't currently have a routine to check for equality
-     * between ClauseSets, ignoring literal order and variable names.
+     * with SmallCNF.
      */
     @Test
     public void testCompare() {

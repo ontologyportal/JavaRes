@@ -286,7 +286,7 @@ public class FormulaTest {
         try {
             String testeq = "fof(axiom1,input,(p(X)=>q(X))). " +
                     "fof(axiom2,input,p(a))." +
-                    "fof(conj,conjecture,?[X]:q(x)).";
+                    "fof(conj,conjecture,?[X]:q(X)).";
             Lexer lex = new Lexer(testeq);
             ClauseSet cs = Formula.lexer2clauses(lex);
             System.out.println(cs);
@@ -303,13 +303,54 @@ public class FormulaTest {
             state.verbose = true;
             state.res = state.saturate(10);
             if (state.res != null)
-                System.out.println(state);
+                System.out.println("fail, should have no result: " + state);
             else
-                System.out.println("# SZS GaveUp");
+                System.out.println("success : # SZS GaveUp");
             System.out.println("INFO in in FormulaTest.testProving2(): done processing");
+            assertEquals(null,state.res);
         }
         catch (Exception e) {
             System.out.println("Error in in FormulaTest.testProving2()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void testProving3() {
+
+        System.out.println("---------------------");
+        System.out.println("INFO in FormulaTest.testProving3()");
+        try {
+            String testeq = "fof(axiom1,input,(p(X)=>q(X))). " +
+                    "fof(axiom2,input,p(a))." +
+                    "fof(conj,negated_conjecture,~q(a)).";
+            Lexer lex = new Lexer(testeq);
+            ClauseSet cs = Formula.lexer2clauses(lex);
+            System.out.println(cs);
+            cs = cs.addEqAxioms();
+            System.out.println(cs);
+            ClauseEvaluationFunction.setupEvaluationFunctions();
+            SearchParams sp = new SearchParams();
+            sp.heuristics = ClauseEvaluationFunction.FIFOEval;
+            ProofState state = new ProofState(cs,sp);
+            state.evalFunctionName = ClauseEvaluationFunction.FIFOEval.name;
+            state.delete_tautologies = true;
+            state.forward_subsumption = true;
+            state.backward_subsumption = true;
+            state.verbose = true;
+            state.res = state.saturate(10);
+            if (state.res != null)
+                System.out.println("success " + state);
+            else
+                System.out.println("fail : # SZS GaveUp");
+            System.out.println("INFO in in FormulaTest.testProving3(): done processing");
+            assertFalse(state.res == null);
+        }
+        catch (Exception e) {
+            System.out.println("Error in in FormulaTest.testProving3()");
             System.out.println(e.getMessage());
             e.printStackTrace();
         }

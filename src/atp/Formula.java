@@ -187,7 +187,7 @@ public class Formula {
                 //System.out.println("# INFO in Formula.command2clauses(): fof: " + cs.SZS);
                 return cs;
             }
-            //System.out.println("# INFO in Formula.command2clauses(): fof: " + fstring);
+            //System.out.println("# INFO in Formula.command2clauses(): f: " + f);
             if (f.form != null) {
                 if (smallCNF)
                     cs.addAll(SmallCNFization.wFormulaClausify(f));
@@ -419,4 +419,14 @@ public class Formula {
         return s.substring(start,end);
     }
 
+    /** ***************************************************************
+     */
+    public static void main(String[] args) {
+
+        if (args.length > 0) {
+            Formula.file2clauses(args[0]);
+        }
+        else
+            System.out.println("no file specified");
+    }
 }

@@ -73,7 +73,7 @@ public class ProofState {
     public String SZSexpected       = "";  // result as specified by SZS "ontology"
     public String filename          = "";
     public String evalFunctionName  = "";
-    public boolean verbose          = false;
+    public static boolean verbose          = false;
     public Clause conjecture = null;
     public boolean indexed = true;  // use an IndexedClauseSet
 
@@ -86,6 +86,7 @@ public class ProofState {
      */  
     public ProofState(ClauseSet clauses, SearchParams params) {
 
+        System.out.println("ProofState(): heuristics: " + params.heuristics);
         unprocessed = new HeuristicClauseSet(params.heuristics);
         if (indexed)
             processed = new IndexedClauseSet();
@@ -137,6 +138,8 @@ public class ProofState {
 
         //System.out.println("# processClause(): unprocessed before extract: " + unprocessed);
         Clause given_clause = unprocessed.extractBest();
+        if (verbose)
+            System.out.println("# processClause(): given clause: " + given_clause);
         //System.out.println("# processClause(): unprocessed after extract: " + unprocessed);
         given_clause = given_clause.freshVarCopy();
         //System.out.println("# processClause(): given clause: " + given_clause.toStringJustify());
@@ -210,7 +213,7 @@ public class ProofState {
         long t1 = System.currentTimeMillis();
         while (unprocessed.length() > 0) {
             Clause res = processClause();
-            //System.out.println("# ProofState.saturate(): " + res);
+            //System.out.println("# ProofState.saturate(): processed clause: " + res);
             if (res != null) {
                 time = System.currentTimeMillis() - t1;
                 if (conjecture == null)

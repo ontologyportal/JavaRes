@@ -83,6 +83,16 @@ public class ClauseSet {
     }
 
     /** ***************************************************************
+     */
+    public boolean containsEquality() {
+
+        for (Clause c : clauses)
+            if (c.containsEquality())
+                return true;
+        return false;
+    }
+
+    /** ***************************************************************
      * Return number of clauses in set.
      */ 
     public int length() {
@@ -170,6 +180,7 @@ public class ClauseSet {
      */
     public ClauseSet addEqAxioms() {
 
+        System.out.println("INFO in ClauseSet.addEqAxioms(): adding axioms");
     	Signature sig = new Signature();
         sig = collectSig(sig);
 

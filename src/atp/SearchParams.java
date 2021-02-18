@@ -59,4 +59,10 @@ public class SearchParams {
         this.indexing = indexing;
         this.literal_selection = literal_selection;
     }
+
+    /** ***************************************************************
+     */
+    public String toString() {
+        return heuristics.toString();
+    }
 }

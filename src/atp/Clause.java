@@ -230,16 +230,18 @@ public class Clause extends Derivable implements Comparable {
      * all meta-information such as clause name, type and information
      * that tracks how it was created.  Note that normalizeVariables()
      * should first be called so that identical clauses will have
-     * syntactically equal variable names.
+     * syntactically equal variable names.  Note that the order of
+     * literals is not defined in a Clause, and is therefore ignored.
      */
     public boolean equals(Object c_obj) {
        
         assert !c_obj.getClass().getName().equals("Clause") : "Clause() passed object not of type Clause";
         Clause c = (Clause) c_obj;
-        if (literals.size() != c.literals.size())
-            return false;
-        for (int i = 0; i < literals.size(); i++)
-            if (!literals.get(i).equals(c.literals.get(i)))
+        for (Literal lit : c.literals)
+            if (!literals.contains(lit))
+                return false;
+        for (Literal lit : literals)
+            if (!c.literals.contains(lit))
                 return false;
         return true;
     }
@@ -402,6 +404,16 @@ public class Clause extends Derivable implements Comparable {
     public boolean isEmpty() {
 
         return literals.size() == 0;
+    }
+
+    /** ***************************************************************
+     */
+    public boolean containsEquality() {
+
+        for (Literal l : literals)
+            if (l.atom.t == "=")
+                return true;
+        return false;
     }
 
     /** ***************************************************************

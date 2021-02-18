@@ -42,5 +42,11 @@ public class SymbolCountEvaluation extends ClauseEvaluationFunction {
 
         return clause.weight(fweight, vweight);
     }
+
+    /** ***************************************************************
+     */
+    public String toString() {
+        return name;
+    }
 }
 

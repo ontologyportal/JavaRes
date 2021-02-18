@@ -551,6 +551,7 @@ public class BareFormula {
                 newf = this.deepCopy();
                 newf.lit1 = newf.child1.toLiteral();
                 newf.lit1 = newf.lit1.negate();
+                newf.child1 = null;
                 newf.op = "";
                 modified = true;
                 //System.out.println("INFO in BareFormula.promoteChildren(): returning negated literal (structured print): " + newf.toStructuredString());
@@ -753,6 +754,11 @@ public class BareFormula {
      */
     public boolean equals(BareFormula other) {
 
+        if (other == null) {
+            System.out.println("BareFormula.equals(): null argument other");
+            Thread.dumpStack();
+            return false;
+        }
         if (op != null) {
             if (!op.equals(other.op))
                 return false;
@@ -761,7 +767,7 @@ public class BareFormula {
             if (other.op != null)
                 return false;
         
-        if (child1 != null) {
+        if (child1 != null && other.child1 != null) {
             if (!child1.equals(other.child1))
                 return false;
         }

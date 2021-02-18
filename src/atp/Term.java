@@ -456,6 +456,8 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      *                  termWeight(f(X,Y), 2, 1) = 4
      *                  termWeight(X, 2, 1)      = 1
      *                  termWeight(g(a), 3, 1)   = 6
+     *
+     * Note however that we actually implement equal weighting for variables and function symbols
      */
     public int weight(int fweight, int vweight) {
         

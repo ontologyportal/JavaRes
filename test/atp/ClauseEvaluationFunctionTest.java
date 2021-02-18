@@ -138,14 +138,49 @@ public class ClauseEvaluationFunctionTest {
         ClauseEvaluationFunction.ratings.add(2);
         ClauseEvaluationFunction.ratings.add(1);
         EvalStructure eval_funs = new EvalStructure(ClauseEvaluationFunction.evals,ClauseEvaluationFunction.ratings);
-        ArrayList<Integer> evalRatings = eval_funs.evaluate(c1);
-        assert evalRatings.size() == 2;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 1;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 0;
-        assert eval_funs.nextEval() == 1;
+        ArrayList<Integer> evalRatings = eval_funs.evaluate(c1);   // cnf(c1,axiom,(f(X1,X2)=f(X2,X1))).
+        int expected = 2;
+        int actual = evalRatings.size(); // two evaluation functions, so two ratings
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
+        expected = 0; // using SymbolCountEvaluation, which is at index 0
+        actual = eval_funs.nextEval();
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
+        expected = 0; // still using SymbolCountEvaluation, which is at index 0
+        actual = eval_funs.nextEval();
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
+        expected = 1; // now we use FIFOEvaluation just once
+        actual = eval_funs.nextEval();
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
+        expected = 0; // back to SymbolCountEvaluation for two times
+        actual = eval_funs.nextEval();
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
+        expected = 0;
+        actual = eval_funs.nextEval();
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
+        expected = 1;
+        actual = eval_funs.nextEval();
+        System.out.println("testEvalStructure(): expected: " + expected);
+        System.out.println("testEvalStructure(): actual: " + actual);
+        assertEquals(expected,actual);
+
         System.out.println("INFO in ClauseEvaluationFunctionTest.testEvalStructure() success");
     }
 }

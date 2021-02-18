@@ -39,6 +39,7 @@ public class HeuristicClauseSet extends ClauseSet {
      */    
     public HeuristicClauseSet(EvalStructure efunctions) {
 
+        System.out.println("HeuristicsClauseSet using eval functions: " + efunctions);
         eval_functions = efunctions;
     }   
 
@@ -55,6 +56,7 @@ public class HeuristicClauseSet extends ClauseSet {
     	else {
 	        ArrayList<Integer> evals = eval_functions.evaluate(clause);
 	        clause.addEval(evals);
+            //System.out.println("HeuristicsClauseSet.addClause(): add evals: " + evals + " for clause " + clause);
 	        super.addClause(clause);
     	}
     }
@@ -70,16 +72,19 @@ public class HeuristicClauseSet extends ClauseSet {
             int best = 0;
             Clause c = clauses.get(0);
             int besteval = c.evaluation.get(heuristic_index);
+            //System.out.println("INFO in HeuristicClauseSet.extractBestByEval(1): best eval: " + besteval);
             for (int i = 1; i < clauses.size(); i++) {
                 c = clauses.get(i);
                 if (c.evaluation == null)
                     System.out.println("Error in HeuristicClauseSet.extractBestByEval(): no eval for clause: " + c);
                 if (c.evaluation.get(heuristic_index) < besteval) {
-                    //System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): heuristic: " + i);
                     besteval = clauses.get(i).evaluation.get(heuristic_index);
+                    //System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): best eval: " + besteval);
                     best = i;
                 }
             }
+            System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): best eval: " + besteval);
+            System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): using eval fn: " + eval_functions.eval_funs.get(heuristic_index));
             //System.out.println("HeuristicClauseSet.extractBestByEval(): removing: " + clauses.get(best));
             return clauses.remove(best);
         }
