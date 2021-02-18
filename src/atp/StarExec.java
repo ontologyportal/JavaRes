@@ -111,7 +111,7 @@ public class StarExec {
 
     /***************************************************************
      */
-    public static void execPyRes(String filename) {
+    public static ArrayList<String> execPyRes(String filename) {
 
         ArrayList<String> output = new ArrayList<>();
         try {
@@ -120,11 +120,11 @@ public class StarExec {
             String cmd = "timeout 300 python3 /home/apease/workspace/PyRes/pyres-fof.py -tifbp -HPickGiven5 -nlargest --silent ";
             ArrayList<String> commands = new ArrayList<>(Arrays.asList(
                     "timeout", "30", "python3", "/home/apease/workspace/PyRes/pyres-fof.py",
-                    " -tifbp", "-HPickGiven5", "-nlargest", "--silent", filename));
+                    "-tifbp", "-HPickGiven5", "-nlargest", "--silent", filename));
 
             System.out.println("execPyRes(): command: " + commands);
             _builder = new ProcessBuilder(commands);
-            _builder.redirectErrorStream(false);
+            _builder.redirectErrorStream(true);
             _pyres = _builder.start();
             System.out.println("EProver(): process: " + _pyres);
             BufferedReader _reader = new BufferedReader(new InputStreamReader(_pyres.getInputStream()));
@@ -135,6 +135,22 @@ public class StarExec {
         }
         catch (Exception e1) {
             e1.printStackTrace();
+        }
+        return output;
+    }
+
+    /***************************************************************
+     * Compare results running tests on PyRes and JavaRes and report
+     * any difference.
+     * @param dir is a directory of .p files to test on
+     */
+    public static void compare(String dir) {
+
+        File tptpdir = new File(dir);
+        String[] children = tptpdir.list();  // get the problem list files first.
+        for (String f : children) {
+            ArrayList<String> pyout = execPyRes(dir + File.separator + f);
+            //String stats = processPyOut(pyout)
         }
     }
 
@@ -165,6 +181,8 @@ public class StarExec {
                 buildCatCollection(args[1]);
             else if (args[0].equals("-p"))
                 execPyRes(args[1]);
+            else if (args[0].equals("-t"))
+                compare(args[1]);
             else
                 showHelp();
         }

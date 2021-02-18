@@ -150,9 +150,11 @@ public class Resolution {
             return null;
         ArrayList<Literal> lits = new ArrayList<Literal>();
         for (int i = 0; i < clause.literals.size(); i++) {
-            Literal l = clause.literals.get(i); 
-            //if (!l.equals(l2))
-            lits.add(l.instantiate(sigma));
+            if (i != lit2) {
+                Literal l = clause.literals.get(i);
+                //if (!l.equals(l2))
+                lits.add(l.instantiate(sigma));
+            }
         }
         Clause res = new Clause();
         res.createName();

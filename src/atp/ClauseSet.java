@@ -258,7 +258,8 @@ public class ClauseSet {
         for (int i = 0; i < clauses.size(); i++) {
             Clause c = clauses.get(i);
             for (int j = 0; j < c.length(); j++) {
-                result.add(new KVPair(clauses.get(i),j));
+                if (c.getLiteral(j).isInferenceLit())
+                    result.add(new KVPair(clauses.get(i), j));
             }
         }
         return result;
