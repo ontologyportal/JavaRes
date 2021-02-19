@@ -76,6 +76,7 @@ public class ProofState {
     public static boolean verbose          = false;
     public Clause conjecture = null;
     public boolean indexed = true;  // use an IndexedClauseSet
+    public SearchParams params = null;
 
     /** ***************************************************************
      */
@@ -86,6 +87,7 @@ public class ProofState {
      */  
     public ProofState(ClauseSet clauses, SearchParams params) {
 
+        this.params = params;
         System.out.println("ProofState(): heuristics: " + params.heuristics);
         unprocessed = new HeuristicClauseSet(params.heuristics);
         if (indexed)
@@ -177,6 +179,8 @@ public class ProofState {
             //System.out.println("# processClause(): backward_subsumed");
             backward_subsumed = backward_subsumed + tmp;
         }
+        if (params.literal_selection != null)
+            given_clause.selectInferenceLits(params.literal_selection);
         ClauseSet newClauses = new ClauseSet();
         ClauseSet factors = ResControl.computeAllFactors(given_clause);
         newClauses.addAll(factors);

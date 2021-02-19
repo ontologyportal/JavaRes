@@ -24,23 +24,23 @@ public class SearchParams {
         // This determines if tautologies will be deleted. Tautologies in
         //    plain first-order logic (without equality) are clauses which
         //    contain two literals with the same atom, but opposite signs.
-        delete_tautologies   = false;
+        delete_tautologies   = true;
 
         // Forward-subsumption checks the given clause against already
         //    processed clauses, and discards it if it is subsumed.
-        forward_subsumption  = false;
+        forward_subsumption  = true;
 
         // Backwards subsumption checks the processed clauses against the
         //    given clause, and discards all processed clauses that are
         //    subsumed.
-        backward_subsumption = false;
+        backward_subsumption = true;
 
         // Either None, or a function that selects a subset of negative
         //    literals from a set of negative literals (both represented as
         //            lists, not Python sets) as the inference literal.
         literal_selection    = LitSelection.LitSelectors.LARGEST;
 
-        indexing = false;
+        indexing = true;
     }
 
     /** ***************************************************************
@@ -63,6 +63,7 @@ public class SearchParams {
     /** ***************************************************************
      */
     public String toString() {
-        return heuristics.toString();
+        return "Heuristics: " + heuristics.toString() + " litSelect: " + literal_selection + " indexing: " + indexing +
+                " delTaut: " + delete_tautologies + " forSub: " + forward_subsumption + " backSub: " + backward_subsumption;
     }
 }

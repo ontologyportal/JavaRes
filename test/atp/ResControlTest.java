@@ -103,4 +103,33 @@ public class ResControlTest {
             System.out.println("fail");
         assertEquals(expected,result);
     }
+
+    /** ***************************************************************
+     * Test full factoring of a clause.
+     */
+    @Test
+    public void testFactoring2() {
+
+        Clause.resetCounter();
+        System.out.println("---------------------");
+        System.out.println("testFactoring2()");
+        String input = "cnf(associativity_addition,axiom,equalish(add(X4,add(X3,X5)),add(add(X4,X3),X5))|~defined(X4)|~defined(X3)|~defined(X5)). ";
+        String expected =
+                "cnf(c0,plain,equalish(add(X5,add(X3,X5)),add(add(X5,X3),X5))|~defined(X5)|~defined(X3)).\n" +
+                "cnf(c1,plain,equalish(add(X4,add(X5,X5)),add(add(X4,X5),X5))|~defined(X4)|~defined(X5)).\n";
+        Lexer lex = new Lexer(input);
+        Clause inclause = Clause.parse(lex);
+        SearchParams sp = new SearchParams();
+        inclause.selectInferenceLits(sp.literal_selection);
+        ClauseSet res = ResControl.computeAllFactors(inclause);
+        System.out.println("should see: " + expected);
+        String result = res.toString();
+
+        System.out.println("Result: " + res);
+        if (expected.equals(result))
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,result);
+    }
 }
