@@ -38,7 +38,7 @@ public class SearchParams {
         // Either None, or a function that selects a subset of negative
         //    literals from a set of negative literals (both represented as
         //            lists, not Python sets) as the inference literal.
-        literal_selection    = LitSelection.LitSelectors.NONE;
+        literal_selection    = LitSelection.LitSelectors.LARGEST;
 
         indexing = false;
     }

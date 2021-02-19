@@ -83,8 +83,8 @@ public class HeuristicClauseSet extends ClauseSet {
                     best = i;
                 }
             }
-            System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): best eval: " + besteval);
-            System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): using eval fn: " + eval_functions.eval_funs.get(heuristic_index));
+            //System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): best eval: " + besteval);
+            //System.out.println("INFO in HeuristicClauseSet.extractBestByEval(): using eval fn: " + eval_functions.eval_funs.get(heuristic_index));
             //System.out.println("HeuristicClauseSet.extractBestByEval(): removing: " + clauses.get(best));
             return clauses.remove(best);
         }

@@ -251,5 +251,7 @@ public class ClauseTest {
         c3.selectInferenceLits(LitSelection.LitSelectors.LEASTVARS);
         for (Literal l : c3.literals)
             assertEquals(l.isNegative(), l.isInferenceLit());
+
+
     }
 }

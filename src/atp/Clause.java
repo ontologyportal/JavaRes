@@ -123,6 +123,16 @@ public class Clause extends Derivable implements Comparable {
 
     /** ***************************************************************
      */
+    public String printHighlight(ArrayList<Literal> lits) {
+
+        StringBuffer result = new StringBuffer();
+        result.append("cnf(" + name + "," + type + "," +
+                Literal.literalList2String(literals,lits) + ").");
+        return result.toString();
+    }
+
+    /** ***************************************************************
+     */
     public static void resetCounter() {
         clauseIDcounter = 0;
     }
@@ -518,13 +528,18 @@ public class Clause extends Derivable implements Comparable {
             l.setInferenceLit(false);
 
         ArrayList<Literal> selected = null;
-        if (selection.equals(LitSelection.LitSelectors.FIRST))
-            selected = LitSelection.firstLit(candidates);
         LitSelection ls = new LitSelection();
-        if (selection.equals(LitSelection.LitSelectors.LEASTVARS))
+        if (selection == null || selection.equals(LitSelection.LitSelectors.FIRST))
+            selected = LitSelection.firstLit(candidates);
+        else if (selection.equals(LitSelection.LitSelectors.LEASTVARS))
             selected = ls.varSizeLit(candidates);
-        if (selection.equals(LitSelection.LitSelectors.EQLEASTVARS))
+        else if (selection.equals(LitSelection.LitSelectors.LARGEST))
+            selected = ls.largestLit(candidates);
+        else if (selection.equals(LitSelection.LitSelectors.EQLEASTVARS))
             selected = ls.eqResVarSizeLit(candidates);
+        else if (selection.equals(LitSelection.LitSelectors.SMALLEST))
+            selected = ls.smallestLit(candidates);
+
         for (Literal l : selected)
             l.setInferenceLit(true);
     }

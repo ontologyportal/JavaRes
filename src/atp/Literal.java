@@ -552,6 +552,25 @@ public class Literal implements Comparable {
         return result.toString();
     }
 
+    /***************************************************************
+     * Convert a literal list to a textual representation that can be
+     * parsed back.
+     */
+    public static String literalList2String(ArrayList<Literal> l, ArrayList<Literal> lhighlight) {
+
+        StringBuffer result = new StringBuffer();
+        if (l == null || l.size() < 1)
+            return "$false";
+        result.append(l.get(0).toString());
+        for (int i = 1; i < l.size(); i++) {
+            if (lhighlight.contains(l.get(i)))
+                result.append("| *" + l.get(i).toString());
+            else
+                result.append("|" + l.get(i).toString());
+        }
+        return result.toString();
+    }
+
     /****************************************************************
      * Return true if (a literal equal to) lit is in litlist, false
      * otherwise.

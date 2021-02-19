@@ -117,16 +117,16 @@ public class StarExec {
         try {
             ProcessBuilder _builder;
             Process _pyres;
-            String cmd = "timeout 300 python3 /home/apease/workspace/PyRes/pyres-fof.py -tifbp -HPickGiven5 -nlargest --silent ";
+            String cmd = "timeout 60 python3 /home/apease/workspace/PyRes/pyres-fof.py -tifbp -HPickGiven5 -nlargest --silent ";
             ArrayList<String> commands = new ArrayList<>(Arrays.asList(
-                    "timeout", "30", "python3", "/home/apease/workspace/PyRes/pyres-fof.py",
+                    "timeout", "60", "python3", "/home/apease/workspace/PyRes/pyres-fof.py",
                     "-tifbp", "-HPickGiven5", "-nlargest", "--silent", filename));
 
             System.out.println("execPyRes(): command: " + commands);
             _builder = new ProcessBuilder(commands);
             _builder.redirectErrorStream(true);
             _pyres = _builder.start();
-            System.out.println("EProver(): process: " + _pyres);
+            System.out.println("execPyRes(): process: " + _pyres);
             BufferedReader _reader = new BufferedReader(new InputStreamReader(_pyres.getInputStream()));
             String line = null;
             while ((line = _reader.readLine()) != null) {
@@ -140,18 +140,91 @@ public class StarExec {
     }
 
     /***************************************************************
+     * @return SZS result and time as a colon-separated string
+     */
+    private static String processPyOut(ArrayList<String> pyout) {
+
+         String result = "";
+         for (String s : pyout) {
+             if (s.startsWith("# SZS status "))
+                 result = s.substring(s.lastIndexOf(" ") + 1) + " : ";
+             if (s.startsWith("# Total time         : "))
+                 result = result + s.substring(s.lastIndexOf(": ") + 1);
+         }
+         return result;
+    }
+
+    /***************************************************************
+     * Compare results running tests on PyRes and JavaRes and report
+     * any significant difference.
+     * @param r is two pairs of results - one from PyRes and one from
+     *          JavaRes
+     */
+    public static void compareResults(String file, String r) {
+
+        if (Term.emptyString(r))
+            return;
+        //System.out.println("compareResults(): process: " + r);
+        String[] provers = r.split("\\|");
+        //System.out.println("compareResults(): provers: " + provers[0] + " | " + provers[1]);
+        String[] pyres = provers[0].split(":");
+        //System.out.println("compareResults(): pyres: " + pyres[0] + " : " + pyres[1]);
+        String[] javares = provers[1].split(":");
+        //System.out.println("compareResults(): javares: " + javares[0] + " : " + javares[1]);
+        if (!pyres[0].trim().equals(javares[0].trim()))
+            System.out.println(file + ": JavaRes: " + javares[0] + " PyRes: " + pyres[0]);
+        else {
+            double pytime = Double.parseDouble(pyres[1].substring(0,pyres[1].length()-2)); // remove " s"
+            double jatime = Double.parseDouble(javares[1]) / 1000;
+            //System.out.println(file + ": JavaRes: " + jatime + " PyRes: " + pytime);
+            if (((pytime / jatime) > 2) ||
+                    ((jatime / pytime) > 2))
+                System.out.println("compareResults() file: " + file +
+                        ": JavaRes: " + jatime + "ms, PyRes: " + pytime + "ms");
+        }
+    }
+
+    /***************************************************************
+     * Compare results running tests on PyRes and JavaRes and report
+     * any difference.
+     */
+    public static void compareOne(String file, ArrayList<SearchParams> evals ) {
+
+        String args = "--eqax --proof --delete-tautologies --forward-subsumption --backward_subsumption --delete-tautologies --timeout 60";
+        HashMap<String,String> opts = Prover2.processOptions(args.split(" "));
+        opts.put("filename",file);
+
+        ArrayList<String> pyout = execPyRes(file);
+        String pystats = processPyOut(pyout);
+        //System.out.println("# INFO in Prover2.compareOne(): pystats " + pystats);
+
+        //System.out.println("# INFO in Prover2.compareOne(): Processing file " + opts.get("filename"));
+        ProofState state = Prover2.processTestFile(opts.get("filename"),opts,evals);
+        Prover2.setStateOptions(state,opts);
+        String javaStats = state.SZSresult + " : " + state.time;
+        //System.out.println("# INFO in Prover2.compareOne(): javaStats " + javaStats);
+        compareResults(file, pystats + " | " + javaStats);
+    }
+
+    /***************************************************************
      * Compare results running tests on PyRes and JavaRes and report
      * any difference.
      * @param dir is a directory of .p files to test on
      */
     public static void compare(String dir) {
 
+        Formula.defaultPath = System.getenv("TPTP");
+        System.out.println("Using default include path : " + Formula.defaultPath);
+        ClauseEvaluationFunction.setupEvaluationFunctions();
+        ArrayList<SearchParams> evals = new ArrayList<SearchParams>();
+        SearchParams sp = new SearchParams();
+        sp.heuristics = ClauseEvaluationFunction.PickGiven5;
+        evals.add(sp);
+
         File tptpdir = new File(dir);
         String[] children = tptpdir.list();  // get the problem list files first.
-        for (String f : children) {
-            ArrayList<String> pyout = execPyRes(dir + File.separator + f);
-            //String stats = processPyOut(pyout)
-        }
+        for (String f : children)
+            compareOne(dir + File.separator + f,evals);
     }
 
     /***************************************************************
@@ -161,6 +234,8 @@ public class StarExec {
         System.out.println(" -c <file> : build a collection of TPTP problems ");
         System.out.println("      and put in a subdir of the same name as the file");
         System.out.println(" -p <file> : run PyRes");
+        System.out.println(" -m <dir> : compare all files in a dir for PyRes and JavaRes results");
+        System.out.println(" -o <file> : compare one file for PyRes and JavaRes results");
         System.out.println("  -h : show help");
     }
 
@@ -168,6 +243,7 @@ public class StarExec {
      */
     public static void main(String[] args) {
 
+        Formula.defaultPath = System.getenv("TPTP");
         if (args.length == 0)
             showHelp();
         else if (args.length == 1) {
@@ -183,6 +259,16 @@ public class StarExec {
                 execPyRes(args[1]);
             else if (args[0].equals("-t"))
                 compare(args[1]);
+            else if (args[0].equals("-m"))
+                compare(args[1]);
+            else if (args[0].equals("-o")) {
+                ClauseEvaluationFunction.setupEvaluationFunctions();
+                ArrayList<SearchParams> evals = new ArrayList<SearchParams>();
+                SearchParams sp = new SearchParams();
+                sp.heuristics = ClauseEvaluationFunction.PickGiven5;
+                evals.add(sp);
+                compareOne(args[1],evals);
+            }
             else
                 showHelp();
         }

@@ -79,17 +79,16 @@ public class ResControl {
 
         ClauseSet res = new ClauseSet();
         for (int i = 0; i < clause.length(); i++) {
-            if (clause.getLiteral(i).isInferenceLit()) {
-                for (int j = i + 1; j < clause.length(); j++) {
+            for (int j = i + 1; j < clause.length(); j++) {
+                if (clause.getLiteral(i).isInferenceLit() || clause.getLiteral(j).isInferenceLit()) {
                     Clause fact = Resolution.factor(clause, i, j);
                     //System.out.println("INFO in ResControl.computeAllFactors(): adding factor: " + fact);
-                    if (fact != null)
+                    if (fact != null) {
                         res.addClause(fact);
+                    }
                 }
             }
         }
         return res;
     }
-    
-
 }

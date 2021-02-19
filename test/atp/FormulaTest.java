@@ -174,7 +174,7 @@ public class FormulaTest {
             state.delete_tautologies = true;
             state.forward_subsumption = true;
             state.backward_subsumption = true;
-            state.verbose = true;
+            //state.verbose = true;
             state.res = state.saturate(10);
             if (state.res != null)
                 System.out.println(state);
@@ -300,7 +300,7 @@ public class FormulaTest {
             state.delete_tautologies = true;
             state.forward_subsumption = true;
             state.backward_subsumption = true;
-            state.verbose = true;
+            //state.verbose = true;
             state.res = state.saturate(10);
             if (state.res != null)
                 System.out.println("fail, should have no result: " + state);
@@ -340,7 +340,7 @@ public class FormulaTest {
             state.delete_tautologies = true;
             state.forward_subsumption = true;
             state.backward_subsumption = true;
-            state.verbose = true;
+            //state.verbose = true;
             state.res = state.saturate(10);
             if (state.res != null)
                 System.out.println("success " + state);

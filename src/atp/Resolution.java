@@ -162,6 +162,8 @@ public class Resolution {
         res.removeDupLits();
         res.rationale = "factoring";
         res.support.add(clause.name);
+        System.out.println("INFO in Resolution.factor(): result Clause: " + res.printHighlight(lits));
+        System.out.println("INFO in Resolution.factor(): input Clause: " + clause);
         return res;
     }
 }
