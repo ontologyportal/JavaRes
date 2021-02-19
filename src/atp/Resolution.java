@@ -165,7 +165,7 @@ public class Resolution {
         res.rationale = "factoring";
         res.support.add(clause.name);
         if (verbose) {
-            System.out.println("INFO in Resolution.factor(): result Clause: " + res.printHighlight(lits));
+            System.out.println("INFO in Resolution.factor(): result Clause: " + res.printHighlight());
             System.out.println("INFO in Resolution.factor(): input Clause: " + clause);
         }
         return res;

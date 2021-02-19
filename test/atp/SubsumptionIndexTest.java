@@ -36,6 +36,7 @@ public class SubsumptionIndexTest {
     public static Clause c8 = null;
     public static Clause c9 = null;
 
+
     /** ***************************************************************
      */
     @BeforeClass
@@ -51,6 +52,7 @@ public class SubsumptionIndexTest {
                 "cnf(c7,axiom, q(f(a),a))." +
                 "cnf(c8,axiom, r(f(a)))." +
                 "cnf(c9,axiom, p(X,Y)).";
+
             Lexer lex = new Lexer(spec);
         c1 = Clause.parse(lex);
         c2 = Clause.parse(lex);
@@ -61,6 +63,7 @@ public class SubsumptionIndexTest {
         c7 = Clause.parse(lex);
         c8 = Clause.parse(lex);
         c9 = Clause.parse(lex);
+
     }
 
     /** ***************************************************************
@@ -129,4 +132,5 @@ public class SubsumptionIndexTest {
         System.out.println(cands);
         assertEquals(cands.size(), 1);
     }
+
 }

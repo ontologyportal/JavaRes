@@ -32,13 +32,15 @@ public class ClauseSet {
     public String SZSexpected = ""; // set from a structured comment when reading a TPTP problem file
     public String SZSresult = "";
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      */
     public ClauseSet() {
 
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      */
     public ClauseSet(ArrayList<Clause> clauses) {
 
@@ -46,18 +48,20 @@ public class ClauseSet {
             this.addClause(new Clause(c));
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      * Return a string representation of the clause set.
-     */                            
+     */
     public String toString() {
-        
+
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < clauses.size(); i++)
             sb.append(clauses.get(i) + "\n");
-       return sb.toString();
+        return sb.toString();
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      */
     public boolean equals(Object o) {
 
@@ -74,15 +78,18 @@ public class ClauseSet {
         return true;
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      */
     public void sort() {
+
         for (Clause c : clauses)
             c.sortLiterals();
         Collections.sort(clauses);
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      */
     public boolean containsEquality() {
 
@@ -92,78 +99,88 @@ public class ClauseSet {
         return false;
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      * Return number of clauses in set.
-     */ 
+     */
     public int length() {
 
         return clauses.size();
     }
-    
-    /** ***************************************************************
+
+    /**
+     * **************************************************************
      * get a clause
-     */ 
+     */
     public Clause get(int i) {
 
-        assert i < clauses.size() : "index out of bounds: " + Integer.toString(i) + 
-                                    " with clause list length: " + Integer.toString(clauses.size());
+        assert i < clauses.size() : "index out of bounds: " + Integer.toString(i) +
+                " with clause list length: " + Integer.toString(clauses.size());
         return clauses.get(i);
     }
-    
-    /** ***************************************************************
+
+    /**
+     * **************************************************************
      * Add a clause to the clause set.
-     */ 
+     */
     public void addClause(Clause clause) {
 
         clauses.add(clause);
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      * Add a clause to the clause set.
-     */ 
+     */
     public void addAll(ClauseSet clauseSet) {
 
         for (Clause c : clauseSet.clauses)
             addClause(c);
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      * Add a clause to the clause set.
-     */ 
+     */
     public void addAll(ArrayList<Clause> clauseSet) {
 
         for (Clause c : clauseSet)
             addClause(c);
     }
 
-    /** ***************************************************************
+    /**
+     * **************************************************************
      * Add a clause to the clause set.
-     */ 
+     */
     public void addAll(HashSet<Clause> clauseSet) {
 
         for (Clause c : clauseSet)
             addClause(c);
     }
-    
-    /** ***************************************************************
+
+    /**
+     * **************************************************************
      * Remove a clause from the clause set and return it.
-     */ 
+     */
     public Clause extractClause(Clause clause) {
 
         clauses.remove(clause);
         return clause;
     }
-    
-    /** ***************************************************************
+
+    /**
+     * **************************************************************
      * Collect function- and predicate symbols into the signature.
-     */ 
+     */
     public Signature collectSig(Signature sig) {
 
         for (Clause c : clauses)
             sig = c.collectSig(sig);
-        return sig;    
+        return sig;
     }
-    /** ***************************************************************
+
+    /**
+     * **************************************************************
      * Collect function- and predicate symbols into the signature.
      */
     public Signature collectSig() {
@@ -174,64 +191,89 @@ public class ClauseSet {
         return sig;
     }
 
-    /** ***************************************************************
-     * Add equality axioms (if necessary). 
+    /**
+     * **************************************************************
+     * Add equality axioms (if necessary).
+     *
      * @return new clauses if equality is present, unmodified otherwise.
      */
     public ClauseSet addEqAxioms() {
 
         System.out.println("INFO in ClauseSet.addEqAxioms(): adding axioms");
-    	Signature sig = new Signature();
+        Signature sig = new Signature();
         sig = collectSig(sig);
 
         //System.out.println("INFO in ClauseSet.addEqAxioms(): signature: " + sig);
-        if (sig.isPred("=")) {         
+        if (sig.isPred("=")) {
             ArrayList<Clause> res = EqAxioms.generateEquivAxioms();
             res.addAll(EqAxioms.generateCompatAxioms(sig));
             this.addAll(res);
         }
         return this;
     }
-    
-    /** ***************************************************************
+
+    /**
+     * **************************************************************
      * Extract and return the first clause.
-     */ 
-   public Clause extractFirst() {
+     */
+    public Clause extractFirst() {
 
-       if (clauses.size() > 0) 
-           return clauses.remove(0);        
-       else
-           return null;
-   }
-   
-   /** ***************************************************************
-    * Return the negatedConjecture, if it exists.
-    */ 
-   public Clause getConjecture() {
+        if (clauses.size() > 0)
+            return clauses.remove(0);
+        else
+            return null;
+    }
 
-       for (int i = 0; i < clauses.size(); i++) {
-           if (clauses.get(i).type.startsWith("negatedConjecture") || clauses.get(i).type.startsWith("conjecture"))
-               return clauses.get(i);
-       }
-       return null;
-   }
+    /**
+     * **************************************************************
+     * Return the negatedConjecture, if it exists.
+     */
+    public Clause getConjecture() {
 
-   /** ***************************************************************
-    * Return the negatedConjecture, if it exists.
-    */ 
-   public HashSet<String> getConjectureSymbols() {
+        for (int i = 0; i < clauses.size(); i++) {
+            if (clauses.get(i).type.startsWith("negatedConjecture") || clauses.get(i).type.startsWith("conjecture"))
+                return clauses.get(i);
+        }
+        return null;
+    }
 
-	   HashSet<String> result = new HashSet<String>();
-       for (int i = 0; i < clauses.size(); i++) {
-           if (clauses.get(i).type.startsWith("negatedConjecture") || clauses.get(i).type.startsWith("conjecture")) {
-        	   Signature sig = new Signature();
-        	   clauses.get(i).collectSig(sig);
-               result.addAll(sig.funs);
-               result.addAll(sig.preds);
-           }
-       }
-       return result;
-   }
+    /**
+     * **************************************************************
+     * Return the negatedConjecture, if it exists.
+     */
+    public HashSet<String> getConjectureSymbols() {
+
+        HashSet<String> result = new HashSet<String>();
+        for (int i = 0; i < clauses.size(); i++) {
+            if (clauses.get(i).type.startsWith("negatedConjecture") || clauses.get(i).type.startsWith("conjecture")) {
+                Signature sig = new Signature();
+                clauses.get(i).collectSig(sig);
+                result.addAll(sig.funs);
+                result.addAll(sig.preds);
+            }
+        }
+        return result;
+    }
+
+    /***************************************************************
+     * Return a subset (as a list) of the set containing at least all
+     * clauses potentially subsuming queryclause. For a plain
+     * ClauseSet, we just return all clauses in the set.
+     */
+    public ArrayList<Clause> getSubsumingCandidates(Clause queryclause) {
+
+        return clauses;
+    }
+
+    /***************************************************************
+     * Return a subset (as a list) of the set containing at least the
+     * clauses  potentially subsumed by queryclause). For a plain
+     * ClauseSet, we just return all clauses in the set.
+     */
+    public ArrayList<Clause> getSubsumedCandidates(Clause queryclause) {
+
+        return clauses;
+    }
 
    /** ***************************************************************
     * Return a copy of the instance.

@@ -14,7 +14,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program ; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-MA  02111-1307 USA 
+MA  02111-1307 USA
+
+This module implements first-order subsumption, as defined by the
+simplification rule below:
+
+Subsumption:
+
+ C|R    D
+=========== if sigma(D)=C for some substitution sigma
+     D
+
+Note that C, D, R (and hence C|R) are clauses, i.e. they are
+multi-sets of literals interpreted as disjunctions. The multi-set
+aspect is important for this particular calculus, otherwise
+p(X)|p(Y) would be able to subsume p(X), i.e. a clause would subsume
+its own factors. This would destroy completeness.
+
 */
 package atp;
 
@@ -35,13 +51,13 @@ public class Subsumption {
 
         if (subsumer == null || subsumer.literals.size() < 1)
             return true;
-        for (int i = 0; i < subsumed.literals.size(); i++) {
+        for (Literal lit : subsumed.literals) {
             int btstate = subst.getState();
-            if (subsumer.literals.get(0).match(subsumed.literals.get(i), subst)) {
+            if (subsumer.literals.get(0).match(lit, subst)) {
                 Clause rest = new Clause();
-                for (int j = 0; j < subsumer.literals.size(); j++)
-                    if (subsumer.literals.get(j) != subsumed.literals.get(i))
-                        rest.literals.add(subsumer.literals.get(j));
+                for (Literal l : subsumed.literals)
+                    if (!l.equals(lit))
+                        rest.literals.add(l);
                 if (subsumeLitLists(subsumer.deepCopy(1), rest, subst))
                     return true;
             }
@@ -67,11 +83,13 @@ public class Subsumption {
      */ 
     public static boolean forwardSubsumption(ClauseSet cs, Clause clause) {
 
-        //System.out.println("forwardSubsumption(): check " + cs + " against\n" + clause);
-        for (int i = 0; i < cs.length(); i++) {
-            Clause c = cs.get(i);
-            if (subsumes(c, clause))
+        ArrayList<Clause> candidates = cs.getSubsumingCandidates(clause);
+        System.out.println("forwardSubsumption(): check " + cs + " against\n" + clause);
+        for (Clause c : candidates) {
+            if (subsumes(c, clause)) {
+                System.out.println("forwardSubsumption(): " + c + " subsumes\n" + clause);
                 return true;
+            }
         }
         return false;
     }
@@ -82,14 +100,13 @@ public class Subsumption {
     public static int backwardSubsumption(Clause clause, ClauseSet cs) {
 
         ArrayList<Clause> subsumed_set = new ArrayList<Clause>();
-        for (int i = 0; i < cs.length(); i++) {
-            Clause c = cs.get(i);
+        ArrayList<Clause> candidates = cs.getSubsumedCandidates(clause);
+        for (Clause c : candidates) {
             if (subsumes(clause, c))
                 subsumed_set.add(c);        
         }
         int res = subsumed_set.size();
-        for (int i = 0; i < subsumed_set.size(); i++) {
-            Clause c = subsumed_set.get(i);
+        for (Clause c : subsumed_set) {
             if (c.supportsClauses.size() == 0) // make sure that clauses that support others are not removed.
             	cs.extractClause(c);
         }

@@ -105,4 +105,47 @@ public class ProofStateTest {
         evalSatResult(spec3, false);
         System.out.println();
     }
+
+    /** ***************************************************************
+     * Test that the main clause processing method works
+     */
+    @Test
+    public void testProcessClause() {
+
+        String input = "cnf(clause29,negated_conjecture,~street(U)|~way(U)|~lonely(U)|~old(V)|~dirty(V)|~white(V)|~car(V)|~chevy(V)|~event(W)|~barrel(W,V)|~down(W,U)|~in(W,X)|~city(X)|~hollywood(X)|ssSkC0)." +
+                "cnf(clause25,negated_conjecture,ssSkC0|in(skc14,skc15)).\n";
+        System.out.println("---------------------");
+        System.out.println("INFO in ProofStateTest.testProcessClause()");
+        try {
+            Lexer lex = new Lexer(input);
+            ClauseSet cs = Formula.lexer2clauses(lex);
+            System.out.println("input: " + cs);
+            System.out.println(cs);
+            ClauseEvaluationFunction.setupEvaluationFunctions();
+            SearchParams sp = new SearchParams();
+            ProofState state = new ProofState(cs,sp);
+            state.verbose = true;
+            state.processClause();  // first clause has nothing in 'processed' to work with
+            state.processClause();  // the one remaining clause from 'unprocessed' is the given clause and resolves with the one clause in 'processed'
+            if (state.res != null)
+                System.out.println("success " + state);
+            else
+                System.out.println("fail : # SZS GaveUp");
+            System.out.println("INFO in in ProofStateTest.testProcessClause(): done processing");
+            String actual = state.unprocessed.get(0).toString();
+            System.out.println("actual: " + actual);
+            String expected = "cnf(c0,plain,~street(X1)|~way(X1)|~lonely(X1)|~old(X2)|~dirty(X2)|~white(X2)|~car(X2)|~chevy(X2)|~event(skc14)|~barrel(skc14,X2)|~down(skc14,X1)|~city(skc15)|~hollywood(skc15)|ssSkC0).";
+            System.out.println("expected: " + expected);
+            if (expected.equals(actual))
+                System.out.println("success ");
+            else
+                System.out.println("fail");
+            assertEquals(expected,actual);
+        }
+        catch (Exception e) {
+            System.out.println("Error in in ProofStateTest.testProcessClause()");
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

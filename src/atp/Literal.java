@@ -84,6 +84,7 @@ public class Literal implements Comparable {
 
         this.atom = new Term(l.atom);
         this.negated = l.negated;
+        this.inferenceLit = l.inferenceLit;
     }
 
     /***************************************************************
@@ -204,6 +205,7 @@ public class Literal implements Comparable {
         Literal result = new Literal();
         result.atom = atom.deepCopy();
         result.negated = negated;
+        result.inferenceLit = inferenceLit;
         return result;
     }
 
@@ -556,14 +558,16 @@ public class Literal implements Comparable {
      * Convert a literal list to a textual representation that can be
      * parsed back.
      */
-    public static String literalList2String(ArrayList<Literal> l, ArrayList<Literal> lhighlight) {
+    public static String literalList2StringHighlight(ArrayList<Literal> l) {
 
         StringBuffer result = new StringBuffer();
         if (l == null || l.size() < 1)
             return "$false";
+        if (l.get(0).isInferenceLit())
+            result.append("*");
         result.append(l.get(0).toString());
         for (int i = 1; i < l.size(); i++) {
-            if (lhighlight.contains(l.get(i)))
+            if (l.get(i).isInferenceLit())
                 result.append("| *" + l.get(i).toString());
             else
                 result.append("|" + l.get(i).toString());

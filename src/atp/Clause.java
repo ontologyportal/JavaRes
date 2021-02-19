@@ -117,18 +117,30 @@ public class Clause extends Derivable implements Comparable {
             
         StringBuffer result = new StringBuffer();
         result.append("cnf(" + name + "," + type + "," + 
-                Literal.literalList2String(literals) + ").");
+                Literal.literalList2StringHighlight(literals) + ").");
         return result.toString();
     }
 
     /** ***************************************************************
      */
-    public String printHighlight(ArrayList<Literal> lits) {
+    public String printHighlight() {
 
         StringBuffer result = new StringBuffer();
         result.append("cnf(" + name + "," + type + "," +
-                Literal.literalList2String(literals,lits) + ").");
+                Literal.literalList2StringHighlight(literals) + ").");
         return result.toString();
+    }
+
+    /** ***************************************************************
+     * utility method
+     */
+    public boolean allMarkedForInference() {
+
+        for (Literal lit : literals)
+            if (!lit.isInferenceLit()) {
+                return false;
+            }
+        return true;
     }
 
     /** ***************************************************************
@@ -516,6 +528,9 @@ public class Clause extends Derivable implements Comparable {
     }
 
     /** ***************************************************************
+     *  Perform negative literal selection. LitSelection.LitSelectors.XXX is
+     * a function that takes a list of literals and returns a sublist
+     * of literals (normally of length 1) that should be selected.
      */
     public void selectInferenceLits(LitSelection.LitSelectors selection) {
 
@@ -570,7 +585,7 @@ public class Clause extends Derivable implements Comparable {
     public Clause instantiate(Substitutions subst) {
 
         ArrayList<Literal> lits = new ArrayList<>();
-        for (Literal l :literals)
+        for (Literal l : literals)
             lits.add(l.instantiate(subst));
         Clause res = new Clause(lits, type, name);
         res.setDerivation(this.derivation);

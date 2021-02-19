@@ -127,7 +127,7 @@ public class LiteralTest {
     }
 
     /** ***************************************************************
-     *  Test that basic literal literal functions work correctly.
+     *  Test that basic literal functions work correctly.
      */
     @Test
     public void testLiterals() {
@@ -244,6 +244,19 @@ public class LiteralTest {
     }
 
     /** ***************************************************************
+     * utility method
+     */
+    private boolean allMarkedForInference(ArrayList<Literal> l5 ) {
+
+        for (Literal lit : l5)
+            if (!lit.isInferenceLit()) {
+                System.out.println("fail - literal not marked for inference: " + lit);
+                return false;
+            }
+        return true;
+    }
+
+    /** ***************************************************************
      * Test literal list parsing and printing.
      */
     @Test
@@ -283,6 +296,9 @@ public class LiteralTest {
         System.out.println(l5);
         System.out.println(l5.size() == 2);
         assertEquals(l5.size(), 2);
+        System.out.println("it's all positive literals so all should be selected for inference:");
+        assertTrue(allMarkedForInference(l5));
+        System.out.println("success all marked for inference");
         System.out.println();
 
         System.out.println("input6: " + input6);

@@ -138,13 +138,14 @@ public class ProofState {
      */  
     public Clause processClause() {
 
-        //System.out.println("# processClause(): unprocessed before extract: " + unprocessed);
+        System.out.println("# processClause(): unprocessed before extract: " + unprocessed);
+        System.out.println("# processClause(): processed: " + processed);
         Clause given_clause = unprocessed.extractBest();
         if (verbose)
             System.out.println("# processClause(): given clause: " + given_clause);
         //System.out.println("# processClause(): unprocessed after extract: " + unprocessed);
         given_clause = given_clause.freshVarCopy();
-        //System.out.println("# processClause(): given clause: " + given_clause.toStringJustify());
+        //System.out.println("# processClause(): given clause fresh vars: " + given_clause);
         if (given_clause.isEmpty())
             // We have found an explicit contradiction
             return given_clause;
@@ -153,7 +154,7 @@ public class ProofState {
             //System.out.println("# processClause(): tautology");
             return null;        
         }
-        //System.out.println("# processClause(): processed: " + processed);
+
         if (forward_subsumption && Subsumption.forwardSubsumption(processed, given_clause)) {
             //  If the given clause is subsumed by an already processed
             //  clause, all relevant inferences will already have been
@@ -161,7 +162,7 @@ public class ProofState {
             //  the given clause. We keep count of how many clauses
             //  we have removed this way.
             forward_subsumed = forward_subsumed + 1;
-            //System.out.println("# processClause(): forward_subsumed");
+            System.out.println("# processClause(): forward_subsumed");
             return null;
         }
 
@@ -176,18 +177,20 @@ public class ProofState {
             //  processed clauses are typically, if not universally, more
             //  general than the new given clause).
             int tmp = Subsumption.backwardSubsumption(given_clause, processed);
-            //System.out.println("# processClause(): backward_subsumed");
+            System.out.println("# processClause(): backward_subsumed");
             backward_subsumed = backward_subsumed + tmp;
         }
         if (params.literal_selection != null)
             given_clause.selectInferenceLits(params.literal_selection);
+        //System.out.println("# processClause(): given clause highlight: " + given_clause.printHighlight());
         ClauseSet newClauses = new ClauseSet();
         ClauseSet factors = ResControl.computeAllFactors(given_clause);
         newClauses.addAll(factors);
         ClauseSet resolvents = ResControl.computeAllResolvents(given_clause, processed);
         newClauses.addAll(resolvents);
 
-        //System.out.println("# ProofState.processClause(): new clauses from factors and resolvants: " + newClauses);
+        if (verbose && newClauses.clauses.size() > 0)
+            System.out.println("# ProofState.processClause(): new clauses from factors and resolvants: " + newClauses);
         proc_clause_count = proc_clause_count + 1;
         factor_count = factor_count + factors.length();
         resolvent_count = resolvent_count + resolvents.length();

@@ -75,6 +75,7 @@ public class ClauseTest {
     @Test
     public void testAAAClauses() {
 
+        System.out.println("------------------------");
         System.out.println("INFO in ClauseTest.testAAAClauses(): expected results: \n" + str1);
         System.out.println("results:");
         Lexer lex = new Lexer(str1);
@@ -160,6 +161,7 @@ public class ClauseTest {
     @Test
     public void testWeights() {
 
+        System.out.println("------------------------");
         System.out.println("INFO in ClauseTest.testWeights(): ");
         Clause cf = c1.freshVarCopy();
         assertEquals(cf.weight(2,1), c1.weight(2,1));
@@ -171,6 +173,8 @@ public class ClauseTest {
     @Test
     public void testGetLiteral() {
 
+        System.out.println("------------------------");
+        System.out.println("INFO in ClauseTest.testGetLiteral(): ");
         Clause cnew = new Clause(c4.literals);
         assertEquals(cnew.getLiteral(0),c4.getLiteral(0));
     }
@@ -180,6 +184,8 @@ public class ClauseTest {
     @Test
     public void testClassifiers() {
 
+        System.out.println("------------------------");
+        System.out.println("testClassifiers(): ");
         Clause empty = new Clause(new ArrayList<>());
         assertTrue(empty.isEmpty());
         assertTrue(!empty.isUnit());
@@ -204,6 +210,8 @@ public class ClauseTest {
     @Test
     public void testSignatures() {
 
+        System.out.println("------------------------");
+        System.out.println("testSignatures(): ");
         Signature sig = c1.collectSig();
         c2.collectSig(sig);
         c3.collectSig(sig);
@@ -219,6 +227,8 @@ public class ClauseTest {
     @Test
     public void testNegLits() {
 
+        System.out.println("------------------------");
+        System.out.println("testNegLits(): ");
         ArrayList<Literal> negs = c1.getNegativeLits();
         assertEquals(0, negs.size());
         negs = c2.getNegativeLits();
@@ -236,9 +246,25 @@ public class ClauseTest {
     @Test
     public void testInfLits() {
 
+        System.out.println("------------------------");
+        System.out.println("testInfLits(): ");
+        if (!c2.allMarkedForInference())
+            System.out.println("testInfLits: Error " + c2 + " is all positive literals and not all marked for inference");
+        else
+            System.out.println("success: all marked for inference in " + c2);
+        assertTrue(c2.allMarkedForInference());
+        c2.freshVarCopy();
+        System.out.println("after fresh var copy");
+        if (!c2.allMarkedForInference())
+            System.out.println("testInfLits: Error " + c2 + " is all positive literals and not all marked for inference");
+        else
+            System.out.println("success: all marked for inference in " + c2);
+        assertTrue(c2.allMarkedForInference());
         c2.selectInferenceLits(LitSelection.LitSelectors.FIRST);
         for (Literal l : c2.literals)
             assertTrue(l.isInferenceLit());
+
+
 
         c3.selectInferenceLits(LitSelection.LitSelectors.FIRST);
         for (Literal l : c3.literals)
