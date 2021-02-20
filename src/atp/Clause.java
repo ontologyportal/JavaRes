@@ -117,7 +117,7 @@ public class Clause extends Derivable implements Comparable {
             
         StringBuffer result = new StringBuffer();
         result.append("cnf(" + name + "," + type + "," + 
-                Literal.literalList2StringHighlight(literals) + ").");
+                Literal.literalList2String(literals) + ").");
         return result.toString();
     }
 
