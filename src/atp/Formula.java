@@ -180,7 +180,10 @@ public class Formula {
             	return null;
         }
         else if (id.equals("fof")) {
+            cs.isFOF = true;
             Formula f = Formula.parse(lex);
+            if (f.type.equals("conjecture"))
+                cs.hasConjecture = true;
             String fstring = f.toString();
             if (fstring.length() > maxFormulaCharLen) {
                 cs.SZSresult = "InputError (INE) input error: clause too large: "; // + fstring;
@@ -200,6 +203,8 @@ public class Formula {
         else if (id.equals("cnf")) {
             Clause clause = new Clause();
             clause = clause.parse(lex);
+            if (clause.type.equals("conjecture"))
+                cs.hasConjecture = true;
             //System.out.println("INFO in Formula.command2clauses(): cnf: " + clause);
             cs.addClause(clause);
             return cs; 

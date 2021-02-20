@@ -519,14 +519,18 @@ public class Prover2 {
                 state.SZSresult = cs.SZSresult;
                 if (cs.SZSexpected.indexOf("Satisfiable") > -1 || cs.SZSexpected.indexOf("CounterSatisfiable") > -1)
                     System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
-                if (Term.emptyString(state.SZSresult))
-                    state.SZSresult = "Unsatisfiable (UNS)";
-                if (state.SZSresult.equals("Unsatisfiable (UNS)") && Term.emptyString(state.conjecture))
-                    state.SZSresult = "Theorem (THM)";
+                if (cs.isFOF && cs.hasConjecture)
+                    state.SZSresult = "Theorem";
+                else
+                    state.SZSresult = "Unsatisfiable";
             }
             //printStateResults(opts,state,null);
         }
         else {
+            if (cs.isFOF && cs.hasConjecture)
+                state.SZSresult = "CounterSatisfiable";
+            else
+                state.SZSresult = "Satisfiable";
             if (Term.emptyString(state.SZSresult))
                 state.SZSresult = "GaveUp";
             //printStateResults(opts,state,null);
@@ -554,6 +558,10 @@ public class Prover2 {
                     System.out.println("# SZS output start CNFRefutation");
                     System.out.println(state.generateProof(state.res, false));
                     System.out.println("# SZS output end CNFRefutation");
+                }
+                else {
+                    for (Clause c : state.processed.clauses)
+                        System.out.println(c);
                 }
             }
             else

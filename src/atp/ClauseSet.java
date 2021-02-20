@@ -31,7 +31,8 @@ public class ClauseSet {
     public ArrayList<Clause> clauses = new ArrayList<Clause>();
     public String SZSexpected = ""; // set from a structured comment when reading a TPTP problem file
     public String SZSresult = "";
-
+    public boolean isFOF = false;
+    public boolean hasConjecture = false;
     /**
      * **************************************************************
      */
