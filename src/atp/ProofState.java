@@ -138,8 +138,8 @@ public class ProofState {
      */  
     public Clause processClause() {
 
-        System.out.println("# processClause(): unprocessed before extract: " + unprocessed);
-        System.out.println("# processClause(): processed: " + processed);
+        //System.out.println("# processClause(): unprocessed before extract: " + unprocessed);
+        //System.out.println("# processClause(): processed: " + processed);
         Clause given_clause = unprocessed.extractBest();
         if (verbose)
             System.out.println("# processClause(): given clause: " + given_clause);
@@ -162,7 +162,7 @@ public class ProofState {
             //  the given clause. We keep count of how many clauses
             //  we have removed this way.
             forward_subsumed = forward_subsumed + 1;
-            System.out.println("# processClause(): forward_subsumed");
+            //System.out.println("# processClause(): forward_subsumed");
             return null;
         }
 
@@ -177,7 +177,7 @@ public class ProofState {
             //  processed clauses are typically, if not universally, more
             //  general than the new given clause).
             int tmp = Subsumption.backwardSubsumption(given_clause, processed);
-            System.out.println("# processClause(): backward_subsumed");
+            //if (tmp != 0) System.out.println("# processClause(): backward_subsumed");
             backward_subsumed = backward_subsumed + tmp;
         }
         if (params.literal_selection != null)

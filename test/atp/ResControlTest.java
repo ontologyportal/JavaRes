@@ -84,6 +84,46 @@ public class ResControlTest {
     }
 
     /** ***************************************************************
+     * Test that forming resolvents between a clause and a clause set
+     * works.
+     */
+    @Test
+    public void testSetResolution2() {
+
+        System.out.println("---------------------");
+        System.out.println("ResControl.testSetResolution2()");
+        String givenClauseStr = "cnf(clause29,negated_conjecture,~street(U)| ~way(U)| ~lonely(U)| ~old(V)|" +
+                " ~dirty(V)| ~white(V)| ~car(V)| ~chevy(V)| ~event(W)| ~barrel(W,V)| ~down(W,U)| ~in(W,X)| " +
+                "~city(X)| ~hollywood(X)| ssSkC0).";
+        Lexer lex = new Lexer(givenClauseStr);
+        Clause givenClause = Clause.parse(lex);
+        String processedStr = "cnf(clause2,negated_conjecture,event(skc14)).\n" +
+                "cnf(clause3,negated_conjecture,street(skc13)).\n" +
+                "cnf(clause4,negated_conjecture,old(skc12)).\n" +
+                "cnf(clause23,negated_conjecture,ssSkC0| barrel(skc14,skc12)).\n" +
+                "cnf(clause24,negated_conjecture,ssSkC0| down(skc14,skc13)).\n" +
+                "cnf(clause25,negated_conjecture,ssSkC0| in(skc14,skc15)).\n" +
+                "cnf(clause26,negated_conjecture,~ssSkC0|barrel(skc10,skc9)).\n";
+        lex = new Lexer(processedStr);
+        ClauseSet processed = new ClauseSet();
+        processed.parse(lex);
+        System.out.println("processed: " + processed);
+        ClauseSet res = ResControl.computeAllResolvents(givenClause,processed);
+        //String result = res.toString();
+        String expectedStr = "\n";
+        lex = new Lexer(expectedStr);
+        ClauseSet expected = new ClauseSet();
+        expected.parse(lex);
+        System.out.println("Should see: " + expected);
+        System.out.println("Result: " + res);
+        if (res.clauses.size() == 8)
+            System.out.println("success");
+        else
+            System.out.println("fail");
+        assertEquals(7,res.clauses.size());
+    }
+
+    /** ***************************************************************
      * Test full factoring of a clause.
      */
     @Test

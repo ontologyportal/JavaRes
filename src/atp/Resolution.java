@@ -86,7 +86,7 @@ public class Resolution {
         //System.out.println("INFO in Resolution.resolution(): sigma " + sigma);
         if (sigma == null)
             return null;
-        ArrayList<Literal> lits1 = new ArrayList<Literal> ();
+        ArrayList<Literal> lits1 = new ArrayList<Literal>();
        
         //System.out.println("INFO in Resolution.resolution(): clause1 size " + clause1.literals.size());
         //System.out.println("INFO in Resolution.resolution(): literal 11 " + l1);

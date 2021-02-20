@@ -205,7 +205,7 @@ public class Literal implements Comparable {
         Literal result = new Literal();
         result.atom = atom.deepCopy();
         result.negated = negated;
-        result.inferenceLit = inferenceLit;
+        result.inferenceLit = true;
         return result;
     }
 

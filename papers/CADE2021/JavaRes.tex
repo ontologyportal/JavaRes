@@ -97,7 +97,7 @@ model for learning about how to implement a first-order ATP system?
 JavaRes is a demonstration prover patterned after
 PyRes~\cite{SP:IJCAR-2020}.  In this paper we discuss in more detail
 the architecture and data structures of this prover and the experience
-of one of us (Pease) implementing the prover, without prior expertise
+of one of us implementing the prover, without prior expertise
 in writing an FOL prover.  We provide performance metrics relative to
 PyRes and other well-known provers.  To illustrate the value of
 JavaRes for learning about theorem proving we also describe
@@ -123,8 +123,8 @@ implement.
 
 We initially began with just an attempt for one of us (Pease) to learn
 about automated Theorem Proving (ATP), motivated by decades of work in formal ontology \cite{np01,p11},
-finding that among many excellent books, including \cite{Harrison:HPL-2009}
-the first steps to understand ATP were too high.  Fortunately, the
+and finding that among many excellent books, including \cite{Harrison:HPL-2009},
+the first steps to understand ATP were too difficult.  Fortunately, the
 creator of the Eprover (Schulz), provided the explanations needed to
 understand how and where to begin, and this grew into creation of
 PyRes.  To see whether PyRes provided enough structure, we wrote
@@ -135,10 +135,10 @@ education.
 
 \section{Programming Language Considerations}
 
-Python is dynamically typed, which for flexible and fast implementing, but makes
+Python is dynamically typed, which makes for flexible and fast implementing, but also makes
 for a bit of a mismatch to Java, which is statically typed.  The lack of static
 types can also cause confusion, because the intended types are not
-documented at all points in the code since they are determined dynamically at
+documented at all points in the code, since they are determined dynamically at
 runtime.  Java may hold an advantage for education by requiring clarity in typing
 at compile time.
 
@@ -146,6 +146,9 @@ Java, like Python, also provides call-by-value for simple data types and call-by
 objects.  This is powerful, but also imposes an obligation on the programmer to
 be mindful of side-effects in methods.  It does allow for use of strategies such as
 shared term rewriting, as in the C++ implementation of Eprover.
+
+As a compiled language, Java also offers a speed advantage, which will be evident
+when we show performance results comparing two provers that use the same basic algorithms.
 
 \section{Data Structure}
 
@@ -180,10 +183,10 @@ the resulting Substitution to all remaining Literals.  The class ResControl is s
 all factors within a given Clause, and all resolvants between a given Clause and ClauseSet.  The class
 SimpleProofState keeps a set of Clauses that
 have already been processed, which is subjected to resolution and factoring, and those Clauses that
-have not yet been processed.  It's primary method, saturate(), keeps calling its processClause()
+have not yet been processed.  Its primary method, saturate(), keeps calling its processClause()
 method, picking an arbitrary unprocessed Clause for resolution and factoring, and continuing until
 a contradiction is found or there are no more unprocessed clauses to try.  The class Prover1 is
-the top level of our simple prover.  It simply calls SimpleProofState reads in a ClauseSet
+the top level of our simple prover.  It simply calls SimpleProofState reads in a ClauseSet.
 
 \section{Improvements}
 
@@ -228,8 +231,15 @@ being unaware of this issue, should it arise.  Java tests are implemented in the
 Whereas Python coders add tests at the end of each class, in Java tests  are separated into their
 own classes.
 
-\bibliography{stsbib}
+One of the lessons from implementing JavaRes is that one can never have too many tests.  A number
+of bugs, mostly from typographical errors, were not evident in the unit tests and only appeared
+once tested on some of the larger problems in the TPTP.  Even smaller TPTP problems could lead to
+false confidence, since several successful paths to a contradiction often exist and only on
+problems that are challenging will the absence of a particular component of proving, such as
+forward subsumption, be a critical issue.
 
+StarExec proved to be an essential resource for scaling up testing.
+\bibliography{stsbib}
 \end{document}
 
 %%% Local Variables:

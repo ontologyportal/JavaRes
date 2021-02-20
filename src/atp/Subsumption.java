@@ -84,10 +84,10 @@ public class Subsumption {
     public static boolean forwardSubsumption(ClauseSet cs, Clause clause) {
 
         ArrayList<Clause> candidates = cs.getSubsumingCandidates(clause);
-        System.out.println("forwardSubsumption(): check " + cs + " against\n" + clause);
+        //System.out.println("forwardSubsumption(): check " + cs + " against\n" + clause);
         for (Clause c : candidates) {
             if (subsumes(c, clause)) {
-                System.out.println("forwardSubsumption(): " + c + " subsumes\n" + clause);
+                //System.out.println("forwardSubsumption(): " + c + " subsumes\n" + clause);
                 return true;
             }
         }
@@ -102,8 +102,10 @@ public class Subsumption {
         ArrayList<Clause> subsumed_set = new ArrayList<Clause>();
         ArrayList<Clause> candidates = cs.getSubsumedCandidates(clause);
         for (Clause c : candidates) {
-            if (subsumes(clause, c))
-                subsumed_set.add(c);        
+            if (subsumes(clause, c)) {
+                //System.out.println("backwardSubsumption(): " + clause + " subsumes\n" + c);
+                subsumed_set.add(c);
+            }
         }
         int res = subsumed_set.size();
         for (Clause c : subsumed_set) {
