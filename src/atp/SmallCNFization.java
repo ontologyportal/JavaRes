@@ -64,6 +64,7 @@ import java.util.*;
 public class SmallCNFization extends Clausifier {
 
     private static int skolemCount = 0;
+    public static boolean debug = false;
 
     /** ***************************************************************
      * Return a new skolem symbol. This is a simple version, not
@@ -932,6 +933,7 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "fof_simplification";
             tmp.support.add(wf.name);
             wf = tmp;
+            if (debug) System.out.println("simplification " + wf);
         }
         newf = formulaNNF(f,true);
         //System.out.println("wFormulaCNF(): after  nnf: " + newf);
@@ -941,6 +943,7 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "fof_nnf";
             tmp.support.add(wf.name);
             wf = tmp;
+            if (debug) System.out.println("nnf " + wf);
         }
         newf = f.promoteChildren();
         if (newf != null)
@@ -953,6 +956,7 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "shift_quantors";
             tmp.support.add(wf.name);
             wf = tmp;
+            if (debug) System.out.println("shift_quantors " + wf);
         }
         // f = formulaVarRename(f);
         newf = Clausifier.standardizeVariables(f);
@@ -963,6 +967,7 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "variable_rename";
             tmp.support.add(wf.name);
             wf = tmp;
+            if (debug) System.out.println("variable_rename " + wf);
         }
         newf = formulaSkolemize(f);
         //System.out.println("wFormulaCNF(): after  skolemize: " + newf);
@@ -973,6 +978,7 @@ public class SmallCNFization extends Clausifier {
             tmp.support.add(wf.name);
             tmp.status = "status(esa)";
             wf = tmp;
+            if (debug) System.out.println("skolemize " + wf);
         }
         newf = formulaShiftQuantorsOut(f);
         //System.out.println("wFormulaCNF(): after  shift quantors: " + newf);
@@ -982,6 +988,7 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "shift_quantors";
             tmp.support.add(wf.name);
             wf = tmp;
+            if (debug) System.out.println("shift_quantors " + wf);
         }
         newf = f.promoteChildren();
         if (newf != null)
@@ -994,11 +1001,13 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "distribute";
             tmp.support.add(wf.name);
             wf = tmp;
+            if (debug) System.out.println("distribute " + wf);
         }
         //System.out.println("wFormulaCNF(): before promote children: " + wf.form);
         BareFormula promoted = wf.form.promoteChildren();
         if (promoted != null)
             wf.form = promoted;
+        if (debug) System.out.println("promoteChildren " + wf);
         return wf;
     }
     

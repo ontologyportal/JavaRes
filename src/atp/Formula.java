@@ -48,6 +48,8 @@ public class Formula {
 
     public static boolean smallCNF = true;  // use the SmallCNF algorithm or R&N's Clausifier if false
 
+    public static boolean debug = false;
+
     /** ***************************************************************
      */
     public Formula(BareFormula f, String t) {
@@ -134,6 +136,22 @@ public class Formula {
     }
 
     /** ***************************************************************
+     *     If wform is a conjecture, return its negation. Otherwise
+     *     return it unchanged.
+     */
+    public static Formula negateConjecture(Formula wform) {
+
+        if (wform.type.equals("conjecture")) {
+            BareFormula negf = new BareFormula("~", wform.form);
+            Formula negw = new Formula(negf, "negated_conjecture");
+            //negw.setDerivation(flatDerivation("assume_negation",[wform],"status(cth)"));
+            return negw;
+        }
+        else
+            return wform;
+    }
+
+    /** ***************************************************************
      * timeout if the total time to process exceeds a certain
      * amount.  Typically, this is called with a timeout equal to the timeout
      * for finding a refutation, so it should be more than adequate barring
@@ -180,10 +198,22 @@ public class Formula {
             	return null;
         }
         else if (id.equals("fof")) {
+            Formula f = null;
             cs.isFOF = true;
-            Formula f = Formula.parse(lex);
-            if (f.type.equals("conjecture"))
+            try {
+                f = Formula.parse(lex);
+            }
+            catch (Exception e) {
+                cs.SZSresult = "Input Error";
+                return cs;
+            }
+            if (f.type.equals("conjecture")) {
                 cs.hasConjecture = true;
+                f = negateConjecture(f);
+            }
+            if (f.type.equals("negated_conjecture"))
+                cs.hasConjecture = true;
+            if (debug) System.out.println("# Formula.command2clauses(): hasConjecture: " + cs.hasConjecture);
             String fstring = f.toString();
             if (fstring.length() > maxFormulaCharLen) {
                 cs.SZSresult = "InputError (INE) input error: clause too large: "; // + fstring;
@@ -203,7 +233,7 @@ public class Formula {
         else if (id.equals("cnf")) {
             Clause clause = new Clause();
             clause = clause.parse(lex);
-            if (clause.type.equals("conjecture"))
+            if (clause.type.equals("negated_conjecture"))
                 cs.hasConjecture = true;
             //System.out.println("INFO in Formula.command2clauses(): cnf: " + clause);
             cs.addClause(clause);
@@ -248,11 +278,14 @@ public class Formula {
                         cs.SZSexpected = lex.SZS;
                 }
                 ClauseSet csnew = command2clauses(id,lex,timeout);
+                if (debug) System.out.println("# Formula.lexer2clauses(): hasConjecture: " + csnew.hasConjecture);
                 if (csnew.SZSresult.toLowerCase().contains("error")) {
                     //System.out.println("# Error in Formula.lexer2clauses(): " + cs.SZSresult);
                     cs.SZSresult = csnew.SZSresult;
                     return cs;
                 }
+                cs.hasConjecture = cs.hasConjecture || csnew.hasConjecture;
+                cs.isFOF = cs.isFOF || csnew.isFOF;
                 cs.addAll(csnew);
             }
             catch (Exception p) {
@@ -325,6 +358,7 @@ public class Formula {
                 Lexer lex = new Lexer(fin);
                 lex.filename = filename;
                 ClauseSet cs = lexer2clauses(lex);
+                if (debug) System.out.println("# Formula.file2clauses(): hasConjecture: " + cs.hasConjecture);
                 //System.out.println("# Formula.file2clauses(): SZSresult " + cs.SZSresult);
                 //System.out.println("# Formula.file2clauses(): SZSexpected " + cs.SZSexpected);
                 return cs;

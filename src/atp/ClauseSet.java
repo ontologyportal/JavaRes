@@ -284,6 +284,10 @@ public class ClauseSet {
        ClauseSet newcs = new ClauseSet();
        for (int i = 0; i < clauses.size(); i++)
            newcs.addClause(clauses.get(i).deepCopy());
+       newcs.hasConjecture = this.hasConjecture;
+       newcs.isFOF = this.isFOF;
+       newcs.SZSresult = this.SZSresult;
+       newcs.SZSexpected = this.SZSexpected;
       return newcs;
    }
    

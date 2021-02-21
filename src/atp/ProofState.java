@@ -77,6 +77,7 @@ public class ProofState {
     public Clause conjecture = null;
     public boolean indexed = true;  // use an IndexedClauseSet
     public SearchParams params = null;
+    public static boolean debug = false;
 
     /** ***************************************************************
      */

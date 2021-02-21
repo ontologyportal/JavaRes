@@ -93,6 +93,7 @@ public class Prover2 {
     public static String errors = "";
     public static int defaultTimeout = 30;
     public static String resultDir = "";  // StarExec results file root directory
+    public static boolean debug = false;
 
     /** ***************************************************************
      * canonicalize options into a name/value list.
@@ -664,12 +665,13 @@ public class Prover2 {
         int timeout = getTimeout(opts);
         //System.out.println("# Prover2.processTestFile(): read file");
         ClauseSet cs = Formula.file2clauses(filename,timeout);
+        if (debug) System.out.println("processTestFile(): hasConjecture: " + cs.hasConjecture);
         //System.out.println("# Prover2.processTestFile(): read file completed");
         //if (cs != null) {
         //    System.out.println("# Prover2.processTestFile(): SZSresult: " + cs.SZSresult);
         //    System.out.println("# Prover2.processTestFile(): SZSexpected: " + cs.SZSexpected);
         //}
-        if (cs.SZSresult != null && cs.SZSresult.toLowerCase().contains("error")) {
+        if (cs.SZSresult.toLowerCase().contains("error")) {
             //System.out.println("# Prover2.processTestFile(): read file error");
             ProofState state = new ProofState(cs,evals.get(0));
             state.filename = filename;

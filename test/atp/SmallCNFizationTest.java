@@ -155,7 +155,17 @@ public class SmallCNFizationTest {
                 "        ![B]:((((v1_relat_1(A)&v1_funct_1(A))&v1_relat_1(B))&v1_funct_1(B))=>" +
                 "                (v1_relat_1(k5_relat_1(A,B))&v1_funct_1(k5_relat_1(A,B))))))).\n" +
                 "\n" +
-                "fof(event_9,axiom,(~accept_team(muslimcountrybhumanitarianorganization,countrycmedicalorganization,towna,n4))).";
+                "fof(event_9,axiom,(~accept_team(muslimcountrybhumanitarianorganization,countrycmedicalorganization,towna,n4))).\n" +
+                "fof(prove_this,conjecture,\n" +
+                "    (![A,B] :\n" +
+                "        (![Z] :\n" +
+                "            (q(Z)\n" +
+                "           => p(Z) )\n" +
+                "       => ?[X] :\n" +
+                "            ( ( p(X)\n" +
+                "             => p(A) )\n" +
+                "            & ( q(X)\n" +
+                "             => p(B) ) ) ) )).";
     }
 
     /** ***************************************************************
