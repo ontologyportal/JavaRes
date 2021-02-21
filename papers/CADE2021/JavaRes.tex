@@ -300,6 +300,15 @@ all ~20,000 available tests for 300 seconds each on a laptop, or to load it so h
 theorem proving that no other work can be done.  Even so, running an experiment of this sort can
 take 24 hours of clock time, unless there is no other load on the system.
 
+EAs with our earlier experiments with PyRes, testing was on StarExec Miami, a spin-off of the
+original StarExec project \cite{SST:IJCAR-2014}.
+The machines were equipped with 256 GB of RAM and Intel Xeon CPUs running at 3.20 GHz.
+The per-problem time-limit was set to 300 s. TPTP 7.2.0 was used to allow comparison with our
+previous experiments on PyRes, E, leanCoP and Prover9.
+
+We also looked at computation time since many successful problems finish in significantly less than the allotted
+300s limit.  Failed problems were assessed 300s.
+
 \begin{table}[tbh]
   \begin{tabular}{lrrrrrr}
     \hline
