@@ -133,7 +133,7 @@ and see whether both provers could provide a suitable platform for ATP
 education.
 
 
-\section{Programming Language Considerations}
+\section{Programming Language and Software Engineering Considerations}
 
 Python is dynamically typed, which makes for flexible and fast implementing, but also makes
 for a bit of a mismatch to Java, which is statically typed.  The lack of static
@@ -149,6 +149,28 @@ shared term rewriting, as in the C++ implementation of Eprover.
 
 As a compiled language, Java also offers a speed advantage, which will be evident
 when we show performance results comparing two provers that use the same basic algorithms.
+
+One lesson learned is that with code as complex as theorem proving code, unless there is
+full understanding of the algorithm and expected results, catching problems can be very
+challenging.  Minor coding issues can be magnified since it is hard to know where to
+look in system output for problems, and system output can be very large in a combinatorically
+explosive search space.  Several such issues occurred in the construction of JavaRes.  In one
+case Literals were not initialized as to whether literal selection had considered them
+suitable for inference.  Copies were created of literals that included their literal
+selection flag, rather than reinitializing them by default as true.  This problem didn't cause
+any errors, just failure to prove certain theorems (but not others) and therefore wasn't a
+problem in simple examples and unit tests.  Another problem resulted from a typo in
+subsumption where the variable 'subsumed' was mistyped as 'subsumer'.  Even meaningful
+variable names can be a problem if they are very similar to others.  A less ambiguous case
+of a variable naming issue that was present in a test case was having variables named l1, ll and ll1
+which could be easily confused in most fonts.
+
+The process of creating PyRes and JavaRes was interrupted for several years by the demands
+of other work and the challenge of coordinating schedules between two busy people.  We started
+work on the project at CADE in 2011 and mostly kept the Java and Python versions in sync, working
+one day a week together.  Then there was a cap of 8 years and a final push to bring JavaRes
+up to date with PyRes, consisting of two months of half-time effort for one of us, plus occasional
+coaching and some intensive debugging at the end.
 
 \section{Data Structure}
 
@@ -197,7 +219,7 @@ consisting of relationships among Clauses that detail how they were derived from
 given Clauses.
 
 We also add above Clauses are the class BareFormula, which can have logical operators (such as quantification, implication, equivalence,
-and conjunction, as well as less common operators such as '<~>').  We have formula wrappers, in the class Formula,
+and conjunction, as well as less common operators such as `$<\thicksim>$').  We have formula wrappers, in the class Formula,
 that include the data seen in TPTP problems, such as the type of the statement ('cnf', 'fof', 'thf' etc),
 the formula name and the type of the formula ('conjecture', 'plain' etc) as well as other data
 that is determined and used during ATP. In order to convert Formulas
@@ -212,8 +234,41 @@ by GraphViz.  In addition, it employs an algorithm for answer extraction that at
 from a conjecture with an existentially quantified variable to a supporting clause that contains a binding
 for that variable.
 
-\subsection{Indexing, Heuristics, and SInE}
+\subsection{Clause Selection, Indexing, Heuristics, SInE and other Features}
 
+JavaRes includes all the optimization strategies in PyRes.  For clause selection it implements two methods,
+which can be combined.  The most basic is a first-in-first-out strategy that will eventually try every
+clause.  However, this is rarely optimal.  A symbol-counting strategy picks the clause with the fewest
+symbols.  This is often a good strategy but in many cases it will fail because larger clauses may never
+be considered.  The most successful simple strategy turns out to be a combination of the two, where the
+smallest symbol count is tried five times and then FIFO is tried once.  This results in a strong bias to
+smaller clauses while ensuring that all clauses will eventually be tried.  JavaRes also supports a more
+conservative stregy of two tries with the smallest symbol for every one try of the FIFO stack.  Other
+combinations are possible with a small change to the code.
+
+JavaRes supports indexing for subsumption and resolution.  Subsumption removes clauses from the set of clauses
+to be processed (called "forward subsumption") and from the set already processed ("backwards subsumption")
+thereby decreasing the problem search space.  More general clauses subsume more specific ones.  Rather than
+attempt to unify all potentially subsumes clauses with a given subsumer, indexing records with sign and predicate
+symbol so that potential clauses can be accepted or rejected more rapidly.  A similar index supports resolution
+just allowingg literals of opposible sign to resolve, rathen than the same sign to potentional subsume.
+
+JavaRes also implements PyRes' approach to literal selection.  A naive approach to resolution has to compare
+every literal in a resolver to every literal in the proposed resolvant to see if they unify but have opposite
+signs.  Optimizations other than this exhaustive approach can have an impact.  We implement five strategies:
+choose simply the first literal, the largest literal, the smallest number of constants and variables,
+the smallest number of variables and finally, a combined strategy that picks an equation of two variables,
+if present, or the smallest number of variables or if those are equal then the largest number of symbols.
+
+For large theories, JavaRes has implemented the SInE algorithm \cite{HV:CADE-2011}
+ that has proven to be the dominant approach in the TPTP community.
+
+JavaRes can also parse the first order portion of SUO-KIF syntax used with the SUMO knowledge base that is
+arguably a much more friendly syntax for theory authoring, especially for complex or nested axioms, than TPTP.
+The JavaRes data structures used for ATP with the surface syntax are identical with TPTP.
+
+An additional utility that JavaRes supports is creation of proof graphs intended to be visualized
+with the GraphViz renderer.
 
 \section{Testing and Examples}
 
@@ -238,7 +293,48 @@ false confidence, since several successful paths to a contradiction often exist 
 problems that are challenging will the absence of a particular component of proving, such as
 forward subsumption, be a critical issue.
 
-StarExec proved to be an essential resource for scaling up testing.
+StarExec proved to be an essential resource for scaling up testing as it is not practical to run
+all ~20,000 available tests for 300 seconds each on a laptop, or to load it so heavily with
+theorem proving that no other work can be done.  Even so, running an experiment of this sort can
+take 24 hours of clock time, unless there is no other load on the system.
+
+\begin{table}[tbh]
+  \begin{tabular}{lrrrrrr}
+    \hline
+    \textbf{Strategy} & \multicolumn{1}{p{4em}}{\hfill{}\textbf{UEQ}}
+    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{CNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{CEQ}}
+    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{FNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{FEQ}}
+    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{All}}\\
+    {\tiny Class size}                            & {\tiny (1193)} & {\tiny (2383)} & {\tiny (4442)} & {\tiny (1771)} & {\tiny (6305)} & {\tiny (16094)}\\
+    \hline
+    PyRes Best (all)                                    &   116 &  1048 &   587 &   765 &   860 &  3376 \\
+    JavaRes Best (proofs)                                 &   113 &   946 &   499 &   632 &   725 &  2915 \\
+    \hline
+    E 2.4 auto (all)                              &   813 &  1939 &  2648 &  1484 &  4054 & 10938 \\
+    E 2.4 auto (proofs)                           &   797 &  1621 &  2415 &  1171 &  3849 &  9853 \\
+    E 2.4 auto (sat)                              &    16 &   318 &   233 &   313 &   205 &  1085 \\
+    \hline
+  \end{tabular}
+  \caption{PyRes performance (E for comparison)}
+  \label{tab:res}
+\end{table}
+
+\section{Conclusion and Future Work}
+
+The experience of JavaRes has shown that it's possible to use PyRes as the basis for a new theorem
+prover implementation in about three person months of work, albeit with some coaching, and for
+someone already familiar with TPTP, as a user of TPTP and with FOL generally.  The
+experience has shown us how to improve the clarity of the code, and expand code comments and unit
+tests.
+
+With a clear implementation in Java, many possibilities are open for extending the prover to support
+special cases that apply to SUMO development.  This includes creating proof of concept implementations
+that may then transfer to a higher-performance implementation, such as E.  The first possibility is to
+include a pluggable interface for external functions.  These could be as simple as arithmetic functions
+or as complex as calls to databases, such as in \cite{DBLP:conf/ki/SudaSWLM09}.  Also of interest would be an implementation
+of a "Why-Not" function \cite{10.5555/1650083.1650093} that could guide the commensense theory developer in filling gaps
+in proposed commonsense inference paths.
+
 \bibliography{stsbib}
 \end{document}
 

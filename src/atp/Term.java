@@ -171,29 +171,6 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
     }
 
     /** ***************************************************************
-     */
-    public Term parseKIFTermList(KIFLexer lex) {
-
-        try {
-            //System.out.println("in Term.parseKIFTermList(): " + lex.literal);
-            Term newT = new Term();
-            t = lex.literal;
-            while (!lex.look().equals(")")) {
-                newT = new Term();
-                subterms.add(newT.parseKIF(lex));
-                //System.out.println("in Term.parseKIFTermList(): next token: " + lex.literal);
-            }
-            return this;
-        }
-        catch (Exception ex) {
-            System.out.println("Error in Term.parseKIFTermList(): " + ex.getMessage());
-            System.out.println("Error in Term.parseKIFTermList(): token:" + lex.literal);
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
-    /** ***************************************************************
      * This routine expects the tokenizer to be set before the starting token.
      * A term is either a variable or a function, where a function can have
      * 0 arguments, and therefore be just a constant.
@@ -262,50 +239,20 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
     /** ***************************************************************
      * This routine expects the tokenizer to be set before the starting token.
      * A term is either a variable or a function, where a function can have
-     * 0 arguments, and therefore be just a constant.
+     * 0 arguments, and therefore be just a constant.  But in this first
+     * pass, we treat functional terms as Literals, and disambiguate them
+     * on a second pass through the resulting tree of pseudo-Literals and atomic Terms.
+     * parseKIF() will not result in any subterms
      */
     public Term parseKIF(KIFLexer lex) {
 
         try {
-            //System.out.println("INFO in Term.parseKIF(): before next token: " + lex.literal);
             lex.next();
-            //if (!lex.type.equals(Lexer.IdentLower) && !lex.type.equals(Lexer.IdentUpper))
-            //lex.next();
-            //System.out.println("INFO in Term.parseKIF(): after next token: " + lex.literal);
-            if (!lex.type.equals(KIFLexer.IdentLower) && !lex.type.equals(KIFLexer.IdentUpper) &&
-                    !lex.type.equals(KIFLexer.OpenPar) && !lex.type.equals(KIFLexer.RegularVar) &&
-                    !lex.type.equals(KIFLexer.DQString) && !lex.type.equals(KIFLexer.Number) &&
-                    !lex.type.equals(KIFLexer.RowVar))
-                throw new ParseException("Error in Term.parseKIF(): Expected a word. Found " +
-                        lex.literal + " type: " + lex.type, lex.input.getLineNumber());
-            if (lex.type.equals(KIFLexer.IdentUpper) || lex.type.equals(KIFLexer.IdentLower)  ||
-                    lex.type.equals(KIFLexer.RowVar) || lex.type.equals(KIFLexer.RegularVar)) {
-                t = lex.literal;
+            if (lex.type == KIFLexer.IdentUpper || lex.type == KIFLexer.IdentLower ||
+                    lex.type == KIFLexer.RegularVar || lex.type == KIFLexer.RowVar ||
+                    lex.type == KIFLexer.DQString || lex.type == KIFLexer.Number)
                 return this;
-            }
-            else {
-                if (lex.type.equals(KIFLexer.OpenPar)) {
-                    //System.out.println("INFO in Term.parseKIF(): open paren: " + lex.literal);
-                    lex.next();
-                    parseKIFTermList(lex);
-                    if (!lex.literal.equals(")"))
-                        throw new ParseException("Error in Term.parseKIF(): Close paren expected. Found " +
-                                lex.literal + " " + lex.type,lex.input.getLineNumber());
-                    //System.out.println("INFO in Term.parse(): got close paren: " + lex.literal);
-                    return this;
-                }
-                else {
-                    // if (lex.literal.equals("$false"))
-                    if ( lex.type.equals(Lexer.DQString) || lex.type.equals(Lexer.Number))
-                        t = lex.literal;
-                    else
-                    if (lex.type == Lexer.EOFToken)
-                        return this;
-                    else
-                        throw new ParseException("Error in Term.parseKIF(): Identifier " + lex.literal + " with type " + lex.type +
-                                " doesn't start with upper or lower case letter.",lex.input.getLineNumber());
-                }
-            }
+            lex.look();
         }
         catch (ParseException ex) {
             if (lex.literal == lex.EOFToken)

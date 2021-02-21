@@ -223,10 +223,6 @@ public class ProofState {
             //System.out.println("# ProofState.saturate(): processed clause: " + res);
             if (res != null) {
                 time = System.currentTimeMillis() - t1;
-                if (conjecture == null)
-                    SZSresult = "Unsatisfiable";
-                else
-                    SZSresult = "Theorem";
                 return res;
             }
             if (seconds != 0 && ((System.currentTimeMillis() - t1) / 1000.0) > seconds) {

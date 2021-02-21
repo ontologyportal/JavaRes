@@ -253,7 +253,7 @@ public class SINE {
     /** *************************************************************
      * Performs axiom selection for given query.
      * 
-     * @param form, according to which axioms will be selected.
+     * @param syms, symbols from the query, according to which axioms will be selected.
      * @return Selected formulas.
      */
     private HashSet<Clause> performSelection(HashSet<String> syms) {
@@ -271,7 +271,12 @@ public class SINE {
      * @return clauses determined to be relevant to the query
      */
     public ClauseSet filter(HashSet<String> syms) {
-        
+
+        if (formulas.size() < 3000) {
+            ClauseSet cs = new ClauseSet();
+            cs.addAll(formulas);
+            return cs;
+        }
         //System.out.println("# INFO in filter(): ");
         long t1 = System.currentTimeMillis();
         HashSet<Clause> selectedFormulas = performSelection(syms);        

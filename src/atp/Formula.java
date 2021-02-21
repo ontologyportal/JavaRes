@@ -237,7 +237,7 @@ public class Formula {
                 //if (lex.input.getLineNumber() % 1000 == 0)
                 //    System.out.print(".");
                 if (((System.currentTimeMillis() - t1) / 1000.0) > timeout) {
-                    cs.SZSresult = "SZS status ResourceOut (RSO) reading timeout";
+                    cs.SZSresult = "ResourceOut (RSO) reading timeout";
                     //System.out.println("# Error in Formula.lexer2clauses(): timeout");
                     return cs;
                 }
@@ -257,7 +257,7 @@ public class Formula {
             }
             catch (Exception p) {
                 if (p != null && p.getMessage() != null && p.getMessage().contains("bad id")) {
-                    cs.SZSresult = "SZS status InputError (INE): bad id";
+                    cs.SZSresult = "InputError (INE): bad id";
                     return cs;
                 }
                 System.out.println();

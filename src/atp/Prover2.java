@@ -513,27 +513,25 @@ public class Prover2 {
                 state.SZSresult = "Error (ERR) " + e.getMessage();
             return state;
         }
+        System.out.println("computerStateResults(): state: " + state.SZSresult);
+        System.out.println("computerStateResults(): cs:" + cs.SZSresult);
         if (state.res != null) {
             state.SZSexpected = cs.SZSexpected;
             if (Term.emptyString(state.SZSresult)) {
                 state.SZSresult = cs.SZSresult;
-                if (cs.SZSexpected.indexOf("Satisfiable") > -1 || cs.SZSexpected.indexOf("CounterSatisfiable") > -1)
-                    System.out.println("########### DANGER Proof found for " + cs.SZSexpected + " problem ###############");
                 if (cs.isFOF && cs.hasConjecture)
                     state.SZSresult = "Theorem";
                 else
                     state.SZSresult = "Unsatisfiable";
             }
-            //printStateResults(opts,state,null);
         }
         else {
-            if (cs.isFOF && cs.hasConjecture)
+            if (cs.SZSresult.startsWith("Timeout") || state.SZSresult.startsWith("Timeout"))
+                state.SZSresult = "Timeout";
+            else if (cs.isFOF && cs.hasConjecture)
                 state.SZSresult = "CounterSatisfiable";
             else
                 state.SZSresult = "Satisfiable";
-            if (Term.emptyString(state.SZSresult))
-                state.SZSresult = "GaveUp";
-            //printStateResults(opts,state,null);
         }
         return state;
     }
@@ -560,8 +558,9 @@ public class Prover2 {
                     System.out.println("# SZS output end CNFRefutation");
                 }
                 else {
-                    for (Clause c : state.processed.clauses)
-                        System.out.println(c);
+                    if (state.SZSresult.equals("Satisfiable"))
+                        for (Clause c : state.processed.clauses)
+                            System.out.println(c);
                 }
             }
             else
@@ -682,7 +681,7 @@ public class Prover2 {
         if (opts.containsKey("eqax") && cs.containsEquality())
             cs = cs.addEqAxioms();
         if (opts.containsKey("sine")) {
-        	//System.out.println("# INFO in Prover2.processTestFile(): using sine");
+        	System.out.println("# INFO in Prover2.processTestFile(): using sine");
             SINE sine = new SINE(cs);
             HashSet<String> syms = cs.getConjectureSymbols();
             if (syms != null && syms.size() > 0) {
