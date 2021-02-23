@@ -1,0 +1,62 @@
+digraph "proverArch" { rankdir=BT
+BacktrackSubstitution [shape=record 
+  label="{BacktrackSubstitution | backtrack() \n backtractToState() \n addBinding() \n match()}"];
+BareFormula [shape=box];
+Clause [shape=box];
+ClauseEvaluationFunction [shape=record 
+  label="{ClauseEvaluationFunction | hEval()}"];
+Clausifier [shape=record label="{Clausifier | clausify()}"];
+ClauseSet [shape=box];
+EvalStructure [shape=record label="{EvalStructure | evaluate() \n nextEval()}"];
+Formula [shape=box];
+FIFOEvaluation [shape=box];
+HeuristicClauseSet [shape=record 
+  label="{HeuristicClauseSet | addClause() \n extractBest() \n extractBestByEval()}"];
+Literal [shape=box];
+LitSelection [shape=box];
+ProofState [shape=record label="{ProofState | processClause() \n saturate() }"];
+Prover1 [shape=box label="Prover1"];
+Prover2 [shape=box];
+ResControl [shape=record 
+  label="{ResControl | computeAllFactors() \n computeAllResolvants()}"];
+Resolution [shape=record label="{Resolution | resolution() \n factor()}"];
+SimpleProofState [shape=box];
+SmallCNFization [shape=record label="{SmallCNFization | wFormulaClausify()}"];
+Substitutions [shape=record
+  label="{Substitutions | apply() \n applyList() \n composeBinding() \n freshVarSubst()}"];
+Subsumption [shape=record
+    label="{Subsumption | subsumeLitLists() \n subsumes() \n backwardSubsumption() \n forwardSubsumption()}"];
+SymbolCountEvaluation [shape=box];
+Term [shape=box];
+Unification [shape=record 
+  label="{Unification | mgu()}"];
+
+BareFormula -> Formula [arrowhead=odot];
+Literal -> BareFormula [arrowhead=odot];
+Term -> Literal [arrowhead=odot];
+Literal -> Clause [arrowhead=odot];
+Clause -> ClauseSet [arrowhead=odot];
+ClauseSet -> SimpleProofState [arrowhead=odot];
+ClauseSet -> ProofState [arrowhead=odot];
+HeuristicClauseSet -> ProofState [arrowhead=odot];
+ClauseEvaluationFunction -> EvalStructure [arrowhead=odot];
+EvalStructure -> HeuristicClauseSet [arrowhead=odot];
+
+BacktrackSubstitution -> Substitutions [arrowhead=empty];
+FIFOEvaluation -> ClauseEvaluationFunction [arrowhead=empty];
+SymbolCountEvaluation -> ClauseEvaluationFunction [arrowhead=empty];
+HeuristicClauseSet -> ClauseSet [arrowhead=empty];
+ProofState -> SimpleProofState [arrowhead=empty];
+
+{ResControl -> Resolution -> Unification -> Substitutions;}
+
+Clausifier -> BareFormula;
+SmallCNFization -> BareFormula;
+Clause -> LitSelection;
+LitSelection -> Literal;
+Literal -> Substitutions;
+ProofState -> Subsumption;
+ProofState -> ResControl;
+Prover1 -> SimpleProofState;
+Prover2 -> ProofState;
+}
