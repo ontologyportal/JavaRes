@@ -90,15 +90,13 @@
   Did PyRes~\cite{SP:IJCAR-2020} achieve its goal of being a
   sufficient model for learning about how to implement a first-order
   ATP system?  JavaRes is a demonstration prover patterned after
-  PyRes~\cite{SP:IJCAR-2020}.  In this paper we discuss in more detail
+  PyRes.  In this paper we discuss
   the architecture and data structures of this prover and the
   experience of one of us implementing the prover, without prior
   expertise in writing an FOL prover.  We provide performance metrics
   relative to PyRes.  To illustrate the
-  value of JavaRes for learning about theorem proving we also describe
-  implementation of an alternate simple clausification algorithm,
-  graphical proof presentation, implementation of the SInE axiom
-  selection algorithm, and use with the SUMO theory and syntax.
+  value of JavaRes for learning about theorem proving we also mention
+  implementation of several features beyond the original PyRes implementation.
 \end{abstract}
 
 \section{Introduction}
@@ -142,7 +140,8 @@ implement several extensions.  We believe that the lessons learned
 in the process, now incorporated into the two provers,
 provide a suitable platform for ATP education.
 
-JavaRes is open source and available at \url{https://github.com/ontologyportal/JavaRes}.
+JavaRes is open source and all code and data is available at
+\url{https://github.com/ontologyportal/JavaRes}.
 
 
 
@@ -170,7 +169,7 @@ use the same basic algorithms.
 One lesson learned is that with code as complex as theorem proving
 code, unless there is full understanding of the algorithm and expected
 results, catching problems can be very challenging.  Minor coding
-issues can be magnified since it is hard to know where to look in
+errors can be magnified since it is hard to know where to look in
 system output for problems, and system output can be very large in a
 combinatorially explosive search space.  Several such issues occurred
 in the construction of JavaRes.  In one case literals were not
@@ -182,7 +181,7 @@ to prove certain theorems (but not others) and therefore wasn't a
 problem in simple examples and unit tests.  Another problem resulted
 from a typo in subsumption where the variable 'subsumed' was mistyped
 as 'subsumer'.  Even meaningful variable names can be a problem if
-they are very similar to others.  A less ambiguous case of a variable
+they are very similar to others.  A more serious case of a variable
 naming issue that was present in a test case was having variables
 named l1, ll and ll1 which could be easily confused in most fonts.
 
@@ -194,7 +193,8 @@ working one day a week together for a period of a year.  Then there was a gap of
 a final push to bring JavaRes up to date with PyRes, consisting of two
 months of half-time effort for one of us, plus occasional coaching and
 some intensive debugging at the end.  This experience indicates that
-implementing a basic prover patterned after PyRes is feasible as a
+implementing a basic prover patterned after PyRes should be feasible,
+at least in terms of the time commitment involved, as a
 graduate semester project after an introductory course in logic.
 
 The code base of JavaRes is significantly more lines of code than
@@ -205,23 +205,23 @@ features and alternative algorithms.  JavaRes is 19,334 total lines of code vs 8
 for PyRes (including comments, docstrings, and unit tests), and 7508 lines of effective
 code for Java vs only 3681 lines of effective code for PyRes.  It is likely
 that after this experience, refactoring and reimplementation could reduce
-this discrepancy. However, verbosity may be an advantage for educational purposes.
+this discrepancy. However, code verbosity may be an advantage for educational purposes.
 
 \section{Data Structure}
 
 Figure \ref{fig:SysArch} shows the basic architecture of the system. A
-subclass relationship is denoted by a an unfilled arrowhead.  A relationship
+subclass relationship is denoted by a hollow arrowhead.  A relationship
 of one class (or instances of such a class) calling another is denoted
-by a filled arrow.  One class that includes another in a member
+by a solid arrow.  One class that includes another in a member
 variable is denoted by a hollow circle.  Each class is shown with its
-name and its major methods.
+name and at least some of its major methods.
 
 JavaRes mirrors the data structures of PyRes.  At the bottom of the
 hierarchy, \emph{terms} are built from variables (denoted in TPTP
 syntax as an identifier with an initial capital letter, as in $X$ or
 $Y$), constants (denoted by an initial lowercase as in $a$ or $b$) and
 function symbols, which allow nesting (as in $p(X)$ and $g(f(a))$),
-\emph{Atoms} are build from predicate symbols and term arguments, like
+\emph{Atoms} are built from predicate symbols and term arguments, like
 $partOf(myWheel,myCar)$.  Note that once we handle equality, $=$ is
 allowed as an infix predicate symbol. While predicate symbols and
 function symbols, as well as terms and atoms, share the same internal
@@ -237,7 +237,7 @@ from both TPTP and SUO-KIF, using the \emph{Lexer} class, creating a new
 copy, testing for equality and sort order. Of the classes mentioned so
 far, only terms, literals, and clauses are actually used in proof
 seach.  \emph{Formulas} are parsed and converted to CNF.  JavaRes has
-two clausifiers. \emph{Clausifier} implements the classical algorithm
+two clausifiers: \emph{Clausifier} implements the classical algorithm
 from \cite{RN:AI-95} and \emph{SmallCNF}, which includes miniscoping
 and simplification as described by Nonnengart and
 Weidenbach~\cite{NW:SmallCNF-2001}.
@@ -248,14 +248,14 @@ class \emph{ClauseSet}.
 \begin{figure}
   \centering
   \includegraphics[width=6in]{architecture.pdf}
-  \caption{Basic System Architecture}
+  \caption{Basic System Class Diagram}
   \label{fig:SysArch}
 \end{figure}
 
 \section{Class Structure}
 
 Several classes implement the machinery of proving.  The most
-fundamental is that of \emph{Substitution}, which replaces variable with
+fundamental is that of \emph{Substitution}, which replaces variables with
 \emph{Term}s (including other variables).  The class \emph{Unification} attempts to
 unify the structure of two lists of \emph{Term}s and results in a set of
 \emph{Substitution}s.  \emph{Substitution}s are also created when we rename
@@ -266,43 +266,43 @@ of \emph{Clause}s, attempting to find unifiable literals with opposite signs.
 \emph{Resolution} also handles factoring, in which a \emph{Clause} is simplified
 when one of its \emph{Literal}s unifies with another, thereby enabling
 removal of the more specific \emph{Literal}, applying the resulting
-Substitution to all remaining \emph{Literal}s.  The class ResControl is
-simple, finding all factors within a given Clause, and all resolvants
-between a given Clause and ClauseSet.  The class SimpleProofState
-keeps a set of Clauses that have already been processed, which is
-subjected to resolution and factoring, and those Clauses that have not
-yet been processed.  Its primary method, saturate(), keeps calling its
-processClause() method, picking an arbitrary unprocessed Clause for
+\emph{Substitution} to all remaining \emph{Literal}s.  The class \emph{ResControl} is
+simple, finding all factors within a given \emph{Clause}, and all resolvants
+between a given \emph{Clause} and \emph{ClauseSet}.  The class \emph{SimpleProofState}
+keeps a set of \emph{Clause}s that have already been processed, which is
+subjected to resolution and factoring, and those \emph{Clause}s that have not
+yet been processed.  Its primary method, \texttt{saturate()}, keeps calling its
+\texttt{processClause()} method, picking an arbitrary unprocessed \emph{Clause} for
 resolution and factoring, and continuing until a contradiction is
 found or there are no more unprocessed clauses to try.  The class
-Prover1 is the top level of our simple prover.  It simply calls
-SimpleProofState reads in a ClauseSet.
+\emph{Prover1} is the top level of our simple prover.  It simply calls
+\emph{SimpleProofState} reads in a \emph{ClauseSet}.
 
 \section{Improvements}
 
-We improve on the SimpleProofState class with ProofState. It performs
+We improve on the SimpleProofState class with \emph{ProofState}. It performs
 several functions.  In addition to saturation, it also holds the state
 of various options and heuristics for the provers, which we will
 explain shortly, and the derivation of a proof by contradiction,
-consisting of relationships among Clauses that detail how they were
-derived from the originally given Clauses.
+consisting of relationships among \emph{Clause}s that detail how they were
+derived from the originally given \emph{Clause}s.
 
-We also add above Clauses the class BareFormula, which can have
+We also add above \emph{Clause} the class \emph{BareFormula}, which can have
 logical operators (such as quantification, implication, equivalence,
 and conjunction, as well as less common operators such as
-`$<\thicksim>$').  We have formula wrappers, in the class Formula,
+`$<\thicksim>$').  We have formula wrappers, in the class \emph{Formula},
 that include the data seen in TPTP problems, such as the type of the
 statement ('cnf', 'fof', 'thf' etc), the formula name and the type of
 the formula ('conjecture', 'plain' etc) as well as other data that is
-determined and used during ATP. In order to convert Formulas into
-Clauses, we have the classes Clausify and SmallCNFization, which
+determined and used during ATP. In order to convert \emph{Formula}s into
+C\emph{lause}s, we have the classes \emph{Clausify} and \emph{SmallCNFization}, which
 implement two different algorithms for conversion to conjunctive normal
 form.
 
-We implement the class Prover2 in order to support reading TPTP or
+We implement the class \emph{Prover2} in order to support reading TPTP or
 SUO-KIF formulas and converting them to CNF before saturation.
 Prover2 also has routines to handle setting options and returning
-proofs.  The new ProofState class uses a topological sort
+proofs.  The new \emph{ProofState} class uses a topological sort
 \cite{DBLP:journals/cacm/Kahn62} to create a linearized proof in TSTP
 format from the proof graph.  It also outputs dot format to supporting
 rendering of a proof graph by GraphViz\footnote{\url{https://graphviz.org/}}.
@@ -311,13 +311,13 @@ algorithm for answer extraction that attempts to search in a proof from
 a conjecture with an existentially quantified variable to a supporting
 clause that contains a binding for that variable.  This is a very useful
 feature in practice as it allows a user to get answers to logically
-formulated questions, rather than just \$true or \$false.
+formulated questions, rather than just \texttt{\$true} or \texttt{\$false}.
 
 \subsection{Clause Selection, Indexing, Heuristics, SInE and other Features}
 
 JavaRes includes all the optimization strategies in PyRes.  For clause
 selection it implements two methods, which can be combined.  The most
-basic is a first-in-first-out strategy that will eventually try every
+basic is a first-in-first-out (FIFO) strategy that will eventually try every
 clause.  However, this is rarely optimal.  A symbol-counting strategy
 picks the clause with the fewest symbols.  This is often a good
 strategy but in many cases it will fail because larger clauses may
@@ -333,12 +333,13 @@ JavaRes supports indexing for subsumption and resolution.  Subsumption
 removes clauses from the set of clauses to be processed (called
 ``forward subsumption'') and from the set already processed (``backwards
 subsumption'') thereby decreasing the problem search space.  More
-general clauses subsume more specific ones.  Rather than attempt to
-unify all potentially subsumes clauses with a given subsumer, indexing employs
+general clauses subsume more specific ones.
+
+Indexing employs
 records with signs and predicate symbols only, so that potential clauses can
-be accepted or rejected more rapidly.  A similar index supports
-resolution just allowing literals of opposite sign to resolve,
-rather than the same sign to potentially subsume.
+be accepted or rejected more rapidly than attempting unification.  In resolution, literals of opposite sign may resolve,
+as opposed to subsumption in which those of the same sign potentially subsume.
+Resolution and subsumption therefore have separate indexes.
 
 JavaRes also implements PyRes' approach to literal selection.  A naive
 approach to resolution has to compare every literal in a resolver to
@@ -349,7 +350,7 @@ literal, the largest literal, the smallest number of constants and
 variables, the smallest number of variables and finally, a combined
 strategy that picks an equation of two variables, if present, or the
 smallest number of variables or if those are equal then the largest
-number of symbols.
+number of symbols.  Largest literal selection is the default strategy.
 
 For large theories, JavaRes has implemented the SInE
 algorithm\cite{HV:CADE-2011} that has proven to be the dominant approach in the
@@ -358,8 +359,8 @@ LTB division of the CASC competition.
 JavaRes can also parse the first order portion of SUO-KIF syntax used
 with the SUMO knowledge base that is arguably a much more friendly
 syntax for theory authoring, especially for complex or nested axioms,
-than TPTP.  The JavaRes data structures used for ATP with the surface
-syntax are identical with TPTP.
+than TPTP.  The JavaRes data structures used for ATP with the different surface
+syntax of SUMO are identical with TPTP.
 
 An additional utility that JavaRes supports is creation of proof
 graphs intended to be visualized with the GraphViz renderer.
@@ -387,8 +388,19 @@ false confidence, since several successful paths to a contradiction often exist 
 problems that are challenging will the absence of a particular component of proving, such as
 forward subsumption, be a critical issue.
 
-StarExec proved to be an essential resource for scaling up testing as it is not practical to run
-all ~20,000 available tests for 300 seconds each on a laptop, or to load it so heavily with
+
+
+We present the results in Table \ref{tab:res} for different problem classes within TPTP: UEQ (unit problems with equality),
+CNE (clausal problems without equality), CEQ (clausal problem with equality, but excluding UEQ),
+FNE (FOF problems without equality) and FEQ (FOF problems with equality).  Readers interested
+in performance of the systems in other than their best configuration can refer to our
+previous PyRes paper and we only present the systems here with their performance including
+indexing, subsumption and best clause selection strategy.
+
+As with our earlier experiments with PyRes, testing was on StarExec Miami, a spin-off of the
+original StarExec project \cite{SST:IJCAR-2014}. StarExec proved to be an essential resource
+for scaling up testing as it is not practical to run
+all \textasciitilde24,000 available tests for 300 seconds each on a laptop, or to load it so heavily with
 theorem proving that no other work can be done.  Even so, running an experiment of this sort can
 take 24 hours of clock time, unless there is no other load on the system. It was tempting, too
 early in the development process, to run the full set of TPTP tests.  After several abortive
@@ -396,25 +408,22 @@ attempts, a much smaller set of problem tests was used to create an integration 
 was more comprehensive that unit tests, nearly as fast, and certainly much faster than an indiscriminate
 run on all available TPTP problems.
 
-As with our earlier experiments with PyRes, testing was on StarExec Miami, a spin-off of the
-original StarExec project \cite{SST:IJCAR-2014}.
-The machines were equipped with 256 GB of RAM and Intel Xeon CPUs running at 3.20 GHz.
+The StarExec machines were equipped with 256 GB of RAM and Intel Xeon CPUs running at 3.20 GHz.
 The per-problem time-limit was set to 300 seconds. TPTP 7.4 was used but only on problems
 also present in 7.2, to allow for continuity with the measurements in our earlier paper
-on PyRes.  JavaRes begins to approach the performance of Prover9 on problems without
-equality.  It would be interesting to see if implementing the JavaRes/PyRes approach to ATP
-in C or C++ would result in further speedup.
+on PyRes.
+
+JavaRes begins to approach the performance of Prover9 on problems without
+equality.  Implementing the JavaRes/PyRes approach to ATP
+in C or C++ would likely result in further speed improvements.
 
 \begin{table}[tbh]
   \begin{tabular}{lrrrrrr}
     \hline
-    \textbf{Strategy} & \multicolumn{1}{p{4em}}{\hfill{}\textbf{UEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{CNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{CEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{FNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{FEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{All}}\\
+    \textbf{Category} & \textbf{UEQ} & \textbf{CNE} & \textbf{CEQ} & \textbf{FNE} & \textbf{FEQ} & \textbf{All}\\
     {\tiny Class size} & {\tiny (1193)} & {\tiny (2383)} & {\tiny (4442)} & {\tiny (1771)} & {\tiny (6305)} & {\tiny (16094)}\\
     \hline
-    PyRes              &   113 &  945 &   499 &   632 &   725 &  4195 \\
+    PyRes              &   113 &  945 &   499 &   632 &   725 &  2914 \\
     JavaRes            &   173 & 1081 &   615 &   737 &  1589 &  4195 \\
     \hline
     E 2.4              &   813 &  1939 &  2648 &  1484 &  4054 & 10938 \\
@@ -427,19 +436,15 @@ in C or C++ would result in further speedup.
 \end{table}
 
 We also looked at computation time since many successful problems finish in significantly less than the allotted
-300s limit.  Failed problems were assessed 300s so we could get a comprehensive metric without giving false credit
-for cases where the theorem prover just gave up.  For each category we present to total minutes of computation time for all
-the TPTP problems in the given category (Figure \ref{tab:res2}). However because so many test problems fail with these
+300s limit.  Failed problems were assessed 300s so we could get a comprehensive metric without giving credit
+for cases where the theorem prover just gave up or timed out.  For each category we present to total minutes of computation time for all
+the TPTP problems in the given category (Table \ref{tab:res2}). However because so many test problems fail with these
 relatively basic provers, the speed difference is somewhat obscured.
 
 \begin{table}[tbh]
   \begin{tabular}{lrrrrrr}
     \hline
-    \textbf{Strategy} & \multicolumn{1}{p{4em}}{\hfill{}\textbf{UEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{CNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{CEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{FNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{FEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{All}}\\
-    {\tiny Class size} & {\tiny (1193)} & {\tiny (2383)} & {\tiny (4442)} & {\tiny (1771)} & {\tiny (6305)} & {\tiny (16094)}\\
+    \textbf{Category} & \textbf{UEQ} & \textbf{CNE} & \textbf{CEQ} & \textbf{FNE} & \textbf{FEQ} & \textbf{All}\\
     \hline
     PyRes              &   5457 &  7395 &   19929 &   5800 &   28193 &  66777 \\
     JavaRes            &   5171 &  6618 &   19326 &   5231 &   23681 &  60028 \\
@@ -449,20 +454,16 @@ relatively basic provers, the speed difference is somewhat obscured.
   \label{tab:res2}
 \end{table}
 
-We also compare just those problems that were solved by both provers in order to compare execution speed,
+We also compare just those problems that were solved by both provers in order to better show execution speed,
 and the difference is then more evident (Figure \ref{tab:res3}).
 
 \begin{table}[tbh]
   \begin{tabular}{lrrrrrr}
     \hline
-    \textbf{Strategy} & \multicolumn{1}{p{4em}}{\hfill{}\textbf{UEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{CNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{CEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{FNE}}& \multicolumn{1}{p{4em}}{\hfill{}\textbf{FEQ}}
-    & \multicolumn{1}{p{4em}}{\hfill{}\textbf{All}}\\
-    {\tiny Class size}                            & {\tiny (1193)} & {\tiny (2383)} & {\tiny (4442)} & {\tiny (1771)} & {\tiny (6305)} & {\tiny (16094)}\\
+    \textbf{Category} & \textbf{UEQ} & \textbf{CNE} & \textbf{CEQ} & \textbf{FNE} & \textbf{FEQ} & \textbf{All}\\
     \hline
-    PyRes Best (all)                                    &   57 &  169 &   189 &   89 &   121 &  628 \\
-    JavaRes Best (proofs)                                 &   7 &   28 &   30 &   32 &   32 &  131 \\
+    PyRes     &   57 &  169 &   189 &   89 &   121 &  628 \\
+    JavaRes   &   7 &   28 &   30 &   32 &   32 &  131 \\
     \hline
   \end{tabular}
   \caption{JavaRes and PyRes TPTP suite successful-only execution time in minutes}
@@ -471,7 +472,7 @@ and the difference is then more evident (Figure \ref{tab:res3}).
 
 \section{Conclusion and Future Work}
 
-The experience of JavaRes has shown that it's possible to use PyRes as the basis for a new theorem
+The experience of JavaRes has shown that it is possible to use PyRes as the basis for a new theorem
 prover implementation in about three person months of work, albeit with some coaching, and for
 someone already familiar with TPTP, as a user of TPTP and with FOL generally.  The
 experience has shown us how to improve the clarity of the code, and expand code comments and unit
@@ -480,12 +481,12 @@ tests.
 With an implementation in Java, it should be easier to integrate the prover with existing tools to support
 special cases that apply to SUMO development, since its existing Sigma tool set \cite{pease2013sigma}
 and SUMOjEdit editor \cite{pease2020programmer} are also written in Java.  Having a testbed for theorem
-prover features enables creating proof of concept implementations
-that may then transfer to a higher-performance implementation, such as E.  The first possibility is to
+prover features enables creating proof-of-concept implementations
+that may then transfer to a higher-performance implementation, such as E.  One such possibility is to
 include a pluggable interface for external functions.  These could be as simple as arithmetic functions
 or as complex as calls to databases, such as in \cite{DBLP:conf/ki/SudaSWLM09}.  Also of interest would be an implementation
 of a "Why-Not" function \cite{10.5555/1650083.1650093} that could guide the commensense theory developer in filling gaps
-in proposed commonsense inference paths.
+in proposed inference paths.
 
 \section{Acknowledgements}
 
