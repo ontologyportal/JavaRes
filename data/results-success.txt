@@ -1,0 +1,148 @@
+$ java -Xmx15G -cp /home/apease/workspace/JavaRes/build/classes:/home/apease/workspace/JavaRes/lib/* atp.StarExec -rc /home/apease/ontology/JavaRes/Job1649_output /home/apease/workspace/JavaRes/data/PyRes-TPTP7-2.csv
+[-rc, /home/apease/ontology/JavaRes/Job1649_output, /home/apease/workspace/JavaRes/data/PyRes-TPTP7-2.csv]
+Prover2.runCategoryExperiment(): 
+processResultFiles() problems [ALG, LCL, DAT, HEN, TOP, MGT, GRP, COM, GEG, SYO, LDA, CAT, SWW, ROB, COL, LIN, ARI, GEO, BOO, SET, ANA, CSR, SCT, NLP, BIO, REL, PUZ, SYN, MSC, HAL, RAL, RNG, FLD, SWV, AGT, KLE, HWC, KRS, NUN, ITP, PLA, SWB, SEV, PHI, QUA, PRO, HWV, NUM, LAT, SEU, GRA, SWC, PRD, MED]
+showCats()
+showCats(): fail: prob, expected, result, time: FLD083-3.p, , , 0
+showCats(): success: prob, expected, result, time: LCL076-2.p, Unsatisfiable, Unsatisfiable, 34
+showCats(): success: prob, expected, result, time: LCL401-1.p, Unsatisfiable, Unsatisfiable, 27067
+showCats(): success: prob, expected, result, time: SWV011-1.p, Unsatisfiable, Unsatisfiable, 8
+showCats(): fail: prob, expected, result, time: GRP129-3.005.p, , , 0
+showCats(): success: prob, expected, result, time: SYN207-1.p, Unsatisfiable, Unsatisfiable, 666
+showCats(): success: prob, expected, result, time: LCL207-1.p, Unsatisfiable, Unsatisfiable, 526
+showCats(): success: prob, expected, result, time: LCL126-1.p, Unsatisfiable, Unsatisfiable, 83
+showCats(): success: prob, expected, result, time: GRP124-7.004.p, Unsatisfiable, Unsatisfiable, 1203
+showCats(): success: prob, expected, result, time: PUZ003-1.p, Unsatisfiable, Unsatisfiable, 34
+showCats(): success: prob, expected, result, time: NLP131-1.p, Satisfiable, Satisfiable, 0
+showCats(): fail: prob, expected, result, time: FLD052-2.p, , , 0
+showCats(): fail: prob, expected, result, time: FLD005-1.p, , , 0
+showCats(): fail: prob, expected, result, time: LCL061-1.p, , , 0
+showCats(): fail: prob, expected, result, time: LCL285-3.p, , , 0
+showCats(): fail: prob, expected, result, time: NLP034-1.p, , , 0
+showCats(): fail: prob, expected, result, time: FLD102-1.p, , , 0
+showCats(): fail: prob, expected, result, time: LCL188-3.p, , , 0
+..
+Category : cne_probs
+JavaRes
+  success  : 1081
+  time     : 1724899
+  fail     : 1302
+PyRes
+  success  : 945
+  time     : 10179000
+  fail     : 1437
+showCats(): fail: prob, expected, result, time: SWV483+1.p, CounterSatisfiable, Input Error, 0
+showCats(): fail: prob, expected, result, time: NUM841+2.p, , , 0
+showCats(): fail: prob, expected, result, time: KLE149+2.p, Theorem, CounterSatisfiable, 0
+showCats(): fail: prob, expected, result, time: GEO102+1.p, , , 0
+showCats(): success: prob, expected, result, time: GRP649+1.p, Theorem, Theorem, 11
+showCats(): success: prob, expected, result, time: SWV386+1.p, Theorem, Theorem, 100
+showCats(): fail: prob, expected, result, time: GRP746+1.p, Theorem, CounterSatisfiable, 0
+showCats(): fail: prob, expected, result, time: LAT353+4.p, Theorem, Input Error, 0
+showCats(): fail: prob, expected, result, time: SWB017+1.p, , , 0
+showCats(): fail: prob, expected, result, time: RNG072+1.p, , , 0
+showCats(): success: prob, expected, result, time: SWV145+1.p, Theorem, Theorem, 9
+showCats(): fail: prob, expected, result, time: PRO002+3.p, , , 0
+showCats(): success: prob, expected, result, time: KRS115+1.p, Unsatisfiable, Unsatisfiable, 72
+showCats(): success: prob, expected, result, time: SWW221+1.p, Theorem, Theorem, 115
+showCats(): success: prob, expected, result, time: ALG072+1.p, Theorem, Theorem, 173
+showCats(): success: prob, expected, result, time: SET789+4.p, Theorem, Theorem, 417
+showCats(): success: prob, expected, result, time: SEU092+1.p, Theorem, Theorem, 18
+showCats(): success: prob, expected, result, time: SEU083+1.p, Theorem, Theorem, 10
+......
+Category : feq_probs
+JavaRes
+  success  : 1589
+  time     : 1964913
+  fail     : 4716
+PyRes
+  success  : 725
+  time     : 7311000
+  fail     : 5580
+showCats(): fail: prob, expected, result, time: GEO068-3.p, , , 0
+showCats(): success: prob, expected, result, time: GEO085-1.p, Unsatisfiable, Unsatisfiable, 796
+showCats(): fail: prob, expected, result, time: GRP094-1.p, , , 0
+showCats(): fail: prob, expected, result, time: SET122-7.p, , , 0
+showCats(): fail: prob, expected, result, time: NUM061-1.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP353-1.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP256-1.p, , , 0
+showCats(): fail: prob, expected, result, time: COL095-1.p, , , 0
+showCats(): fail: prob, expected, result, time: LCL109-3.p, , , 0
+showCats(): fail: prob, expected, result, time: SWV905-1.p, , , 0
+showCats(): success: prob, expected, result, time: COL113-1.p, Unsatisfiable, Unsatisfiable, 2149
+showCats(): success: prob, expected, result, time: LCL858-1.p, Unsatisfiable, Unsatisfiable, 49119
+showCats(): success: prob, expected, result, time: MGT045-1.p, Unsatisfiable, Unsatisfiable, 2680
+showCats(): success: prob, expected, result, time: CAT011-2.p, Unsatisfiable, Unsatisfiable, 97
+showCats(): success: prob, expected, result, time: LCL793-1.p, Unsatisfiable, Unsatisfiable, 4494
+showCats(): success: prob, expected, result, time: GEO021-3.p, Unsatisfiable, Unsatisfiable, 48
+showCats(): success: prob, expected, result, time: SET095-7.p, Unsatisfiable, Unsatisfiable, 67773
+showCats(): success: prob, expected, result, time: CAT019-3.p, Unsatisfiable, Unsatisfiable, 449
+....
+Category : ceq_probs
+JavaRes
+  success  : 615
+  time     : 1843123
+  fail     : 3827
+PyRes
+  success  : 499
+  time     : 11361000
+  fail     : 3943
+showCats(): fail: prob, expected, result, time: GRP183-1.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP175-1.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP450-1.p, , , 0
+showCats(): fail: prob, expected, result, time: BOO028-1.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP167-1.p, , , 0
+showCats(): fail: prob, expected, result, time: SWV519-1.050.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP442-1.p, , , 0
+showCats(): fail: prob, expected, result, time: GRP191-1.p, , , 0
+showCats(): fail: prob, expected, result, time: COL063-2.p, , , 0
+showCats(): success: prob, expected, result, time: COL008-1.p, Unsatisfiable, Unsatisfiable, 85
+showCats(): success: prob, expected, result, time: LCL679+1.001.p, CounterSatisfiable, CounterSatisfiable, 0
+showCats(): success: prob, expected, result, time: BOO036-1.p, Satisfiable, Satisfiable, 0
+showCats(): success: prob, expected, result, time: COL016-1.p, Unsatisfiable, Unsatisfiable, 21
+showCats(): success: prob, expected, result, time: COL024-1.p, Unsatisfiable, Unsatisfiable, 102
+showCats(): success: prob, expected, result, time: GRP182-3.p, Unsatisfiable, Unsatisfiable, 9658
+showCats(): success: prob, expected, result, time: GRP515-1.p, Unsatisfiable, Unsatisfiable, 153562
+showCats(): success: prob, expected, result, time: LAT090-1.p, Unsatisfiable, Unsatisfiable, 113046
+showCats(): success: prob, expected, result, time: LCL134-1.p, Unsatisfiable, Unsatisfiable, 116776
+.
+Category : uup_probs
+JavaRes
+  success  : 173
+  time     : 462112
+  fail     : 1020
+PyRes
+  success  : 113
+  time     : 3454000
+  fail     : 1080
+showCats(): fail: prob, expected, result, time: CSR116+11.p, Theorem, InputError (INE) input error: clause too large: , 0
+showCats(): success: prob, expected, result, time: SYN954+1.p, Theorem, Theorem, 10
+showCats(): fail: prob, expected, result, time: LCL643+1.005.p, CounterSatisfiable, Input Error, 0
+showCats(): success: prob, expected, result, time: KRS018+1.p, Satisfiable, Satisfiable, 0
+showCats(): success: prob, expected, result, time: SYN060+1.p, Theorem, Theorem, 11
+showCats(): success: prob, expected, result, time: GRP012+5.p, Theorem, Theorem, 217
+showCats(): success: prob, expected, result, time: SYN970+1.p, Theorem, Theorem, 7
+showCats(): success: prob, expected, result, time: LCL662+1.001.p, Theorem, Theorem, 9
+showCats(): success: prob, expected, result, time: KRS194+1.p, Theorem, Theorem, 6
+showCats(): fail: prob, expected, result, time: LCL666+1.020.p, Theorem, Input Error, 0
+showCats(): success: prob, expected, result, time: KRS050+1.p, Satisfiable, Satisfiable, 0
+showCats(): success: prob, expected, result, time: GEO180+3.p, Theorem, Theorem, 418
+showCats(): fail: prob, expected, result, time: CSR103+7.p, , InputError (INE) input error: clause too large: , 0
+showCats(): fail: prob, expected, result, time: CSR115+39.p, Theorem, InputError (INE) input error: clause too large: , 0
+showCats(): fail: prob, expected, result, time: KRS212+1.p, CounterSatisfiable, Theorem, 5
+showCats(): fail: prob, expected, result, time: LCL640+1.005.p, Theorem, Input Error, 0
+showCats(): fail: prob, expected, result, time: SYN938+1.p, Theorem, Input Error, 0
+showCats(): fail: prob, expected, result, time: SYN470+1.p, Theorem, Input Error, 0
+.
+Category : fne_probs
+JavaRes
+  success  : 737
+  time     : 1922563
+  fail     : 1034
+PyRes
+  success  : 632
+  time     : 5375000
+  fail     : 1139
+
+
+

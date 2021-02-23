@@ -36,6 +36,8 @@ import static java.nio.file.StandardCopyOption.*;
 
 public class StarExec {
 
+    public static int timeoutSecs = 300;
+
     /** ***************************************************************
      */
     public static ArrayList<String> readLineFile(String file) {
@@ -228,12 +230,200 @@ public class StarExec {
     }
 
     /***************************************************************
+     * Read a PyRes spreadsheet of results that consists of the problem
+     * name, whether it succeeded (T or F) and execution time if it
+     * succeeded, followed by other fields that are irrelevant for now.
+     */
+    public static HashMap<String,ArrayList<String>> readPyResData(String filename) {
+
+        HashMap<String,ArrayList<String>> result = new HashMap<>();
+        ArrayList<String> ar = readLineFile(filename);
+        for (String s : ar) {
+            String[] fields = s.split("\\s+");
+            ArrayList<String> row = new ArrayList();
+            row.addAll(Arrays.asList(fields));
+            ArrayList<String> newrow = new ArrayList();
+            newrow.addAll(row.subList(1,row.size()));
+            result.put(row.get(0),newrow);
+        }
+        return result;
+    }
+
+    /** ***************************************************************
+     * Process StarExec problem file
+     * test runs in the given directory
+     * @return a HashMap of problem file name keys and ProofState values that
+     * just make use of the SZSexpected, SZSresult and time fields
+     * This assumes StarExec's output directory format
+     * outputRoot->Problems->[1..N]->ProverName->ProblemName->resultName.txt
+     * for example /home/apease/ontology/JavaRes/Job1639_output/Problems/ALG/JavaRes---1.0.3___JavaRes---1.0.3/ALG001-1.p/26273835.txt
+     * where [1..N] is the set of three-letter problem types and there can
+     * be many ProblemNames for each type.
+     */
+    private static HashMap<String,ProofState> processResultFiles(String topdir) {
+
+        HashMap<String,ProofState> result = new HashMap<>();
+        String sep = File.separator;
+        String probsDirStr = topdir + File.separator + "Problems";
+        File probsDir = new File(probsDirStr);
+        String[] probDirs = probsDir.list();
+        System.out.println("processResultFiles() problems " + Arrays.toString(probDirs));
+        for (int i = 0; i < probDirs.length; i++) {
+            if (probDirs[i].length() == 3) {  // problem types are three letters, like "AGT"
+                String probDirStr = probsDir + sep + probDirs[i];
+                File probDir = new File(probDirStr);
+                String[] provers = probDir.list();
+                if (provers.length > 1)
+                    System.out.println("Error in processResultFiles() more than one prover in " + Arrays.toString(provers));
+
+                String probNamesStr = probDirStr + sep + provers[0]; // like 'JavaRes---1.0.3'
+                File probNamesDir = new File(probNamesStr);
+                String[] probNames = probNamesDir.list(); // should be many
+
+                for (int j = 0; j < probNames.length; j++) {
+                    if (probNames[j].endsWith(".p")) {  // problem names are like 'AGT001+1.p'
+                        String resultNames = probNamesStr + sep + probNames[j];
+                        File resultNamesDir = new File(resultNames);
+                        String[] resultFiles = resultNamesDir.list();
+                        if (resultFiles.length > 1)
+                            System.out.println("Error in processResultFiles() more than one problem name in " + resultNames);
+                        ProofState ps = StarExec.parseResultFile(resultNamesDir + sep + resultFiles[0]);
+                        result.put(probNames[j], ps);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /** ***************************************************************
+     * Use category files to process downloaded StarExec problem file
+     * test runs in the given directory
+     * @return a HashMap of file category name keys and values that are
+     * the set of problem files for that category.
+     */
+    private static HashMap<String,HashSet<String>> processCategories() {
+
+        // category -> set of problem files
+        HashMap<String,HashSet<String>> problemMap = new HashMap<>();
+
+        System.out.println("Prover2.runCategoryExperiment(): ");
+        ProofState.generateMatrixHeaderStatisticsString();
+        File tptpdir = new File(System.getenv("TPTP"));
+        String[] children = tptpdir.list();  // get the problem list files first.
+        Arrays.sort(children);
+        if (children != null) {
+            for (int i = 0; i < children.length; i++) {
+                if (children[i].endsWith("_probs")) {
+                    ArrayList<String> probs = StarExec.readLineFile(tptpdir + File.separator + children[i]);
+                    HashSet<String> hs = new HashSet<>();
+                    for (String f : probs)
+                        hs.add(f);
+                    problemMap.put(children[i],hs);
+                }
+            }
+        }
+        return problemMap;
+    }
+
+    /** ***************************************************************
+     * @param rfiles is a HashMap of problem file name keys and ProofState values that
+     * just make use of the SZSexpected, SZSresult and time fields
+     * @param cats is a HashMap of file category name keys and values that are
+     * the set of problem files for that category
+     *
+     * Filter all results to include only files in the PyRes data.
+     *
+     * Show first ten successes and failures for each category
+     *
+     * @param successOnly determines whether all time results are added, and
+     *                    failures assess the full timeout limit (false), or
+     *                    whether only to count times for tests that are successful
+     *                    for both provers (true)
+     */
+    private static void showCats(HashMap<String,HashSet<String>> cats, HashMap<String,ProofState> rfiles,
+                                 HashMap<String,ArrayList<String>> pyresData, boolean successOnly) {
+
+        System.out.println("showCats()");
+        for (String cat : cats.keySet()) {
+            HashSet<String> probs = cats.get(cat);
+            int jcountCorrect = 0;
+            int jcountFail = 0;
+            long jtime = 0;
+            int pcountCorrect = 0;
+            int pcountFail = 0;
+            long ptime = 0;
+            int counter = 0;
+            for (String prob : probs) {
+                counter++;
+                if (counter == 1000) {
+                    System.out.print(".");
+                    counter = 0;
+                }
+                boolean bothCorrect = false;
+                if (!successOnly)
+                    bothCorrect = true;  // just set it to true so we'll always accrue scores, if it's not successOnly
+                ArrayList<String> pyresProbResult = pyresData.get(prob);
+                //System.out.println("showCats(): prob: " + prob);
+                //System.out.println("showCats(): pyres: " + pyresProbResult);
+                if (pyresProbResult == null)
+                    continue;  // ensure that only files in both data sets are counted
+                ProofState ps = rfiles.get(prob);
+                if (ps != null && !Term.emptyString(ps.SZSresult) && ps.SZSexpected.equals(ps.SZSresult) && pyresProbResult.get(0).trim().equals("T"))
+                    bothCorrect = true;
+                if (pyresProbResult.get(0).trim().equals("T")) {
+                    pcountCorrect++;
+                    try {
+                        long timeInt = (long) Float.parseFloat(pyresProbResult.get(1)) * ((long) 1000);
+                        if (bothCorrect)
+                            ptime += timeInt;
+                    }
+                    catch (NumberFormatException nfe) {
+                        pcountCorrect--;
+                    }
+                }
+                else {
+                    if (bothCorrect)
+                        ptime += timeoutSecs * ((long) 1000);
+                    pcountFail++;
+                }
+
+                if (ps != null && !Term.emptyString(ps.SZSresult) && ps.SZSexpected.equals(ps.SZSresult)) {
+                    jcountCorrect++;
+                    if (bothCorrect)
+                        jtime+= ps.time;
+                    if (jcountCorrect < 10)
+                        System.out.println("showCats(): success: prob, expected, result, time: " + prob + ", " + ps.SZSexpected + ", " + ps.SZSresult + ", " + ps.time);
+                }
+                else {
+                    if (bothCorrect)
+                        jtime += timeoutSecs * ((long) 1000);
+                    jcountFail++;
+                    if (ps != null && jcountFail < 10)
+                        System.out.println("showCats(): fail: prob, expected, result, time: " + prob + ", " + ps.SZSexpected + ", " + ps.SZSresult + ", " + ps.time);
+                }
+            }
+            System.out.println("\nCategory : " + cat);
+            System.out.println("JavaRes");
+            System.out.println("  success  : " + jcountCorrect);
+            System.out.println("  time     : " + jtime);
+            System.out.println("  fail     : " + jcountFail);
+            System.out.println("PyRes");
+            System.out.println("  success  : " + pcountCorrect);
+            System.out.println("  time     : " + ptime);
+            System.out.println("  fail     : " + pcountFail);
+        }
+    }
+
+    /***************************************************************
      */
     public static void showHelp() {
 
         System.out.println(" -c <file> : build a collection of TPTP problems ");
         System.out.println("      and put in a subdir of the same name as the file");
         System.out.println(" -p <file> : run PyRes");
+        System.out.println(" -r <file> <pyfile> : process results files with respect to PyRes data");
+        System.out.println(" -rc <file> <pyfile> : process results files with respect to PyRes data and only count timing where both JavaRes and PyResare correct");
         System.out.println(" -m <dir> : compare all files in a dir for PyRes and JavaRes results");
         System.out.println(" -o <file> : compare one file for PyRes and JavaRes results");
         System.out.println("  -h : show help");
@@ -243,6 +433,7 @@ public class StarExec {
      */
     public static void main(String[] args) {
 
+        System.out.println(Arrays.toString(args));
         Formula.defaultPath = System.getenv("TPTP");
         if (args.length == 0)
             showHelp();
@@ -257,8 +448,6 @@ public class StarExec {
                 buildCatCollection(args[1]);
             else if (args[0].equals("-p"))
                 execPyRes(args[1]);
-            else if (args[0].equals("-t"))
-                compare(args[1]);
             else if (args[0].equals("-m"))
                 compare(args[1]);
             else if (args[0].equals("-o")) {
@@ -268,6 +457,22 @@ public class StarExec {
                 sp.heuristics = ClauseEvaluationFunction.PickGiven5;
                 evals.add(sp);
                 compareOne(args[1],evals);
+            }
+            else
+                showHelp();
+        }
+        else if (args.length == 3) {
+            if (args[0].equals("-r")) {
+                HashMap<String,ArrayList<String>> pydata = readPyResData(args[2]);
+                HashMap<String,HashSet<String>> cats = processCategories();
+                HashMap<String,ProofState> rfiles = processResultFiles(args[1]);
+                showCats(cats,rfiles,pydata,false);
+            }
+            else if (args[0].equals("-rc")) {
+                HashMap<String,ArrayList<String>> pydata = readPyResData(args[2]);
+                HashMap<String,HashSet<String>> cats = processCategories();
+                HashMap<String,ProofState> rfiles = processResultFiles(args[1]);
+                showCats(cats,rfiles,pydata,true);
             }
             else
                 showHelp();

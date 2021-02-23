@@ -328,121 +328,7 @@ public class Prover2 {
         }
     }
 
-    /** ***************************************************************
-     * Use category files to process downloaded StarExec problem file
-     * test runs in the given directory
-     * @return a HashMap of file category name keys and values that are
-     * the set of problem files for that category.
-     */
-    private static HashMap<String,HashSet<String>> processCategories() {
 
-        // category -> set of problem files
-        HashMap<String,HashSet<String>> problemMap = new HashMap<>();
-
-        System.out.println("Prover2.runCategoryExperiment(): ");
-        ProofState.generateMatrixHeaderStatisticsString();
-        File tptpdir = new File(System.getenv("TPTP"));
-        String[] children = tptpdir.list();  // get the problem list files first.
-        Arrays.sort(children);
-        if (children != null) {
-            for (int i = 0; i < children.length; i++) {
-                if (children[i].endsWith("_probs")) {
-                    ArrayList<String> probs = StarExec.readLineFile(tptpdir + File.separator + children[i]);
-                    HashSet<String> hs = new HashSet<>();
-                    for (String f : probs)
-                        hs.add(f);
-                    problemMap.put(children[i],hs);
-                }
-            }
-        }
-        return problemMap;
-    }
-
-    /** ***************************************************************
-     * Process StarExec problem file
-     * test runs in the given directory
-     * @return a HashMap of problem file name keys and ProofState values that
-     * just make use of the SZSexpected, SZSresult and time fields
-     * This assumes StarExec's output directory format
-     * outputRoot->Problems->[1..N]->ProverName->ProblemName->resultName.txt
-     * for example /home/apease/ontology/JavaRes/Job1639_output/Problems/ALG/JavaRes---1.0.3___JavaRes---1.0.3/ALG001-1.p/26273835.txt
-     * where [1..N] is the set of three-letter problem types and there can
-     * be many ProblemNames for each type.
-     * Note that the current version of this routine is just for one prover
-     */
-    private static HashMap<String,ProofState> processResultFiles(String topdir) {
-
-        HashMap<String,ProofState> result = new HashMap<>();
-        String sep = File.separator;
-        String probsDirStr = topdir + File.separator + "Problems";
-        File probsDir = new File(probsDirStr);
-        String[] probDirs = probsDir.list();
-        System.out.println("processResultFiles() problems " + Arrays.toString(probDirs));
-        for (int i = 0; i < probDirs.length; i++) {
-            if (probDirs[i].length() == 3) {  // problem types are three letters, like "AGT"
-                String probDirStr = probsDir + sep + probDirs[i];
-                File probDir = new File(probDirStr);
-                String[] provers = probDir.list();
-                if (provers.length > 1)
-                    System.out.println("Error in processResultFiles() more than one prover in " + Arrays.toString(provers));
-
-                String probNamesStr = probDirStr + sep + provers[0]; // like 'JavaRes---1.0.3'
-                File probNamesDir = new File(probNamesStr);
-                String[] probNames = probNamesDir.list(); // should be many
-
-                for (int j = 0; j < probNames.length; j++) {
-                    if (probNames[j].endsWith(".p")) {  // problem names are like 'AGT001+1.p'
-                        String resultNames = probNamesStr + sep + probNames[j];
-                        File resultNamesDir = new File(resultNames);
-                        String[] resultFiles = resultNamesDir.list();
-                        if (resultFiles.length > 1)
-                            System.out.println("Error in processResultFiles() more than one problem name in " + resultNames);
-                        ProofState ps = StarExec.parseResultFile(resultNamesDir + sep + resultFiles[0]);
-                        result.put(probNames[j], ps);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    /** ***************************************************************
-     * @param rfiles is a HashMap of problem file name keys and ProofState values that
-     * just make use of the SZSexpected, SZSresult and time fields
-     * @param cats is a HashMap of file category name keys and values that are
-     * the set of problem files for that category
-     *
-     * Show first ten successes and failures for each category
-     */
-    private static void showCats(HashMap<String,HashSet<String>> cats, HashMap<String,ProofState> rfiles) {
-
-        // category names and totals for time
-        HashMap<String,ProofState> totals =  new HashMap<>();
-        for (String cat : cats.keySet()) {
-            HashSet<String> probs = cats.get(cat);
-            int countCorrect = 0;
-            int countFail = 0;
-            long time = 0;
-            for (String prob : probs) {
-                ProofState ps = rfiles.get(prob);
-                if (ps != null && !Term.emptyString(ps.SZSresult) && ps.SZSexpected.equals(ps.SZSresult)) {
-                    countCorrect++;
-                    time+= ps.time;
-                    if (countCorrect < 10)
-                        System.out.println("showCats(): success: prob, expected, result, time: " + prob + ", " + ps.SZSexpected + ", " + ps.SZSresult + ", " + ps.time);
-                }
-                else {
-                    countFail++;
-                    if (ps != null && countFail < 10)
-                        System.out.println("showCats(): fail: prob, expected, result, time: " + prob + ", " + ps.SZSexpected + ", " + ps.SZSresult + ", " + ps.time);
-                }
-            }
-            System.out.println("\nCategory : " + cat);
-            System.out.println("  success  : " + countCorrect);
-            System.out.println("  time     : " + time);
-            System.out.println("  fail     : " + countFail);
-        }
-    }
 
     /** ***************************************************************
      */
@@ -752,11 +638,6 @@ public class Prover2 {
                 runCategoryExperiment(opts,evals);
             else if (opts.containsKey("interactive"))
                 runInteractive(opts,evals);
-            else if (opts.containsKey("result")) {
-                HashMap<String,HashSet<String>> cats = processCategories();
-                HashMap<String,ProofState> rfiles = processResultFiles(resultDir);
-                showCats(cats,rfiles);
-            }
             else {
                 System.out.println("# INFO in Prover2.main(): Processing file " + opts.get("filename"));
                 ProofState state = processTestFile(opts.get("filename"),opts,evals);
