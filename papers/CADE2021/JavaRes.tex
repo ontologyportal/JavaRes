@@ -9,12 +9,14 @@
 \usepackage{hyperref}
 \usepackage{wrapfig}
 
+\def\orcid#1{{\href{http://orcid.org/#1}{\protect\raisebox{-1.25pt}{\protect\includegraphics{orcid.pdf}}}}}
+
 \lstset{language=Python,showstringspaces=false}
 
 \title{Learning Theorem Proving by Example - Implementing JavaRes (System Description)}
 
-\author{Adam Pease\inst{2}
-        \and Stephan Schulz\inst{1}
+\author{Adam Pease\inst{1}\orcid{0000-0001-9772-1266}
+        \and Stephan Schulz\inst{2}\orcid{0000-0001-6262-8555}
   }
 \institute{
   Articulate Software, USA,
@@ -367,51 +369,66 @@ graphs intended to be visualized with the GraphViz renderer.
 
 \section{Testing and Examples}
 
-It is very valuable to have many examples.  When examples are implemented as
-unit tests they catch bugs as well as explain how the algorithms are supposed to work at each stage.
-The example provide a sense of purpose for each class, and are as valuable as the algorithms
-themselves.  Often, just having a clear set of examples is sufficient to code at least some version
-of the algorithm needed.  Adding more tests and examples has been a key benefit of the implementation
-of JavaRes, as it showed what obscure bugs might appear, or what non-obvious errors might exist.
-For example, in an early version of unification, the implementation failed to consider all possible
-options, just returning a list of one set of substitutions, rather than all possible substitution.
-This problem didn't surface in testing until much later, but was easily explained with an example and
-test that should ensure that no future implementer will move forward with an implementation while
-being unaware of this issue, should it arise.  Java tests are implemented in the jUnit framework.
-Whereas Python coders add tests at the end of each class, in Java tests are separated into their
-own classes.
+It is very valuable to have many examples.  When examples are
+implemented as unit tests they catch bugs as well as explain how the
+algorithms are supposed to work at each stage.  The example provide a
+sense of purpose for each class, and are as valuable as the algorithms
+themselves.  Often, just having a clear set of examples is sufficient
+to code at least some version of the algorithm needed.  Adding more
+tests and examples has been a key benefit of the implementation of
+JavaRes, as it showed what obscure bugs might appear, or what
+non-obvious errors might exist.  For example, in an early version of
+unification, the implementation failed to consider all possible
+options, just returning a list of one set of substitutions, rather
+than all possible substitution.  This problem didn't surface in
+testing until much later, but was easily explained with an example and
+test that should ensure that no future implementer will move forward
+with an implementation while being unaware of this issue, should it
+arise.  Java tests are implemented in the jUnit framework.  Whereas
+Python coders add tests at the end of each class, in Java tests are
+separated into their own classes.
 
-One of the lessons from implementing JavaRes is that one can never have too many tests.  A number
-of bugs, mostly from typographical errors, were not evident in the unit tests and only appeared
-once tested on some of the larger problems in the TPTP.  Even smaller TPTP problems could lead to
-false confidence, since several successful paths to a contradiction often exist and only on
-problems that are challenging will the absence of a particular component of proving, such as
-forward subsumption, be a critical issue.
+One of the lessons from implementing JavaRes is that one can never
+have too many tests.  A number of bugs, mostly from typographical
+errors, were not evident in the unit tests and only appeared once
+tested on some of the larger problems in the TPTP.  Even smaller TPTP
+problems could lead to false confidence, since several successful
+paths to a contradiction often exist and only on problems that are
+challenging will the absence of a particular component of proving,
+such as forward subsumption, be a critical issue.
 
 
 
-We present the results in Table \ref{tab:res} for different problem classes within TPTP: UEQ (unit problems with equality),
-CNE (clausal problems without equality), CEQ (clausal problem with equality, but excluding UEQ),
-FNE (FOF problems without equality) and FEQ (FOF problems with equality).  Readers interested
-in performance of the systems in other than their best configuration can refer to our
-previous PyRes paper and we only present the systems here with their performance including
-indexing, subsumption and best clause selection strategy.
+We present the results in Table \ref{tab:res} for different problem
+classes within TPTP: UEQ (unit problems with equality), CNE (clausal
+problems without equality), CEQ (clausal problem with equality, but
+excluding UEQ), FNE (FOF problems without equality) and FEQ (FOF
+problems with equality).  Readers interested in performance of the
+systems in other than their best configuration can refer to our
+previous PyRes paper and we only present the systems here with their
+performance including indexing, subsumption and best clause selection
+strategy.
 
-As with our earlier experiments with PyRes, testing was on StarExec Miami, a spin-off of the
-original StarExec project \cite{SST:IJCAR-2014}. StarExec proved to be an essential resource
-for scaling up testing as it is not practical to run
-all \textasciitilde24,000 available tests for 300 seconds each on a laptop, or to load it so heavily with
-theorem proving that no other work can be done.  Even so, running an experiment of this sort can
-take 24 hours of clock time, unless there is no other load on the system. It was tempting, too
-early in the development process, to run the full set of TPTP tests.  After several abortive
-attempts, a much smaller set of problem tests was used to create an integration test suite that
-was more comprehensive that unit tests, nearly as fast, and certainly much faster than an indiscriminate
-run on all available TPTP problems.
+As with our earlier experiments with PyRes, testing was on StarExec
+Miami, a spin-off of the original StarExec project
+\cite{SST:IJCAR-2014}. StarExec proved to be an essential resource for
+scaling up testing as it is not practical to run all
+\textasciitilde24,000 available tests for 300 seconds each on a
+laptop, or to load it so heavily with theorem proving that no other
+work can be done.  Even so, running an experiment of this sort can
+take 24 hours of clock time, unless there is no other load on the
+system. It was tempting, too early in the development process, to run
+the full set of TPTP tests.  After several abortive attempts, a much
+smaller set of problem tests was used to create an integration test
+suite that was more comprehensive that unit tests, nearly as fast, and
+certainly much faster than an indiscriminate run on all available TPTP
+problems.
 
-The StarExec machines were equipped with 256 GB of RAM and Intel Xeon CPUs running at 3.20 GHz.
-The per-problem time-limit was set to 300 seconds. TPTP 7.4 was used but only on problems
-also present in 7.2, to allow for continuity with the measurements in our earlier paper
-on PyRes.
+The StarExec machines were equipped with 256 GB of RAM and Intel Xeon
+CPUs running at 3.20 GHz.  The per-problem time-limit was set to 300
+seconds. TPTP 7.4 was used but only on problems also present in 7.2,
+to allow for continuity with the measurements in our earlier paper on
+PyRes.
 
 JavaRes begins to approach the performance of Prover9 on problems without
 equality.  Implementing the JavaRes/PyRes approach to ATP
@@ -480,28 +497,34 @@ solves 180 problems that JavaRes does not.
 
 \section{Conclusion and Future Work}
 
-The experience of JavaRes has shown that it is possible to use PyRes as the basis for a new theorem
-prover implementation in about three person months of work, albeit with some coaching, and for
-someone already familiar with TPTP, as a user of TPTP and with FOL generally.  The
-experience has shown us how to improve the clarity of the code, and expand code comments and unit
-tests.
+The experience of JavaRes has shown that it is possible to use PyRes
+as the basis for a new theorem prover implementation in about three
+person months of work, albeit with some coaching, and for someone
+already familiar with TPTP, as a user of TPTP and with FOL generally.
+The experience has shown us how to improve the clarity of the code,
+and expand code comments and unit tests.
 
-With an implementation in Java, it should be easier to integrate the prover with existing tools to support
-special cases that apply to SUMO development, since its existing Sigma tool set \cite{pease2013sigma}
-and SUMOjEdit editor \cite{pease2020programmer} are also written in Java.  Having a testbed for theorem
-prover features enables creating proof-of-concept implementations
-that may then transfer to a higher-performance implementation, such as E.  One such possibility is to
-include a pluggable interface for external functions.  These could be as simple as arithmetic functions
-or as complex as calls to databases, such as in \cite{DBLP:conf/ki/SudaSWLM09}.  Also of interest would be an implementation
-of a "Why-Not" function \cite{10.5555/1650083.1650093} that could guide the commensense theory developer in filling gaps
-in proposed inference paths.
+With an implementation in Java, it should be easier to integrate the
+prover with existing tools to support special cases that apply to SUMO
+development, since its existing Sigma tool set \cite{pease2013sigma}
+and SUMOjEdit editor \cite{pease2020programmer} are also written in
+Java.  Having a testbed for theorem prover features enables creating
+proof-of-concept implementations that may then transfer to a
+higher-performance implementation, such as E.  One such possibility is
+to include a pluggable interface for external functions.  These could
+be as simple as arithmetic functions or as complex as calls to
+databases, such as in \cite{DBLP:conf/ki/SudaSWLM09}.  Also of
+interest would be an implementation of a "Why-Not" function
+\cite{10.5555/1650083.1650093} that could guide the commensense theory
+developer in filling gaps in proposed inference paths.
 
 \section{Acknowledgements}
 
-Thanks to Geoff Sutcliffe for his work on, and advice about, StarExec and TPTP, which allowed us to test our work.
+Thanks to Geoff Sutcliffe for his work on, and advice about, StarExec
+and TPTP, which allowed us to test our work.
 
-ORCID for Adam Pease - \footnote{\url{https://orcid.org/0000-0001-9772-1266}},
-Stephan Schulz \footnote{\url{https://orcid.org/0000-0001-6262-8555}}.
+% ORCID for Adam Pease - \footnote{\url{https://orcid.org/0000-0001-9772-1266}},
+% Stephan Schulz \footnote{\url{https://orcid.org/0000-0001-6262-8555}}.
 
 \bibliography{stsbib}
 \end{document}
