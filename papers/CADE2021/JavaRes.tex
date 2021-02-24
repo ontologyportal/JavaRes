@@ -138,8 +138,8 @@ handling via automatic addition of equality axioms.
 %%% and I don't know what eactly you want to say.
 To see whether PyRes provided enough structure to learn how to write a
 theorem prover, we developed JavaRes, a prover modelled on PyRes, but
-written in Java, and used it as a platform to implement several
-extensions.  We believe that the lessons learned in the overall
+written in Java. We also used JavaRes as a basis to show implementation of several
+extensions to a baisc prover.  We believe that the lessons learned in the overall
 process, now incorporated into the two provers, provide a suitable
 platform for ATP education.
 
@@ -202,22 +202,29 @@ at least in terms of the time commitment involved, as a
 graduate semester project after an introductory course in logic.
 
 The code base of JavaRes is significantly larger (measured in lines of
-code) than that of PyRes. This is due to several reasons. First, Java
-is more verbose than Python.
+code) than that of PyRes. This is due to two primary reasons. \textit{First}, Java
+is more verbose than Python.  Verbosity is a double-edged sword. Short code is easier to
+read and to understand, as long as it is not cryptic. On the other
+hand more verbose code may be more self documenting. Efforts to teach
+ATP from these two systems may tell us which is better for students.
 % FIXME: I don't understant what you want to say here, and if I don't,
 % then other readers won't eiter ;-).
 %
 % and in part due to the implementation of analysis code in Java
-% rather than in shell scripts with PyRes 
-Secondly, while PyRes is intendet as a fairly mininmal example, we
-also use JavaRes as a springboard for implemention additional features
-and alternative algorithms.  As a result, JavaRes is 19,334 total
+% rather than in shell scripts with PyRes
+\textit{Second}, while PyRes is intended as a fairly minimal example of an ATP system, we
+use JavaRes as a springboard for implementing additional features
+and alternative algorithms.
+
+As a result of these two issues, JavaRes is 19,334 total
 lines of code, versus 8553 lines for PyRes (including comments,
 docstrings, and unit tests). If we only count actual production code,
 there are 7508 lines of effective code for Java and only 3681 lines of
 effective code in PyRes.  It is likely that after this experience,
 refactoring and reimplementation could reduce this
-discrepancy.
+discrepancy, which points simply to inexperience being at least partly
+the cause of more verbose and less elegant code.
+
 % However, code verbosity may be an advantage for educational purposes.
 % Maybe FIXME. Verbosity is a two-edged sword. Short code is easier to
 % read and to understand, as long as it is not cryptic.
@@ -281,16 +288,17 @@ have syntactically different names.
 % FIXME: Is the following statement true? In PyRes, Resolution only
 % performs the actual inference. Selecting potential parter literals
 % is done by ResControl, either by iteration or via indexing.
-The class \emph{Resolution}
+The class \emph{ResControl} is simple, finding all factors within a
+given \emph{Clause}, and all resolvants between a given \emph{Clause}
+and \emph{ClauseSet}. It
 iterates through \emph{Literal}s in a given pair of \emph{Clause}s,
-attempting to find unifiable literals with opposite signs.
-\emph{Resolution} also handles factoring, in which a \emph{Clause} is
+attempting to find unifiable literals with opposite signs, which are
+then passed to the class \emph{Resolution}, which also handles factoring.
+In factoring a \emph{Clause} is
 simplified when one of its \emph{Literal}s unifies with another,
 thereby enabling removal of the more specific \emph{Literal}, applying
 the resulting \emph{Substitution} to all remaining \emph{Literal}s.
-The class \emph{ResControl} is simple, finding all factors within a
-given \emph{Clause}, and all resolvants between a given \emph{Clause}
-and \emph{ClauseSet}.  The class \emph{SimpleProofState} keeps a set
+  The class \emph{SimpleProofState} keeps a set
 of \emph{Clause}s that have already been processed, which is subjected
 to resolution and factoring, and those \emph{Clause}s that have not
 yet been processed.  Its primary method, \texttt{saturate()}, keeps
