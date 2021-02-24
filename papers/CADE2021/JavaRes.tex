@@ -470,6 +470,14 @@ and the difference is then more evident (Figure \ref{tab:res3}).
   \label{tab:res3}
 \end{table}
 
+
+The problems on which JavaRes and PyRes differ appear to be where the timeout limit is just beyond
+the reach of PyRes.  For example TPTP problem LCL858-1.p is solved in 86 seconds by JavaRes while
+PyRes fails to find the answer in 300 seconds.  But given more time, PyRes finds the answer in 508 seconds.
+In total, JavaRes solves 1321 problems within the time limit that PyRes does not.  However, PyRes also
+solves 180 problems that JavaRes does not.
+
+
 \section{Conclusion and Future Work}
 
 The experience of JavaRes has shown that it is possible to use PyRes as the basis for a new theorem

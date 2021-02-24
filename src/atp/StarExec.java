@@ -336,6 +336,39 @@ public class StarExec {
      *
      * Show first ten successes and failures for each category
      *
+     */
+    private static void showDifference(HashMap<String,HashSet<String>> cats, HashMap<String,ProofState> rfiles,
+                                 HashMap<String,ArrayList<String>> pyresData) {
+
+        System.out.println("showCats()");
+        for (String cat : cats.keySet()) {
+            System.out.println("\nCategory : " + cat);
+            HashSet<String> probs = cats.get(cat);
+            for (String prob : probs) {
+                ArrayList<String> pyresProbResult = pyresData.get(prob);
+                if (pyresProbResult == null)
+                    continue;  // ensure that only files in both data sets are counted
+                ProofState ps = rfiles.get(prob);
+                if (ps != null && !Term.emptyString(ps.SZSresult)) {
+                    if (ps.SZSexpected.equals(ps.SZSresult) && pyresProbResult.get(0).trim().equals("F"))
+                        System.out.println("  PyRes fails, JavaRes succeeds on: " + prob);
+                    if (!ps.SZSexpected.equals(ps.SZSresult) && pyresProbResult.get(0).trim().equals("T"))
+                        System.out.println("  JavaRes fail, PyRes succeeds on: " + prob);
+                }
+            }
+        }
+    }
+
+    /** ***************************************************************
+     * @param rfiles is a HashMap of problem file name keys and ProofState values that
+     * just make use of the SZSexpected, SZSresult and time fields
+     * @param cats is a HashMap of file category name keys and values that are
+     * the set of problem files for that category
+     *
+     * Filter all results to include only files in the PyRes data.
+     *
+     * Show first ten successes and failures for each category
+     *
      * @param successOnly determines whether all time results are added, and
      *                    failures assess the full timeout limit (false), or
      *                    whether only to count times for tests that are successful
@@ -424,6 +457,7 @@ public class StarExec {
         System.out.println(" -p <file> : run PyRes");
         System.out.println(" -r <file> <pyfile> : process results files with respect to PyRes data");
         System.out.println(" -rc <file> <pyfile> : process results files with respect to PyRes data and only count timing where both JavaRes and PyResare correct");
+        System.out.println(" -ro <file> <pyfile> : process results files with respect to PyRes data show problems on which PyRes and JavaRes results differ");
         System.out.println(" -m <dir> : compare all files in a dir for PyRes and JavaRes results");
         System.out.println(" -o <file> : compare one file for PyRes and JavaRes results");
         System.out.println("  -h : show help");
@@ -473,6 +507,12 @@ public class StarExec {
                 HashMap<String,HashSet<String>> cats = processCategories();
                 HashMap<String,ProofState> rfiles = processResultFiles(args[1]);
                 showCats(cats,rfiles,pydata,true);
+            }
+            else if (args[0].equals("-ro")) {
+                HashMap<String,ArrayList<String>> pydata = readPyResData(args[2]);
+                HashMap<String,HashSet<String>> cats = processCategories();
+                HashMap<String,ProofState> rfiles = processResultFiles(args[1]);
+                showDifference(cats,rfiles,pydata);
             }
             else
                 showHelp();

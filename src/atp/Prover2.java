@@ -400,8 +400,8 @@ public class Prover2 {
                 state.SZSresult = "Error (ERR) " + e.getMessage();
             return state;
         }
-        System.out.println("computerStateResults(): state: " + state.SZSresult);
-        System.out.println("computerStateResults(): cs:" + cs.SZSresult);
+        System.out.println("computeStateResults(): state: " + state.SZSresult);
+        System.out.println("computeStateResults(): cs:" + cs.SZSresult);
         if (state.res != null) {
             state.SZSexpected = cs.SZSexpected;
             if (Term.emptyString(state.SZSresult)) {
@@ -434,7 +434,7 @@ public class Prover2 {
             return;
         }
         else if (opts.containsKey("proof")) {
-            if (! opts.containsKey("allOpts") && !opts.containsKey("experiment")) {
+            if (!opts.containsKey("allOpts") && !opts.containsKey("experiment")) {
                 System.out.println("# printStateResults(): " + state.res);
                 if (state.res != null) {
                     TreeMap<String, Clause> proof = state.generateProofTree(state.res);
@@ -551,7 +551,7 @@ public class Prover2 {
         int timeout = getTimeout(opts);
         //System.out.println("# Prover2.processTestFile(): read file");
         ClauseSet cs = Formula.file2clauses(filename,timeout);
-        if (debug) System.out.println("processTestFile(): hasConjecture: " + cs.hasConjecture);
+        System.out.println("hasConjecture: " + cs.hasConjecture + " isFOF: " + cs.isFOF);
         //System.out.println("# Prover2.processTestFile(): read file completed");
         //if (cs != null) {
         //    System.out.println("# Prover2.processTestFile(): SZSresult: " + cs.SZSresult);
