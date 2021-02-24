@@ -92,13 +92,14 @@
   Did PyRes~\cite{SP:IJCAR-2020} achieve its goal of being a
   sufficient model for learning about how to implement a first-order
   ATP system?  JavaRes is a demonstration prover patterned after
-  PyRes.  In this paper we discuss
-  the architecture and data structures of this prover and the
-  experience of one of us implementing the prover, without prior
-  expertise in writing an FOL prover.  We provide performance metrics
-  relative to PyRes.  To illustrate the
+  PyRes.  In this paper we discuss the architecture and data
+  structures of this prover and the experience of one of us
+  implementing the prover, without prior expertise in writing an
+  automated theorem prover prover.  We present performance
+  measurements relative to PyRes and other systems.  To illustrate the
   value of JavaRes for learning about theorem proving we also mention
-  implementation of several features beyond the original PyRes implementation.
+  the implementation of several features beyond the original PyRes
+  concept.
 \end{abstract}
 
 \section{Introduction}
@@ -106,15 +107,15 @@
 Automated theorem proving is a fascinating and useful discipline, but
 can be mystifying for someone not deeply acquainted with the field.
 It is fair to say that most computer science professionals do not
-understand the power of inference in FOL and how it provides distinct
-capabilities relative to simpler representations such as graphs or
-description logics.  Part of the reason for this lack of general
-familiarity may be because the barrier to entry in the field remains
-high, despite many decades of work and publication.  Most publications
-require a degree of mathematical sophistication to understand, and
-even with such capability, a reader will not know which data
-structures to use, or which of the many algorithms will be simplest or
-best to implement.
+understand the power of inference in first-order logic (FOL), and how
+it provides distinct capabilities relative to simpler representations
+such as graphs or description logics.  Part of the reason for this
+lack of general familiarity may be because the barrier to entry for
+the field remains high, despite many decades of work and publication.
+Most publications require a degree of mathematical sophistication to
+understand, and even with such capability, a reader will not know
+which data structures to use, or which of the many algorithms will be
+simplest or best to implement.
 
 We initially began with just an attempt for one of us (Pease) to learn
 about automated Theorem Proving (ATP), motivated by decades of work in
@@ -135,12 +136,12 @@ handling via automatic addition of equality axioms.
 
 %%% FIXME - the next sentence seems to be challenged grammatically,
 %%% and I don't know what eactly you want to say.
-To see whether PyRes provided
-enough structure to learn how to write a theorem prover, we wrote
-JavaRes and then used it as a platform to
-implement several extensions.  We believe that the lessons learned
-in the process, now incorporated into the two provers,
-provide a suitable platform for ATP education.
+To see whether PyRes provided enough structure to learn how to write a
+theorem prover, we developed JavaRes, a prover modelled on PyRes, but
+written in Java, and used it as a platform to implement several
+extensions.  We believe that the lessons learned in the overall
+process, now incorporated into the two provers, provide a suitable
+platform for ATP education.
 
 JavaRes is open source and all code and data is available at
 \url{https://github.com/ontologyportal/JavaRes}.
@@ -151,22 +152,22 @@ JavaRes is open source and all code and data is available at
 \section{Programming Language and Software Engineering Considerations}
 
 Python is dynamically typed, which makes for flexible and fast
-implementing, but also makes for a bit of a mismatch to Java, which is
-statically typed.  The lack of static types can also cause confusion,
-because the intended types are not documented at all points in the
-code, since they are determined dynamically at runtime.  Java may hold
-an advantage for education by requiring clarity in typing at compile
-time.
+implementations, but also makes for a bit of a mismatch to Java, which
+is statically typed.  The lack of static types can also cause
+confusion, because the intended types are not documented at all points
+in the code, since they are determined dynamically at runtime.  Java
+may hold an advantage for education by requiring clarity in typing at
+compile time.
 
 Java, like Python, also provides call-by-value for simple data types
 and call-by-reference for objects.  This is powerful, but also imposes
 an obligation on the programmer to be mindful of side-effects in
 methods.  It does allow for use of strategies such as shared term
-rewriting, as in the C++ implementation of Eprover \cite{LS:LPAR-WS-2001}.
+rewriting, as in the C implementation of E~\cite{LS:LPAR-WS-2001}.
 
 As a compiled language, Java also offers a speed advantage, which will
-be evident when we show performance results comparing two provers that
-use the same basic algorithms.
+be evident when we later discuss performance results comparing two
+provers that use the same basic algorithms.
 
 One lesson learned is that with code as complex as theorem proving
 code, unless there is full understanding of the algorithm and expected
@@ -179,13 +180,14 @@ initialized as to whether literal selection had considered them
 suitable for inference.  Copies were created of literals that included
 their literal selection flag, rather than reinitializing them by
 default as true.  This problem didn't cause any errors, just failure
-to prove certain theorems (but not others) and therefore wasn't a
-problem in simple examples and unit tests.  Another problem resulted
-from a typo in subsumption where the variable 'subsumed' was mistyped
-as 'subsumer'.  Even meaningful variable names can be a problem if
-they are very similar to others.  A more serious case of a variable
-naming issue that was present in a test case was having variables
-named l1, ll and ll1 which could be easily confused in most fonts.
+to prove certain theorems (but not others) and therefore wasn't
+obvious in simple examples and unit tests.  Another problem resulted
+from a typo in the subsumption code, where the variable
+\texttt{'subsumed'} was mistyped as \texttt{'subsumer'}.  Even
+meaningful variable names can be a problem if they are very similar to
+others.  A more serious case of a variable naming issue that was
+present in a test case was having variables named l1, ll and ll1 which
+could be easily confused in most fonts.
 
 The process of creating PyRes and JavaRes was interrupted for several
 years by the demands of other work and the challenge of coordinating
@@ -199,24 +201,35 @@ implementing a basic prover patterned after PyRes should be feasible,
 at least in terms of the time commitment involved, as a
 graduate semester project after an introductory course in logic.
 
-The code base of JavaRes is significantly more lines of code than
-PyRes, in part due to Java being more verbose than Python, and in part
-due to the implementation of analysis code in Java rather than in shell
-scripts with PyRes, and also due to the implementation of additional
-features and alternative algorithms.  JavaRes is 19,334 total lines of code vs 8553 lines
-for PyRes (including comments, docstrings, and unit tests), and 7508 lines of effective
-code for Java vs only 3681 lines of effective code for PyRes.  It is likely
-that after this experience, refactoring and reimplementation could reduce
-this discrepancy. However, code verbosity may be an advantage for educational purposes.
+The code base of JavaRes is significantly larger (measured in lines of
+code) than that of PyRes. This is due to several reasons. First, Java
+is more verbose than Python.
+% FIXME: I don't understant what you want to say here, and if I don't,
+% then other readers won't eiter ;-).
+%
+% and in part due to the implementation of analysis code in Java
+% rather than in shell scripts with PyRes 
+Secondly, while PyRes is intendet as a fairly mininmal example, we
+also use JavaRes as a springboard for implemention additional features
+and alternative algorithms.  As a result, JavaRes is 19,334 total
+lines of code, versus 8553 lines for PyRes (including comments,
+docstrings, and unit tests). If we only count actual production code,
+there are 7508 lines of effective code for Java and only 3681 lines of
+effective code in PyRes.  It is likely that after this experience,
+refactoring and reimplementation could reduce this
+discrepancy.
+% However, code verbosity may be an advantage for educational purposes.
+% Maybe FIXME. Verbosity is a two-edged sword. Short code is easier to
+% read and to understand, as long as it is not cryptic.
 
 \section{Data Structure}
 
-Figure \ref{fig:SysArch} shows the basic architecture of the system. A
-subclass relationship is denoted by a hollow arrowhead.  A relationship
-of one class (or instances of such a class) calling another is denoted
-by a solid arrow.  One class that includes another in a member
-variable is denoted by a hollow circle.  Each class is shown with its
-name and at least some of its major methods.
+Figure \ref{fig:SysArch} shows the basic class architecture of the
+system. A subclass relationship is denoted by a hollow arrowhead.  A
+relationship of one class (or instances of such a class) calling
+another is denoted by a solid arrow.  One class that includes another
+in a member variable is denoted by a hollow circle.  Each class is
+shown with its name and at least some of its major methods.
 
 JavaRes mirrors the data structures of PyRes.  At the bottom of the
 hierarchy, \emph{terms} are built from variables (denoted in TPTP
@@ -257,28 +270,36 @@ class \emph{ClauseSet}.
 \section{Class Structure}
 
 Several classes implement the machinery of proving.  The most
-fundamental is that of \emph{Substitution}, which replaces variables with
-\emph{Term}s (including other variables).  The class \emph{Unification} attempts to
-unify the structure of two lists of \emph{Term}s and results in a set of
-\emph{Substitution}s.  \emph{Substitution}s are also created when we rename
-variables in clauses to ensure that variables in different clauses,
-which are logically different, also have syntactically different
-names.  The class \emph{Resolution} iterates through \emph{Literal}s in a given pair
-of \emph{Clause}s, attempting to find unifiable literals with opposite signs.
-\emph{Resolution} also handles factoring, in which a \emph{Clause} is simplified
-when one of its \emph{Literal}s unifies with another, thereby enabling
-removal of the more specific \emph{Literal}, applying the resulting
-\emph{Substitution} to all remaining \emph{Literal}s.  The class \emph{ResControl} is
-simple, finding all factors within a given \emph{Clause}, and all resolvants
-between a given \emph{Clause} and \emph{ClauseSet}.  The class \emph{SimpleProofState}
-keeps a set of \emph{Clause}s that have already been processed, which is
-subjected to resolution and factoring, and those \emph{Clause}s that have not
-yet been processed.  Its primary method, \texttt{saturate()}, keeps calling its
-\texttt{processClause()} method, picking an arbitrary unprocessed \emph{Clause} for
-resolution and factoring, and continuing until a contradiction is
-found or there are no more unprocessed clauses to try.  The class
-\emph{Prover1} is the top level of our simple prover.  It simply calls
-\emph{SimpleProofState} reads in a \emph{ClauseSet}.
+fundamental is that of \emph{Substitution}, which replaces variables
+with \emph{Term}s (including other variables).  The class
+\emph{Unification} attempts to unify the structure of two lists of
+\emph{Term}s and, if successful, results in a \emph{Substitution}, or
+more specific, a \emph{most general unifier}.  \emph{Substitution}s
+are also created when we rename variables in clauses to ensure that
+variables in different clauses, which are logically different, also
+have syntactically different names.
+% FIXME: Is the following statement true? In PyRes, Resolution only
+% performs the actual inference. Selecting potential parter literals
+% is done by ResControl, either by iteration or via indexing.
+The class \emph{Resolution}
+iterates through \emph{Literal}s in a given pair of \emph{Clause}s,
+attempting to find unifiable literals with opposite signs.
+\emph{Resolution} also handles factoring, in which a \emph{Clause} is
+simplified when one of its \emph{Literal}s unifies with another,
+thereby enabling removal of the more specific \emph{Literal}, applying
+the resulting \emph{Substitution} to all remaining \emph{Literal}s.
+The class \emph{ResControl} is simple, finding all factors within a
+given \emph{Clause}, and all resolvants between a given \emph{Clause}
+and \emph{ClauseSet}.  The class \emph{SimpleProofState} keeps a set
+of \emph{Clause}s that have already been processed, which is subjected
+to resolution and factoring, and those \emph{Clause}s that have not
+yet been processed.  Its primary method, \texttt{saturate()}, keeps
+calling its \texttt{processClause()} method, picking an arbitrary
+unprocessed \emph{Clause} for resolution and factoring, and continuing
+until a contradiction is found or there are no more unprocessed
+clauses to try.  The class \emph{Prover1} is the top level of our
+simple prover.  It simply calls \emph{SimpleProofState} reads in a
+\emph{ClauseSet}.
 
 \section{Improvements}
 
