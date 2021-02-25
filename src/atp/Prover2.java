@@ -566,8 +566,10 @@ public class Prover2 {
             state.SZSresult = cs.SZSresult;
             return state;
         }
-        if (opts.containsKey("eqax") && cs.containsEquality())
+        if (opts.containsKey("eqax") && cs.containsEquality()) {
+            System.out.println("# Prover2() problem is equational");
             cs = cs.addEqAxioms();
+        }
         if (opts.containsKey("sine")) {
         	System.out.println("# INFO in Prover2.processTestFile(): using sine");
             SINE sine = new SINE(cs);

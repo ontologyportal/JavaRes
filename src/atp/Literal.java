@@ -460,6 +460,8 @@ public class Literal implements Comparable {
         System.out.println("INFO in Literal.parseKIFLiteral(): " + lex.literal);
         try {
             Literal lit = new Literal();
+            Term term = new Term();
+            term.parseKIF(lex);
         }
         catch (Exception ex) {
             System.out.println("Error in Literal.parseKIFLiteral(): " + ex.getMessage());

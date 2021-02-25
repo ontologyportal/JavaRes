@@ -433,7 +433,7 @@ public class Clause extends Derivable implements Comparable {
     public boolean containsEquality() {
 
         for (Literal l : literals)
-            if (l.atom.t == "=")
+            if (l.atom.t.equals("="))
                 return true;
         return false;
     }

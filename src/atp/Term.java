@@ -114,9 +114,9 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      */
     public String toKIFString() {
 
-        //System.out.println("Term.toKIFString(): " + this);
-        //System.out.println("Term.toKIFString(): t: " + t);
-        //System.out.println("Term.toKIFString(): subterms: " + subterms);
+        System.out.println("Term.toKIFString(): " + this);
+        System.out.println("Term.toKIFString(): t: " + t);
+        System.out.println("Term.toKIFString(): subterms: " + subterms);
         StringBuffer result = new StringBuffer();
         if (subterms.size() > 0) 
             result.append('(');
@@ -242,16 +242,20 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      * 0 arguments, and therefore be just a constant.  But in this first
      * pass, we treat functional terms as Literals, and disambiguate them
      * on a second pass through the resulting tree of pseudo-Literals and atomic Terms.
+     * A parenthesis is the signal that content is, for now, is a Literal
      * parseKIF() will not result in any subterms
      */
     public Term parseKIF(KIFLexer lex) {
 
         try {
-            lex.next();
+            String tok = lex.next();
+            System.out.println("parseKIF() first token: " + lex.type + " : " + tok);
             if (lex.type == KIFLexer.IdentUpper || lex.type == KIFLexer.IdentLower ||
                     lex.type == KIFLexer.RegularVar || lex.type == KIFLexer.RowVar ||
-                    lex.type == KIFLexer.DQString || lex.type == KIFLexer.Number)
+                    lex.type == KIFLexer.DQString || lex.type == KIFLexer.Number) {
+                t = tok;
                 return this;
+            }
             lex.look();
         }
         catch (ParseException ex) {
@@ -263,7 +267,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             System.out.println("in file: " + lex.filename);
             ex.printStackTrace();
         }
-        //System.out.println("Term.parseKIF(): returning: " + this);
+        System.out.println("Term.parseKIF(): returning: " + this);
         return this;
     }
 

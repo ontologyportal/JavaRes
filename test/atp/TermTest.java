@@ -133,6 +133,23 @@ public class TermTest {
         Term k4 = Term.kifString2Term(kif4);
         System.out.println(k4 + " = " + kif4);
         assertEquals(kif4,k4.toKIFString());
+
+        /*
+        System.out.println("INFO in parseKIFTest(): parsing kif6: " + kif6);
+        Term k6 = Term.kifString2Term(kif6);
+        System.out.println(k6 + " = " + kif6);
+        assertEquals(kif6,k6.toKIFString());
+
+        System.out.println("INFO in parseKIFTest(): parsing kif7: " + kif7);
+        Term k7 = Term.kifString2Term(kif7);
+        System.out.println(k7 + " = " + kif7);
+        assertEquals(kif7,k7.toKIFString());
+
+        System.out.println("INFO in parseKIFTest(): parsing kif8: " + kif8);
+        Term k8 = Term.kifString2Term(kif8);
+        System.out.println(k8 + " = " + kif8);
+        assertEquals(kif8,k8.toKIFString());
+        */
     }
 
     /** ***************************************************************
