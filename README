@@ -1,3 +1,5 @@
+Introduction
+
 This code implements simple, resolution-based theorem provers for
 first-order logic. It is released as free software under the GNU GPL
 version 3, and without any warranty. See the file COPYING for
@@ -11,5 +13,40 @@ Adam Pease
 apease@articulatesoftware.com
 
 
+Directories
+
+src - source code
+test - jUnit tests
+StarExec - files required to run under StarExec
+papers - CADE2021 submission
+lib - Java libraries
+dist - zip file of JavaRes used in tests reported in CADE2021 submission
+data - results from testing on StarExec with TPTP
 
 
+jUnit Tests
+
+paths are relative to where you've cloned the repository, and given the environment
+variable $GITDIR.  UnitTestAll runs all unit tests.  ProverTest is an integration
+test on TPTP problems.  It requires that the environment variable $TPTP be set
+to the location of the TPTP problems.
+
+java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+  org.junit.runner.JUnitCore atp.UnitTestAll
+
+java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+  org.junit.runner.JUnitCore atp.ProverTest
+
+
+Running JavaRes
+
+To run on a TPTP problem -
+
+java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+  atp.Prover2 --eqax --proof --delete-tautologies --forward-subsumption
+  --backward_subsumption --delete-tautologies --timeout 600 -v $TPTP/Problems/PUZ/PUZ001+1.p
+
+To get help that shows the list of availabe command line options -
+
+  java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+    atp.Prover2 -h

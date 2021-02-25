@@ -24,7 +24,7 @@
         <fileset dir="${build.classes}" />
         <fileset dir="${basedir}/lib" />
     </copy>
-    <zip destfile="${dist}/JavaRes.zip">
+    <zip destfile="dist/JavaRes-1-0-3.zip">
         <fileset dir="StarExec" />
     </zip>
 </target>

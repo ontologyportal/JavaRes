@@ -219,7 +219,7 @@ and alternative algorithms.
 As a result of these two issues, JavaRes is 19,334 total
 lines of code, versus 8553 lines for PyRes (including comments,
 docstrings, and unit tests). If we only count actual production code,
-there are 7508 lines of effective code for Java and only 3681 lines of
+there are 7508 lines of effective code for JavaRes and only 3681 lines of
 effective code in PyRes.  It is likely that after this experience,
 refactoring and reimplementation could reduce this
 discrepancy, which points simply to inexperience being at least partly
@@ -280,8 +280,8 @@ Several classes implement the machinery of proving.  The most
 fundamental is that of \emph{Substitution}, which replaces variables
 with \emph{Term}s (including other variables).  The class
 \emph{Unification} attempts to unify the structure of two lists of
-\emph{Term}s and, if successful, results in a \emph{Substitution}, or
-more specific, a \emph{most general unifier}.  \emph{Substitution}s
+\emph{Term}s and, if successful, results in a \emph{Substitution}, or to be
+more specific, a ``most general unifier''.  \emph{Substitution}s
 are also created when we rename variables in clauses to ensure that
 variables in different clauses, which are logically different, also
 have syntactically different names.
@@ -294,9 +294,9 @@ and \emph{ClauseSet}. It
 iterates through \emph{Literal}s in a given pair of \emph{Clause}s,
 attempting to find unifiable literals with opposite signs, which are
 then passed to the class \emph{Resolution}, which also handles factoring.
-In factoring a \emph{Clause} is
+In factoring, a \emph{Clause} is
 simplified when one of its \emph{Literal}s unifies with another,
-thereby enabling removal of the more specific \emph{Literal}, applying
+thereby enabling removal of the more specific \emph{Literal}, and applying
 the resulting \emph{Substitution} to all remaining \emph{Literal}s.
   The class \emph{SimpleProofState} keeps a set
 of \emph{Clause}s that have already been processed, which is subjected
@@ -311,7 +311,7 @@ simple prover.  It simply calls \emph{SimpleProofState} reads in a
 
 \section{Improvements}
 
-We improve on the SimpleProofState class with \emph{ProofState}. It performs
+We improve on the \emph{SimpleProofState} class with \emph{ProofState}. It performs
 several functions.  In addition to saturation, it also holds the state
 of various options and heuristics for the provers, which we will
 explain shortly, and the derivation of a proof by contradiction,
@@ -393,8 +393,6 @@ syntax for theory authoring, especially for complex or nested axioms,
 than TPTP.  The JavaRes data structures used for ATP with the different surface
 syntax of SUMO are identical with TPTP.
 
-An additional utility that JavaRes supports is creation of proof
-graphs intended to be visualized with the GraphViz renderer.
 
 \section{Testing and Examples}
 
@@ -460,7 +458,8 @@ to allow for continuity with the measurements in our earlier paper on
 PyRes.
 
 JavaRes begins to approach the performance of Prover9 on problems without
-equality.  Implementing the JavaRes/PyRes approach to ATP
+equality. It is markedly inferior to E and especially so on problems
+with equality.  Implementing the JavaRes/PyRes approach to ATP
 in C or C++ would likely result in further speed improvements.
 
 \begin{table}[tbh]
@@ -516,12 +515,9 @@ and the difference is then more evident (Figure \ref{tab:res3}).
   \label{tab:res3}
 \end{table}
 
-
 The problems on which JavaRes and PyRes differ appear to be where the timeout limit is just beyond
 the reach of PyRes.  For example TPTP problem LCL858-1.p is solved in 86 seconds by JavaRes while
 PyRes fails to find the answer in 300 seconds.  But given more time, PyRes finds the answer in 508 seconds.
-In total, JavaRes solves 1321 problems within the time limit that PyRes does not.  However, PyRes also
-solves 180 problems that JavaRes does not.
 
 
 \section{Conclusion and Future Work}
