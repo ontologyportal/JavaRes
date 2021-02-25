@@ -23,13 +23,24 @@ lib - Java libraries
 dist - zip file of JavaRes used in tests reported in CADE2021 submission
 data - results from testing on StarExec with TPTP
 
+Compiling
+
+Install ant and just type
+
+ant
+
+while in the top level of the git repository.  To compile a zip for StarExec, type
+
+ant star
+
 
 jUnit Tests
 
 paths are relative to where you've cloned the repository, and given the environment
 variable $GITDIR.  UnitTestAll runs all unit tests.  ProverTest is an integration
 test on TPTP problems.  It requires that the environment variable $TPTP be set
-to the location of the TPTP problems.
+to the location of the TPTP problems. The only external libraries needed are for
+jUnit (and its supporting hamcrest library, which are in the lib dir)
 
 java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
   org.junit.runner.JUnitCore atp.UnitTestAll
