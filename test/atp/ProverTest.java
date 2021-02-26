@@ -111,6 +111,8 @@ public class ProverTest {
                 "GRP/GRP541-1.p",
                 "KRS/KRS194+1.p",
                 "LCL/LCL662+1.001.p",
+                "MGT023+1.p",
+                "SEU219+1.p",
                 "NLP/NLP001-1.p",
                 "NLP/NLP220+1.p",
                 "NLP/NLP220-1.p",

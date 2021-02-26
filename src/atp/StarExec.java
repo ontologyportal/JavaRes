@@ -359,6 +359,20 @@ public class StarExec {
         }
     }
 
+    /***************************************************************
+     * The results should match but ContradictoryAxioms is also
+     * equivalent to Theorem, for the purposes of scoring.  See
+     * http://www.tptp.org/TPTP/TPTPTParty/2007/PositionStatements/GeoffSutcliffe_SZS.html
+     */
+    public static boolean problemResultCorrect(String expected, String actual) {
+
+        if (expected.equals(actual))
+            return true;
+        if (expected.equals("ContradictoryAxioms") && actual.equals("Theorem"))
+            return true;
+        return false;
+    }
+
     /** ***************************************************************
      * @param rfiles is a HashMap of problem file name keys and ProofState values that
      * just make use of the SZSexpected, SZSresult and time fields
@@ -402,7 +416,7 @@ public class StarExec {
                 if (pyresProbResult == null)
                     continue;  // ensure that only files in both data sets are counted
                 ProofState ps = rfiles.get(prob);
-                if (ps != null && !Term.emptyString(ps.SZSresult) && ps.SZSexpected.equals(ps.SZSresult) && pyresProbResult.get(0).trim().equals("T"))
+                if (ps != null && !Term.emptyString(ps.SZSresult) && problemResultCorrect(ps.SZSexpected,ps.SZSresult) && pyresProbResult.get(0).trim().equals("T"))
                     bothCorrect = true;
                 if (pyresProbResult.get(0).trim().equals("T")) {
                     pcountCorrect++;
@@ -421,7 +435,7 @@ public class StarExec {
                     pcountFail++;
                 }
 
-                if (ps != null && !Term.emptyString(ps.SZSresult) && ps.SZSexpected.equals(ps.SZSresult)) {
+                if (ps != null && !Term.emptyString(ps.SZSresult) && problemResultCorrect(ps.SZSexpected,ps.SZSresult)) {
                     jcountCorrect++;
                     if (bothCorrect)
                         jtime+= ps.time;
