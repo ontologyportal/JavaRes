@@ -1,4 +1,6 @@
+-------------------------
 Introduction
+----
 
 This code implements simple, resolution-based theorem provers for
 first-order logic. It is released as free software under the GNU GPL
@@ -12,8 +14,9 @@ http://www.ontologyportal.org and Sigma https://github.com/ontologyportal/sigmak
 Adam Pease
 apease@articulatesoftware.com
 
-
+-------------------------
 Directories
+----
 
 src - source code
 test - jUnit tests
@@ -23,18 +26,21 @@ lib - Java libraries
 dist - zip file of JavaRes used in tests reported in CADE2021 submission
 data - results from testing on StarExec with TPTP
 
+-------------------------
 Compiling
+----
 
 Install ant and just type
 
 ant
 
-while in the top level of the git repository.  To compile a zip for StarExec, type
+while in the top level of the JavaRes git repository.  To compile a zip for StarExec, type
 
 ant star
 
-
+-------------------------
 jUnit Tests
+----
 
 paths are relative to where you've cloned the repository, and given the environment
 variable $GITDIR.  UnitTestAll runs all unit tests.  ProverTest is an integration
@@ -48,16 +54,61 @@ java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
 java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
   org.junit.runner.JUnitCore atp.ProverTest
 
-
+-------------------------
 Running JavaRes
+----
 
-To run on a TPTP problem -
+To run in verbose mode on a TPTP problem -
 
 java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
   atp.Prover2 --eqax --proof --delete-tautologies --forward-subsumption
   --backward_subsumption --delete-tautologies --timeout 600 -v $TPTP/Problems/PUZ/PUZ001+1.p
 
-To get help that shows the list of availabe command line options -
+...and in quiet mode
+
+java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+  atp.Prover2 --eqax --proof --delete-tautologies --forward-subsumption
+  --backward_subsumption --delete-tautologies --timeout 600 $TPTP/Problems/PUZ/PUZ001+1.p
+
+To get help that shows the list of available command line options -
 
   java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
     atp.Prover2 -h
+
+-------------------------
+More Useful Examples for Execution and Analysis
+----
+
+Assume that $GIT is the location of your local git repository.  Assume that $TPTP is
+where you've installed all of TPTP.  Assume that $STAR is where you put StarExec
+job output
+
+run PyRes with the "best" options
+  timeout 300 python3 $GIT/PyRes/pyres-fof.py  -tifbp -HPickGiven5
+    -nlargest --silent $TPTP/Problems/NUM/NUM519+1.p
+
+run a single junit test
+  java -Xmx7G -cp $GIT/JavaRes/build/classes:/home/apease/workspace/JavaRes/lib/*
+    atp.SingleJUnitTestRunner atp.LiteralTest#testKIFparse
+
+show TPTP test scores by problem category for PyRes and JavaRes
+  java -Xmx15G -cp $GIT/JavaRes/build/classes:$GIT/JavaRes/lib/* atp.StarExec -r
+    $STAR/Job1649_output $GIT/JavaRes/data/PyRes-TPTP7-2.csv
+
+show exhaustive comparison of each problem where JavaRes and PyRes differ
+  java -Xmx15G -cp $GIT/JavaRes/build/classes:$GIT/JavaRes/lib/* atp.StarExec -ro
+    $STAR/Job1649_output $GIT/JavaRes/data/PyRes-TPTP7-2.csv &> JavaPyCompare.txt
+
+count appearances of a particular SZS ontology result
+  grep -r ContradictoryAxioms $TPTP/Problems/* | wc -l
+
+show all the SZS ontology tags actually in use in TPTP
+  grep -Eor "Status\s*: (.*)" $TPTP/Problems/* | cut -d ':' -f 3 | sort -u
+
+   ContradictoryAxioms
+   CounterSatisfiable
+   Open
+   Satisfiable
+   Theorem
+   Unknown
+   Unsatisfiable
