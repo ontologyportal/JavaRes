@@ -117,39 +117,66 @@ public class TermTest {
         System.out.println("INFO in parseKIFTest(): parsing kif1: " + kif1);
         Term k1 = Term.kifString2Term(kif1);
         System.out.println(k1 + " = " + kif1);
+        if (kif1.equals(k1.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif1,k1.toKIFString());
 
         System.out.println("INFO in parseKIFTest(): parsing kif2: " + kif2);
         Term k2 = Term.kifString2Term(kif2);
         System.out.println(k2 + " = " + kif2);
+        if (kif2.equals(k2.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif2,k2.toKIFString());
 
         System.out.println("INFO in parseKIFTest(): parsing kif3: " + kif3);
         Term k3 = Term.kifString2Term(kif3);
         System.out.println(k3 + " = " + kif3);
+        if (kif3.equals(k3.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif3,k3.toKIFString());
 
         System.out.println("INFO in parseKIFTest(): parsing kif4: " + kif4);
         Term k4 = Term.kifString2Term(kif4);
         System.out.println(k4 + " = " + kif4);
+        if (kif4.equals(k4.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif4,k4.toKIFString());
 
-        /*
         System.out.println("INFO in parseKIFTest(): parsing kif6: " + kif6);
         Term k6 = Term.kifString2Term(kif6);
         System.out.println(k6 + " = " + kif6);
+        if (kif6.equals(k6.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif6,k6.toKIFString());
 
         System.out.println("INFO in parseKIFTest(): parsing kif7: " + kif7);
         Term k7 = Term.kifString2Term(kif7);
         System.out.println(k7 + " = " + kif7);
+        if (kif7.equals(k7.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif7,k7.toKIFString());
 
         System.out.println("INFO in parseKIFTest(): parsing kif8: " + kif8);
         Term k8 = Term.kifString2Term(kif8);
         System.out.println(k8 + " = " + kif8);
+        if (kif8.equals(k8.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
         assertEquals(kif8,k8.toKIFString());
-        */
+
     }
 
     /** ***************************************************************

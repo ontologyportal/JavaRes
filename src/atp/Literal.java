@@ -452,24 +452,7 @@ public class Literal implements Comparable {
         return null;
     }
 
-    /***************************************************************
-     * In the initial parse of KIF everything with parentheses is a Literal
-     */
-    public static Literal parseKIFLiteral(KIFLexer lex) {
 
-        System.out.println("INFO in Literal.parseKIFLiteral(): " + lex.literal);
-        try {
-            Literal lit = new Literal();
-            Term term = new Term();
-            term.parseKIF(lex);
-        }
-        catch (Exception ex) {
-            System.out.println("Error in Literal.parseKIFLiteral(): " + ex.getMessage());
-            System.out.println("Error in Literal.parseKIFLiteral(): token:" + lex.type + " " + lex.literal);
-            ex.printStackTrace();
-        }
-        return null;
-    }
 
     /***************************************************************
      * Parse a list of literals separated by "|" (logical or). As per

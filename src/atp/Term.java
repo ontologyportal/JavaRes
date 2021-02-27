@@ -114,9 +114,9 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      */
     public String toKIFString() {
 
-        System.out.println("Term.toKIFString(): " + this);
-        System.out.println("Term.toKIFString(): t: " + t);
-        System.out.println("Term.toKIFString(): subterms: " + subterms);
+        //System.out.println("Term.toKIFString(): " + this);
+        //System.out.println("Term.toKIFString(): t: " + t);
+        //System.out.println("Term.toKIFString(): subterms: " + subterms);
         StringBuffer result = new StringBuffer();
         if (subterms.size() > 0) 
             result.append('(');
@@ -240,35 +240,92 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      * This routine expects the tokenizer to be set before the starting token.
      * A term is either a variable or a function, where a function can have
      * 0 arguments, and therefore be just a constant.  But in this first
-     * pass, we treat functional terms as Literals, and disambiguate them
-     * on a second pass through the resulting tree of pseudo-Literals and atomic Terms.
-     * A parenthesis is the signal that content is, for now, is a Literal
-     * parseKIF() will not result in any subterms
+     * pass, we treat everything as a Term with subterms, if present, and
+     * in a second pass turn it into formulas with literals and literals
+     * with atoms that are terms with signs.
      */
-    public Term parseKIF(KIFLexer lex) {
+    public static Term parseKIF(KIFLexer lex) {
 
+        Term result = null;
         try {
             String tok = lex.next();
-            System.out.println("parseKIF() first token: " + lex.type + " : " + tok);
+            if (lex.type.equals(lex.EOFToken) || lex.literal == null)
+                return result;
+            //System.out.println("parseKIF() first token: " + tok);
+
             if (lex.type == KIFLexer.IdentUpper || lex.type == KIFLexer.IdentLower ||
                     lex.type == KIFLexer.RegularVar || lex.type == KIFLexer.RowVar ||
                     lex.type == KIFLexer.DQString || lex.type == KIFLexer.Number) {
-                t = tok;
-                return this;
+                result = new Term();
+                result.t = tok;
+                return result;
             }
+            else if (lex.type.equals(KIFLexer.OpenPar))
+                return parseKIFTermList(lex);
+            else if (lex.type.equals(KIFLexer.ClosePar))
+                return null;
             lex.look();
         }
         catch (ParseException ex) {
-            if (lex.literal == lex.EOFToken)
-                return this;
+            if (lex.type.equals(lex.EOFToken))
+                return result;
             System.out.println("Error in Term.parseKIF(): " + ex.getMessage());
             System.out.println("Error in Term.parseKIF(): word token:" + lex.literal);
             System.out.println("encountered at line: " + ex.getErrorOffset());
             System.out.println("in file: " + lex.filename);
             ex.printStackTrace();
         }
-        System.out.println("Term.parseKIF(): returning: " + this);
-        return this;
+        //System.out.println("Term.parseKIF(): returning: " + result);
+        return result;
+    }
+
+    /***************************************************************
+     * In the initial parse of KIF everything is a Term with subTerms
+     */
+    public static Term parseKIFTermList(KIFLexer lex) {
+
+        Term term = new Term();
+        Term termList = new Term();
+        //System.out.println("INFO in Term.parseKIFTermList(): " + lex.literal);
+        try {
+            boolean inLiteral = (lex.type.equals(KIFLexer.OpenPar));
+            while (!lex.type.equals(KIFLexer.EOFToken) && lex.literal != null) {
+                //System.out.println("INFO in Term.parseKIFTermList(): termList: " + termList);
+                term = term.parseKIF(lex); // could be a term or a literal
+                //System.out.println("INFO in Term.parseKIFTermList(): returned with term: " + term);
+                //System.out.println("INFO in Term.parseKIFTermList(): lex type: " + lex.type);
+                if (lex.type.equals(KIFLexer.OpenPar)) {
+                    inLiteral = true;
+                    lex.next();
+                }
+                else if (!inLiteral) {
+                    return term;
+                }
+                else if (lex.type.equals(KIFLexer.ClosePar)) {
+                    if (inLiteral && term != null) {
+                        if (termList.t.equals(""))
+                            termList.t = term.t;
+                        else
+                            termList.subterms.add(term);
+                    }
+                    return termList;
+                }
+                else if (inLiteral) {
+                    if (termList.t.equals(""))
+                        termList.t = term.t;
+                    else
+                        termList.subterms.add(term);
+                }
+                else
+                    return term;
+            }
+        }
+        catch (Exception ex) {
+            System.out.println("Error in Term.parseKIFTermList(): " + ex.getMessage());
+            System.out.println("Error in Term.parseKIFTermList(): token:" + lex.type + " " + lex.literal);
+            ex.printStackTrace();
+        }
+        return term;
     }
 
     /** ***************************************************************

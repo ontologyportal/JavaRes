@@ -121,7 +121,7 @@ public class LiteralTest {
         KIFLexer lex = new KIFLexer(kif1a);
         System.out.println("INFO in LiteralTest.testKIFparse(): input: " + kif1a);
         Literal a1a = new Literal();
-        a1a = a1a.parseKIFLiteral(lex);
+        //a1a = a1a.parseKIFLiteral(lex);
         System.out.println("INFO in LiteralTest.testKIFparse(): finished parsing kif1a: " + kif1a);
         assertEquals(kif1a,a1a.toKIFString());
     }
