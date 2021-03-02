@@ -56,6 +56,10 @@ public class KIFLexer {
     public static final String Implies        = "=>";
     public static final String Equiv          = "<=>";
     public static final String Negation       = "not";
+    public static final String Exists         = "exists";
+    public static final String Forall         = "forall";
+    public static final String And            = "and";
+    public static final String Or             = "or";
     public static final String DQString       = "String in \"double quotes\"";
     public static final String EOFToken       = "*EOF*";
 
@@ -151,6 +155,11 @@ public class KIFLexer {
         tokenDefs.put(ClosePar,    Pattern.compile("\\)"));
         tokenDefs.put(Implies,     Pattern.compile("=>"));              
         tokenDefs.put(Equiv,       Pattern.compile("<=>"));
+        tokenDefs.put(Negation,    Pattern.compile("not"));
+        tokenDefs.put(And,         Pattern.compile("and"));
+        tokenDefs.put(Or,          Pattern.compile("or"));
+        tokenDefs.put(Exists,      Pattern.compile("Exists"));
+        tokenDefs.put(Forall,      Pattern.compile("Forall"));
         tokenDefs.put(Newline,     Pattern.compile("\\n"));
         tokenDefs.put(WhiteSpace,  Pattern.compile("\\s+"));
         tokenDefs.put(IdentLower,  Pattern.compile("[a-z][_a-z0-9_A-Z]*"));
@@ -166,7 +175,17 @@ public class KIFLexer {
 
         inBlockComment = false;
     }
-    
+
+    /** ***************************************************************
+     */
+    public static boolean isKIFLogOp(String s) {
+        if (s.equals(And) ||s.equals(Or) || s.equals(Negation) || s.equals(Implies) ||
+                s.equals(Equiv) || s.equals(Exists) || s.equals(Forall))
+            return true;
+        else
+            return false;
+    }
+
     /** ***************************************************************
      * Return the next token without consuming it.
      */

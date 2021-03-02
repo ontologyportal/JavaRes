@@ -136,6 +136,7 @@ handling via automatic addition of equality axioms.
 
 %%% FIXME - the next sentence seems to be challenged grammatically,
 %%% and I don't know what eactly you want to say.
+% fixed
 To see whether PyRes provided enough structure to learn how to write a
 theorem prover, we developed JavaRes, a prover modelled on PyRes, but
 written in Java. We also used JavaRes as a basis to show implementation of several
@@ -209,7 +210,7 @@ hand more verbose code may be more self documenting. Efforts to teach
 ATP from these two systems may tell us which is better for students.
 % FIXME: I don't understant what you want to say here, and if I don't,
 % then other readers won't eiter ;-).
-%
+% fixed
 % and in part due to the implementation of analysis code in Java
 % rather than in shell scripts with PyRes
 \textit{Second}, while PyRes is intended as a fairly minimal example of an ATP system, we
@@ -228,6 +229,7 @@ the cause of more verbose and less elegant code.
 % However, code verbosity may be an advantage for educational purposes.
 % Maybe FIXME. Verbosity is a two-edged sword. Short code is easier to
 % read and to understand, as long as it is not cryptic.
+% fixed
 
 \section{Data Structure}
 
@@ -288,6 +290,8 @@ have syntactically different names.
 % FIXME: Is the following statement true? In PyRes, Resolution only
 % performs the actual inference. Selecting potential parter literals
 % is done by ResControl, either by iteration or via indexing.
+% fixed
+
 The class \emph{ResControl} is simple, finding all factors within a
 given \emph{Clause}, and all resolvants between a given \emph{Clause}
 and \emph{ClauseSet}. It
@@ -467,9 +471,9 @@ in C or C++ would likely result in further speed improvements.
     \hline
     \textbf{Category} & \textbf{UEQ} & \textbf{CNE} & \textbf{CEQ} & \textbf{FNE} & \textbf{FEQ} & \textbf{All}\\
     {\tiny Class size} & {\tiny (1193)} & {\tiny (2383)} & {\tiny (4442)} & {\tiny (1771)} & {\tiny (6305)} & {\tiny (16094)}\\
-    \hline
-    PyRes              &   113 &  945 &   499 &   632 &   725 &  2914 \\
-    JavaRes            &   173 & 1081 &   615 &   737 &  1589 &  4195 \\
+    \hline             %   UEQ     CNE     CEQ     FNE     FEQ     All
+    PyRes              &   113 &   945 &   499 &   632 &   725 &  2914 \\
+    JavaRes            &   148 &  1107 &   644 &   737 &  1617 &  4253 \\
     \hline
     E 2.4              &   813 &  1939 &  2648 &  1484 &  4054 & 10938 \\
     Prover9-1109a      &   728 &  1316 &  1678 &   709 &  2001 &  6432 \\
@@ -490,9 +494,9 @@ relatively basic provers, the speed difference is somewhat obscured.
   \begin{tabular}{lrrrrrr}
     \hline
     \textbf{Category} & \textbf{UEQ} & \textbf{CNE} & \textbf{CEQ} & \textbf{FNE} & \textbf{FEQ} & \textbf{All}\\
-    \hline
+    \hline              %   UEQ     CNE       CEQ      FNE       FEQ     All
     PyRes              &   5457 &  7395 &   19929 &   5800 &   28193 &  66777 \\
-    JavaRes            &   5171 &  6618 &   19326 &   5231 &   23681 &  60028 \\
+    JavaRes            &   5295 &  6508 &   19203 &   5231 &   23583 &  59823 \\
     \hline
   \end{tabular}
   \caption{JavaRes and PyRes total TPTP suite execution time in minutes}
@@ -506,9 +510,9 @@ and the difference is then more evident (Figure \ref{tab:res3}).
   \begin{tabular}{lrrrrrr}
     \hline
     \textbf{Category} & \textbf{UEQ} & \textbf{CNE} & \textbf{CEQ} & \textbf{FNE} & \textbf{FEQ} & \textbf{All}\\
-    \hline
+    \hline   %   UEQ    CNE     CEQ    FNE     FEQ    All
     PyRes     &   57 &  169 &   189 &   89 &   121 &  628 \\
-    JavaRes   &   7 &   28 &   30 &   32 &   32 &  131 \\
+    JavaRes   &    7 &   37 &    37 &   32 &    60 &  174 \\
     \hline
   \end{tabular}
   \caption{JavaRes and PyRes TPTP suite successful-only execution time in minutes}

@@ -161,7 +161,7 @@ public class BareFormula {
     /** ***************************************************************
      * a logical operator other than a quantifier or negation
      */
-    private boolean logOp(String s) {
+    private static boolean logOp(String s) {
         
         return s.equals("&") || s.equals("|") || s.equals("->") || 
             s.equals("<-") || s.equals("<=>") || s.equals( "<~>") || 
@@ -683,9 +683,157 @@ public class BareFormula {
                 return result;
             }
         }
-
     }
-        
+
+    /** ***************************************************************
+     */
+    public static BareFormula parseKIFNegation(Term term) {
+
+        if (term.subterms.size() != 1) {
+            System.out.println("Error in parseKIFNegation(): wrong number of arguments to negation in " + term);
+            return null;
+        }
+        BareFormula bf = parseKIF(term.subterms.get(0),true);
+        if (bf.lit1 != null) {
+            bf.lit1.negated = !bf.lit1.negated;
+            return bf;
+        }
+        else {
+            BareFormula bf2 = new BareFormula();
+            bf2.child1 = bf.child1;
+            bf2.op = "~";
+            return bf2;
+        }
+    }
+
+    /** ***************************************************************
+     */
+    public static BareFormula parseKIFEquality(Term term) {
+
+        if (term.subterms.size() != 2) {
+            System.out.println("Error in parseKIFEquality(): wrong number of arguments to equal in " + term);
+            return null;
+        }
+        BareFormula bf1 = parseKIF(term.subterms.get(0),false);
+        BareFormula bf2 = parseKIF(term.subterms.get(1),false);
+        if (bf1.lit1.atom.subterms.size() == 0 && bf2.lit1.atom.subterms.size() == 0) {  // must be an equality literal
+            Term newterm = new Term();
+            newterm.t = "=";
+            newterm.subterms.add(new Term(bf1.lit1.atom.t));
+            newterm.subterms.add(new Term(bf2.lit1.atom.t));
+            bf1.lit1.atom = newterm;
+            return bf1;
+        }
+        return null;
+    }
+
+    /** ***************************************************************
+     */
+    public static BareFormula parseKIFQuantifier(Term term) {
+
+        BareFormula child = parseKIF(term.subterms.get(1),true);
+        BareFormula bf = null;
+        //System.out.println("BareFormula.parseKIFQuantifier(): term as quantifier expression: " + term);
+        //System.out.println("BareFormula.parseKIFQuantifier(): subterms: " + term.subterms);
+        //System.out.println("BareFormula.parseKIFQuantifier(): first subterm: " + term.subterms.get(0));
+        for (Term var : term.subterms.get(0).subterms) {
+            bf = new BareFormula();
+            bf.lit1 = new Literal();
+            bf.lit1.atom = var;
+            if (term.t.equals("exists"))
+                bf.op = "?";
+            else
+                bf.op = "!";
+            if (child.isLiteral())
+                bf.lit2 = child.lit1;
+            else
+                bf.child2 = child;
+            child = bf;
+
+        }
+        //System.out.println("BareFormula.parseKIFQuantifier(): returning quantifier expression: " + bf.toStructuredString());
+        return bf;
+    }
+
+    /** ***************************************************************
+     */
+    public static BareFormula parseKIFImpEquiv(Term term) {
+
+        BareFormula bf1 = parseKIF(term.subterms.get(0),true);
+        BareFormula bf2 = parseKIF(term.subterms.get(1),true);
+        BareFormula bf = new BareFormula();
+        bf.op = term.t;
+        if (bf1.isLiteral())
+            bf.lit1 = bf1.lit1;
+        else
+            bf.child1 = bf1;
+        if (bf2.isLiteral())
+            bf.lit2 = bf2.lit1;
+        else
+            bf.child2 = bf2;
+        return bf;
+    }
+
+    /** ***************************************************************
+     */
+    public static BareFormula parseKIFConjDisj(Term term) {
+
+        BareFormula bf = new BareFormula();
+        bf.op = term.t;
+        BareFormula bf1 = parseKIF(term.subterms.get(0),true);
+        if (bf1.isLiteral())
+            bf.lit1 = bf1.lit1;
+        else
+            bf.child1 = bf1;
+        BareFormula rhs = bf;
+        for (int i = 1; i < term.subterms.size(); i++) {      // 'and' and 'or' can have several arguments in SUO-KIF
+            BareFormula bf2 = parseKIF(term.subterms.get(1),true); // convert them to a tree of binary ones
+            if (bf2.isLiteral())
+                rhs.lit1 = bf2.lit1;
+            else
+                bf.child1 = bf1;
+            if (bf2.isLiteral())
+                bf.lit2 = bf2.lit1;
+            else
+                bf.child2 = bf2;
+        }
+        return bf;
+    }
+
+    /** ***************************************************************
+     * Take a Term, with subTerms and convert it to a BareFormula.
+     * @param truthValue is true if this term must be a sentence, with
+     *                   a truth value, rather than a term.  Note that if
+     *                   false, it could still be for an equality that needs
+     *                   compares variables that are truth values
+     */
+    public static BareFormula parseKIF(Term term, boolean truthValue) {
+
+        //System.out.println("BareFormula.parseKIF(): input: " + term);
+        //System.out.println("BareFormula.parseKIF(): t: " + term.t);
+        if (term == null || term.emptyString(term.t)) {
+            System.out.println("Error in BareFormula.parseKIF(): null term");
+            return null;
+        }
+        else if (term.t.equals("not"))
+            return parseKIFNegation(term);
+        else if (term.t.equals("equal"))
+            return parseKIFEquality(term);
+        else if (term.t.equals("exists") || term.t.equals("forall"))
+            return parseKIFQuantifier(term);
+        else if (term.t.equals(KIFLexer.Implies) || term.t.equals(KIFLexer.Equiv))
+            return parseKIFImpEquiv(term);
+        else if (term.t.equals(KIFLexer.And) || term.t.equals(KIFLexer.Or))
+            return parseKIFConjDisj(term);
+        else { // non-logical relation
+            //System.out.println("BareFormula.parseKIF(): non logical predicate input: " + term.t);
+            BareFormula bf = new BareFormula();
+            bf.lit1 = new Literal();
+            bf.lit1.atom = term;
+            return bf;
+        }
+    }
+
     /** ***************************************************************
      * Return a string representation of the formula.
      */

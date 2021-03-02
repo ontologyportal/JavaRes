@@ -94,6 +94,63 @@ public class BareFormulaTest {
     }
 
     /** ***************************************************************
+     */
+    public static void parseKIF(String kif, String expected) {
+
+        System.out.println();
+        KIFLexer lex = new KIFLexer(kif);
+        System.out.println("input: " + kif);
+        Term t = Term.parseKIF(lex);
+        System.out.println("as term: " + t);
+        BareFormula bf = BareFormula.parseKIF(t,true);
+        System.out.println("result: " + bf.toKIFString());
+        System.out.println("expect: " + expected);
+        if (expected.equals(bf.toKIFString()))
+            System.out.println("Success");
+        else
+            System.out.println("fail");
+        assertEquals(expected,bf.toKIFString());
+        System.out.println();
+    }
+
+    /** ***************************************************************
+     */
+    @Test
+    public void parseKIFTest() {
+
+        System.out.println("----------------------------");
+        System.out.println("parseKIFTest()");
+        String kif1 = "(likes Bill Sue)";
+        String ex1 = "(s__likes s__Bill s__Sue)";
+
+        String kif2 = "(likes (OnlyBrotherFn Bill) Sue)";
+        String ex2 = "(s__likes (s__OnlyBrotherFn s__Bill) s__Sue)";
+
+        String kif3 = "(equal ?X (FooFn ?Y))";
+        String ex3 = "(s__equal ?VAR_X (s__FooFn ?VAR_Y))";
+
+        String kif4 = "(not (likes Bill Sue))";
+        String ex4 = "(not (s__likes s__Bill s__Sue))";
+
+        String kif5 = "(exists (?X) (likes ?X ?Y))";
+        String ex5 = "(exists (?VAR_X) (s__likes ?VAR_X ?VAR_Y))";
+
+        String kif6 = "(p ?X (gFn ?X))";  // p is predicate gFn is a function
+        String ex6 = "(s__p ?VAR_X (s__gFn ?VAR_X))";
+
+        String kif7 = "(exists (?X ?Y) (likes ?X ?Y))";
+        String ex7 = "(exists (?VAR_Y) (exists (?VAR_X) (s__likes ?VAR_X ?VAR_Y)))";
+
+        parseKIF(kif1,ex1);
+        parseKIF(kif2,ex2);
+        parseKIF(kif3,ex3);
+        parseKIF(kif4,ex4);
+        parseKIF(kif5,ex5);
+        parseKIF(kif6,ex6);
+        parseKIF(kif7,ex7);
+    }
+
+    /** ***************************************************************
      * Test that basic parsing and functionality works.
      */
     @Test

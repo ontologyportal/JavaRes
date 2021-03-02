@@ -45,6 +45,12 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
 
     /** ***************************************************************
      */
+    public Term(String newt) {
+        t = newt;
+    }
+
+    /** ***************************************************************
+     */
     public Term(Term newTerm) {
         this.t = newTerm.t;
         if (newTerm.subterms != null && newTerm.subterms.size() > 0) {
@@ -251,20 +257,23 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             String tok = lex.next();
             if (lex.type.equals(lex.EOFToken) || lex.literal == null)
                 return result;
-            //System.out.println("parseKIF() first token: " + tok);
+            //System.out.println("Term.parseKIF() first token: " + tok);
+            //System.out.println("Term.parseKIF() type: " + lex.type);
 
-            if (lex.type == KIFLexer.IdentUpper || lex.type == KIFLexer.IdentLower ||
-                    lex.type == KIFLexer.RegularVar || lex.type == KIFLexer.RowVar ||
-                    lex.type == KIFLexer.DQString || lex.type == KIFLexer.Number) {
-                result = new Term();
-                result.t = tok;
-                return result;
-            }
+            if (KIFLexer.isKIFLogOp(tok))
+                return new Term(tok);
+            else if (lex.type == KIFLexer.IdentUpper || lex.type == KIFLexer.IdentLower)
+                return new Term("s__" + tok);
+            else if (lex.type == KIFLexer.RegularVar || lex.type == KIFLexer.RowVar)
+                return new Term("VAR_" + tok.substring(1));
+            else if (lex.type == KIFLexer.DQString || lex.type == KIFLexer.Number)
+                return new Term(tok);
             else if (lex.type.equals(KIFLexer.OpenPar))
                 return parseKIFTermList(lex);
             else if (lex.type.equals(KIFLexer.ClosePar))
                 return null;
-            lex.look();
+            //lex.look();
+            //System.out.println("Term.parseKIF() looking at next token: " + tok);
         }
         catch (ParseException ex) {
             if (lex.type.equals(lex.EOFToken))
@@ -285,39 +294,33 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
     public static Term parseKIFTermList(KIFLexer lex) {
 
         Term term = new Term();
-        Term termList = new Term();
+
         //System.out.println("INFO in Term.parseKIFTermList(): " + lex.literal);
         try {
-            boolean inLiteral = (lex.type.equals(KIFLexer.OpenPar));
             while (!lex.type.equals(KIFLexer.EOFToken) && lex.literal != null) {
-                //System.out.println("INFO in Term.parseKIFTermList(): termList: " + termList);
-                term = term.parseKIF(lex); // could be a term or a literal
-                //System.out.println("INFO in Term.parseKIFTermList(): returned with term: " + term);
+                String tok = lex.next();
+                //System.out.println("INFO in Term.parseKIFTermList(): tok: " + tok);
                 //System.out.println("INFO in Term.parseKIFTermList(): lex type: " + lex.type);
                 if (lex.type.equals(KIFLexer.OpenPar)) {
-                    inLiteral = true;
-                    lex.next();
-                }
-                else if (!inLiteral) {
-                    return term;
+                    term.subterms.add(parseKIFTermList(lex));
                 }
                 else if (lex.type.equals(KIFLexer.ClosePar)) {
-                    if (inLiteral && term != null) {
-                        if (termList.t.equals(""))
-                            termList.t = term.t;
-                        else
-                            termList.subterms.add(term);
-                    }
-                    return termList;
-                }
-                else if (inLiteral) {
-                    if (termList.t.equals(""))
-                        termList.t = term.t;
-                    else
-                        termList.subterms.add(term);
-                }
-                else
+                    //System.out.println("INFO in Term.parseKIFTermList(): found closing paren, returning: " + term);
                     return term;
+                }
+                else if (lex.type.equals(KIFLexer.RegularVar)) {
+                    term.subterms.add(new Term("VAR_" + tok.substring(1)));
+                }
+                else {
+                    if (Term.emptyString(term.t)) {
+                        if (KIFLexer.isKIFLogOp(tok))
+                            term.t = tok;
+                        else
+                            term.t = "s__" + tok;
+                    }
+                    else
+                        term.subterms.add(new Term("s__" + tok));
+                }
             }
         }
         catch (Exception ex) {
@@ -325,6 +328,7 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
             System.out.println("Error in Term.parseKIFTermList(): token:" + lex.type + " " + lex.literal);
             ex.printStackTrace();
         }
+        //System.out.println("Term.parseKIFTermList(): returning: " + term);
         return term;
     }
 
@@ -351,7 +355,9 @@ public ArrayList<Term> subterms = new ArrayList<Term>();    // empty if not comp
      * well-formed term.
      */
     public boolean isVar() {
-       
+
+        if (emptyString(t))
+            return false;
         return Character.isUpperCase(t.charAt(0));
     }
     
