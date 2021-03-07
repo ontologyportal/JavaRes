@@ -63,6 +63,7 @@ public class Clause extends Derivable implements Comparable {
      */
     public Clause(Clause c) {
 
+        super(c.name,null);
         for (Literal l : c.literals)
             literals.add(new Literal(l));
         this.name = c.name;

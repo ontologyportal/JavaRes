@@ -27,7 +27,7 @@ import java.util.*;
  * Datatype for the complete first-order formula, including 
  * meta-information like type and name.
  */
-public class Formula {
+public class Formula extends Derivable {
 
     // Counter for generating new clause names.
     public static int formulaIdCounter = 0;
@@ -53,9 +53,20 @@ public class Formula {
     /** ***************************************************************
      */
     public Formula(BareFormula f, String t) {
-        
+
+        super("",null);
         form = f;
         type = t;
+    }
+
+    /** ***************************************************************
+     */
+    public Formula(BareFormula f, String t, String n) {
+
+        super(n,null);
+        form = f;
+        type = t;
+        name = n;
     }
 
     /** ***************************************************************
@@ -73,7 +84,7 @@ public class Formula {
      */
     public String toString() {
 
-        return "fof(" + name + "," + type + "," + form + ").";
+        return "fof(" + name + "," + type + "," + form + "," + derivation + ").";
     }
     
     /** ***************************************************************

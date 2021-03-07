@@ -32,29 +32,29 @@ public class Derivable {
 
     /** ***************************************************************
      */
-    public Derivable(String n, Derivation derivation) {
+    public Derivable(String n, Derivation d) {
 
         setName(n);
-        derivation = derivation;
+        derivation = d;
     }
 
     /** ***************************************************************
      */
-    public void enableDerivationOutput() {
+    public static void enableDerivationOutput() {
 
         Derivable.printDerivation = true;
     }
 
     /** ***************************************************************
      */
-    public void disableDerivationOutput() {
+    public static void disableDerivationOutput() {
 
         Derivable.printDerivation = false;
     }
 
     /** ***************************************************************
      */
-    public void toggleDerivationOutput() {
+    public static void toggleDerivationOutput() {
 
         Derivable.printDerivation = !Derivable.printDerivation;
     }
@@ -130,11 +130,13 @@ public class Derivable {
      */
     public void annotateDerivationGraph() {
 
+        //System.out.println("Derivable.annotateDerivationGraph(): " + this);
         ArrayList<Derivable> parents = null;
-        if (refCount == 0)
+        if (refCount == 0) {
             parents = getParents();
-        for (Derivable p : parents)
-            p.annotateDerivationGraph();
+            for (Derivable p : parents)
+                p.annotateDerivationGraph();
+        }
         incRefCount();
     }
 

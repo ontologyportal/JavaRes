@@ -72,7 +72,7 @@ public class Derivation extends Derivable {
      * Simple convenience function: Create a derivation which directly
      *     references all parents.
      */
-    public Derivation flatDerivation(String op, ArrayList<Derivable> plist, String status) {
+    public static Derivation flatDerivation(String operator, ArrayList<Derivable> plist, String status) {
 
         if (Term.emptyString(status))
             status = "status(thm)";
