@@ -28,7 +28,7 @@ import java.io.File;
 import java.util.*;
 import static org.junit.Assert.*;
 
-public class ProverTest {
+public class ProverFOFTest {
 
     public static ArrayList<SearchParams> evals = null;
     public static HashMap<String, String> opts = null;
@@ -42,34 +42,30 @@ public class ProverTest {
         String[] args = "--eqax --proof --delete-tautologies --forward-subsumption --backward_subsumption --delete-tautologies --timeout 600".split(" ");
         Formula.defaultPath = System.getenv("TPTP");
         System.out.println("Using default include path : " + Formula.defaultPath);
-
         ClauseEvaluationFunction.setupEvaluationFunctions();
-
-        opts = Prover2.processOptions(args);  // canonicalize options
-
+        opts = ProverFOF.processOptions(args);  // canonicalize options
         evals = new ArrayList<SearchParams>();
         SearchParams sp = new SearchParams();
         sp.heuristics = ClauseEvaluationFunction.PickGiven5;
         evals.add(sp);
-
     }
 
     /** ***************************************************************
      */
     public static void runTest(String filename) {
 
-        System.out.println("# INFO in Prover2.main(): Processing file " + filename);
-        ProofState state = Prover2.processTestFile(filename,opts,evals);
-        //System.out.println("# INFO in Prover2.main(): state: " + state);
+        System.out.println("# INFO in ProverFOF.main(): Processing file " + filename);
+        ProofState state = ProverFOF.processTestFile(filename,opts,evals);
+        //System.out.println("# INFO in ProverFOF.main(): state: " + state);
         if (state != null && state.res != null) {
-            Prover2.printStateResults(opts,state,null);
+            ProverFOF.printStateResults(opts,state,null);
             //System.out.println("# SZS status Theorem for problem " + filename);
         }
         else {
             if (state == null || Term.emptyString(state.SZSresult))
                 System.out.println("# SZS status GaveUp for problem " + filename);
             else
-                Prover2.printStateResults(opts,state,null);
+                ProverFOF.printStateResults(opts,state,null);
         }
         if (state.SZSresult.equals(state.SZSexpected))
             System.out.println("Success");
@@ -85,26 +81,25 @@ public class ProverTest {
 
         String sep = File.separator;
         String[] probs = {
-                "ALG/ALG002-1.p",
-                "ANA/ANA013-2.p",
-                "ANA/ANA029-2.p",
-                "ANA/ANA037-2.p",
-                "ANA/ANA038-2.p",
-                "ANA/ANA039-2.p",
-                "ANA/ANA041-2.p",
-                "COL/COL101-2.p",
-                "COL/COL113-2.p",
-                "COL/COL117-2.p",
-                "COL/COL121-2.p",
-                "COM/COM002-1.p",
-                "COM/COM002-2.p",
-                "CSR/CSR074+1.p",
-                "CSR/CSR114+6.p",
-                "FLD/FLD006-1.p",
+                "ALG/ALG002-1.p",   // cnf
+                "ANA/ANA013-2.p",   // cnf
+                "ANA/ANA029-2.p",   // cnf
+                "ANA/ANA037-2.p",   // cnf
+                "ANA/ANA038-2.p",   // cnf
+                "ANA/ANA039-2.p",   // cnf
+                "ANA/ANA041-2.p",   // cnf
+                "COL/COL101-2.p",   // cnf
+                "COL/COL113-2.p",   // cnf
+                "COL/COL117-2.p",   // cnf
+                "COL/COL121-2.p",   // cnf
+                "COM/COM002-1.p",   // cnf
+                "COM/COM002-2.p",   // cnf
+                "CSR/CSR074+1.p",   // fof
+                "CSR/CSR114+6.p",   // fof
+                "FLD/FLD006-1.p",   // cnf
                 "GRP/GRP012+5.p",
                 "GRP/GRP182-1.p",
                 "GRP/GRP182-3.p",
-                "GRP/GRP188-1.p",
                 "GRP/GRP188-1.p",
                 "GRP/GRP188-2.p",
                 "GRP/GRP189-1.p",

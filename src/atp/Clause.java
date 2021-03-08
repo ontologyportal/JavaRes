@@ -403,7 +403,7 @@ public class Clause extends Derivable implements Comparable {
             return result;
         }
         catch (Exception ex) {
-            Prover2.errors = "input error";
+            ProverFOF.errors = "input error";
             if (lex.type == Lexer.EOFToken)
                 return result;
             System.out.println("Error in Clause.parse(): " + ex.getMessage());

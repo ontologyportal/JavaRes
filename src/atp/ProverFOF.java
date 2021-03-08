@@ -27,11 +27,11 @@ import java.text.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Prover2 {
+public class ProverFOF {
     
-    private static String doc = "Prover2.java 0.2\n" + 
+    private static String doc = "ProverFOF.java 0.2\n" +
         "\n" + 
-        "Usage: atp.Prover2 [options] <problem_file>\n" + 
+        "Usage: atp.ProverFOF [options] <problem_file>\n" +
         "\n" + 
         "This is a straightforward implementation of a simple resolution-based\n" + 
         "prover for first-order clausal logic. Problem file should be in\n" + 
@@ -271,8 +271,8 @@ public class Prover2 {
      */
     private static void runExperiment(HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
-        System.out.println("Prover2.runExperiment(): ");
-        System.out.println("Prover2.runExperiment(): opts: " + opts);
+        System.out.println("ProverFOF.runExperiment(): ");
+        System.out.println("ProverFOF.runExperiment(): opts: " + opts);
         ProofState.generateMatrixHeaderStatisticsString();
         File dir = new File(opts.get("filename")); 
         String[] children = dir.list();
@@ -284,7 +284,7 @@ public class Prover2 {
                     //System.out.println("# testing file: " + filename);
                     ProofState ps = processTestFile(filename,opts,evals);
                     if (ps == null) {
-                        System.out.println("Error in Prover2.runExperiment() on file: " + filename);
+                        System.out.println("Error in ProverFOF.runExperiment() on file: " + filename);
                         System.out.println("Error reading file or no input clauses in file");
                         continue;
                     }
@@ -322,7 +322,7 @@ public class Prover2 {
             } while (line != null && line != "");
         }
         catch (Exception e) {
-            System.out.println("Error in Prover2.processProblemList(): Error on reading file: " + file);
+            System.out.println("Error in ProverFOF.processProblemList(): Error on reading file: " + file);
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -334,8 +334,8 @@ public class Prover2 {
      */
     private static void runCategoryExperiment(HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
-        System.out.println("Prover2.runCategoryExperiment(): ");
-        System.out.println("Prover2.runCategoryExperiment(): opts: " + opts);
+        System.out.println("ProverFOF.runCategoryExperiment(): ");
+        System.out.println("ProverFOF.runCategoryExperiment(): opts: " + opts);
         ProofState.generateMatrixHeaderStatisticsString();
         File dir = new File(System.getenv("TPTP"));
         String[] children = dir.list();  // get the problem list files first.
@@ -391,7 +391,7 @@ public class Prover2 {
         state.filename = filename;
         state.conjecture = cs.getConjecture();
         state.evalFunctionName = eval.heuristics.name;
-        //System.out.println("# Prover2.processTestFile(): begin saturation");
+        //System.out.println("# ProverFOF.processTestFile(): begin saturation");
         try {
             state.res = state.saturate(timeout);  // <--- real proving starts here
         }
@@ -467,11 +467,11 @@ public class Prover2 {
     private static void runInteractive(HashMap<String,String> opts, ArrayList<SearchParams> evals) {
         
         if (evals == null || evals.size() < 1) {
-            System.out.println("Error in Prover2.runInteractive(): no evaluation functions");
+            System.out.println("Error in ProverFOF.runInteractive(): no evaluation functions");
             return;
         }
         if (evals.size() > 1) 
-            System.out.println("Warning in Prover2.runInteractive(): more than one evaluation function, using first only.");        
+            System.out.println("Warning in ProverFOF.runInteractive(): more than one evaluation function, using first only.");
         String command = "";
         System.out.println("Enter a TPTP query or statement, or '$exit' to quit.");
         System.out.println("Enter $query for query mode or $assert to add assertions.");
@@ -530,11 +530,11 @@ public class Prover2 {
             
         }
         catch (IOException pe) {
-            System.out.println("Error in Prover2.runInteractive(): IOException: " + pe.getMessage());
+            System.out.println("Error in ProverFOF.runInteractive(): IOException: " + pe.getMessage());
             pe.printStackTrace();
         }
         catch (ParseException pe) {
-            System.out.println("Error in Prover2.runInteractive(): Parse error reading command " + command + ": " + pe.getMessage());
+            System.out.println("Error in ProverFOF.runInteractive(): Parse error reading command " + command + ": " + pe.getMessage());
             pe.printStackTrace();
         }
     }
@@ -545,20 +545,20 @@ public class Prover2 {
      */
     public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
-        System.out.println("# Prover2.processTestFile(): filename: " + filename);
-        System.out.println("# Prover2.processTestFile(): opts: " + opts);
-        System.out.println("# Prover2.processTestFile(): evals: " + evals);
+        System.out.println("# ProverFOF.processTestFile(): filename: " + filename);
+        System.out.println("# ProverFOF.processTestFile(): opts: " + opts);
+        System.out.println("# ProverFOF.processTestFile(): evals: " + evals);
         int timeout = getTimeout(opts);
-        //System.out.println("# Prover2.processTestFile(): read file");
+        //System.out.println("# ProverFOF.processTestFile(): read file");
         ClauseSet cs = Formula.file2clauses(filename,timeout);
         System.out.println("hasConjecture: " + cs.hasConjecture + " isFOF: " + cs.isFOF);
-        //System.out.println("# Prover2.processTestFile(): read file completed");
+        //System.out.println("# ProverFOF.processTestFile(): read file completed");
         //if (cs != null) {
-        //    System.out.println("# Prover2.processTestFile(): SZSresult: " + cs.SZSresult);
-        //    System.out.println("# Prover2.processTestFile(): SZSexpected: " + cs.SZSexpected);
+        //    System.out.println("# ProverFOF.processTestFile(): SZSresult: " + cs.SZSresult);
+        //    System.out.println("# ProverFOF.processTestFile(): SZSexpected: " + cs.SZSexpected);
         //}
         if (cs.SZSresult.toLowerCase().contains("error")) {
-            //System.out.println("# Prover2.processTestFile(): read file error");
+            //System.out.println("# ProverFOF.processTestFile(): read file error");
             ProofState state = new ProofState(cs,evals.get(0));
             state.filename = filename;
             state.conjecture = cs.getConjecture();
@@ -567,19 +567,19 @@ public class Prover2 {
             return state;
         }
         if (opts.containsKey("eqax") && cs.containsEquality()) {
-            System.out.println("# Prover2() problem is equational");
+            System.out.println("# ProverFOF() problem is equational");
             cs = cs.addEqAxioms();
         }
         if (opts.containsKey("sine")) {
-        	System.out.println("# INFO in Prover2.processTestFile(): using sine");
+        	System.out.println("# INFO in ProverFOF.processTestFile(): using sine");
             SINE sine = new SINE(cs);
             HashSet<String> syms = cs.getConjectureSymbols();
             if (syms != null && syms.size() > 0) {
-            	System.out.println("# INFO in Prover2.processTestFile(): found conjecture symbols: " + syms);
+            	System.out.println("# INFO in ProverFOF.processTestFile(): found conjecture symbols: " + syms);
                 cs = sine.filter(syms);
             }
             else 
-            	System.out.println("# INFO in Prover2.processTestFile(): conjecture not found - can't use SINE: ");            
+            	System.out.println("# INFO in ProverFOF.processTestFile(): conjecture not found - can't use SINE: ");
         }
         if (opts.containsKey("verbose"))         	
             System.out.println("# Clauses:\n" + cs);        
@@ -620,7 +620,7 @@ public class Prover2 {
             ArrayList<SearchParams> evals = null;
             HashMap<String,String> opts = processOptions(args);  // canonicalize options
             if (opts == null) {
-                System.out.println("Error in Prover2.main(): bad command line options.");
+                System.out.println("Error in ProverFOF.main(): bad command line options.");
                 return;
             }
                 
@@ -641,9 +641,9 @@ public class Prover2 {
             else if (opts.containsKey("interactive"))
                 runInteractive(opts,evals);
             else {
-                System.out.println("# INFO in Prover2.main(): Processing file " + opts.get("filename"));
+                System.out.println("# INFO in ProverFOF.main(): Processing file " + opts.get("filename"));
                 ProofState state = processTestFile(opts.get("filename"),opts,evals);
-                //System.out.println("# INFO in Prover2.main(): state: " + state);
+                //System.out.println("# INFO in ProverFOF.main(): state: " + state);
                 if (state != null && state.res != null) {
                     printStateResults(opts,state,null);
                     //System.out.println("# SZS status Theorem for problem " + opts.get("filename"));

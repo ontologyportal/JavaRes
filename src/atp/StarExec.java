@@ -54,7 +54,7 @@ public class StarExec {
             } while (line != null && line != "");
         }
         catch (Exception e) {
-            System.out.println("Error in Prover2.readLineFile(): Error on reading file: " + file);
+            System.out.println("Error in ProverFOF.readLineFile(): Error on reading file: " + file);
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
@@ -193,18 +193,18 @@ public class StarExec {
     public static void compareOne(String file, ArrayList<SearchParams> evals ) {
 
         String args = "--eqax --proof --delete-tautologies --forward-subsumption --backward_subsumption --delete-tautologies --timeout 60";
-        HashMap<String,String> opts = Prover2.processOptions(args.split(" "));
+        HashMap<String,String> opts = ProverFOF.processOptions(args.split(" "));
         opts.put("filename",file);
 
         ArrayList<String> pyout = execPyRes(file);
         String pystats = processPyOut(pyout);
-        //System.out.println("# INFO in Prover2.compareOne(): pystats " + pystats);
+        //System.out.println("# INFO in ProverFOF.compareOne(): pystats " + pystats);
 
-        //System.out.println("# INFO in Prover2.compareOne(): Processing file " + opts.get("filename"));
-        ProofState state = Prover2.processTestFile(opts.get("filename"),opts,evals);
-        Prover2.setStateOptions(state,opts);
+        //System.out.println("# INFO in ProverFOF.compareOne(): Processing file " + opts.get("filename"));
+        ProofState state = ProverFOF.processTestFile(opts.get("filename"),opts,evals);
+        ProverFOF.setStateOptions(state,opts);
         String javaStats = state.SZSresult + " : " + state.time;
-        //System.out.println("# INFO in Prover2.compareOne(): javaStats " + javaStats);
+        //System.out.println("# INFO in ProverFOF.compareOne(): javaStats " + javaStats);
         compareResults(file, pystats + " | " + javaStats);
     }
 
@@ -307,7 +307,7 @@ public class StarExec {
         // category -> set of problem files
         HashMap<String,HashSet<String>> problemMap = new HashMap<>();
 
-        System.out.println("Prover2.runCategoryExperiment(): ");
+        System.out.println("ProverFOF.runCategoryExperiment(): ");
         ProofState.generateMatrixHeaderStatisticsString();
         File tptpdir = new File(System.getenv("TPTP"));
         String[] children = tptpdir.list();  // get the problem list files first.

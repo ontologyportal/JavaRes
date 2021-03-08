@@ -6,7 +6,17 @@ public class LitSelection {
 
     public enum LitSelectors {NONE, FIRST,SMALLEST,LARGEST,LEASTVARS,EQLEASTVARS}
 
-    /***************************************************************
+    public static HashMap<String,LitSelectors> LiteralSelectors;
+    static {
+        LiteralSelectors = new HashMap<>();
+        LiteralSelectors.put("first",LitSelectors.FIRST);
+        LiteralSelectors.put("smallest",LitSelectors.SMALLEST);
+        LiteralSelectors.put("largest",LitSelectors.LARGEST);
+        LiteralSelectors.put("leastvars",LitSelectors.LEASTVARS);
+        LiteralSelectors.put("eqleastvars",LitSelectors.EQLEASTVARS);
+    }
+
+    /********************************************************
      */
     public static ArrayList<Literal> firstLit(ArrayList<Literal> litlist) {
 

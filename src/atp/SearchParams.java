@@ -13,6 +13,8 @@ public class SearchParams {
     public boolean indexing;
     public LitSelection.LitSelectors literal_selection;
 
+    public String filename; // convenient to have this here to store all command line options
+
     /** ***************************************************************
      */
     public SearchParams() {

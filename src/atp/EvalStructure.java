@@ -18,6 +18,7 @@ MA  02111-1307 USA
 */
 package atp;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /** ***************************************************************
  * Represent a heuristic clause processing schema. The scheme
@@ -33,7 +34,16 @@ public class EvalStructure {
     public int current = 0; // index of the current evaluation function in eval_funs
     public int current_count = 0; // count of how many times more to use the current evaluation function
     public String name = "";
-    
+
+    public static HashMap<String,EvalStructure> GivenClauseHeuristics;
+    static {
+        GivenClauseHeuristics = new HashMap<>();
+        GivenClauseHeuristics.put("FIFO",ClauseEvaluationFunction.FIFOEval);
+        GivenClauseHeuristics.put("SymbolCount",ClauseEvaluationFunction.SymbolCountEval);
+        GivenClauseHeuristics.put("PickGiven5",ClauseEvaluationFunction.PickGiven5);
+        GivenClauseHeuristics.put("PickGiven2",ClauseEvaluationFunction.PickGiven2);
+    };
+
     /** ***************************************************************
      * Initialize this structure.
      * @param descriptor is an array of evaluation functions.

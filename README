@@ -52,7 +52,7 @@ java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
   org.junit.runner.JUnitCore atp.UnitTestAll
 
 java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
-  org.junit.runner.JUnitCore atp.ProverTest
+  org.junit.runner.JUnitCore atp.ProverFOFTest
 
 -------------------------
 Running JavaRes
@@ -61,19 +61,19 @@ Running JavaRes
 To run in verbose mode on a TPTP problem -
 
 java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
-  atp.Prover2 --eqax --proof --delete-tautologies --forward-subsumption
+  atp.ProverFOF --eqax --proof --delete-tautologies --forward-subsumption
   --backward_subsumption --delete-tautologies --timeout 600 -v $TPTP/Problems/PUZ/PUZ001+1.p
 
 ...and in quiet mode
 
 java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
-  atp.Prover2 --eqax --proof --delete-tautologies --forward-subsumption
+  atp.ProverFOF --eqax --proof --delete-tautologies --forward-subsumption
   --backward_subsumption --delete-tautologies --timeout 600 $TPTP/Problems/PUZ/PUZ001+1.p
 
 To get help that shows the list of available command line options -
 
   java -Xmx15G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
-    atp.Prover2 -h
+    atp.ProverFOF -h
 
 -------------------------
 More Useful Examples for Execution and Analysis

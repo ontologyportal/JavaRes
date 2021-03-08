@@ -19,9 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston,
 MA  02111-1307 USA 
 */
 
-import java.io.*;
 import java.util.*;
-import java.text.*;
 
 public class TestGenerator {
 
@@ -132,7 +130,7 @@ public class TestGenerator {
      */   
     public static ProofState processTestFile(String filename, HashMap<String,String> opts, ArrayList<SearchParams> evals) {
 
-        int timeout = Prover2.getTimeout(opts);
+        int timeout = ProverFOF.getTimeout(opts);
         ClauseSet cs = Formula.file2clauses(filename,timeout);
         if (opts.containsKey("verbose"))
             System.out.println(cs);
@@ -148,7 +146,7 @@ public class TestGenerator {
             cs.addClause(c);
             
             ProofState state = new ProofState(cs,evals.get(0)); 
-            Prover2.setStateOptions(state,opts);
+            ProverFOF.setStateOptions(state,opts);
             state.filename = filename;
             state.evalFunctionName = eval.name;  
             System.out.println("# INFO in TestGenerator.processTestFile(): start saturation");
@@ -169,9 +167,9 @@ public class TestGenerator {
         if (!Term.emptyString(args[0])) {
             ClauseEvaluationFunction.setupEvaluationFunctions();
             ArrayList<SearchParams> evals = null;
-            HashMap<String,String> opts = Prover2.processOptions(args);  // canonicalize options
+            HashMap<String,String> opts = ProverFOF.processOptions(args);  // canonicalize options
             if (opts == null) {
-                System.out.println("Error in Prover2.main(): bad command line options.");
+                System.out.println("Error in ProverFOF.main(): bad command line options.");
                 return;
             }                
             evals = new ArrayList<SearchParams>();
@@ -181,7 +179,7 @@ public class TestGenerator {
             
             ProofState state = processTestFile(opts.get("filename"),opts,evals);
             if (state != null) 
-                Prover2.printStateResults(opts, state,null);                
+                ProverFOF.printStateResults(opts, state,null);
         }
     }
 }

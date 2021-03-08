@@ -78,21 +78,36 @@ public class SimpleProofState {
         }
         return null;
     }
-    
+
     /** ***************************************************************
      * Main proof procedure. If the clause set is found
      * unsatisfiable, return the empty clause as a witness. Otherwise
-     * return None.  
+     * return null.
+     */
+    public Clause saturate(int seconds) {
+
+        long t1 = System.currentTimeMillis();
+        while (unprocessed.length() > 0) {
+            Clause res = processClause();
+            if (res != null)
+                return res;
+            if (seconds != 0 && ((System.currentTimeMillis() - t1) / 1000.0) > seconds)
+                return null;
+        }
+        return null;
+    }
+
+    /** ***************************************************************
+     * Main proof procedure. If the clause set is found
+     * unsatisfiable, return the empty clause as a witness. Otherwise
+     * return null.
      */
     public Clause saturate() {
 
         while (unprocessed.length() != 0) {
-            //System.out.println("INFO in SimpleProofState.saturate(): unprocessed clauses: " + unprocessed);
             Clause res = processClause();
             if (res != null)
                 return res;
-            //else
-                //return null;
         }
         return null;
     }
