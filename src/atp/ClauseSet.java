@@ -336,6 +336,7 @@ public class ClauseSet {
                 addClause(clause);
             }
         }
+        SZSexpected = lex.SZS;
         return count;
     }
     

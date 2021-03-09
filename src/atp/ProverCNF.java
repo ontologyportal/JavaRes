@@ -32,6 +32,8 @@ import java.util.*;
 
 public class ProverCNF {
 
+    public static int timeout = 600;
+
     public static String doc = " -h\n" +
             "--help\n" +
             "  Print this help.\n" +
@@ -132,7 +134,7 @@ public class ProverCNF {
 
         StringBuilder sb = new StringBuilder();
         ProofState state = new ProofState(problem,sp);
-        Clause res = state.saturate();
+        Clause res = state.saturate(timeout);
 
         if (res != null) {
             sb.append("# SZS status Unsatisfiable\n");

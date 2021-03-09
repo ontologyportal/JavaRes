@@ -383,7 +383,7 @@ public class Lexer {
         Matcher m = value.matcher(line);
         //System.out.println("INFO in processComment(): comment: " + line);
         if (m.lookingAt()) {
-            //System.out.println("INFO in processComment(): found match: " + m.group(1));
+            //System.out.println("INFO in Lexer.processComment(): found match: " + m.group(1));
         	if (m.group(1).indexOf("Unsatisfiable") > -1 || m.group().indexOf("Theorem") > -1) 
         		SZS = m.group(1);
         	if (m.group(1).indexOf("Satisfiable") > -1 || m.group().indexOf("CounterSatisfiable") > -1) 

@@ -38,6 +38,7 @@ public class SimpleProofState {
 
     ClauseSet unprocessed = new ClauseSet();                                    
     ClauseSet processed = new ClauseSet();
+    public static boolean verbose = false;
 
     /** ***************************************************************
      * Initialize the proof state with a set of clauses.  
@@ -55,7 +56,8 @@ public class SimpleProofState {
 
         Clause given_clause = unprocessed.extractFirst();
         given_clause = given_clause.freshVarCopy();
-        System.out.println("#" + given_clause.toStringJustify());
+        if (verbose)
+            System.out.println("#" + given_clause.toStringJustify());
         if (given_clause.isEmpty())    // We have found an explicit contradiction
             return given_clause;
         
@@ -111,6 +113,4 @@ public class SimpleProofState {
         }
         return null;
     }
-    
-
 }

@@ -34,6 +34,7 @@ import java.util.Arrays;
 
 public class ProverSimple {
 
+    public static int timeout = 600;
     public static String doc = " -h\n" +
             "--help\n" +
             "  Print this help.\n";
@@ -70,6 +71,7 @@ public class ProverSimple {
                 if (fr != null) {
                     Lexer lex = new Lexer(file);
                     problem.parse(lex);
+                    problem.SZSexpected = lex.SZS;
                     return problem;
                 }
             }
@@ -88,7 +90,7 @@ public class ProverSimple {
 
         StringBuilder sb = new StringBuilder();
         SimpleProofState state = new SimpleProofState(problem);
-        Clause res = state.saturate(1);
+        Clause res = state.saturate(timeout);
 
         if (res != null)
             sb.append("# SZS status Unsatisfiable\n");
