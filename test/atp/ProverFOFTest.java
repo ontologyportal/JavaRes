@@ -56,6 +56,7 @@ public class ProverFOFTest {
 
         System.out.println("# INFO in ProverFOF.main(): Processing file " + filename);
         ProofState state = ProverFOF.processTestFile(filename,opts,evals);
+        ProofState.verbose = false;
         //System.out.println("# INFO in ProverFOF.main(): state: " + state);
         if (state != null && state.res != null) {
             ProverFOF.printStateResults(opts,state,null);
@@ -95,10 +96,10 @@ public class ProverFOFTest {
                 "COM/COM002-1.p",   // cnf
                 "COM/COM002-2.p",   // cnf
                 "CSR/CSR074+1.p",   // fof
-                "CSR/CSR114+6.p",   // fof
+                // "CSR/CSR114+6.p",   // fof, succeeds but too slow for a unit test
                 "FLD/FLD006-1.p",   // cnf
                 "GRP/GRP012+5.p",
-                "GRP/GRP182-1.p",
+                // "GRP/GRP182-1.p",
                 "GRP/GRP182-3.p",
                 "GRP/GRP188-1.p",
                 "GRP/GRP188-2.p",
@@ -106,13 +107,13 @@ public class ProverFOFTest {
                 "GRP/GRP541-1.p",
                 "KRS/KRS194+1.p",
                 "LCL/LCL662+1.001.p",
-                "MGT023+1.p",
-                "SEU219+1.p",
+                "MGT/MGT023+1.p",
+                "SEU/SEU219+1.p",
                 "NLP/NLP001-1.p",
                 "NLP/NLP220+1.p",
                 "NLP/NLP220-1.p",
                 "NLP/NLP221-1.p",
-                "NLP/NLP225+1.p",
+                // "NLP/NLP225+1.p", // fof, succeeds but too slow for a unit test
                 "NLP/NLP226-1.p",
                 "NLP/NLP227-1.p",
                 "NLP/NLP228-1.p",

@@ -34,8 +34,8 @@ public class SearchParamsTest {
 
         SearchParams pm = new SearchParams();
         assertEquals(pm.heuristics, ClauseEvaluationFunction.PickGiven5);
-        assertEquals(pm.delete_tautologies, false);
-        assertEquals(pm.forward_subsumption, false);
-        assertEquals(pm.backward_subsumption,false);
+        assertEquals(pm.delete_tautologies, true);
+        assertEquals(pm.forward_subsumption, true);
+        assertEquals(pm.backward_subsumption,true);
     }
 }

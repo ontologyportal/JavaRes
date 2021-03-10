@@ -49,8 +49,7 @@ public class ClauseSet {
             this.addClause(new Clause(c));
     }
 
-    /**
-     * **************************************************************
+    /***************************************************************
      * Return a string representation of the clause set.
      */
     public String toString() {
@@ -61,8 +60,8 @@ public class ClauseSet {
         return sb.toString();
     }
 
-    /**
-     * **************************************************************
+    /***************************************************************
+     * Ignore clause order
      */
     public boolean equals(Object o) {
 
@@ -79,8 +78,7 @@ public class ClauseSet {
         return true;
     }
 
-    /**
-     * **************************************************************
+    /***************************************************************
      */
     public void sort() {
 
@@ -89,8 +87,7 @@ public class ClauseSet {
         Collections.sort(clauses);
     }
 
-    /**
-     * **************************************************************
+    /****************************************************************
      */
     public boolean containsEquality() {
 
@@ -100,8 +97,7 @@ public class ClauseSet {
         return false;
     }
 
-    /**
-     * **************************************************************
+    /****************************************************************
      * Return number of clauses in set.
      */
     public int length() {

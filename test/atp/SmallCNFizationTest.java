@@ -873,6 +873,7 @@ public class SmallCNFizationTest {
      * Compare the simple clausification in R&N AI text implemented in Clausify
      * with SmallCNF.
      */
+    @Ignore
     @Test
     public void testCompare() {
 
@@ -890,7 +891,7 @@ public class SmallCNFizationTest {
                 SmallCNFization.countersReset();
                 Formula fCNF = SmallCNFization.wFormulaCNF(wf);
                 ArrayList<Clause> smallCNFclauses = SmallCNFization.formulaCNFSplit(fCNF);
-                //System.out.println("Small CNF clauses: " + smallCNFclauses);
+                System.out.println("Small CNF clauses: " + smallCNFclauses);
                 ClauseSet smallCNFSet = new ClauseSet(smallCNFclauses);
                 smallCNFSet.sort();
                 smallCNFSet.normalizeVars();

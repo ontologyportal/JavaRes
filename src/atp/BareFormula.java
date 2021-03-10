@@ -1262,7 +1262,7 @@ public class BareFormula {
      */
     public static BareFormula parse(Lexer lex) throws IOException, ParseException {
 
-        if (level > 20) { // trap pathological cases of nested formulas
+        if (level > 25) { // trap pathological cases of nested formulas
             System.out.println("Error in BareFormula.parse(): too much nesting at line: " + lex.pos + " in " + lex.line);
             return null;
         }

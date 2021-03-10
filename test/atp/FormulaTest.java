@@ -48,7 +48,7 @@ public class FormulaTest {
             Lexer lex = new Lexer(wformulas);
             Formula f1 = Formula.parse(lex);
             System.out.println("Result 1: " + f1);
-            String expected = "fof(small,axiom,(![X]:(a(x)|(~a=b)))).";
+            String expected = "fof(small,axiom,(![X]:(a(x)|(~a=b))),input).";
             System.out.println("expected: " + expected);
             if (expected.equals(f1.toString()))
                 System.out.println("success");
@@ -59,7 +59,7 @@ public class FormulaTest {
 
             Formula f2 = Formula.parse(lex);
             System.out.println("Result 2: " + f2);
-            expected = "fof(complex,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))).";
+            expected = "fof(complex,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X)),input).";
             System.out.println("expected: " + expected);
             if (expected.equals(f2.toString()))
                 System.out.println("success");
@@ -70,7 +70,7 @@ public class FormulaTest {
 
             Formula f3 = Formula.parse(lex);
             System.out.println("Result 3: " + f3);
-            expected = "fof(clean,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))).";
+            expected = "fof(clean,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X)),input).";
             System.out.println("expected: " + expected);
             if (expected.equals(f3.toString()))
                 System.out.println("success");
@@ -81,7 +81,7 @@ public class FormulaTest {
 
             Formula f4 = Formula.parse(lex);
             System.out.println("Result 4: " + f4);
-            expected = "fof(queens_p,axiom,(queens_p=>(![I]:(![J]:((((le(s(n0),I)&le(I,n))&le(s(I),J))&le(J,n))=>((~p(I)=p(J)&~plus(p(I),I)=plus(p(J),J))&~minus(p(I),I)=minus(p(J),J))))))).";
+            expected = "fof(queens_p,axiom,(queens_p=>(![I]:(![J]:((((le(s(n0),I)&le(I,n))&le(s(I),J))&le(J,n))=>((~p(I)=p(J)&~plus(p(I),I)=plus(p(J),J))&~minus(p(I),I)=minus(p(J),J)))))),input).";
             System.out.println("expected: " + expected);
             if (expected.equals(f4.toString()))
                 System.out.println("success");
@@ -115,7 +115,8 @@ public class FormulaTest {
             Lexer lex = new Lexer(testeq);
             Clausifier.counterReset();
             ClauseSet cs = Formula.lexer2clauses(lex);
-            String expected1 = "cnf(cnf0,axiom,a=b).cnf(cnf1,axiom,p(a)).cnf(cnf2,axiom,f(VAR0)=b).cnf(cnf3,conjecture,p(f(skf2))).";
+            // note that conjecture will become negated_conjecture in Formula.command2clauses()
+            String expected1 = "cnf(cnf0,axiom,a=b).cnf(cnf1,axiom,p(a)).cnf(cnf2,axiom,f(VAR0)=b).cnf(cnf3,negated_conjecture,~p(f(VAR1))).";
             System.out.println("INFO in testEqAxioms() first result: " + cs.toString().replaceAll("\n",""));
             System.out.println("INFO in testEqAxioms() expected: " + expected1);
             if (expected1.equals(cs.toString().replaceAll("\n","")))
@@ -123,12 +124,13 @@ public class FormulaTest {
             else
                 System.out.println("fail");
             assertEquals(expected1,cs.toString().replaceAll("\n",""));
+
             cs = cs.addEqAxioms();
             System.out.println("testEqAxioms(): Second Result: " + cs);
             String expected = "cnf(cnf0,axiom,a=b).\n" +
                     "cnf(cnf1,axiom,p(a)).\n" +
                     "cnf(cnf2,axiom,f(VAR0)=b).\n" +
-                    "cnf(cnf3,conjecture,p(f(skf2))).\n" +
+                    "cnf(cnf3,negated_conjecture,~p(f(VAR1))).\n" +
                     "cnf(reflexivity,axiom,X=X).\n" +
                     "cnf(symmetry,axiom,~X=Y|Y=X).\n" +
                     "cnf(transitivity,axiom,~X=Y|~Y=Z|X=Z).\n" +
@@ -254,7 +256,7 @@ public class FormulaTest {
         try {
             String testeq = "fof(axiom1,input,(p(X)=>q(X))). " +
                     "fof(axiom2,input,p(a))." +
-                    "fof(conj,conjecture,?[X]:q(x)).";
+                    "fof(conj,conjecture,?[X]:q(X)).";
             Lexer lex = new Lexer(testeq);
             ClauseSet cs = Formula.lexer2clauses(lex);
             System.out.println("testProving1(): clauses: " + cs);
@@ -263,11 +265,11 @@ public class FormulaTest {
             System.out.println("testProving1(): result: " + result.toString());
             System.out.println("done");
             System.out.println("expecting to end with 'plain,q(a)).'");
-            if (result.toString().trim().endsWith("plain,q(a))."))
+            if (result.toString().trim().contains("plain,q(a))."))
                 System.out.println("Success!");
             else
                 System.out.println("Fail");
-            assertTrue(result.toString().trim().endsWith("plain,q(a))."));
+            assertTrue(result.toString().trim().contains("plain,q(a))."));
         }
         catch (Exception e) {
             System.out.println("Error in in FormulaTest.testProving1()");
@@ -286,7 +288,7 @@ public class FormulaTest {
         try {
             String testeq = "fof(axiom1,input,(p(X)=>q(X))). " +
                     "fof(axiom2,input,p(a))." +
-                    "fof(conj,conjecture,?[X]:q(X)).";
+                    "fof(conj,negated_conjecture,?[X]:q(X)).";
             Lexer lex = new Lexer(testeq);
             ClauseSet cs = Formula.lexer2clauses(lex);
             System.out.println(cs);

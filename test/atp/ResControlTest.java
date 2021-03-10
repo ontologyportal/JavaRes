@@ -120,7 +120,7 @@ public class ResControlTest {
             System.out.println("success");
         else
             System.out.println("fail");
-        assertEquals(7,res.clauses.size());
+        assertEquals(8,res.clauses.size());
     }
 
     /** ***************************************************************
@@ -131,6 +131,7 @@ public class ResControlTest {
 
         System.out.println("---------------------");
         System.out.println("testFactoring()");
+        Clause.resetCounter();
         ClauseSet res = ResControl.computeAllFactors(fclause);
         String expected = "cnf(c0,plain,p(a)|~q|p(Y)).\ncnf(c1,plain,p(Y)|~q|p(a)).\ncnf(c2,plain,p(X)|~q|p(a)|p(Y)).\ncnf(c3,plain,p(X)|~q|p(a)).\n";
         System.out.println("should see: " + expected);

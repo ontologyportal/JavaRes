@@ -35,8 +35,7 @@ public class SubsumptionTest {
     public static Clause c3 = null;
     public static Clause c4 = null;
     public static Clause c5 = null;
-    public static Clause c10 = null;
-    public static Clause c11 = null;
+
     /** ***************************************************************
      * Setup function for resolution testing
      */
@@ -47,9 +46,8 @@ public class SubsumptionTest {
                 "cnf(axiom, c2, p(a)).\n" +
                 "cnf(axiom, c3, p(X)).\n" +
                 "cnf(axiom, c4, p(a)|q(f(X))).\n" +
-                "cnf(axiom, c5, p(a)|q(f(b))|p(X)).\n" +
-                "cnf(clause9,negated_conjecture,ssSkC0|chevy(skc12)).\n" +
-                "cnf(clause25,negated_conjecture,ssSkC0|in(skc14,skc15)).\n";
+                "cnf(axiom, c5, p(a)|q(f(b))|p(X)).\n";
+
 
         Lexer lex = new Lexer(spec);
         c1 = Clause.parse(lex);
@@ -62,9 +60,6 @@ public class SubsumptionTest {
         System.out.println(c4);
         c5 = Clause.parse(lex);
         System.out.println(c5);
-
-        c10 = Clause.parse(lex);
-        c11 = Clause.parse(lex);
     }
 
     /** ***************************************************************
@@ -95,19 +90,5 @@ public class SubsumptionTest {
         assertTrue(Subsumption.subsumes(c4,c5));
         System.out.println(c5 + " does not subsume " + c4 + " = " + !Subsumption.subsumes(c5,c4));
         assertTrue(!Subsumption.subsumes(c5,c4));
-    }
-
-
-    /** ***************************************************************
-     */
-    @Test
-    public void testSubsumption2() {
-
-        System.out.println("--------------------");
-        System.out.println("testSubsumption2");
-        System.out.println(c10);
-        System.out.println(c11);
-        System.out.println("Subsumes: " + Subsumption.subsumes(c10,c11));
-        assertTrue(Subsumption.subsumes(c10,c11));
     }
 }

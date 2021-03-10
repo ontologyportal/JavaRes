@@ -117,6 +117,7 @@ public class ProofStateTest {
         System.out.println("---------------------");
         System.out.println("INFO in ProofStateTest.testProcessClause()");
         try {
+            Clause.resetCounter();
             Lexer lex = new Lexer(input);
             ClauseSet cs = Formula.lexer2clauses(lex);
             System.out.println("input: " + cs);
@@ -132,14 +133,15 @@ public class ProofStateTest {
             else
                 System.out.println("fail : # SZS GaveUp");
             System.out.println("INFO in in ProofStateTest.testProcessClause(): done processing");
-            String actual = state.unprocessed.get(0).toString();
+            String actual = state.unprocessed.get(0).normalizeVarCopy().toString();
             System.out.println("actual: " + actual);
-            String expected = "cnf(c0,plain,~street(X1)|~way(X1)|~lonely(X1)|~old(X2)|~dirty(X2)|~white(X2)|~car(X2)|~chevy(X2)|~event(skc14)|~barrel(skc14,X2)|~down(skc14,X1)|~city(skc15)|~hollywood(skc15)|ssSkC0).";
+            String expected = "cnf(c0,plain,~street(VAR0)|~way(VAR0)|~lonely(VAR0)|~old(VAR1)|~dirty(VAR1)|~white(VAR1)|~car(VAR1)|~chevy(VAR1)|~event(skc14)|~barrel(skc14,VAR1)|~down(skc14,VAR0)|~city(skc15)|~hollywood(skc15)|ssSkC0).";
             System.out.println("expected: " + expected);
             if (expected.equals(actual))
                 System.out.println("success ");
             else
                 System.out.println("fail");
+            state.verbose = false;
             assertEquals(expected,actual);
         }
         catch (Exception e) {

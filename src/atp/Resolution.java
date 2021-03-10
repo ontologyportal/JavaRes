@@ -55,8 +55,6 @@ import java.util.*;
 import java.text.*;
 import java.lang.Math.*;
 
-import static atp.ProofState.verbose;
-
 public class Resolution {
 
     /** ***************************************************************
@@ -164,7 +162,7 @@ public class Resolution {
         res.removeDupLits();
         res.rationale = "factoring";
         res.support.add(clause.name);
-        if (verbose) {
+        if (ProofState.verbose) {
             System.out.println("INFO in Resolution.factor(): result Clause: " + res.printHighlight());
             System.out.println("INFO in Resolution.factor(): input Clause: " + clause);
         }

@@ -127,15 +127,15 @@ public class ProverCNFTest {
              //   "NLP/NLP001-1.p",   // cnf, but too hard for ProverCNF
              //   "NLP/NLP220+1.p",   // fof
                 "NLP/NLP220-1.p",   // cnf
-                "NLP/NLP221-1.p",   // cnf
+             //   "NLP/NLP221-1.p",   // cnf, succeeds but too slow for a unit test
              //   "NLP/NLP225+1.p",   // fof
                 "NLP/NLP226-1.p",   // cnf
                 "NLP/NLP227-1.p",   // cnf
                 "NLP/NLP228-1.p",   // cnf
               //  "PUZ/PUZ001+1.p",   // fof
                 "PUZ/PUZ001-1.p",   // cnf
-                "PUZ/PUZ001-3.p",   // cnf
-                "PUZ/PUZ002-1.p",   // cnf
+              //  "PUZ/PUZ001-3.p",   // cnf, succeeds but too slow for a unit test
+                "PUZ/PUZ002-1.p",  // cnf
                 "PUZ/PUZ003-1.p"};   // cnf
              //   "SYN/SYN060+1.p",   // fof
              //   "SYN/SYN954+1.p"  // fof

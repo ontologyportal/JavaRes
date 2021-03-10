@@ -143,6 +143,7 @@ public class Formula extends Derivable {
 
         Formula f = new Formula(bform,type);
         f.name = name;
+        f.setDerivation(new Derivation("input",null,null));
         return f;
     }
 
