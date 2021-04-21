@@ -23,6 +23,7 @@ package atp;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 
+import java.nio.file.Paths;
 import java.util.*;
 import static org.junit.Assert.*;
 
@@ -76,7 +77,9 @@ public class ClauseSetTest {
 
         System.out.println("---------------------");
         System.out.println("INFO in testClauseSetChanges()");
-        ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/ontology/TPTP-v7.3.0/Problems/PUZ/PUZ001-1.p");
+        String tptpHome = System.getenv("TPTP");
+        String clausePath = Paths.get(tptpHome, "Problems", "PUZ", "PUZ001-1.p").toString();
+        ClauseSet clauses = ClauseSet.parseFromFile(clausePath);
         System.out.println("Clauses: " + clauses);
         int oldlen = clauses.clauses.size();
         Clause c = clauses.clauses.get(0);

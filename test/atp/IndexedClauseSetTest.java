@@ -23,6 +23,7 @@ package atp;
 import org.junit.*;
 
 import java.io.StringReader;
+import java.nio.file.Paths;
 import java.util.*;
 import static org.junit.Assert.*;
 public class IndexedClauseSetTest {
@@ -39,7 +40,9 @@ public class IndexedClauseSetTest {
         //Test that clause set initialization and parsing work.
 
         System.out.println("---------------------");
-        ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
+        String tptpHome = System.getenv("TPTP");
+        String clausePath = Paths.get(tptpHome, "Problems", "PUZ", "PUZ001-1.p").toString();
+        ClauseSet clauses = ClauseSet.parseFromFile(clausePath);
         System.out.println("testIndexedClauseSetChanges() clauses: \n" + clauses);
         IndexedClauseSet iclauses = new IndexedClauseSet();
         for (Clause clau : clauses.clauses)
@@ -64,7 +67,9 @@ public class IndexedClauseSetTest {
     public void testResIndexedPositions() {
 
         System.out.println("---------------------");
-        ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
+        String tptpHome = System.getenv("TPTP");
+        String clausePath = Paths.get(tptpHome, "Problems", "PUZ", "PUZ001-1.p").toString();
+        ClauseSet clauses = ClauseSet.parseFromFile(clausePath);
         System.out.println("testResIndexedPositions() clauses: \n" + clauses);
         IndexedClauseSet iclauses = new IndexedClauseSet();
         for (Clause clau : clauses.clauses)
