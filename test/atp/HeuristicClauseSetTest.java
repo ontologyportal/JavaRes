@@ -23,6 +23,7 @@ package atp;
 import org.junit.*;
 
 import java.io.StringReader;
+import java.nio.file.Paths;
 import java.util.*;
 import static org.junit.Assert.*;
 public class HeuristicClauseSetTest {
@@ -39,7 +40,9 @@ public class HeuristicClauseSetTest {
     public void testClauseSetChanges() {
 
         System.out.println("---------------------");
-        ClauseSet clauses = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
+        String tptpHome = System.getenv("TPTP");
+        String clausePath = Paths.get(tptpHome, "Problems", "PUZ", "PUZ001-1.p").toString();
+        ClauseSet clauses = ClauseSet.parseFromFile(clausePath);
         System.out.println("testClauseSetChanges() clauses: \n" + clauses);
         int oldlen = clauses.length();
         Clause c = clauses.get(0);
@@ -62,7 +65,9 @@ public class HeuristicClauseSetTest {
 
         System.out.println("---------------------");
         System.out.println("testClauseSetHeuristics");
-        ClauseSet input = ClauseSet.parseFromFile("/home/apease/EProver/fod_pi/PYTHON/EXAMPLES/PUZ001-1.p");
+        String tptpHome = System.getenv("TPTP");
+        String clausePath = Paths.get(tptpHome, "Problems", "PUZ", "PUZ001-1.p").toString();
+        ClauseSet input = ClauseSet.parseFromFile(clausePath);
         System.out.println("file input: " + input);
         System.out.println();
         ClauseEvaluationFunction.setupEvaluationFunctions();
