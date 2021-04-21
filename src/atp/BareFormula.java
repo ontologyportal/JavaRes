@@ -371,7 +371,7 @@ public class BareFormula {
         //System.out.println("BareFormula.isLiteralDisjunction(): op: " + op);
         if (isLiteral())
             return true;
-        if (op == "|") {
+        if (op.equals("|")) {
             boolean isLitDis1 = false;
             if (child1 != null)
                 isLitDis1 = child1.isLiteralDisjunction();
@@ -396,9 +396,9 @@ public class BareFormula {
         //System.out.println("BareFormula.isClauseConjuction(): op: " + op);
         if (isLiteral())
             return true;
-        if (op == "|")
+        if (op.equals("|"))
             return isLiteralDisjunction();
-        if (op == "&")
+        if (op.equals("&"))
             return child1.isClauseConjunction() &&
                    child2.isClauseConjunction();
         return false;
@@ -411,7 +411,7 @@ public class BareFormula {
 
         //System.out.println("BareFormula.isCNF(): this: " + toStructuredString());
         //System.out.println("BareFormula.isCNF(): op: " + op);
-        if (op == "!")
+        if (op.equals("!"))
             return child2.isCNF();
         return isClauseConjunction();   
     }
