@@ -64,8 +64,9 @@ public class ClauseSet {
      * Ignore clause order
      */
     public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        assert !o.getClass().getName().equals("atp.ClauseSet") : "ClauseSetequals() passed object not of type ClauseSet";
         ClauseSet oc = (ClauseSet) o;
         if (clauses.size() != oc.clauses.size())
             return false;
