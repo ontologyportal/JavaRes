@@ -140,7 +140,7 @@ handling via automatic addition of equality axioms.
 To see whether PyRes provided enough structure to learn how to write a
 theorem prover, we developed JavaRes, a prover modelled on PyRes, but
 written in Java. We also used JavaRes as a basis to show implementation of several
-extensions to a baisc prover.  We believe that the lessons learned in the overall
+extensions to a basic prover.  We believe that the lessons learned in the overall
 process, now incorporated into the two provers, provide a suitable
 platform for ATP education.
 
@@ -208,11 +208,9 @@ is more verbose than Python.  Verbosity is a double-edged sword. Short code is e
 read and to understand, as long as it is not cryptic. On the other
 hand more verbose code may be more self documenting. Efforts to teach
 ATP from these two systems may tell us which is better for students.
-% FIXME: I don't understant what you want to say here, and if I don't,
-% then other readers won't eiter ;-).
-% fixed
-% and in part due to the implementation of analysis code in Java
-% rather than in shell scripts with PyRes
+JavaRes also implements its analysis code in Java
+rather than in shell scripts as with PyRes
+
 \textit{Second}, while PyRes is intended as a fairly minimal example of an ATP system, we
 use JavaRes as a springboard for implementing additional features
 and alternative algorithms.
@@ -226,10 +224,6 @@ refactoring and reimplementation could reduce this
 discrepancy, which points simply to inexperience being at least partly
 the cause of more verbose and less elegant code.
 
-% However, code verbosity may be an advantage for educational purposes.
-% Maybe FIXME. Verbosity is a two-edged sword. Short code is easier to
-% read and to understand, as long as it is not cryptic.
-% fixed
 
 \section{Data Structure}
 
@@ -360,7 +354,7 @@ never be considered.  The most successful simple strategy turns out to
 be a combination of the two, where the smallest symbol count is tried
 five times and then FIFO is tried once.  This results in a strong bias
 to smaller clauses while ensuring that all clauses will eventually be
-tried.  JavaRes also supports a more conservative stregy of two tries
+tried.  JavaRes also supports a more conservative strategy of two tries
 with the smallest symbol for every one try of the FIFO stack.  Other
 combinations are possible with a small change to the code.
 
