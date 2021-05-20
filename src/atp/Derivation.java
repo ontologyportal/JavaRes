@@ -20,9 +20,26 @@ public class Derivation extends Derivable {
     /** ***************************************************************
      */
     public Derivation(String op, ArrayList<Derivable> par, String stat) {
+
+        super("",null);
         operator = op;
         parents =  par;
         status = stat;
+    }
+
+    /** ***************************************************************
+     */
+    public Derivation deepCopy() {
+
+        Derivation result = new Derivation();
+        result.operator = this.operator;
+        result.status = this.status;
+        result.parents = new ArrayList<Derivable>();
+        for (Derivable d : parents)
+            result.parents.add(d.deepCopy());
+        result.derivation = this.derivation.deepCopy();
+        result.refCount = this.refCount;
+        return result;
     }
 
     /** ***************************************************************

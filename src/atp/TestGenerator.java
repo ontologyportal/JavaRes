@@ -105,7 +105,7 @@ public class TestGenerator {
             }
             if (count > 1000) {
                 count = 0;
-                Clause given_clause = state.unprocessed.selectBest();
+                Clause given_clause = state.unprocessed.extractBest();
                 System.out.println("# Checking: " + given_clause.toStringDiag());
                 if (given_clause.depth > depthLimit) {
                     given_clause = state.unprocessed.extractBest();

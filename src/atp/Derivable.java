@@ -40,6 +40,17 @@ public class Derivable {
 
     /** ***************************************************************
      */
+    public Derivable deepCopy() {
+
+        Derivable result = new Derivable();
+        result.derivation = this.derivation.deepCopy();
+        result.refCount = this.refCount;
+        result.name = this.name;
+        return result;
+    }
+
+    /** ***************************************************************
+     */
     public static void enableDerivationOutput() {
 
         Derivable.printDerivation = true;

@@ -72,10 +72,13 @@ public class Formula extends Derivable {
     /** ***************************************************************
      * Return a string representation of the formula.
      */
+    @Override
     public Formula deepCopy() {
 
         Formula f = new Formula(this.form.deepCopy(),this.type);
         f.name = this.name;
+        f.derivation = this.derivation.deepCopy();
+        f.refCount = this.refCount;
         return f;
     }
 
@@ -84,7 +87,7 @@ public class Formula extends Derivable {
      */
     public String toString() {
 
-        return "fof(" + name + "," + type + "," + form + "," + derivation + ").";
+        return "fof(" + name + "," + type + "," + form + "," + strDerivation() + ").";
     }
     
     /** ***************************************************************

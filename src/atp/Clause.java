@@ -63,7 +63,7 @@ public class Clause extends Derivable implements Comparable {
      */
     public Clause(Clause c) {
 
-        super(c.name,null);
+        super(c.name,null);  // Derivable
         for (Literal l : c.literals)
             literals.add(new Literal(l));
         this.name = c.name;
@@ -118,7 +118,8 @@ public class Clause extends Derivable implements Comparable {
             
         StringBuffer result = new StringBuffer();
         result.append("cnf(" + name + "," + type + "," + 
-                Literal.literalList2String(literals) + ").");
+                Literal.literalList2String(literals) + "," +
+                strDerivation() + ").");
         return result.toString();
     }
 
@@ -245,6 +246,8 @@ public class Clause extends Derivable implements Comparable {
             result.literals.add(literals.get(i).deepCopy());
         if (subst != null)
             result.subst = subst.deepCopy();
+        result.derivation = this.derivation.deepCopy();
+        result.refCount = this.refCount;
         return result;
     }
     

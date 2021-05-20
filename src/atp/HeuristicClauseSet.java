@@ -105,7 +105,7 @@ public class HeuristicClauseSet extends ClauseSet {
     /** ***************************************************************
      * Return the clause with the lowest weight according
      * to the selected heuristic. If the set is empty, return None. 
-     */    
+
     public Clause selectBestByEval(int heuristic_index) {
 
         if (clauses.size() > 0) {
@@ -131,7 +131,7 @@ public class HeuristicClauseSet extends ClauseSet {
     /** ***************************************************************
      * Return the next "best" clause according to the 
      * evaluation scheme.  Don't increment to the next eval function.
-     */    
+
     public Clause selectBest() {
 
         Clause c = selectBestByEval(eval_functions.nextEval());
@@ -140,6 +140,6 @@ public class HeuristicClauseSet extends ClauseSet {
             eval_functions.current = eval_functions.eval_vec.size() - 1;
         return c;
     }
-    
+    */
 
 }
