@@ -1,0 +1,101 @@
+
+<!-- saved from url=(0056)http://www.tptp.org/CASC/28/SystemDescriptionSchema.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body><hr><!------------------------------------------------------------------------>
+<h2>JavaRes v1.3</h2>
+A. Pease (S. Schulz)<br>
+Articulate Software, USA<br>
+
+<h3>Architecture</h3>
+
+JavaRes v1.3 [Pease2021] is a simple, resolution-based theorem prover, primarily
+created for teaching theorem proving. It implements the
+basic calculus from Robinson's seminal paper [Ro65], extended
+with negative literal selection and some redundancy elimination as
+described by Bachmair and Ganziner [BnG]. The core is a
+given-clause based clausal saturation algorithm. The system also
+supports full first-order input via clausification, and equality
+handling via automatic addition of equality axioms.
+
+</p><h3>Strategies</h3>
+
+JavaRes includes all the optimization strategies in PyRes.  For clause
+selection it implements two methods, which are combined.  The most
+basic is a first-in-first-out (FIFO) strategy that will eventually try every
+clause.  A symbol-counting strategy
+picks the clause with the fewest symbols.  This results in a strong bias
+to smaller clauses while ensuring that all clauses will eventually be
+tried.
+
+JavaRes supports indexing for subsumption and resolution.  Subsumption
+removes clauses from the set of clauses to be processed (called
+``forward subsumption'') and from the set already processed (``backwards
+subsumption'') thereby decreasing the problem search space.  More
+general clauses subsume more specific ones.
+
+Indexing is used and employs
+records with signs and predicate symbols only, so that potential clauses can
+be accepted or rejected more rapidly than attempting unification.
+
+JavaRes also implements PyRes' approach to literal selection.
+Largest literal selection is the default strategy.
+
+For large theories, JavaRes has implemented the SInE
+algorithm [Hoder] although performance on the LTB problems
+is so poor for this simple prover, compared to modern provers such as E
+and Vampire that we do not enter JavaRes in that division.
+
+
+<h3>Implementation</h3>
+
+JavaRes is largely a re-implementation of PyRes, but in Java, and with
+additional features that are not part of the core inference algorithm.
+Additional features include implementation of SInE, parsing of SUO-KIF
+syntax, graphical proof output using GraphViz.  The implementation is
+designed to be straightforward and doesn't include any of the newer
+Java language features such as lambda expressions.
+
+
+<pre>    <a href="https://github.com/ontologyportal/JavaRes">https://github.com/ontologyportal/JavaRes</a></pre>
+
+<h3>Expected Competition Performance</h3>
+
+JavaRes is faster than PyRes simply due to the implementation language.
+It solves a few more problems than PyRes but is significantly faster on
+problems that both provers solve.  It is inferior compared to most modern
+superposition-based provers.
+It is expected to perform reasonably well on problems without equality.
+
+<h3>References</h3>
+<dl>
+<dt> Pease2021
+</dt><dd> Pease, A., Schulz, S., (2021),
+     <strong>Learning Theorem Proving by Example - Implementing JavaRes</strong>,
+     submitted to ThEdu.
+</dd>
+
+<dt>Rob65
+     <dd>
+     Robinson, J.A.: A Machine-Oriented Logic Based on the Resolution Principle.
+     Journal of the ACM 12(1), 23–41 (1965)
+</dd>
+</dt>
+
+<dt>BnG
+     <dd>
+     Bachmair, L., Ganzinger, H.: Resolution theorem proving. In: Robinson, A.,
+     Voronkov, A. (eds.) Handbook of automated reasoning, vol. I, chap. 2, pp. 19–
+     99. Elsevier (2001)
+</dd>
+</dt>
+
+<dt>Hoder
+     <dd>
+     Hoder, K., Voronkov, A.: Sine Qua Non for Large Theory Reasoning. In: Bjørner,
+     N., Sofronie-Stokkermans, V. (eds.) Proc. of the 23rd CADE, Wroclav, Poland.
+     LNAI, vol. 6803, pp. 299–314. Springer (2011)
+</dd>
+</dt>
+<p>
+
+</p><hr><!------------------------------------------------------------------------>
+</body></html>

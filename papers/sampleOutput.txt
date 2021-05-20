@@ -1,0 +1,1121 @@
+Using default include path : /home/apease/ontology/TPTP-v7.3.0
+# INFO in Prover2.main(): Processing file /home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
+# Prover2.processTestFile(): filename: /home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
+# Prover2.processTestFile(): opts: {backward_subsumption=true, delete-tautologies=true, filename=/home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p, forward-subsumption=true, proof=true, eqax=true, timeout=600}
+# Prover2.processTestFile(): evals: [Heuristics: PickGiven5 : [SymbolCountEval21, FIFOEval] litSelect: LARGEST indexing: true delTaut: true forSub: true backSub: true]
+hasConjecture: true isFOF: true
+# Prover2() problem is equational
+INFO in ClauseSet.addEqAxioms(): adding axioms
+ProofState(): heuristics: PickGiven5 : [SymbolCountEval21, FIFOEval]
+HeuristicsClauseSet using eval functions: PickGiven5 : [SymbolCountEval21, FIFOEval]
+computeStateResults(): state: 
+computeStateResults(): cs:
+# printStateResults(): cnf(c28907,plain,$false).
+
+# Error in ProofState.searchProof(): no clause for id t12_xboole_1
+# Error in ProofState.searchProof(): no clause for id 
+# Error in ProofState.searchProof(): no clause for id d2_xboole_0
+# Error in ProofState.searchProof(): no clause for id t3_xboole_0
+# Error in ProofState.searchProof(): no clause for id 
+# Error in ProofState.searchProof(): no clause for id t3_xboole_0
+# Error in ProofState.searchProof(): no clause for id symmetry_r1_xboole_0
+# Error in ProofState.searchProof(): no clause for id 
+# Error in ProofState.searchProof(): no clause for id t3_xboole_0
+# Error in ProofState.searchProof(): no clause for id 
+# Error: createGraph() null node for name: t7_boole
+# Error: createGraph() null node for name: t7_xboole_1
+# Error: createGraph() null node for name: 
+# Error: createGraph() null node for name: t6_boole
+# Error: createGraph() null node for name: 
+# Error: createGraph() null node for name: t8_boole
+# Error: createGraph() null node for name: t8_xboole_1
+# Error: createGraph() null node for name: reflexivity_r1_tarski
+# Error: createGraph() null node for name: symmetry_r1_xboole_0
+# Error: createGraph() null node for name: t12_xboole_1
+# Error: createGraph() null node for name: t2_boole
+# Error: createGraph() null node for name: t2_tarski
+# Error: createGraph() null node for name: t26_xboole_1
+# Error: createGraph() null node for name: t28_xboole_1
+# Error: createGraph() null node for name: t1_boole
+# Error: createGraph() null node for name: t1_xboole_1
+# Error: createGraph() null node for name: t17_xboole_1
+# Error: createGraph() null node for name: t19_xboole_1
+# Error: createGraph() null node for name: fc1_xboole_0
+# Error: createGraph() null node for name: fc2_xboole_0
+# Error: createGraph() null node for name: rc1_xboole_0
+# Error: createGraph() null node for name: rc2_xboole_0
+# Error: createGraph() null node for name: l32_xboole_1
+# Error: createGraph() null node for name: l32_xboole_1
+# Error: createGraph() null node for name: idempotence_k3_xboole_0
+# Error: createGraph() null node for name: irreflexivity_r2_xboole_0
+# Error: createGraph() null node for name: fc3_xboole_0
+# Error: createGraph() null node for name: idempotence_k2_xboole_0
+# Error: createGraph() null node for name: t40_xboole_1
+# Error: createGraph() null node for name: t45_xboole_1
+# Error: createGraph() null node for name: t3_xboole_0
+# Error: createGraph() null node for name: t3_xboole_1
+# Error: createGraph() null node for name: t60_xboole_1
+# Error: createGraph() null node for name: 
+# Error: createGraph() null node for name: t4_xboole_0
+# Error: createGraph() null node for name: t4_xboole_0
+# Error: createGraph() null node for name: t48_xboole_1
+# Error: createGraph() null node for name: t4_boole
+# Error: createGraph() null node for name: t2_xboole_1
+# Error: createGraph() null node for name: t33_xboole_1
+# Error: createGraph() null node for name: t2_tarski
+# Error: createGraph() null node for name: t3_xboole_0
+# Error: createGraph() null node for name: t3_boole
+# Error: createGraph() null node for name: t3_xboole_0
+# Error: createGraph() null node for name: t39_xboole_1
+# Error: createGraph() null node for name: t36_xboole_1
+# Error: createGraph() null node for name: d2_xboole_0
+# Error: createGraph() null node for name: d3_tarski
+# Error: createGraph() null node for name: d2_xboole_0
+# Error: createGraph() null node for name: d2_xboole_0
+# Error: createGraph() null node for name: d2_xboole_0
+# Error: createGraph() null node for name: d2_xboole_0
+# Error: createGraph() null node for name: d4_xboole_0
+# Error: createGraph() null node for name: d4_xboole_0
+# Error: createGraph() null node for name: d4_xboole_0
+# Error: createGraph() null node for name: d8_xboole_0
+# Error: createGraph() null node for name: dt_k1_xboole_0
+# Error: createGraph() null node for name: d8_xboole_0
+# Error: createGraph() null node for name: d8_xboole_0
+# Error: createGraph() null node for name: d7_xboole_0
+# Error: createGraph() null node for name: d7_xboole_0
+# Error: createGraph() null node for name: d3_xboole_0
+# Error: createGraph() null node for name: d3_xboole_0
+# Error: createGraph() null node for name: d3_tarski
+# Error: createGraph() null node for name: d3_tarski
+# Error: createGraph() null node for name: d4_xboole_0
+# Error: createGraph() null node for name: d4_xboole_0
+# Error: createGraph() null node for name: d3_xboole_0
+# Error: createGraph() null node for name: d4_xboole_0
+# Error: createGraph() null node for name: d3_xboole_0
+# Error: createGraph() null node for name: d3_xboole_0
+# Error: createGraph() null node for name: d3_xboole_0
+# Error: createGraph() null node for name: d2_xboole_0
+# Error: createGraph() null node for name: d1_xboole_0
+# Error: createGraph() null node for name: d1_xboole_0
+# Error: createGraph() null node for name: d10_xboole_0
+# Error: createGraph() null node for name: d10_xboole_0
+# Error: createGraph() null node for name: commutativity_k3_xboole_0
+# Error: createGraph() null node for name: d10_xboole_0
+# Error: createGraph() null node for name: antisymmetry_r2_xboole_0
+# Error: createGraph() null node for name: commutativity_k2_xboole_0
+# Error: createGraph() null node for name: antisymmetry_r2_hidden
+# SZS output start CNFRefutation
+
+# Error in ProofState.searchProof(): no clause for id c00049
+# Error in ProofState.searchProof(): no clause for id c00001
+# Error in ProofState.searchProof(): no clause for id c00030
+# Error in ProofState.searchProof(): no clause for id c00027
+# Error in ProofState.searchProof(): no clause for id c00001
+# Error in ProofState.searchProof(): no clause for id c00027
+# Error in ProofState.searchProof(): no clause for id c00038
+# Error in ProofState.searchProof(): no clause for id c00001
+# Error in ProofState.searchProof(): no clause for id c00027
+# Error in ProofState.searchProof(): no clause for id c00001
+# Error: createGraph() null node for name: c00020
+# Error: createGraph() null node for name: c00021
+# Error: createGraph() null node for name: c00018
+# Error: createGraph() null node for name: c00020
+# Error: createGraph() null node for name: c00024
+# Error: createGraph() null node for name: c00022
+# Error: createGraph() null node for name: c00023
+# Error: createGraph() null node for name: c00015
+# Error: createGraph() null node for name: c00017
+# Error: createGraph() null node for name: c00013
+# Error: createGraph() null node for name: c00008
+# Error: createGraph() null node for name: c00009
+# Error: createGraph() null node for name: c00006
+# Error: createGraph() null node for name: c00007
+# Error: createGraph() null node for name: c00011
+# Error: createGraph() null node for name: c00013
+# Error: createGraph() null node for name: c00010
+# Error: createGraph() null node for name: c00011
+# Error: createGraph() null node for name: c00006
+# Error: createGraph() null node for name: c00006
+# Error: createGraph() null node for name: c00027
+# Error: createGraph() null node for name: c00028
+# Error: createGraph() null node for name: c00027
+# Error: createGraph() null node for name: c00027
+# Error: createGraph() null node for name: c00029
+# Error: createGraph() null node for name: c00030
+# Error: createGraph() null node for name: c00025
+# Error: createGraph() null node for name: c00026
+# Error: createGraph() null node for name: c00024
+# Error: createGraph() null node for name: c00024
+# Error: createGraph() null node for name: c00004
+# Error: createGraph() null node for name: c00005
+# Error: createGraph() null node for name: c00002
+# Error: createGraph() null node for name: c00003
+# Error: createGraph() null node for name: c00005
+# Error: createGraph() null node for name: c00005
+# Error: createGraph() null node for name: c00005
+# Error: createGraph() null node for name: c00005
+# Error: createGraph() null node for name: c00001
+# Error: createGraph() null node for name: c00005
+# Error: createGraph() null node for name: c00001
+# Error: createGraph() null node for name: c00001
+# Error: createGraph() null node for name: c00041
+# Error: createGraph() null node for name: c00042
+# Error: createGraph() null node for name: c00041
+# Error: createGraph() null node for name: c00041
+# Error: createGraph() null node for name: c00045
+# Error: createGraph() null node for name: c00046
+# Error: createGraph() null node for name: c00043
+# Error: createGraph() null node for name: c00044
+# Error: createGraph() null node for name: c00046
+# Error: createGraph() null node for name: c00047
+# Error: createGraph() null node for name: c00035
+# Error: createGraph() null node for name: c00036
+# Error: createGraph() null node for name: c00034
+# Error: createGraph() null node for name: c00039
+# Error: createGraph() null node for name: c00040
+# Error: createGraph() null node for name: c00037
+# Error: createGraph() null node for name: c00038
+# Error: createGraph() null node for name: c00041
+# Error: createGraph() null node for name: c00041
+# Error: createGraph() null node for name: c00041
+# Error: createGraph() null node for name: c00049
+# Error: createGraph() null node for name: c00052
+# Error: createGraph() null node for name: c00053
+# Error: createGraph() null node for name: c00050
+# Error: createGraph() null node for name: c00051
+# Error: createGraph() null node for name: c00055
+# Error: createGraph() null node for name: c00056
+# Error: createGraph() null node for name: c00054
+# Error: createGraph() null node for name: c00055
+# Error: createGraph() null node for name: c00057
+# Error: createGraph() null node for name: c00030
+# Error: createGraph() null node for name: c00030
+# Error: createGraph() null node for name: c00030
+# Error: createGraph() null node for name: c00031
+# Error: createGraph() null node for name: c00030
+# Error: createGraph() null node for name: c00030
+# Error: createGraph() null node for name: c00032
+# Error: createGraph() null node for name: c00033
+# Error: createGraph() null node for name: c00031
+# Error: createGraph() null node for name: c00031
+cnf(c00010,plain,~X437=X438|~X438=X439|X437=X439).
+cnf(c00048,axiom,~X467=X468|skf4(X467)=skf4(X468)).
+cnf(c00052,plain,X5=X5).
+cnf(c00054,plain,~X58=X59|X59=X58).
+cnf(c00057,axiom,~X257=X258|~empty(X257)|empty(X258)).
+cnf(c00058,plain,~X151=set_intersection2(X152,X153)|~in(X154,X152)|~in(X154,X153)|in(X154,X151),inference(split_conjunct,[c00001])).
+cnf(c00059,plain,~in(skf13(X163,X164,X165),X163)|~in(skf13(X163,X164,X165),X164)|~in(skf13(X163,X164,X165),X165)|X163=set_intersection2(X164,X165),inference(split_conjunct,[c00001])).
+cnf(c00060,plain,in(skf13(X171,X172,X173),X171)|in(skf13(X171,X172,X173),X172)|X171=set_intersection2(X172,X173),inference(split_conjunct,[c00001])).
+cnf(c00061,plain,in(skf13(X179,X180,X181),X179)|in(skf13(X179,X180,X181),X181)|X179=set_intersection2(X180,X181),inference(split_conjunct,[c00001])).
+cnf(c00062,plain,~X127=set_intersection2(X128,X129)|~in(X130,X127)|in(X130,X128),inference(split_conjunct,[c00001])).
+cnf(c00063,plain,~X139=set_intersection2(X140,X141)|~in(X142,X139)|in(X142,X141),inference(split_conjunct,[c00001])).
+cnf(c00064,plain,~empty(X241)|X241=X242|~empty(X242),inference(split_conjunct,[c00002])).
+cnf(c00065,plain,set_intersection2(X14,X14)=X14,inference(split_conjunct,[c00003])).
+cnf(c00066,plain,subset(empty_set,X10),inference(split_conjunct,[c00004])).
+cnf(c00067,plain,disjoint(X408,X409)|in(skf38(X408,X409),set_intersection2(X408,X409)),inference(split_conjunct,[c00005])).
+cnf(c00068,plain,~in(X420,set_intersection2(X421,X422))|~disjoint(X421,X422),inference(split_conjunct,[c00005])).
+cnf(c00069,plain,subset(set_difference(X17,X18),X17),inference(split_conjunct,[c00006])).
+cnf(c00070,plain,set_union2(X340,set_difference(X341,X340))=set_union2(X340,X341),inference(split_conjunct,[c00007])).
+cnf(c00071,plain,~subset(X271,X272)|set_union2(X271,X272)=X272,inference(split_conjunct,[c00008])).
+cnf(c00072,plain,~in(X1,X2)|~in(X2,X1),inference(split_conjunct,[c00009])).
+cnf(c00073,plain,in(skf7(X92,X93,X94),X92)|in(skf7(X92,X93,X94),X93)|in(skf7(X92,X93,X94),X94)|X92=set_union2(X93,X94),inference(split_conjunct,[c00011])).
+cnf(c00074,plain,~in(skf7(X76,X77,X78),X76)|~in(skf7(X76,X77,X78),X77)|X76=set_union2(X77,X78),inference(split_conjunct,[c00011])).
+cnf(c00075,plain,~in(skf7(X84,X85,X86),X84)|~in(skf7(X84,X85,X86),X86)|X84=set_union2(X85,X86),inference(split_conjunct,[c00011])).
+cnf(c00076,plain,~X54=set_union2(X55,X56)|~in(X57,X54)|in(X57,X55)|in(X57,X56),inference(split_conjunct,[c00011])).
+cnf(c00077,plain,~X61=set_union2(X62,X63)|~in(X64,X62)|in(X64,X61),inference(split_conjunct,[c00011])).
+cnf(c00078,plain,~X67=set_union2(X68,X69)|~in(X70,X69)|in(X70,X67),inference(split_conjunct,[c00011])).
+cnf(c00079,plain,~subset(X252,X253)|X252=X253|proper_subset(X252,X253),inference(split_conjunct,[c00012])).
+cnf(c00080,plain,~proper_subset(X35,X36)|subset(X35,X36),inference(split_conjunct,[c00012])).
+cnf(c00081,plain,~proper_subset(X39,X40)|~X39=X40,inference(split_conjunct,[c00012])).
+cnf(c00082,plain,subset(set_intersection2(X15,X16),X15),inference(split_conjunct,[c00013])).
+cnf(c00083,plain,set_union2(X48,empty_set)=X48,inference(split_conjunct,[c00014])).
+cnf(c00084,plain,set_union2(X13,X13)=X13,inference(split_conjunct,[c00015])).
+cnf(c00085,plain,set_intersection2(X137,empty_set)=empty_set,inference(split_conjunct,[c00016])).
+cnf(c00086,plain,~disjoint(X44,X45)|disjoint(X45,X44),inference(split_conjunct,[c00017])).
+cnf(c00087,plain,$true,inference(split_conjunct,[c00018])).
+cnf(c00088,plain,empty(X133)|~empty(set_union2(X133,X134)),inference(split_conjunct,[c00019])).
+cnf(c00089,plain,subset(X23,set_union2(X23,X24)),inference(split_conjunct,[c00020])).
+cnf(c00090,plain,set_difference(X396,set_difference(X396,X397))=set_intersection2(X396,X397),inference(split_conjunct,[c00021])).
+cnf(c00091,plain,set_union2(X11,X12)=set_union2(X12,X11),inference(split_conjunct,[c00022])).
+cnf(c00092,plain,subset(X4,X4),inference(split_conjunct,[c00023])).
+cnf(c00093,plain,empty(skf18),inference(split_conjunct,[c00024])).
+cnf(c00094,plain,~proper_subset(X6,X7)|~proper_subset(X7,X6),inference(split_conjunct,[c00025])).
+cnf(c00095,plain,~subset(X387,X388)|X388=set_union2(X387,set_difference(X388,X387)),inference(split_conjunct,[c00026])).
+cnf(c00096,plain,~subset(X286,X287)|~subset(X287,X288)|subset(X286,X288),inference(split_conjunct,[c00027])).
+cnf(c00097,plain,~subset(X263,X264)|set_difference(X263,X264)=empty_set,inference(split_conjunct,[c00028])).
+cnf(c00098,plain,~set_difference(X259,X260)=empty_set|subset(X259,X260),inference(split_conjunct,[c00028])).
+cnf(c00099,plain,subset(skf42,skf43),inference(split_conjunct,[c00029])).
+cnf(c00100,plain,~disjoint(skf42,skf44),inference(split_conjunct,[c00029])).
+cnf(c00101,plain,disjoint(skf43,skf44),inference(split_conjunct,[c00029])).
+cnf(c00102,plain,~subset(X278,X279)|~subset(X278,X280)|subset(X278,set_intersection2(X279,X280)),inference(split_conjunct,[c00030])).
+cnf(c00103,plain,in(skf16(X230,X231,X232),X230)|~in(skf16(X230,X231,X232),X232)|X230=set_difference(X231,X232),inference(split_conjunct,[c00031])).
+cnf(c00104,plain,~X198=set_difference(X199,X200)|~in(X201,X198)|~in(X201,X200),inference(split_conjunct,[c00031])).
+cnf(c00105,plain,~X208=set_difference(X209,X210)|~in(X211,X209)|in(X211,X210)|in(X211,X208),inference(split_conjunct,[c00031])).
+cnf(c00106,plain,~in(skf16(X213,X214,X215),X213)|~in(skf16(X213,X214,X215),X214)|in(skf16(X213,X214,X215),X215)|X213=set_difference(X214,X215),inference(split_conjunct,[c00031])).
+cnf(c00107,plain,in(skf16(X222,X223,X224),X222)|in(skf16(X222,X223,X224),X223)|X222=set_difference(X223,X224),inference(split_conjunct,[c00031])).
+cnf(c00108,plain,~X188=set_difference(X189,X190)|~in(X191,X188)|in(X191,X189),inference(split_conjunct,[c00031])).
+cnf(c00109,plain,~in(skf10(X120,X121),X121)|subset(X120,X121),inference(split_conjunct,[c00032])).
+cnf(c00110,plain,~subset(X101,X102)|~in(X103,X101)|in(X103,X102),inference(split_conjunct,[c00032])).
+cnf(c00111,plain,in(skf10(X112,X113),X112)|subset(X112,X113),inference(split_conjunct,[c00032])).
+cnf(c00112,plain,~empty(skf20),inference(split_conjunct,[c00033])).
+cnf(c00113,plain,~empty(X53)|X53=empty_set,inference(split_conjunct,[c00034])).
+cnf(c00114,plain,~proper_subset(X3,X3),inference(split_conjunct,[c00035])).
+cnf(c00115,plain,set_intersection2(X19,X20)=set_intersection2(X20,X19),inference(split_conjunct,[c00036])).
+cnf(c00116,plain,~subset(X303,X304)|set_intersection2(X303,X304)=X303,inference(split_conjunct,[c00037])).
+cnf(c00117,plain,in(skf4(X52),X52)|X52=empty_set,inference(split_conjunct,[c00038])).
+cnf(c00118,plain,~X46=empty_set|~in(X47,X46),inference(split_conjunct,[c00038])).
+cnf(c00119,plain,~in(X21,X22)|~empty(X22),inference(split_conjunct,[c00039])).
+cnf(c00120,plain,~X29=X30|subset(X30,X29),inference(split_conjunct,[c00040])).
+cnf(c00121,plain,~subset(X37,X38)|~subset(X38,X37)|X37=X38,inference(split_conjunct,[c00040])).
+cnf(c00122,plain,~X25=X26|subset(X25,X26),inference(split_conjunct,[c00040])).
+cnf(c00123,plain,set_difference(set_union2(X375,X376),X376)=set_difference(X375,X376),inference(split_conjunct,[c00041])).
+cnf(c00124,plain,~subset(X50,X51)|~proper_subset(X51,X50),inference(split_conjunct,[c00042])).
+cnf(c00125,plain,disjoint(X349,X350)|in(skf32(X349,X350),X349),inference(split_conjunct,[c00043])).
+cnf(c00126,plain,~in(X365,X366)|~in(X365,X367)|~disjoint(X366,X367),inference(split_conjunct,[c00043])).
+cnf(c00127,plain,disjoint(X357,X358)|in(skf32(X357,X358),X358),inference(split_conjunct,[c00043])).
+cnf(c00128,plain,~subset(X212,empty_set)|X212=empty_set,inference(split_conjunct,[c00044])).
+cnf(c00129,plain,empty(empty_set),inference(split_conjunct,[c00045])).
+cnf(c00130,plain,set_difference(X49,empty_set)=X49,inference(split_conjunct,[c00046])).
+cnf(c00131,plain,set_difference(empty_set,X138)=empty_set,inference(split_conjunct,[c00047])).
+cnf(c00132,plain,in(skf25(X318,X319),X318)|in(skf25(X318,X319),X319)|X318=X319,inference(split_conjunct,[c00049])).
+cnf(c00133,plain,~in(skf25(X310,X311),X310)|~in(skf25(X310,X311),X311)|X310=X311,inference(split_conjunct,[c00049])).
+cnf(c00134,plain,~subset(X324,X325)|subset(set_difference(X324,X326),set_difference(X325,X326)),inference(split_conjunct,[c00050])).
+cnf(c00135,plain,~set_intersection2(X246,X247)=empty_set|disjoint(X246,X247),inference(split_conjunct,[c00051])).
+cnf(c00136,plain,~disjoint(X239,X240)|set_intersection2(X239,X240)=empty_set,inference(split_conjunct,[c00051])).
+cnf(c00137,plain,~subset(X294,X295)|subset(set_intersection2(X294,X296),set_intersection2(X295,X296)),inference(split_conjunct,[c00053])).
+cnf(c00138,plain,empty(X135)|~empty(set_union2(X136,X135)),inference(split_conjunct,[c00055])).
+cnf(c00139,plain,~subset(X429,X430)|~subset(X431,X430)|subset(set_union2(X429,X431),X430),inference(split_conjunct,[c00056])).
+cnf(c00140,plain,~in(X1261,X1262)|~in(X1261,X1263)|in(X1261,set_intersection2(X1262,X1263)),inference(resolution,[c00058,c00052])).
+cnf(c00141,plain,~in(skf13(X1332,X1333,X1332),X1332)|~in(skf13(X1332,X1333,X1332),X1333)|X1332=set_intersection2(X1333,X1332),inference(factoring,[c00059])).
+cnf(c00142,plain,~in(skf13(X1342,X1343,X1343),X1342)|~in(skf13(X1342,X1343,X1343),X1343)|X1342=set_intersection2(X1343,X1343),inference(factoring,[c00059])).
+cnf(c00143,plain,in(skf13(X1466,X1467,X1468),X1466)|in(skf13(X1466,X1467,X1468),X1467)|set_intersection2(X1467,X1468)=X1466,inference(resolution,[c00060,c00054])).
+cnf(c00144,plain,in(skf13(X1357,X1357,X1358),X1357)|X1357=set_intersection2(X1357,X1358),inference(factoring,[c00060])).
+cnf(c00145,plain,~empty(X2243)|empty(set_intersection2(X2244,X2245))|in(skf13(X2243,X2244,X2245),X2243)|in(skf13(X2243,X2244,X2245),X2244),inference(resolution,[c00057,c00060])).
+cnf(c00146,plain,in(skf13(X1444,X1445,X1446),X1444)|in(skf13(X1444,X1445,X1446),X1445)|~in(X1447,X1445)|~in(X1447,X1446)|in(X1447,X1444),inference(resolution,[c00060,c00058])).
+cnf(c00147,plain,in(skf13(X1687,X1688,X1689),X1687)|in(skf13(X1687,X1688,X1689),X1689)|set_intersection2(X1688,X1689)=X1687,inference(resolution,[c00061,c00054])).
+cnf(c00148,plain,~empty(X2198)|empty(set_intersection2(X2199,X2200))|in(skf13(X2198,X2199,X2200),X2198)|in(skf13(X2198,X2199,X2200),X2200),inference(resolution,[c00057,c00061])).
+cnf(c00149,plain,in(skf13(X1648,X1649,X1650),X1648)|in(skf13(X1648,X1649,X1650),X1650)|~in(X1651,X1649)|~in(X1651,X1650)|in(X1651,X1648),inference(resolution,[c00061,c00058])).
+cnf(c00150,plain,in(skf13(X1505,X1506,X1505),X1505)|X1505=set_intersection2(X1506,X1505),inference(factoring,[c00061])).
+cnf(c00151,plain,~in(X1123,set_intersection2(X1124,X1125))|in(X1123,X1124),inference(resolution,[c00062,c00052])).
+cnf(c00152,plain,in(skf13(X1454,X1455,X1456),X1454)|in(skf13(X1454,X1455,X1456),X1455)|~in(X1457,X1454)|in(X1457,X1455),inference(resolution,[c00060,c00062])).
+cnf(c00153,plain,in(skf13(X1659,X1660,X1661),X1659)|in(skf13(X1659,X1660,X1661),X1661)|~in(X1662,X1659)|in(X1662,X1660),inference(resolution,[c00061,c00062])).
+cnf(c00154,plain,in(skf13(X1477,X1478,X1479),X1477)|in(skf13(X1477,X1478,X1479),X1478)|~in(X1480,X1477)|in(X1480,X1479),inference(resolution,[c00060,c00063])).
+cnf(c00155,plain,in(skf13(X1697,X1698,X1699),X1697)|in(skf13(X1697,X1698,X1699),X1699)|~in(X1700,X1697)|in(X1700,X1699),inference(resolution,[c00061,c00063])).
+cnf(c00156,plain,X65=set_intersection2(X65,X65),inference(resolution,[c00054,c00065])).
+cnf(c00157,plain,~empty(set_intersection2(X323,X323))|empty(X323),inference(resolution,[c00057,c00065])).
+cnf(c00158,plain,~in(X1129,set_intersection2(set_intersection2(X1130,X1131),set_intersection2(X1130,X1131)))|in(X1129,X1130),inference(resolution,[c00062,c00065])).
+cnf(c00159,plain,~in(X1163,set_intersection2(set_intersection2(X1164,X1165),set_intersection2(X1164,X1165)))|in(X1163,X1165),inference(resolution,[c00063,c00065])).
+cnf(c00160,plain,~in(X1281,X1282)|~in(X1281,X1283)|in(X1281,set_intersection2(set_intersection2(X1282,X1283),set_intersection2(X1282,X1283))),inference(resolution,[c00058,c00065])).
+cnf(c00161,plain,set_union2(set_difference(X934,X935),X934)=X934,inference(resolution,[c00071,c00069])).
+cnf(c00162,plain,set_union2(empty_set,X284)=X284,inference(resolution,[c00071,c00066])).
+cnf(c00163,plain,in(skf13(X1549,X1550,X1551),X1551)|X1549=set_intersection2(X1550,X1551)|~in(X1549,skf13(X1549,X1550,X1551)),inference(resolution,[c00061,c00072])).
+cnf(c00164,plain,in(skf13(X1424,X1425,X1426),X1424)|X1424=set_intersection2(X1425,X1426)|~in(X1425,skf13(X1424,X1425,X1426)),inference(resolution,[c00060,c00072])).
+cnf(c00165,plain,in(skf13(X1390,X1391,X1392),X1391)|X1390=set_intersection2(X1391,X1392)|~in(X1390,skf13(X1390,X1391,X1392)),inference(resolution,[c00060,c00072])).
+cnf(c00166,plain,in(skf13(X1615,X1616,X1617),X1615)|X1615=set_intersection2(X1616,X1617)|~in(X1617,skf13(X1615,X1616,X1617)),inference(resolution,[c00061,c00072])).
+cnf(c00167,plain,~in(X8,X8),inference(factoring,[c00072])).
+cnf(c00168,plain,in(skf7(X906,X906,X907),X906)|in(skf7(X906,X906,X907),X907)|X906=set_union2(X906,X907),inference(factoring,[c00073])).
+cnf(c00169,plain,in(skf7(X912,X913,X912),X912)|in(skf7(X912,X913,X912),X913)|X912=set_union2(X913,X912),inference(factoring,[c00073])).
+cnf(c00170,plain,~empty(X2208)|empty(set_union2(X2209,X2210))|in(skf7(X2208,X2209,X2210),X2208)|in(skf7(X2208,X2209,X2210),X2209)|in(skf7(X2208,X2209,X2210),X2210),inference(resolution,[c00057,c00073])).
+cnf(c00171,plain,in(skf7(X918,X919,X919),X918)|in(skf7(X918,X919,X919),X919)|X918=set_union2(X919,X919),inference(factoring,[c00073])).
+cnf(c00172,plain,in(skf7(X1041,X1042,X1043),X1041)|in(skf7(X1041,X1042,X1043),X1042)|in(skf7(X1041,X1042,X1043),X1043)|set_union2(X1042,X1043)=X1041,inference(resolution,[c00073,c00054])).
+cnf(c00173,plain,in(skf7(X975,X976,X977),X975)|in(skf7(X975,X976,X977),X977)|X975=set_union2(X976,X977)|~in(X976,skf7(X975,X976,X977)),inference(resolution,[c00073,c00072])).
+cnf(c00174,plain,in(skf7(X944,X945,X946),X945)|in(skf7(X944,X945,X946),X946)|X944=set_union2(X945,X946)|~in(X944,skf7(X944,X945,X946)),inference(resolution,[c00073,c00072])).
+cnf(c00175,plain,in(skf7(X1002,X1003,X1004),X1002)|in(skf7(X1002,X1003,X1004),X1003)|X1002=set_union2(X1003,X1004)|~in(X1004,skf7(X1002,X1003,X1004)),inference(resolution,[c00073,c00072])).
+cnf(c00176,plain,~in(skf7(X888,X888,X889),X888)|X888=set_union2(X888,X889),inference(factoring,[c00074])).
+cnf(c00177,plain,~in(skf7(X894,X895,X894),X894)|X894=set_union2(X895,X894),inference(factoring,[c00075])).
+cnf(c00178,plain,~in(X748,set_intersection2(set_union2(X749,X750),set_union2(X749,X750)))|in(X748,X749)|in(X748,X750),inference(resolution,[c00076,c00065])).
+cnf(c00179,plain,in(skf7(X1033,X1034,X1035),X1033)|in(skf7(X1033,X1034,X1035),X1034)|in(skf7(X1033,X1034,X1035),X1035)|~in(X1036,X1033)|in(X1036,X1034)|in(X1036,X1035),inference(resolution,[c00073,c00076])).
+cnf(c00180,plain,~in(X808,X809)|in(X808,set_intersection2(set_union2(X809,X810),set_union2(X809,X810))),inference(resolution,[c00077,c00065])).
+cnf(c00181,plain,in(skf7(X1020,X1021,X1022),X1020)|in(skf7(X1020,X1021,X1022),X1021)|in(skf7(X1020,X1021,X1022),X1022)|~in(X1023,X1021)|in(X1023,X1020),inference(resolution,[c00073,c00077])).
+cnf(c00182,plain,~in(X828,X829)|in(X828,set_union2(X829,X830)),inference(resolution,[c00077,c00052])).
+cnf(c00183,plain,~in(X867,X868)|in(X867,set_intersection2(set_union2(X869,X868),set_union2(X869,X868))),inference(resolution,[c00078,c00065])).
+cnf(c00184,plain,in(skf7(X1048,X1049,X1050),X1048)|in(skf7(X1048,X1049,X1050),X1049)|in(skf7(X1048,X1049,X1050),X1050)|~in(X1051,X1050)|in(X1051,X1048),inference(resolution,[c00073,c00078])).
+cnf(c00185,plain,empty_set=X859|proper_subset(empty_set,X859),inference(resolution,[c00079,c00066])).
+cnf(c00186,plain,set_difference(X2089,X2090)=X2089|proper_subset(set_difference(X2089,X2090),X2089),inference(resolution,[c00079,c00069])).
+cnf(c00187,plain,~proper_subset(set_intersection2(X42,X42),X42),inference(resolution,[c00081,c00065])).
+cnf(c00188,plain,in(skf7(X1026,X1027,X1028),X1026)|in(skf7(X1026,X1027,X1028),X1027)|in(skf7(X1026,X1027,X1028),X1028)|~proper_subset(X1026,set_union2(X1027,X1028)),inference(resolution,[c00073,c00081])).
+cnf(c00189,plain,in(skf13(X1463,X1464,X1465),X1463)|in(skf13(X1463,X1464,X1465),X1464)|~proper_subset(X1463,set_intersection2(X1464,X1465)),inference(resolution,[c00060,c00081])).
+cnf(c00190,plain,in(skf13(X1679,X1680,X1681),X1679)|in(skf13(X1679,X1680,X1681),X1681)|~proper_subset(X1679,set_intersection2(X1680,X1681)),inference(resolution,[c00061,c00081])).
+cnf(c00191,plain,set_intersection2(X2115,X2116)=X2115|proper_subset(set_intersection2(X2115,X2116),X2115),inference(resolution,[c00079,c00082])).
+cnf(c00192,plain,set_union2(set_intersection2(X939,X940),X939)=X939,inference(resolution,[c00071,c00082])).
+cnf(c00193,plain,~in(X1114,set_union2(set_intersection2(X1115,X1116),empty_set))|in(X1114,X1115),inference(resolution,[c00062,c00083])).
+cnf(c00194,plain,~in(X758,set_union2(set_union2(X759,X760),empty_set))|in(X758,X759)|in(X758,X760),inference(resolution,[c00076,c00083])).
+cnf(c00195,plain,~proper_subset(set_union2(X88,empty_set),X88),inference(resolution,[c00083,c00081])).
+cnf(c00196,plain,~in(X853,X854)|in(X853,set_union2(set_union2(X855,X854),empty_set)),inference(resolution,[c00078,c00083])).
+cnf(c00197,plain,X97=set_union2(X97,empty_set),inference(resolution,[c00054,c00083])).
+cnf(c00198,plain,~in(X818,X819)|in(X818,set_union2(set_union2(X819,X820),empty_set)),inference(resolution,[c00077,c00083])).
+cnf(c00199,plain,~in(X1249,X1250)|~in(X1249,X1251)|in(X1249,set_union2(set_intersection2(X1250,X1251),empty_set)),inference(resolution,[c00058,c00083])).
+cnf(c00200,plain,~in(X1140,set_union2(set_intersection2(X1141,X1142),empty_set))|in(X1140,X1142),inference(resolution,[c00063,c00083])).
+cnf(c00201,plain,~in(X1176,set_union2(set_intersection2(X1177,X1178),set_intersection2(X1177,X1178)))|in(X1176,X1178),inference(resolution,[c00063,c00084])).
+cnf(c00202,plain,~in(X1133,set_union2(set_intersection2(X1134,X1135),set_intersection2(X1134,X1135)))|in(X1133,X1134),inference(resolution,[c00062,c00084])).
+cnf(c00203,plain,X66=set_union2(X66,X66),inference(resolution,[c00054,c00084])).
+cnf(c00204,plain,~in(X833,X834)|in(X833,set_union2(set_union2(X834,X835),set_union2(X834,X835))),inference(resolution,[c00077,c00084])).
+cnf(c00205,plain,~proper_subset(set_union2(X43,X43),X43),inference(resolution,[c00081,c00084])).
+cnf(c00206,plain,~in(X774,set_union2(set_union2(X775,X776),set_union2(X775,X776)))|in(X774,X775)|in(X774,X776),inference(resolution,[c00076,c00084])).
+cnf(c00207,plain,~in(X874,X875)|in(X874,set_union2(set_union2(X876,X875),set_union2(X876,X875))),inference(resolution,[c00078,c00084])).
+cnf(c00208,plain,~in(X1291,X1292)|~in(X1291,X1293)|in(X1291,set_union2(set_intersection2(X1292,X1293),set_intersection2(X1292,X1293))),inference(resolution,[c00058,c00084])).
+cnf(c00209,plain,~proper_subset(set_intersection2(X162,empty_set),empty_set),inference(resolution,[c00085,c00081])).
+cnf(c00210,plain,empty_set=set_intersection2(X166,empty_set),inference(resolution,[c00085,c00054])).
+cnf(c00211,plain,X2096=set_union2(X2096,X2097)|proper_subset(X2096,set_union2(X2096,X2097)),inference(resolution,[c00079,c00089])).
+cnf(c00212,plain,set_union2(X2361,set_union2(X2361,X2362))=set_union2(X2361,X2362),inference(resolution,[c00071,c00089])).
+cnf(c00213,plain,~proper_subset(set_union2(X697,X698),set_union2(X698,X697)),inference(resolution,[c00081,c00091])).
+cnf(c00214,plain,~in(X740,set_union2(X741,X742))|in(X740,X742)|in(X740,X741),inference(resolution,[c00076,c00091])).
+cnf(c00215,plain,~empty(set_union2(X2187,X2188))|empty(set_union2(X2188,X2187)),inference(resolution,[c00057,c00091])).
+cnf(c00216,plain,~in(X799,X800)|in(X799,set_union2(X801,X800)),inference(resolution,[c00077,c00091])).
+cnf(c00217,plain,~empty(X245)|X245=skf18,inference(resolution,[c00064,c00093])).
+cnf(c00218,plain,X1015=set_union2(X1015,set_difference(X1015,X1015)),inference(resolution,[c00095,c00092])).
+cnf(c00219,plain,~subset(X2655,set_intersection2(X2656,X2657))|subset(X2655,X2656),inference(resolution,[c00096,c00082])).
+cnf(c00220,plain,~subset(X346,empty_set)|subset(X346,X347),inference(resolution,[c00096,c00066])).
+cnf(c00221,plain,~subset(X2622,X2623)|subset(X2622,set_union2(X2623,X2624)),inference(resolution,[c00096,c00089])).
+cnf(c00222,plain,~subset(X2614,set_difference(X2615,X2616))|subset(X2614,X2615),inference(resolution,[c00096,c00069])).
+cnf(c00223,plain,set_difference(set_intersection2(X2306,X2307),X2306)=empty_set,inference(resolution,[c00097,c00082])).
+cnf(c00224,plain,set_difference(set_difference(X2272,X2273),X2272)=empty_set,inference(resolution,[c00097,c00069])).
+cnf(c00225,plain,set_difference(X265,X265)=empty_set,inference(resolution,[c00097,c00092])).
+cnf(c00226,plain,set_difference(X2278,set_union2(X2278,X2279))=empty_set,inference(resolution,[c00097,c00089])).
+cnf(c00227,plain,skf42=skf43|proper_subset(skf42,skf43),inference(resolution,[c00079,c00099])).
+cnf(c00228,plain,set_union2(skf42,skf43)=skf43,inference(resolution,[c00071,c00099])).
+cnf(c00229,plain,set_difference(skf42,skf43)=empty_set,inference(resolution,[c00097,c00099])).
+cnf(c00230,plain,~subset(X949,skf42)|subset(X949,skf43),inference(resolution,[c00096,c00099])).
+cnf(c00231,plain,disjoint(skf44,skf43),inference(resolution,[c00086,c00101])).
+cnf(c00232,plain,~subset(X2422,X2423)|subset(X2422,set_intersection2(X2423,set_union2(X2422,X2424))),inference(resolution,[c00102,c00089])).
+cnf(c00233,plain,~subset(set_intersection2(X2443,X2444),X2445)|subset(set_intersection2(X2443,X2444),set_intersection2(X2445,X2443)),inference(resolution,[c00102,c00082])).
+cnf(c00234,plain,~subset(X2462,X2463)|subset(X2462,set_intersection2(X2463,X2462)),inference(resolution,[c00102,c00092])).
+cnf(c00235,plain,~subset(X2410,X2411)|subset(X2410,set_intersection2(X2411,X2411)),inference(factoring,[c00102])).
+cnf(c00236,plain,~subset(skf42,X2451)|subset(skf42,set_intersection2(X2451,skf43)),inference(resolution,[c00102,c00099])).
+cnf(c00237,plain,~subset(set_difference(X2415,X2416),X2417)|subset(set_difference(X2415,X2416),set_intersection2(X2417,X2415)),inference(resolution,[c00102,c00069])).
+cnf(c00238,plain,~in(X1746,set_intersection2(set_difference(X1747,X1748),set_difference(X1747,X1748)))|~in(X1746,X1748),inference(resolution,[c00104,c00065])).
+cnf(c00239,plain,~in(X1740,set_union2(set_difference(X1741,X1742),empty_set))|~in(X1740,X1742),inference(resolution,[c00104,c00083])).
+cnf(c00240,plain,~in(X1751,set_union2(set_difference(X1752,X1753),set_difference(X1752,X1753)))|~in(X1751,X1753),inference(resolution,[c00104,c00084])).
+cnf(c00241,plain,~in(X1743,set_difference(X1744,X1745))|~in(X1743,X1745),inference(resolution,[c00104,c00052])).
+cnf(c00242,plain,~in(X1875,X1876)|in(X1875,X1877)|in(X1875,set_intersection2(set_difference(X1876,X1877),set_difference(X1876,X1877))),inference(resolution,[c00105,c00065])).
+cnf(c00243,plain,~in(X1869,X1870)|in(X1869,X1871)|in(X1869,set_union2(set_difference(X1870,X1871),empty_set)),inference(resolution,[c00105,c00083])).
+cnf(c00244,plain,~in(X1890,X1891)|in(X1890,X1892)|in(X1890,set_union2(set_difference(X1891,X1892),set_difference(X1891,X1892))),inference(resolution,[c00105,c00084])).
+cnf(c00245,plain,~in(X1872,X1873)|in(X1872,X1874)|in(X1872,set_difference(X1873,X1874)),inference(resolution,[c00105,c00052])).
+cnf(c00246,plain,~in(skf16(X1901,X1901,X1902),X1901)|in(skf16(X1901,X1901,X1902),X1902)|X1901=set_difference(X1901,X1902),inference(factoring,[c00106])).
+cnf(c00247,plain,in(skf16(X2053,X2054,X2055),X2053)|in(skf16(X2053,X2054,X2055),X2054)|~proper_subset(X2053,set_difference(X2054,X2055)),inference(resolution,[c00107,c00081])).
+cnf(c00248,plain,in(skf16(X2040,X2041,X2042),X2040)|in(skf16(X2040,X2041,X2042),X2041)|~in(X2043,X2041)|in(X2043,X2042)|in(X2043,X2040),inference(resolution,[c00107,c00105])).
+cnf(c00249,plain,in(skf16(X1941,X1942,X1943),X1942)|X1941=set_difference(X1942,X1943)|~in(X1941,skf16(X1941,X1942,X1943)),inference(resolution,[c00107,c00072])).
+cnf(c00250,plain,in(skf16(X1996,X1997,X1998),X1996)|X1996=set_difference(X1997,X1998)|~in(X1997,skf16(X1996,X1997,X1998)),inference(resolution,[c00107,c00072])).
+cnf(c00251,plain,in(skf16(X2028,X2029,X2030),X2028)|in(skf16(X2028,X2029,X2030),X2029)|set_difference(X2029,X2030)=X2028,inference(resolution,[c00107,c00054])).
+cnf(c00252,plain,in(skf16(X2071,X2072,X2072),X2071)|X2071=set_difference(X2072,X2072),inference(resolution,[c00103,c00107])).
+cnf(c00253,plain,in(skf16(X1911,X1911,X1912),X1911)|X1911=set_difference(X1911,X1912),inference(factoring,[c00107])).
+cnf(c00254,plain,in(skf16(X2023,X2024,X2025),X2023)|in(skf16(X2023,X2024,X2025),X2024)|~in(X2026,X2023)|~in(X2026,X2025),inference(resolution,[c00107,c00104])).
+cnf(c00255,plain,~empty(X2221)|empty(set_difference(X2222,X2223))|in(skf16(X2221,X2222,X2223),X2221)|in(skf16(X2221,X2222,X2223),X2222),inference(resolution,[c00057,c00107])).
+cnf(c00256,plain,~in(X1724,set_intersection2(set_difference(X1725,X1726),set_difference(X1725,X1726)))|in(X1724,X1725),inference(resolution,[c00108,c00065])).
+cnf(c00257,plain,~in(X1714,set_union2(set_difference(X1715,X1716),empty_set))|in(X1714,X1715),inference(resolution,[c00108,c00083])).
+cnf(c00258,plain,~in(X1732,set_union2(set_difference(X1733,X1734),set_difference(X1733,X1734)))|in(X1732,X1733),inference(resolution,[c00108,c00084])).
+cnf(c00259,plain,~in(X1718,set_difference(X1719,X1720))|in(X1718,X1719),inference(resolution,[c00108,c00052])).
+cnf(c00260,plain,in(skf16(X2032,X2033,X2034),X2032)|in(skf16(X2032,X2033,X2034),X2033)|~in(X2035,X2032)|in(X2035,X2033),inference(resolution,[c00107,c00108])).
+cnf(c00261,plain,~subset(X1092,X1093)|in(skf7(X1094,X1092,X1095),X1093)|in(skf7(X1094,X1092,X1095),X1094)|in(skf7(X1094,X1092,X1095),X1095)|X1094=set_union2(X1092,X1095),inference(resolution,[c00110,c00073])).
+cnf(c00262,plain,~subset(X1087,X1088)|in(skf7(X1087,X1089,X1090),X1088)|in(skf7(X1087,X1089,X1090),X1089)|in(skf7(X1087,X1089,X1090),X1090)|X1087=set_union2(X1089,X1090),inference(resolution,[c00110,c00073])).
+cnf(c00263,plain,~subset(X1080,X1081)|in(skf7(X1082,X1083,X1080),X1081)|in(skf7(X1082,X1083,X1080),X1082)|in(skf7(X1082,X1083,X1080),X1083)|X1082=set_union2(X1083,X1080),inference(resolution,[c00110,c00073])).
+cnf(c00264,plain,in(skf16(X1936,X1937,X1938),X1937)|X1936=set_difference(X1937,X1938)|~subset(X1936,X1939)|in(skf16(X1936,X1937,X1938),X1939),inference(resolution,[c00107,c00110])).
+cnf(c00265,plain,in(skf16(X1982,X1983,X1984),X1982)|X1982=set_difference(X1983,X1984)|~subset(X1983,X1985)|in(skf16(X1982,X1983,X1984),X1985),inference(resolution,[c00107,c00110])).
+cnf(c00266,plain,in(skf13(X1418,X1419,X1420),X1418)|X1418=set_intersection2(X1419,X1420)|~subset(X1419,X1421)|in(skf13(X1418,X1419,X1420),X1421),inference(resolution,[c00060,c00110])).
+cnf(c00267,plain,in(skf13(X1381,X1382,X1383),X1382)|X1381=set_intersection2(X1382,X1383)|~subset(X1381,X1384)|in(skf13(X1381,X1382,X1383),X1384),inference(resolution,[c00060,c00110])).
+cnf(c00268,plain,in(skf13(X1537,X1538,X1539),X1539)|X1537=set_intersection2(X1538,X1539)|~subset(X1537,X1540)|in(skf13(X1537,X1538,X1539),X1540),inference(resolution,[c00061,c00110])).
+cnf(c00269,plain,in(skf13(X1604,X1605,X1606),X1604)|X1604=set_intersection2(X1605,X1606)|~subset(X1606,X1607)|in(skf13(X1604,X1605,X1606),X1607),inference(resolution,[c00061,c00110])).
+cnf(c00270,plain,X2143=X2144|proper_subset(X2143,X2144)|in(skf10(X2143,X2144),X2143),inference(resolution,[c00079,c00111])).
+cnf(c00271,plain,~subset(X2473,X2474)|subset(X2473,set_intersection2(X2474,X2475))|in(skf10(X2473,X2475),X2473),inference(resolution,[c00102,c00111])).
+cnf(c00272,plain,subset(X1097,X1098)|~subset(X1097,X1099)|in(skf10(X1097,X1098),X1099),inference(resolution,[c00111,c00110])).
+cnf(c00273,plain,subset(X1101,X1102)|~in(X1101,skf10(X1101,X1102)),inference(resolution,[c00111,c00072])).
+cnf(c00274,plain,set_union2(X2395,X2396)=X2396|in(skf10(X2395,X2396),X2395),inference(resolution,[c00071,c00111])).
+cnf(c00275,plain,set_difference(X2315,X2316)=empty_set|in(skf10(X2315,X2316),X2315),inference(resolution,[c00097,c00111])).
+cnf(c00276,plain,~subset(X2688,X2689)|subset(X2688,X2690)|in(skf10(X2689,X2690),X2689),inference(resolution,[c00096,c00111])).
+cnf(c00277,plain,skf18=empty_set,inference(resolution,[c00113,c00093])).
+cnf(c00278,plain,~in(X1126,set_intersection2(X1127,X1128))|in(X1126,X1128),inference(resolution,[c00062,c00115])).
+cnf(c00279,plain,~proper_subset(set_intersection2(X705,X706),set_intersection2(X706,X705)),inference(resolution,[c00081,c00115])).
+cnf(c00280,plain,~empty(set_intersection2(X2230,X2231))|empty(set_intersection2(X2231,X2230)),inference(resolution,[c00057,c00115])).
+cnf(c00281,plain,set_intersection2(X984,set_union2(X984,X985))=X984,inference(resolution,[c00116,c00089])).
+cnf(c00282,plain,set_intersection2(set_intersection2(X3167,X3168),X3167)=set_intersection2(X3167,X3168),inference(resolution,[c00116,c00082])).
+cnf(c00283,plain,set_intersection2(X3188,X3189)=X3188|in(skf10(X3188,X3189),X3188),inference(resolution,[c00116,c00111])).
+cnf(c00284,plain,set_intersection2(skf42,skf43)=skf42,inference(resolution,[c00116,c00099])).
+cnf(c00285,plain,set_intersection2(set_difference(X3147,X3148),X3147)=set_difference(X3147,X3148),inference(resolution,[c00116,c00069])).
+cnf(c00286,plain,in(skf4(X730),X730)|~proper_subset(X730,empty_set),inference(resolution,[c00117,c00081])).
+cnf(c00287,plain,~subset(X1074,X1075)|in(skf4(X1074),X1075)|X1074=empty_set,inference(resolution,[c00110,c00117])).
+cnf(c00288,plain,empty_set=X797|in(skf4(X797),X797),inference(resolution,[c00054,c00117])).
+cnf(c00289,plain,X719=empty_set|~in(X719,skf4(X719)),inference(resolution,[c00117,c00072])).
+cnf(c00290,plain,subset(X2268,X2269)|in(skf4(set_difference(X2268,X2269)),set_difference(X2268,X2269)),inference(resolution,[c00098,c00117])).
+cnf(c00291,plain,in(skf7(X926,X927,X928),X927)|in(skf7(X926,X927,X928),X928)|X926=set_union2(X927,X928)|~X926=empty_set,inference(resolution,[c00073,c00118])).
+cnf(c00292,plain,in(skf7(X963,X964,X965),X963)|in(skf7(X963,X964,X965),X965)|X963=set_union2(X964,X965)|~X964=empty_set,inference(resolution,[c00073,c00118])).
+cnf(c00293,plain,in(skf7(X991,X992,X993),X991)|in(skf7(X991,X992,X993),X992)|X991=set_union2(X992,X993)|~X993=empty_set,inference(resolution,[c00073,c00118])).
+cnf(c00294,plain,subset(X147,X148)|~X147=empty_set,inference(resolution,[c00111,c00118])).
+cnf(c00295,plain,in(skf16(X1921,X1922,X1923),X1922)|X1921=set_difference(X1922,X1923)|~X1921=empty_set,inference(resolution,[c00107,c00118])).
+cnf(c00296,plain,in(skf16(X1964,X1965,X1966),X1964)|X1964=set_difference(X1965,X1966)|~X1965=empty_set,inference(resolution,[c00107,c00118])).
+cnf(c00297,plain,in(skf13(X1406,X1407,X1408),X1406)|X1406=set_intersection2(X1407,X1408)|~X1407=empty_set,inference(resolution,[c00060,c00118])).
+cnf(c00298,plain,in(skf13(X1364,X1365,X1366),X1365)|X1364=set_intersection2(X1365,X1366)|~X1364=empty_set,inference(resolution,[c00060,c00118])).
+cnf(c00299,plain,in(skf13(X1583,X1584,X1585),X1583)|X1583=set_intersection2(X1584,X1585)|~X1585=empty_set,inference(resolution,[c00061,c00118])).
+cnf(c00300,plain,in(skf13(X1513,X1514,X1515),X1515)|X1513=set_intersection2(X1514,X1515)|~X1513=empty_set,inference(resolution,[c00061,c00118])).
+cnf(c00301,plain,in(skf7(X996,X997,X998),X996)|in(skf7(X996,X997,X998),X997)|X996=set_union2(X997,X998)|~empty(X998),inference(resolution,[c00073,c00119])).
+cnf(c00302,plain,in(skf7(X936,X937,X938),X937)|in(skf7(X936,X937,X938),X938)|X936=set_union2(X937,X938)|~empty(X936),inference(resolution,[c00073,c00119])).
+cnf(c00303,plain,in(skf7(X968,X969,X970),X968)|in(skf7(X968,X969,X970),X970)|X968=set_union2(X969,X970)|~empty(X969),inference(resolution,[c00073,c00119])).
+cnf(c00304,plain,in(skf16(X1970,X1971,X1972),X1970)|X1970=set_difference(X1971,X1972)|~empty(X1971),inference(resolution,[c00107,c00119])).
+cnf(c00305,plain,subset(X114,X115)|~empty(X114),inference(resolution,[c00111,c00119])).
+cnf(c00306,plain,in(skf16(X1925,X1926,X1927),X1926)|X1925=set_difference(X1926,X1927)|~empty(X1925),inference(resolution,[c00107,c00119])).
+cnf(c00307,plain,in(skf13(X1414,X1415,X1416),X1414)|X1414=set_intersection2(X1415,X1416)|~empty(X1415),inference(resolution,[c00060,c00119])).
+cnf(c00308,plain,in(skf13(X1373,X1374,X1375),X1374)|X1373=set_intersection2(X1374,X1375)|~empty(X1373),inference(resolution,[c00060,c00119])).
+cnf(c00309,plain,disjoint(X1018,X1019)|~empty(set_intersection2(X1018,X1019)),inference(resolution,[c00067,c00119])).
+cnf(c00310,plain,in(skf13(X1526,X1527,X1528),X1528)|X1526=set_intersection2(X1527,X1528)|~empty(X1526),inference(resolution,[c00061,c00119])).
+cnf(c00311,plain,in(skf13(X1594,X1595,X1596),X1594)|X1594=set_intersection2(X1595,X1596)|~empty(X1596),inference(resolution,[c00061,c00119])).
+cnf(c00312,plain,subset(X33,set_intersection2(X33,X33)),inference(resolution,[c00120,c00065])).
+cnf(c00313,plain,in(skf7(X1011,X1012,X1013),X1011)|in(skf7(X1011,X1012,X1013),X1012)|in(skf7(X1011,X1012,X1013),X1013)|subset(set_union2(X1012,X1013),X1011),inference(resolution,[c00073,c00120])).
+cnf(c00314,plain,in(skf16(X2049,X2050,X2051),X2049)|in(skf16(X2049,X2050,X2051),X2050)|subset(set_difference(X2050,X2051),X2049),inference(resolution,[c00107,c00120])).
+cnf(c00315,plain,in(skf13(X1460,X1461,X1462),X1460)|in(skf13(X1460,X1461,X1462),X1461)|subset(set_intersection2(X1461,X1462),X1460),inference(resolution,[c00060,c00120])).
+cnf(c00316,plain,in(skf13(X1670,X1671,X1672),X1670)|in(skf13(X1670,X1671,X1672),X1672)|subset(set_intersection2(X1671,X1672),X1670),inference(resolution,[c00061,c00120])).
+cnf(c00317,plain,~subset(set_union2(X658,X659),X658)|set_union2(X658,X659)=X658,inference(resolution,[c00121,c00089])).
+cnf(c00318,plain,~subset(X684,set_intersection2(X684,X685))|X684=set_intersection2(X684,X685),inference(resolution,[c00121,c00082])).
+cnf(c00319,plain,~subset(skf43,skf42)|skf43=skf42,inference(resolution,[c00121,c00099])).
+cnf(c00320,plain,in(skf10(X1109,X1110),X1109)|~subset(X1110,X1109)|X1110=X1109,inference(resolution,[c00111,c00121])).
+cnf(c00321,plain,~subset(X651,set_difference(X651,X652))|X651=set_difference(X651,X652),inference(resolution,[c00121,c00069])).
+cnf(c00322,plain,subset(set_union2(X89,empty_set),X89),inference(resolution,[c00083,c00122])).
+cnf(c00323,plain,subset(set_union2(X32,X32),X32),inference(resolution,[c00122,c00084])).
+cnf(c00324,plain,in(skf7(X1058,X1059,X1060),X1058)|in(skf7(X1058,X1059,X1060),X1059)|in(skf7(X1058,X1059,X1060),X1060)|subset(X1058,set_union2(X1059,X1060)),inference(resolution,[c00073,c00122])).
+cnf(c00325,plain,in(skf16(X2037,X2038,X2039),X2037)|in(skf16(X2037,X2038,X2039),X2038)|subset(X2037,set_difference(X2038,X2039)),inference(resolution,[c00107,c00122])).
+cnf(c00326,plain,in(skf4(X736),X736)|subset(X736,empty_set),inference(resolution,[c00117,c00122])).
+cnf(c00327,plain,subset(set_intersection2(X630,X631),set_intersection2(X631,X630)),inference(resolution,[c00122,c00115])).
+cnf(c00328,plain,subset(set_union2(X622,X623),set_union2(X623,X622)),inference(resolution,[c00122,c00091])).
+cnf(c00329,plain,in(skf13(X1487,X1488,X1489),X1487)|in(skf13(X1487,X1488,X1489),X1488)|subset(X1487,set_intersection2(X1488,X1489)),inference(resolution,[c00060,c00122])).
+cnf(c00330,plain,in(skf13(X1707,X1708,X1709),X1707)|in(skf13(X1707,X1708,X1709),X1709)|subset(X1707,set_intersection2(X1708,X1709)),inference(resolution,[c00061,c00122])).
+cnf(c00331,plain,disjoint(X360,X361)|~empty(X360),inference(resolution,[c00125,c00119])).
+cnf(c00332,plain,in(skf32(skf42,skf44),skf42),inference(resolution,[c00125,c00100])).
+cnf(c00333,plain,disjoint(X459,X460)|~X459=empty_set,inference(resolution,[c00125,c00118])).
+cnf(c00334,plain,in(skf32(skf42,skf44),skf44),inference(resolution,[c00127,c00100])).
+cnf(c00335,plain,disjoint(X369,X370)|~empty(X370),inference(resolution,[c00127,c00119])).
+cnf(c00336,plain,disjoint(X506,X507)|~X507=empty_set,inference(resolution,[c00127,c00118])).
+cnf(c00337,plain,set_intersection2(empty_set,X217)=empty_set,inference(resolution,[c00128,c00082])).
+cnf(c00338,plain,X1897=empty_set|in(skf10(X1897,empty_set),X1897),inference(resolution,[c00128,c00111])).
+cnf(c00339,plain,~in(X1136,set_difference(set_intersection2(X1137,X1138),empty_set))|in(X1136,X1137),inference(resolution,[c00062,c00130])).
+cnf(c00340,plain,~proper_subset(set_difference(X91,empty_set),X91),inference(resolution,[c00130,c00081])).
+cnf(c00341,plain,~in(X881,X882)|in(X881,set_difference(set_union2(X883,X882),empty_set)),inference(resolution,[c00078,c00130])).
+cnf(c00342,plain,~in(X782,set_difference(set_union2(X783,X784),empty_set))|in(X782,X783)|in(X782,X784),inference(resolution,[c00076,c00130])).
+cnf(c00343,plain,~in(X839,X840)|in(X839,set_difference(set_union2(X840,X841),empty_set)),inference(resolution,[c00077,c00130])).
+cnf(c00344,plain,X98=set_difference(X98,empty_set),inference(resolution,[c00054,c00130])).
+cnf(c00345,plain,~in(X1736,set_difference(set_difference(X1737,X1738),empty_set))|in(X1736,X1737),inference(resolution,[c00108,c00130])).
+cnf(c00346,plain,subset(X90,set_difference(X90,empty_set)),inference(resolution,[c00130,c00120])).
+cnf(c00347,plain,~empty(set_difference(X898,empty_set))|empty(X898),inference(resolution,[c00057,c00130])).
+cnf(c00348,plain,~in(X1760,set_difference(set_difference(X1761,X1762),empty_set))|~in(X1760,X1762),inference(resolution,[c00104,c00130])).
+cnf(c00349,plain,~in(X1893,X1894)|in(X1893,X1895)|in(X1893,set_difference(set_difference(X1894,X1895),empty_set)),inference(resolution,[c00105,c00130])).
+cnf(c00350,plain,~in(X1304,X1305)|~in(X1304,X1306)|in(X1304,set_difference(set_intersection2(X1305,X1306),empty_set)),inference(resolution,[c00058,c00130])).
+cnf(c00351,plain,~in(X1185,set_difference(set_intersection2(X1186,X1187),empty_set))|in(X1185,X1187),inference(resolution,[c00063,c00130])).
+cnf(c00352,plain,~proper_subset(set_difference(empty_set,X169),empty_set),inference(resolution,[c00131,c00081])).
+cnf(c00353,plain,empty_set=set_difference(empty_set,X170),inference(resolution,[c00131,c00054])).
+cnf(c00354,plain,in(skf25(X3457,set_intersection2(X3458,X3459)),X3457)|in(skf25(X3457,set_intersection2(X3458,X3459)),set_intersection2(X3458,X3459))|~in(X3460,X3457)|in(X3460,X3459),inference(resolution,[c00132,c00063])).
+cnf(c00355,plain,in(skf25(X3377,set_intersection2(X3378,X3379)),X3377)|in(skf25(X3377,set_intersection2(X3378,X3379)),set_intersection2(X3378,X3379))|~in(X3380,X3377)|in(X3380,X3378),inference(resolution,[c00132,c00062])).
+cnf(c00356,plain,in(skf25(X3431,set_union2(X3432,X3433)),X3431)|in(skf25(X3431,set_union2(X3432,X3433)),set_union2(X3432,X3433))|~in(X3434,X3431)|in(X3434,X3432)|in(X3434,X3433),inference(resolution,[c00132,c00076])).
+cnf(c00357,plain,in(skf25(X3446,set_union2(X3447,X3448)),X3446)|in(skf25(X3446,set_union2(X3447,X3448)),set_union2(X3447,X3448))|~in(X3449,X3448)|in(X3449,X3446),inference(resolution,[c00132,c00078])).
+cnf(c00358,plain,in(skf25(X3418,X3419),X3418)|in(skf25(X3418,X3419),X3419)|~proper_subset(X3418,X3419),inference(resolution,[c00132,c00081])).
+cnf(c00359,plain,in(skf25(X3339,set_union2(X3340,X3341)),X3339)|in(skf25(X3339,set_union2(X3340,X3341)),set_union2(X3340,X3341))|~in(X3342,X3340)|in(X3342,X3339),inference(resolution,[c00132,c00077])).
+cnf(c00360,plain,in(skf25(X3366,X3367),X3366)|in(skf25(X3366,X3367),X3367)|subset(X3366,X3367),inference(resolution,[c00132,c00122])).
+cnf(c00361,plain,in(skf25(X3269,X3270),X3270)|X3269=X3270|~subset(X3269,X3271)|in(skf25(X3269,X3270),X3271),inference(resolution,[c00132,c00110])).
+cnf(c00362,plain,in(skf25(X3351,X3352),X3351)|in(skf25(X3351,X3352),X3352)|~empty(X3351)|empty(X3352),inference(resolution,[c00132,c00057])).
+cnf(c00363,plain,in(skf25(X3357,set_difference(X3358,X3359)),X3357)|in(skf25(X3357,set_difference(X3358,X3359)),set_difference(X3358,X3359))|~in(X3360,X3357)|in(X3360,X3358),inference(resolution,[c00132,c00108])).
+cnf(c00364,plain,in(skf25(X3382,set_difference(X3383,X3384)),X3382)|in(skf25(X3382,set_difference(X3383,X3384)),set_difference(X3383,X3384))|~in(X3385,X3383)|in(X3385,X3384)|in(X3385,X3382),inference(resolution,[c00132,c00105])).
+cnf(c00365,plain,in(skf25(X3354,X3355),X3354)|in(skf25(X3354,X3355),X3355)|X3355=X3354,inference(resolution,[c00132,c00054])).
+cnf(c00366,plain,in(skf25(X3345,set_difference(X3346,X3347)),X3345)|in(skf25(X3345,set_difference(X3346,X3347)),set_difference(X3346,X3347))|~in(X3348,X3345)|~in(X3348,X3347),inference(resolution,[c00132,c00104])).
+cnf(c00367,plain,in(skf25(X3311,X3312),X3311)|X3311=X3312|~empty(X3312),inference(resolution,[c00132,c00119])).
+cnf(c00368,plain,in(skf25(X3393,X3394),X3393)|in(skf25(X3393,X3394),X3394)|subset(X3394,X3393),inference(resolution,[c00132,c00120])).
+cnf(c00369,plain,in(skf25(X3253,X3254),X3254)|X3253=X3254|~empty(X3253),inference(resolution,[c00132,c00119])).
+cnf(c00370,plain,in(skf25(X3251,X3252),X3252)|X3251=X3252|~X3251=empty_set,inference(resolution,[c00132,c00118])).
+cnf(c00371,plain,in(skf25(X3302,X3303),X3302)|X3302=X3303|~X3303=empty_set,inference(resolution,[c00132,c00118])).
+cnf(c00372,plain,in(skf25(X3318,X3319),X3318)|X3318=X3319|~subset(X3319,X3320)|in(skf25(X3318,X3319),X3320),inference(resolution,[c00132,c00110])).
+cnf(c00373,plain,in(skf25(set_difference(X3407,X3408),empty_set),set_difference(X3407,X3408))|in(skf25(set_difference(X3407,X3408),empty_set),empty_set)|subset(X3407,X3408),inference(resolution,[c00132,c00098])).
+cnf(c00374,plain,in(skf25(X3272,X3273),X3273)|X3272=X3273|~in(X3272,skf25(X3272,X3273)),inference(resolution,[c00132,c00072])).
+cnf(c00375,plain,in(skf25(X3321,X3322),X3321)|X3321=X3322|~in(X3322,skf25(X3321,X3322)),inference(resolution,[c00132,c00072])).
+cnf(c00376,plain,in(skf25(X3369,set_intersection2(X3370,X3371)),X3369)|in(skf25(X3369,set_intersection2(X3370,X3371)),set_intersection2(X3370,X3371))|~in(X3372,X3370)|~in(X3372,X3371)|in(X3372,X3369),inference(resolution,[c00132,c00058])).
+cnf(c00377,plain,subset(set_difference(X3528,X3529),set_difference(set_union2(X3528,X3530),X3529)),inference(resolution,[c00134,c00089])).
+cnf(c00378,plain,subset(set_difference(set_intersection2(X3578,X3579),X3580),set_difference(X3578,X3580)),inference(resolution,[c00134,c00082])).
+cnf(c00379,plain,subset(set_difference(X3593,X3594),set_difference(X3595,X3594))|in(skf10(X3593,X3595),X3593),inference(resolution,[c00134,c00111])).
+cnf(c00380,plain,subset(set_difference(skf42,X3584),set_difference(skf43,X3584)),inference(resolution,[c00134,c00099])).
+cnf(c00381,plain,subset(set_difference(set_difference(X3516,X3517),X3518),set_difference(X3516,X3518)),inference(resolution,[c00134,c00069])).
+cnf(c00382,plain,disjoint(X249,empty_set),inference(resolution,[c00135,c00085])).
+cnf(c00383,plain,in(skf25(set_intersection2(X3363,X3364),empty_set),set_intersection2(X3363,X3364))|in(skf25(set_intersection2(X3363,X3364),empty_set),empty_set)|disjoint(X3363,X3364),inference(resolution,[c00132,c00135])).
+cnf(c00384,plain,disjoint(X2079,X2080)|in(skf4(set_intersection2(X2079,X2080)),set_intersection2(X2079,X2080)),inference(resolution,[c00135,c00117])).
+cnf(c00385,plain,set_intersection2(skf43,skf44)=empty_set,inference(resolution,[c00136,c00101])).
+cnf(c00386,plain,subset(set_intersection2(X2893,X2894),set_intersection2(set_union2(X2893,X2895),X2894)),inference(resolution,[c00137,c00089])).
+cnf(c00387,plain,subset(set_intersection2(set_intersection2(X2935,X2936),X2937),set_intersection2(X2935,X2937)),inference(resolution,[c00137,c00082])).
+cnf(c00388,plain,subset(set_intersection2(skf42,X2953),set_intersection2(skf43,X2953)),inference(resolution,[c00137,c00099])).
+cnf(c00389,plain,subset(set_intersection2(X2978,X2979),set_intersection2(X2980,X2979))|in(skf10(X2978,X2980),X2978),inference(resolution,[c00137,c00111])).
+cnf(c00390,plain,subset(set_intersection2(set_difference(X2883,X2884),X2885),set_intersection2(X2883,X2885)),inference(resolution,[c00137,c00069])).
+cnf(c00391,plain,X2016=set_intersection2(X2016,X2017)|~empty(X2016),inference(resolution,[c00144,c00119])).
+cnf(c00392,plain,X2154=set_intersection2(X2155,X2154)|~empty(X2154),inference(resolution,[c00150,c00119])).
+cnf(c00393,plain,~proper_subset(X72,set_intersection2(X72,X72)),inference(resolution,[c00156,c00081])).
+cnf(c00394,plain,~empty(X322)|empty(set_intersection2(X322,X322)),inference(resolution,[c00057,c00156])).
+cnf(c00395,plain,subset(X1769,set_union2(set_difference(X1769,X1770),X1769)),inference(resolution,[c00161,c00120])).
+cnf(c00396,plain,~proper_subset(set_union2(set_difference(X1771,X1772),X1771),X1771),inference(resolution,[c00161,c00081])).
+cnf(c00397,plain,X1763=set_union2(set_difference(X1763,X1764),X1763),inference(resolution,[c00161,c00054])).
+cnf(c00398,plain,subset(set_union2(set_difference(X1767,X1768),X1767),X1767),inference(resolution,[c00161,c00122])).
+cnf(c00399,plain,~in(X2512,X2513)|in(X2512,set_union2(empty_set,set_union2(X2513,X2514))),inference(resolution,[c00162,c00077])).
+cnf(c00400,plain,~in(X2521,set_union2(empty_set,set_difference(X2522,X2523)))|in(X2521,X2522),inference(resolution,[c00162,c00108])).
+cnf(c00401,plain,~in(X2517,set_union2(empty_set,set_difference(X2518,X2519)))|~in(X2517,X2519),inference(resolution,[c00162,c00104])).
+cnf(c00402,plain,~in(X2536,set_union2(empty_set,set_intersection2(X2537,X2538)))|in(X2536,X2537),inference(resolution,[c00162,c00062])).
+cnf(c00403,plain,~proper_subset(set_union2(empty_set,X292),X292),inference(resolution,[c00162,c00081])).
+cnf(c00404,plain,X289=set_union2(empty_set,X289),inference(resolution,[c00162,c00054])).
+cnf(c00405,plain,~in(X2540,X2541)|in(X2540,X2542)|in(X2540,set_union2(empty_set,set_difference(X2541,X2542))),inference(resolution,[c00162,c00105])).
+cnf(c00406,plain,subset(set_union2(empty_set,X290),X290),inference(resolution,[c00162,c00122])).
+cnf(c00407,plain,~in(X2556,X2557)|in(X2556,set_union2(empty_set,set_union2(X2558,X2557))),inference(resolution,[c00162,c00078])).
+cnf(c00408,plain,subset(X291,set_union2(empty_set,X291)),inference(resolution,[c00162,c00120])).
+cnf(c00409,plain,~in(X2529,X2530)|~in(X2529,X2531)|in(X2529,set_union2(empty_set,set_intersection2(X2530,X2531))),inference(resolution,[c00162,c00058])).
+cnf(c00410,plain,~in(X2547,set_union2(empty_set,set_union2(X2548,X2549)))|in(X2547,X2548)|in(X2547,X2549),inference(resolution,[c00162,c00076])).
+cnf(c00411,plain,~in(X2559,set_union2(empty_set,set_intersection2(X2560,X2561)))|in(X2559,X2561),inference(resolution,[c00162,c00063])).
+cnf(c00412,plain,proper_subset(empty_set,X1132)|X1132=empty_set,inference(resolution,[c00185,c00054])).
+cnf(c00413,plain,empty_set=X1396|~proper_subset(X1396,empty_set),inference(resolution,[c00185,c00094])).
+cnf(c00414,plain,empty_set=X1400|~subset(X1400,empty_set),inference(resolution,[c00185,c00124])).
+cnf(c00415,plain,~proper_subset(set_union2(set_intersection2(X1782,X1783),X1782),X1782),inference(resolution,[c00192,c00081])).
+cnf(c00416,plain,subset(X1780,set_union2(set_intersection2(X1780,X1781),X1780)),inference(resolution,[c00192,c00120])).
+cnf(c00417,plain,X1774=set_union2(set_intersection2(X1774,X1775),X1774),inference(resolution,[c00192,c00054])).
+cnf(c00418,plain,subset(set_union2(set_intersection2(X1778,X1779),X1778),X1778),inference(resolution,[c00192,c00122])).
+cnf(c00419,plain,~in(X145,empty_set)|in(X145,X146),inference(resolution,[c00197,c00078])).
+cnf(c00420,plain,~proper_subset(X111,set_union2(X111,empty_set)),inference(resolution,[c00197,c00081])).
+cnf(c00421,plain,~empty(X901)|empty(set_union2(X901,empty_set)),inference(resolution,[c00057,c00197])).
+cnf(c00422,plain,~proper_subset(X79,set_union2(X79,X79)),inference(resolution,[c00203,c00081])).
+cnf(c00423,plain,~empty(X328)|empty(set_union2(X328,X328)),inference(resolution,[c00057,c00203])).
+cnf(c00424,plain,~proper_subset(empty_set,set_intersection2(X185,empty_set)),inference(resolution,[c00210,c00081])).
+cnf(c00425,plain,~proper_subset(X1864,set_union2(X1864,set_difference(X1864,X1864))),inference(resolution,[c00218,c00081])).
+cnf(c00426,plain,subset(set_union2(X1863,set_difference(X1863,X1863)),X1863),inference(resolution,[c00218,c00120])).
+cnf(c00427,plain,set_union2(X1857,set_difference(X1857,X1857))=X1857,inference(resolution,[c00218,c00054])).
+cnf(c00428,plain,subset(set_intersection2(set_intersection2(X3465,X3466),X3467),X3465),inference(resolution,[c00219,c00082])).
+cnf(c00429,plain,subset(set_difference(set_intersection2(X3468,X3469),X3470),X3468),inference(resolution,[c00219,c00069])).
+cnf(c00430,plain,subset(skf42,set_union2(skf43,X2919)),inference(resolution,[c00221,c00099])).
+cnf(c00431,plain,subset(set_difference(X3435,X3436),set_union2(X3435,X3437)),inference(resolution,[c00221,c00069])).
+cnf(c00432,plain,subset(X3400,set_union2(set_union2(X3400,X3401),X3402)),inference(resolution,[c00221,c00089])).
+cnf(c00433,plain,subset(set_intersection2(X3413,X3414),set_union2(X3413,X3415)),inference(resolution,[c00221,c00082])).
+cnf(c00434,plain,subset(set_intersection2(set_difference(X3390,X3391),X3392),X3390),inference(resolution,[c00222,c00082])).
+cnf(c00435,plain,subset(set_difference(set_difference(X3395,X3396),X3397),X3395),inference(resolution,[c00222,c00069])).
+cnf(c00436,plain,~proper_subset(set_difference(X275,X275),empty_set),inference(resolution,[c00225,c00081])).
+cnf(c00437,plain,empty_set=set_difference(X269,X269),inference(resolution,[c00225,c00054])).
+cnf(c00438,plain,skf43=set_union2(skf42,skf43),inference(resolution,[c00228,c00054])).
+cnf(c00439,plain,~proper_subset(set_union2(skf42,skf43),skf43),inference(resolution,[c00228,c00081])).
+cnf(c00440,plain,subset(skf43,set_union2(skf42,skf43)),inference(resolution,[c00228,c00120])).
+cnf(c00441,plain,subset(set_union2(skf42,skf43),skf43),inference(resolution,[c00228,c00122])).
+cnf(c00442,plain,empty_set=set_difference(skf42,skf43),inference(resolution,[c00229,c00054])).
+cnf(c00443,plain,~proper_subset(set_difference(skf42,skf43),empty_set),inference(resolution,[c00229,c00081])).
+cnf(c00444,plain,subset(set_intersection2(skf42,X953),skf43),inference(resolution,[c00230,c00082])).
+cnf(c00445,plain,subset(set_difference(skf42,X960),skf43),inference(resolution,[c00230,c00069])).
+cnf(c00446,plain,~in(X1010,skf44)|~in(X1010,skf43),inference(resolution,[c00126,c00231])).
+cnf(c00447,plain,set_intersection2(skf44,skf43)=empty_set,inference(resolution,[c00136,c00231])).
+cnf(c00448,plain,subset(X3333,set_intersection2(set_union2(X3333,X3334),X3333)),inference(resolution,[c00234,c00089])).
+cnf(c00449,plain,subset(skf42,set_intersection2(skf43,skf42)),inference(resolution,[c00234,c00099])).
+cnf(c00450,plain,subset(set_intersection2(X3280,X3281),set_intersection2(X3280,X3280)),inference(resolution,[c00235,c00082])).
+cnf(c00451,plain,subset(skf42,set_intersection2(skf43,skf43)),inference(resolution,[c00235,c00099])).
+cnf(c00452,plain,subset(set_difference(X3292,X3293),set_intersection2(X3292,X3292)),inference(resolution,[c00235,c00069])).
+cnf(c00453,plain,X2418=set_difference(X2418,X2419)|~empty(X2418),inference(resolution,[c00253,c00119])).
+cnf(c00454,plain,set_union2(X3274,X3275)=X3275|~empty(X3274),inference(resolution,[c00274,c00119])).
+cnf(c00455,plain,skf4(skf18)=skf4(empty_set),inference(resolution,[c00048,c00277])).
+cnf(c00456,plain,~X1040=skf18|X1040=empty_set,inference(resolution,[c00010,c00277])).
+cnf(c00457,plain,~proper_subset(skf18,empty_set),inference(resolution,[c00277,c00081])).
+cnf(c00458,plain,empty_set=skf18,inference(resolution,[c00054,c00277])).
+cnf(c00459,plain,subset(skf18,empty_set),inference(resolution,[c00277,c00122])).
+cnf(c00460,plain,subset(X1833,set_intersection2(X1833,set_union2(X1833,X1834))),inference(resolution,[c00281,c00120])).
+cnf(c00461,plain,X1824=set_intersection2(X1824,set_union2(X1824,X1825)),inference(resolution,[c00281,c00054])).
+cnf(c00462,plain,~proper_subset(set_intersection2(X1835,set_union2(X1835,X1836)),X1835),inference(resolution,[c00281,c00081])).
+cnf(c00463,plain,set_intersection2(X3598,X3599)=X3598|~empty(X3598),inference(resolution,[c00283,c00119])).
+cnf(c00464,plain,skf42=set_intersection2(skf42,skf43),inference(resolution,[c00284,c00054])).
+cnf(c00465,plain,~proper_subset(set_intersection2(skf42,skf43),skf42),inference(resolution,[c00284,c00081])).
+cnf(c00466,plain,subset(skf42,set_intersection2(skf42,skf43)),inference(resolution,[c00284,c00120])).
+cnf(c00467,plain,empty_set=X798|~empty(X798),inference(resolution,[c00288,c00119])).
+cnf(c00468,plain,subset(X3184,X3185)|~empty(set_difference(X3184,X3185)),inference(resolution,[c00290,c00119])).
+cnf(c00469,plain,in(skf25(X3471,empty_set),X3471)|in(skf25(X3471,empty_set),empty_set)|subset(X3471,X3472),inference(resolution,[c00132,c00294])).
+cnf(c00470,plain,subset(set_difference(empty_set,X155),X156),inference(resolution,[c00294,c00131])).
+cnf(c00471,plain,subset(set_intersection2(X157,empty_set),X158),inference(resolution,[c00294,c00085])).
+cnf(c00472,plain,subset(X816,X817)|in(skf4(X816),X816),inference(resolution,[c00294,c00117])).
+cnf(c00473,plain,subset(set_union2(empty_set,empty_set),X175),inference(resolution,[c00294,c00083])).
+cnf(c00474,plain,subset(set_difference(X267,X267),X268),inference(resolution,[c00225,c00294])).
+cnf(c00475,plain,subset(set_difference(skf42,skf43),X910),inference(resolution,[c00229,c00294])).
+cnf(c00476,plain,subset(set_difference(set_intersection2(X3236,X3237),X3236),X3238),inference(resolution,[c00223,c00294])).
+cnf(c00477,plain,subset(set_difference(set_difference(X3201,X3202),X3201),X3203),inference(resolution,[c00224,c00294])).
+cnf(c00478,plain,subset(set_difference(X3210,set_union2(X3210,X3211)),X3212),inference(resolution,[c00226,c00294])).
+cnf(c00479,plain,subset(skf18,X117),inference(resolution,[c00305,c00093])).
+cnf(c00480,plain,subset(set_intersection2(X2903,X2904),set_intersection2(set_intersection2(X2903,X2903),X2904)),inference(resolution,[c00137,c00312])).
+cnf(c00481,plain,set_intersection2(X987,set_intersection2(X987,X987))=X987,inference(resolution,[c00116,c00312])).
+cnf(c00482,plain,set_difference(X2284,set_intersection2(X2284,X2284))=empty_set,inference(resolution,[c00097,c00312])).
+cnf(c00483,plain,subset(set_difference(X3544,X3545),set_difference(set_intersection2(X3544,X3544),X3545)),inference(resolution,[c00134,c00312])).
+cnf(c00484,plain,~subset(X2428,X2429)|subset(X2428,set_intersection2(X2429,set_intersection2(X2428,X2428))),inference(resolution,[c00102,c00312])).
+cnf(c00485,plain,set_union2(X2367,set_intersection2(X2367,X2367))=set_intersection2(X2367,X2367),inference(resolution,[c00071,c00312])).
+cnf(c00486,plain,subset(X3409,set_union2(set_intersection2(X3409,X3409),X3410)),inference(resolution,[c00221,c00312])).
+cnf(c00487,plain,subset(X3338,set_intersection2(set_intersection2(X3338,X3338),X3338)),inference(resolution,[c00234,c00312])).
+cnf(c00488,plain,set_union2(set_union2(X2388,empty_set),X2388)=X2388,inference(resolution,[c00071,c00322])).
+cnf(c00489,plain,~subset(set_union2(X2457,empty_set),X2458)|subset(set_union2(X2457,empty_set),set_intersection2(X2458,X2457)),inference(resolution,[c00102,c00322])).
+cnf(c00490,plain,set_difference(set_union2(X2313,empty_set),X2313)=empty_set,inference(resolution,[c00097,c00322])).
+cnf(c00491,plain,subset(set_difference(set_union2(X3587,empty_set),X3588),set_difference(X3587,X3588)),inference(resolution,[c00134,c00322])).
+cnf(c00492,plain,set_intersection2(set_union2(X3180,empty_set),X3180)=set_union2(X3180,empty_set),inference(resolution,[c00116,c00322])).
+cnf(c00493,plain,~subset(X2671,set_union2(X2672,empty_set))|subset(X2671,X2672),inference(resolution,[c00096,c00322])).
+cnf(c00494,plain,subset(set_intersection2(set_union2(X2961,empty_set),X2962),set_intersection2(X2961,X2962)),inference(resolution,[c00137,c00322])).
+cnf(c00495,plain,subset(set_union2(skf42,empty_set),skf43),inference(resolution,[c00230,c00322])).
+cnf(c00496,plain,~subset(X2709,set_union2(X2710,X2710))|subset(X2709,X2710),inference(resolution,[c00096,c00323])).
+cnf(c00497,plain,subset(set_intersection2(set_union2(X3000,X3000),X3001),set_intersection2(X3000,X3001)),inference(resolution,[c00137,c00323])).
+cnf(c00498,plain,~subset(set_union2(X2488,X2488),X2489)|subset(set_union2(X2488,X2488),set_intersection2(X2489,X2488)),inference(resolution,[c00102,c00323])).
+cnf(c00499,plain,set_intersection2(set_union2(X3197,X3197),X3197)=set_union2(X3197,X3197),inference(resolution,[c00116,c00323])).
+cnf(c00500,plain,subset(set_difference(set_union2(X3625,X3625),X3626),set_difference(X3625,X3626)),inference(resolution,[c00134,c00323])).
+cnf(c00501,plain,set_union2(set_union2(X941,X941),X941)=X941,inference(resolution,[c00071,c00323])).
+cnf(c00502,plain,subset(set_union2(X3301,X3301),set_intersection2(X3301,X3301)),inference(resolution,[c00235,c00323])).
+cnf(c00503,plain,set_difference(set_union2(X2322,X2322),X2322)=empty_set,inference(resolution,[c00097,c00323])).
+cnf(c00504,plain,subset(set_union2(skf42,skf42),skf43),inference(resolution,[c00230,c00323])).
+cnf(c00505,plain,subset(set_union2(X3452,X3452),set_union2(X3452,X3453)),inference(resolution,[c00221,c00323])).
+cnf(c00506,plain,subset(set_intersection2(X2682,X2683),X2683),inference(resolution,[c00219,c00327])).
+cnf(c00507,plain,disjoint(skf18,X363),inference(resolution,[c00331,c00093])).
+cnf(c00508,plain,~empty(skf42),inference(resolution,[c00332,c00119])).
+cnf(c00509,plain,~skf42=empty_set,inference(resolution,[c00332,c00118])).
+cnf(c00510,plain,~in(skf42,skf32(skf42,skf44)),inference(resolution,[c00332,c00072])).
+cnf(c00511,plain,disjoint(set_difference(empty_set,X475),X476),inference(resolution,[c00333,c00131])).
+cnf(c00512,plain,disjoint(set_intersection2(X477,empty_set),X478),inference(resolution,[c00333,c00085])).
+cnf(c00513,plain,disjoint(X1055,X1056)|in(skf4(X1055),X1055),inference(resolution,[c00333,c00117])).
+cnf(c00514,plain,disjoint(set_difference(X3204,set_union2(X3204,X3205)),X3206),inference(resolution,[c00226,c00333])).
+cnf(c00515,plain,disjoint(set_difference(skf42,skf43),X908),inference(resolution,[c00229,c00333])).
+cnf(c00516,plain,disjoint(set_difference(set_intersection2(X3230,X3231),X3230),X3232),inference(resolution,[c00223,c00333])).
+cnf(c00517,plain,disjoint(set_difference(X463,X463),X464),inference(resolution,[c00333,c00225])).
+cnf(c00518,plain,disjoint(set_difference(set_difference(X3194,X3195),X3194),X3196),inference(resolution,[c00224,c00333])).
+cnf(c00519,plain,~skf44=empty_set,inference(resolution,[c00334,c00118])).
+cnf(c00520,plain,~in(skf44,skf32(skf42,skf44)),inference(resolution,[c00334,c00072])).
+cnf(c00521,plain,~empty(skf44),inference(resolution,[c00334,c00119])).
+cnf(c00522,plain,disjoint(X1068,X1069)|in(skf4(X1069),X1069),inference(resolution,[c00336,c00117])).
+cnf(c00523,plain,disjoint(X909,set_difference(skf42,skf43)),inference(resolution,[c00229,c00336])).
+cnf(c00524,plain,disjoint(X3207,set_difference(X3208,set_union2(X3208,X3209))),inference(resolution,[c00226,c00336])).
+cnf(c00525,plain,disjoint(X3233,set_difference(set_intersection2(X3234,X3235),X3234)),inference(resolution,[c00223,c00336])).
+cnf(c00526,plain,disjoint(X3198,set_difference(set_difference(X3199,X3200),X3199)),inference(resolution,[c00224,c00336])).
+cnf(c00527,plain,subset(set_intersection2(empty_set,X218),X219),inference(resolution,[c00337,c00294])).
+cnf(c00528,plain,~proper_subset(set_intersection2(empty_set,X228),empty_set),inference(resolution,[c00337,c00081])).
+cnf(c00529,plain,disjoint(empty_set,X248),inference(resolution,[c00135,c00337])).
+cnf(c00530,plain,empty_set=set_intersection2(empty_set,X225),inference(resolution,[c00337,c00054])).
+cnf(c00531,plain,disjoint(set_intersection2(empty_set,X473),X474),inference(resolution,[c00333,c00337])).
+cnf(c00532,plain,~empty(X887)|empty(set_difference(X887,empty_set)),inference(resolution,[c00057,c00344])).
+cnf(c00533,plain,~in(X202,X203)|~in(X202,empty_set),inference(resolution,[c00104,c00344])).
+cnf(c00534,plain,~proper_subset(X124,set_difference(X124,empty_set)),inference(resolution,[c00344,c00081])).
+cnf(c00535,plain,set_difference(X2314,set_difference(X2314,empty_set))=empty_set,inference(resolution,[c00097,c00346])).
+cnf(c00536,plain,~subset(X2467,X2468)|subset(X2467,set_intersection2(X2468,set_difference(X2467,empty_set))),inference(resolution,[c00102,c00346])).
+cnf(c00537,plain,~subset(X2676,X2677)|subset(X2676,set_difference(X2677,empty_set)),inference(resolution,[c00096,c00346])).
+cnf(c00538,plain,subset(set_difference(X3591,X3592),set_difference(set_difference(X3591,empty_set),X3592)),inference(resolution,[c00134,c00346])).
+cnf(c00539,plain,set_union2(X2391,set_difference(X2391,empty_set))=set_difference(X2391,empty_set),inference(resolution,[c00071,c00346])).
+cnf(c00540,plain,subset(set_intersection2(X2968,X2969),set_intersection2(set_difference(X2968,empty_set),X2969)),inference(resolution,[c00137,c00346])).
+cnf(c00541,plain,set_intersection2(X3182,set_difference(X3182,empty_set))=X3182,inference(resolution,[c00116,c00346])).
+cnf(c00542,plain,~empty(empty_set)|empty(set_difference(empty_set,X2253)),inference(resolution,[c00057,c00353])).
+cnf(c00543,plain,~proper_subset(empty_set,set_difference(empty_set,X195)),inference(resolution,[c00353,c00081])).
+cnf(c00544,plain,disjoint(set_intersection2(skf43,skf44),X849),inference(resolution,[c00385,c00333])).
+cnf(c00545,plain,subset(set_intersection2(skf43,skf44),X851),inference(resolution,[c00385,c00294])).
+cnf(c00546,plain,~proper_subset(set_intersection2(skf43,skf44),empty_set),inference(resolution,[c00385,c00081])).
+cnf(c00547,plain,disjoint(X850,set_intersection2(skf43,skf44)),inference(resolution,[c00385,c00336])).
+cnf(c00548,plain,empty_set=set_intersection2(skf43,skf44),inference(resolution,[c00385,c00054])).
+cnf(c00549,plain,empty(set_intersection2(skf18,skf18)),inference(resolution,[c00394,c00093])).
+cnf(c00550,plain,empty(set_intersection2(empty_set,empty_set)),inference(resolution,[c00394,c00129])).
+cnf(c00551,plain,~proper_subset(X2292,set_union2(set_difference(X2292,X2293),X2292)),inference(resolution,[c00397,c00081])).
+cnf(c00552,plain,~proper_subset(X309,set_union2(empty_set,X309)),inference(resolution,[c00404,c00081])).
+cnf(c00553,plain,~empty(X967)|empty(set_union2(empty_set,X967)),inference(resolution,[c00404,c00057])).
+cnf(c00554,plain,set_intersection2(set_union2(empty_set,X3213),X3213)=set_union2(empty_set,X3213),inference(resolution,[c00116,c00406])).
+cnf(c00555,plain,~subset(X2744,set_union2(empty_set,X2745))|subset(X2744,X2745),inference(resolution,[c00406,c00096])).
+cnf(c00556,plain,subset(set_intersection2(set_union2(empty_set,X3009),X3010),set_intersection2(X3009,X3010)),inference(resolution,[c00137,c00406])).
+cnf(c00557,plain,subset(set_union2(empty_set,skf42),skf43),inference(resolution,[c00230,c00406])).
+cnf(c00558,plain,subset(set_difference(set_union2(empty_set,X3642),X3643),set_difference(X3642,X3643)),inference(resolution,[c00134,c00406])).
+cnf(c00559,plain,set_union2(set_union2(empty_set,X2775),X2775)=X2775,inference(resolution,[c00406,c00071])).
+cnf(c00560,plain,set_difference(set_union2(empty_set,X2796),X2796)=empty_set,inference(resolution,[c00406,c00097])).
+cnf(c00561,plain,~subset(set_union2(empty_set,X2752),X2753)|subset(set_union2(empty_set,X2752),set_intersection2(X2753,X2752)),inference(resolution,[c00406,c00102])).
+cnf(c00562,plain,~subset(X2816,X2817)|subset(X2816,set_intersection2(X2817,set_union2(empty_set,X2816))),inference(resolution,[c00408,c00102])).
+cnf(c00563,plain,set_union2(X2839,set_union2(empty_set,X2839))=set_union2(empty_set,X2839),inference(resolution,[c00408,c00071])).
+cnf(c00564,plain,subset(set_intersection2(X2912,X2913),set_intersection2(set_union2(empty_set,X2912),X2913)),inference(resolution,[c00137,c00408])).
+cnf(c00565,plain,set_difference(X2861,set_union2(empty_set,X2861))=empty_set,inference(resolution,[c00408,c00097])).
+cnf(c00566,plain,set_intersection2(X3155,set_union2(empty_set,X3155))=X3155,inference(resolution,[c00116,c00408])).
+cnf(c00567,plain,subset(set_difference(X3552,X3553),set_difference(set_union2(empty_set,X3552),X3553)),inference(resolution,[c00134,c00408])).
+cnf(c00568,plain,~subset(X2804,X2805)|subset(X2804,set_union2(empty_set,X2805)),inference(resolution,[c00408,c00096])).
+cnf(c00569,plain,proper_subset(empty_set,X1179)|disjoint(X1180,X1179),inference(resolution,[c00412,c00336])).
+cnf(c00570,plain,X1940=empty_set|~proper_subset(X1940,empty_set),inference(resolution,[c00412,c00094])).
+cnf(c00571,plain,proper_subset(empty_set,X1152)|disjoint(X1152,X1153),inference(resolution,[c00412,c00333])).
+cnf(c00572,plain,proper_subset(empty_set,X1969)|~proper_subset(X1969,empty_set),inference(resolution,[c00412,c00081])).
+cnf(c00573,plain,proper_subset(empty_set,X1201)|subset(X1201,X1202),inference(resolution,[c00412,c00294])).
+cnf(c00574,plain,~proper_subset(X2304,set_union2(set_intersection2(X2304,X2305),X2304)),inference(resolution,[c00417,c00081])).
+cnf(c00575,plain,in(skf7(X1205,X1206,empty_set),X1207)|in(skf7(X1205,X1206,empty_set),X1205)|in(skf7(X1205,X1206,empty_set),X1206)|X1205=set_union2(X1206,empty_set),inference(resolution,[c00419,c00073])).
+cnf(c00576,plain,in(skf7(X1228,empty_set,X1229),X1230)|in(skf7(X1228,empty_set,X1229),X1228)|in(skf7(X1228,empty_set,X1229),X1229)|X1228=set_union2(empty_set,X1229),inference(resolution,[c00419,c00073])).
+cnf(c00577,plain,in(skf7(empty_set,X1216,X1217),X1218)|in(skf7(empty_set,X1216,X1217),X1216)|in(skf7(empty_set,X1216,X1217),X1217)|empty_set=set_union2(X1216,X1217),inference(resolution,[c00419,c00073])).
+cnf(c00578,plain,in(skf13(X1431,empty_set,X1432),X1431)|X1431=set_intersection2(empty_set,X1432)|in(skf13(X1431,empty_set,X1432),X1433),inference(resolution,[c00060,c00419])).
+cnf(c00579,plain,in(skf13(X1625,X1626,empty_set),X1625)|X1625=set_intersection2(X1626,empty_set)|in(skf13(X1625,X1626,empty_set),X1627),inference(resolution,[c00061,c00419])).
+cnf(c00580,plain,in(skf13(empty_set,X1397,X1398),X1397)|empty_set=set_intersection2(X1397,X1398)|in(skf13(empty_set,X1397,X1398),X1399),inference(resolution,[c00060,c00419])).
+cnf(c00581,plain,in(skf13(empty_set,X1561,X1562),X1562)|empty_set=set_intersection2(X1561,X1562)|in(skf13(empty_set,X1561,X1562),X1563),inference(resolution,[c00061,c00419])).
+cnf(c00582,plain,empty(set_union2(skf18,empty_set)),inference(resolution,[c00421,c00093])).
+cnf(c00583,plain,empty(set_union2(empty_set,empty_set)),inference(resolution,[c00423,c00129])).
+cnf(c00584,plain,empty(set_union2(skf18,skf18)),inference(resolution,[c00423,c00093])).
+cnf(c00585,plain,~proper_subset(set_union2(X2405,set_difference(X2405,X2405)),X2405),inference(resolution,[c00427,c00081])).
+cnf(c00586,plain,~empty(empty_set)|empty(set_difference(X920,X920)),inference(resolution,[c00437,c00057])).
+cnf(c00587,plain,~proper_subset(empty_set,set_difference(X283,X283)),inference(resolution,[c00437,c00081])).
+cnf(c00588,plain,~in(X2310,skf42)|in(X2310,skf43),inference(resolution,[c00438,c00077])).
+cnf(c00589,plain,~proper_subset(skf43,set_union2(skf42,skf43)),inference(resolution,[c00438,c00081])).
+cnf(c00590,plain,~proper_subset(empty_set,set_difference(skf42,skf43)),inference(resolution,[c00442,c00081])).
+cnf(c00591,plain,disjoint(set_intersection2(skf44,skf43),X836),inference(resolution,[c00447,c00333])).
+cnf(c00592,plain,empty_set=set_intersection2(skf44,skf43),inference(resolution,[c00447,c00054])).
+cnf(c00593,plain,disjoint(X837,set_intersection2(skf44,skf43)),inference(resolution,[c00447,c00336])).
+cnf(c00594,plain,subset(set_intersection2(skf44,skf43),X838),inference(resolution,[c00447,c00294])).
+cnf(c00595,plain,~proper_subset(set_intersection2(skf44,skf43),empty_set),inference(resolution,[c00447,c00081])).
+cnf(c00596,plain,~proper_subset(skf4(skf18),skf4(empty_set)),inference(resolution,[c00455,c00081])).
+cnf(c00597,plain,~X1025=empty_set|X1025=skf18,inference(resolution,[c00010,c00458])).
+cnf(c00598,plain,skf4(empty_set)=skf4(skf18),inference(resolution,[c00048,c00458])).
+cnf(c00599,plain,~proper_subset(empty_set,skf18),inference(resolution,[c00458,c00081])).
+cnf(c00600,plain,~proper_subset(X2374,set_intersection2(X2374,set_union2(X2374,X2375))),inference(resolution,[c00461,c00081])).
+cnf(c00601,plain,~proper_subset(skf42,set_intersection2(skf42,skf43)),inference(resolution,[c00464,c00081])).
+cnf(c00602,plain,set_union2(set_difference(empty_set,X2407),X2408)=X2408,inference(resolution,[c00071,c00470])).
+cnf(c00603,plain,~subset(X2714,set_difference(empty_set,X2715))|subset(X2714,X2716),inference(resolution,[c00096,c00470])).
+cnf(c00604,plain,set_difference(set_difference(empty_set,X2327),X2328)=empty_set,inference(resolution,[c00097,c00470])).
+cnf(c00605,plain,subset(set_difference(set_difference(empty_set,X3659),X3660),set_difference(X3661,X3660)),inference(resolution,[c00134,c00470])).
+cnf(c00606,plain,set_intersection2(set_difference(empty_set,X3224),X3225)=set_difference(empty_set,X3224),inference(resolution,[c00116,c00470])).
+cnf(c00607,plain,~subset(X1314,set_difference(empty_set,X1315))|X1314=set_difference(empty_set,X1315),inference(resolution,[c00470,c00121])).
+cnf(c00608,plain,subset(set_intersection2(set_difference(empty_set,X3016),X3017),set_intersection2(X3018,X3017)),inference(resolution,[c00137,c00470])).
+cnf(c00609,plain,set_difference(empty_set,X2169)=X2170|proper_subset(set_difference(empty_set,X2169),X2170),inference(resolution,[c00079,c00470])).
+cnf(c00610,plain,subset(set_difference(set_intersection2(X3581,empty_set),X3582),set_difference(X3583,X3582)),inference(resolution,[c00134,c00471])).
+cnf(c00611,plain,set_union2(set_intersection2(X2385,empty_set),X2386)=X2386,inference(resolution,[c00071,c00471])).
+cnf(c00612,plain,~subset(X2663,set_intersection2(X2664,empty_set))|subset(X2663,X2665),inference(resolution,[c00096,c00471])).
+cnf(c00613,plain,set_intersection2(X2122,empty_set)=X2123|proper_subset(set_intersection2(X2122,empty_set),X2123),inference(resolution,[c00079,c00471])).
+cnf(c00614,plain,set_difference(set_intersection2(X2311,empty_set),X2312)=empty_set,inference(resolution,[c00097,c00471])).
+cnf(c00615,plain,subset(set_intersection2(set_intersection2(X2945,empty_set),X2946),set_intersection2(X2947,X2946)),inference(resolution,[c00137,c00471])).
+cnf(c00616,plain,set_intersection2(set_intersection2(X3173,empty_set),X3174)=set_intersection2(X3173,empty_set),inference(resolution,[c00116,c00471])).
+cnf(c00617,plain,~subset(X1324,set_intersection2(X1325,empty_set))|X1324=set_intersection2(X1325,empty_set),inference(resolution,[c00471,c00121])).
+cnf(c00618,plain,subset(X1121,X1122)|~in(X1121,skf4(X1121)),inference(resolution,[c00472,c00072])).
+cnf(c00619,plain,set_difference(set_union2(empty_set,empty_set),X2319)=empty_set,inference(resolution,[c00097,c00473])).
+cnf(c00620,plain,~subset(X1497,set_union2(empty_set,empty_set))|X1497=set_union2(empty_set,empty_set),inference(resolution,[c00473,c00121])).
+cnf(c00621,plain,~subset(X2701,set_union2(empty_set,empty_set))|subset(X2701,X2702),inference(resolution,[c00096,c00473])).
+cnf(c00622,plain,subset(set_difference(set_union2(empty_set,empty_set),X3608),set_difference(X3609,X3608)),inference(resolution,[c00134,c00473])).
+cnf(c00623,plain,set_union2(set_union2(empty_set,empty_set),X2402)=X2402,inference(resolution,[c00071,c00473])).
+cnf(c00624,plain,set_intersection2(set_union2(empty_set,empty_set),X3193)=set_union2(empty_set,empty_set),inference(resolution,[c00116,c00473])).
+cnf(c00625,plain,subset(set_intersection2(set_union2(empty_set,empty_set),X2993),set_intersection2(X2994,X2993)),inference(resolution,[c00137,c00473])).
+cnf(c00626,plain,set_union2(empty_set,empty_set)=X2149|proper_subset(set_union2(empty_set,empty_set),X2149),inference(resolution,[c00079,c00473])).
+cnf(c00627,plain,~subset(X2338,set_difference(X2339,X2339))|X2338=set_difference(X2339,X2339),inference(resolution,[c00474,c00121])).
+cnf(c00628,plain,set_difference(X2331,X2331)=X2332|proper_subset(set_difference(X2331,X2331),X2332),inference(resolution,[c00474,c00079])).
+cnf(c00629,plain,set_difference(set_difference(X2345,X2345),X2346)=empty_set,inference(resolution,[c00474,c00097])).
+cnf(c00630,plain,set_union2(set_difference(X942,X942),X943)=X943,inference(resolution,[c00071,c00474])).
+cnf(c00631,plain,~subset(X2723,set_difference(X2724,X2724))|subset(X2723,X2725),inference(resolution,[c00096,c00474])).
+cnf(c00632,plain,subset(set_intersection2(set_difference(X3025,X3025),X3026),set_intersection2(X3027,X3026)),inference(resolution,[c00137,c00474])).
+cnf(c00633,plain,set_intersection2(set_difference(X3239,X3239),X3240)=set_difference(X3239,X3239),inference(resolution,[c00116,c00474])).
+cnf(c00634,plain,skf18=X873|proper_subset(skf18,X873),inference(resolution,[c00079,c00479])).
+cnf(c00635,plain,set_intersection2(skf18,X426)=skf18,inference(resolution,[c00116,c00479])).
+cnf(c00636,plain,~subset(X724,skf18)|X724=skf18,inference(resolution,[c00479,c00121])).
+cnf(c00637,plain,set_union2(skf18,X285)=X285,inference(resolution,[c00071,c00479])).
+cnf(c00638,plain,skf18=set_difference(skf18,X689),inference(resolution,[c00321,c00479])).
+cnf(c00639,plain,set_difference(skf18,X334)=empty_set,inference(resolution,[c00097,c00479])).
+cnf(c00640,plain,~subset(X389,skf18)|subset(X389,X390),inference(resolution,[c00096,c00479])).
+cnf(c00641,plain,subset(X1843,set_intersection2(X1843,set_intersection2(X1843,X1843))),inference(resolution,[c00481,c00120])).
+cnf(c00642,plain,X1839=set_intersection2(X1839,set_intersection2(X1839,X1839)),inference(resolution,[c00481,c00054])).
+cnf(c00643,plain,~proper_subset(set_intersection2(X1844,set_intersection2(X1844,X1844)),X1844),inference(resolution,[c00481,c00081])).
+cnf(c00644,plain,disjoint(set_difference(X3222,set_intersection2(X3222,X3222)),X3223),inference(resolution,[c00482,c00333])).
+cnf(c00645,plain,disjoint(X3226,set_difference(X3227,set_intersection2(X3227,X3227))),inference(resolution,[c00482,c00336])).
+cnf(c00646,plain,subset(set_difference(X3228,set_intersection2(X3228,X3228)),X3229),inference(resolution,[c00482,c00294])).
+cnf(c00647,plain,subset(set_intersection2(set_union2(X3514,X3514),X3515),X3514),inference(resolution,[c00496,c00082])).
+cnf(c00648,plain,subset(set_difference(set_union2(X3521,X3521),X3522),X3521),inference(resolution,[c00496,c00069])).
+cnf(c00649,plain,~proper_subset(set_union2(set_union2(X1795,X1795),X1795),X1795),inference(resolution,[c00501,c00081])).
+cnf(c00650,plain,subset(set_union2(set_union2(X1793,X1793),X1793),X1793),inference(resolution,[c00501,c00122])).
+cnf(c00651,plain,X1787=set_union2(set_union2(X1787,X1787),X1787),inference(resolution,[c00501,c00054])).
+cnf(c00652,plain,subset(X1794,set_union2(set_union2(X1794,X1794),X1794)),inference(resolution,[c00501,c00120])).
+cnf(c00653,plain,disjoint(set_difference(set_union2(X3244,X3244),X3244),X3245),inference(resolution,[c00503,c00333])).
+cnf(c00654,plain,subset(set_difference(set_union2(X3248,X3248),X3248),X3249),inference(resolution,[c00503,c00294])).
+cnf(c00655,plain,disjoint(X3246,set_difference(set_union2(X3247,X3247),X3247)),inference(resolution,[c00503,c00336])).
+cnf(c00656,plain,subset(set_intersection2(X2998,skf42),skf43),inference(resolution,[c00506,c00230])).
+cnf(c00657,plain,subset(set_intersection2(X3488,X3489),set_union2(X3489,X3490)),inference(resolution,[c00506,c00221])).
+cnf(c00658,plain,subset(set_intersection2(X3501,X3502),set_intersection2(X3502,X3502)),inference(resolution,[c00506,c00235])).
+cnf(c00659,plain,subset(set_intersection2(X3482,set_intersection2(X3483,X3484)),X3483),inference(resolution,[c00506,c00219])).
+cnf(c00660,plain,subset(set_intersection2(X3479,set_difference(X3480,X3481)),X3480),inference(resolution,[c00506,c00222])).
+cnf(c00661,plain,subset(set_intersection2(X3519,set_union2(X3520,X3520)),X3520),inference(resolution,[c00496,c00506])).
+cnf(c00662,plain,set_union2(set_intersection2(X3510,X3511),X3511)=X3511,inference(resolution,[c00506,c00071])).
+cnf(c00663,plain,set_intersection2(skf18,X540)=empty_set,inference(resolution,[c00507,c00136])).
+cnf(c00664,plain,disjoint(X364,skf18),inference(resolution,[c00507,c00086])).
+cnf(c00665,plain,proper_subset(empty_set,skf42),inference(resolution,[c00412,c00509])).
+cnf(c00666,plain,in(skf4(skf42),skf42),inference(resolution,[c00509,c00117])).
+cnf(c00667,plain,disjoint(X490,set_difference(empty_set,X491)),inference(resolution,[c00511,c00086])).
+cnf(c00668,plain,disjoint(X492,set_intersection2(X493,empty_set)),inference(resolution,[c00512,c00086])).
+cnf(c00669,plain,disjoint(X1880,X1881)|~in(X1880,skf4(X1880)),inference(resolution,[c00513,c00072])).
+cnf(c00670,plain,disjoint(X465,set_difference(X466,X466)),inference(resolution,[c00517,c00086])).
+cnf(c00671,plain,proper_subset(empty_set,skf44),inference(resolution,[c00412,c00519])).
+cnf(c00672,plain,in(skf4(skf44),skf44),inference(resolution,[c00519,c00117])).
+cnf(c00673,plain,disjoint(X1888,X1889)|~in(X1889,skf4(X1889)),inference(resolution,[c00522,c00072])).
+cnf(c00674,plain,set_difference(set_intersection2(empty_set,X2294),X2295)=empty_set,inference(resolution,[c00097,c00527])).
+cnf(c00675,plain,set_intersection2(empty_set,X2108)=X2109|proper_subset(set_intersection2(empty_set,X2108),X2109),inference(resolution,[c00079,c00527])).
+cnf(c00676,plain,subset(set_intersection2(set_intersection2(empty_set,X2920),X2921),set_intersection2(X2922,X2921)),inference(resolution,[c00137,c00527])).
+cnf(c00677,plain,set_intersection2(set_intersection2(empty_set,X3164),X3165)=set_intersection2(empty_set,X3164),inference(resolution,[c00116,c00527])).
+cnf(c00678,plain,~subset(X2647,set_intersection2(empty_set,X2648))|subset(X2647,X2649),inference(resolution,[c00096,c00527])).
+cnf(c00679,plain,~subset(X1906,set_intersection2(empty_set,X1907))|X1906=set_intersection2(empty_set,X1907),inference(resolution,[c00527,c00121])).
+cnf(c00680,plain,subset(set_difference(set_intersection2(empty_set,X3571),X3572),set_difference(X3573,X3572)),inference(resolution,[c00134,c00527])).
+cnf(c00681,plain,set_union2(set_intersection2(empty_set,X2378),X2379)=X2379,inference(resolution,[c00071,c00527])).
+cnf(c00682,plain,~proper_subset(empty_set,set_intersection2(empty_set,X236)),inference(resolution,[c00530,c00081])).
+cnf(c00683,plain,~empty(empty_set)|empty(set_intersection2(empty_set,X2191)),inference(resolution,[c00057,c00530])).
+cnf(c00684,plain,disjoint(X488,set_intersection2(empty_set,X489)),inference(resolution,[c00531,c00086])).
+cnf(c00685,plain,empty(set_difference(empty_set,empty_set)),inference(resolution,[c00532,c00129])).
+cnf(c00686,plain,empty(set_difference(skf18,empty_set)),inference(resolution,[c00532,c00093])).
+cnf(c00687,plain,~in(skf7(X1798,empty_set,X1799),X1800)|in(skf7(X1798,empty_set,X1799),X1798)|in(skf7(X1798,empty_set,X1799),X1799)|X1798=set_union2(empty_set,X1799),inference(resolution,[c00533,c00073])).
+cnf(c00688,plain,~in(skf13(X1809,empty_set,X1810),X1811)|in(skf13(X1809,empty_set,X1810),X1809)|X1809=set_intersection2(empty_set,X1810),inference(resolution,[c00533,c00060])).
+cnf(c00689,plain,~in(skf13(empty_set,X1826,X1827),X1828)|in(skf13(empty_set,X1826,X1827),X1827)|empty_set=set_intersection2(X1826,X1827),inference(resolution,[c00533,c00061])).
+cnf(c00690,plain,~in(skf13(X1819,X1820,empty_set),X1821)|in(skf13(X1819,X1820,empty_set),X1819)|X1819=set_intersection2(X1820,empty_set),inference(resolution,[c00533,c00061])).
+cnf(c00691,plain,~in(skf7(empty_set,X1788,X1789),X1790)|in(skf7(empty_set,X1788,X1789),X1788)|in(skf7(empty_set,X1788,X1789),X1789)|empty_set=set_union2(X1788,X1789),inference(resolution,[c00533,c00073])).
+cnf(c00692,plain,~in(skf7(X1784,X1785,empty_set),X1786)|in(skf7(X1784,X1785,empty_set),X1784)|in(skf7(X1784,X1785,empty_set),X1785)|X1784=set_union2(X1785,empty_set),inference(resolution,[c00533,c00073])).
+cnf(c00693,plain,~in(skf13(empty_set,X1814,X1815),X1816)|in(skf13(empty_set,X1814,X1815),X1814)|empty_set=set_intersection2(X1814,X1815),inference(resolution,[c00533,c00060])).
+cnf(c00694,plain,~in(X204,empty_set),inference(factoring,[c00533])).
+cnf(c00695,plain,subset(skf42,set_difference(skf43,empty_set)),inference(resolution,[c00537,c00099])).
+cnf(c00696,plain,empty(set_difference(empty_set,X2254)),inference(resolution,[c00542,c00129])).
+cnf(c00697,plain,~proper_subset(empty_set,set_intersection2(skf43,skf44)),inference(resolution,[c00548,c00081])).
+cnf(c00698,plain,empty(set_intersection2(set_intersection2(skf18,skf18),set_intersection2(skf18,skf18))),inference(resolution,[c00549,c00394])).
+cnf(c00699,plain,empty(set_union2(set_intersection2(skf18,skf18),set_intersection2(skf18,skf18))),inference(resolution,[c00423,c00549])).
+cnf(c00700,plain,~empty(X3505)|X3505=set_intersection2(skf18,skf18),inference(resolution,[c00549,c00064])).
+cnf(c00701,plain,disjoint(set_intersection2(skf18,skf18),X531),inference(resolution,[c00331,c00549])).
+cnf(c00702,plain,~empty(X3485)|X3485=set_intersection2(empty_set,empty_set),inference(resolution,[c00550,c00064])).
+cnf(c00703,plain,empty(set_intersection2(set_intersection2(empty_set,empty_set),set_intersection2(empty_set,empty_set))),inference(resolution,[c00550,c00394])).
+cnf(c00704,plain,empty(set_union2(set_intersection2(empty_set,empty_set),set_intersection2(empty_set,empty_set))),inference(resolution,[c00423,c00550])).
+cnf(c00705,plain,empty(set_union2(empty_set,skf18)),inference(resolution,[c00553,c00093])).
+cnf(c00706,plain,subset(skf42,set_union2(empty_set,skf43)),inference(resolution,[c00568,c00099])).
+cnf(c00707,plain,disjoint(X1275,X1276)|~proper_subset(X1276,empty_set),inference(resolution,[c00569,c00094])).
+cnf(c00708,plain,disjoint(X1278,X1279)|~subset(X1279,empty_set),inference(resolution,[c00569,c00124])).
+cnf(c00709,plain,disjoint(X1225,X1226)|~proper_subset(X1225,empty_set),inference(resolution,[c00571,c00094])).
+cnf(c00710,plain,disjoint(X1231,X1232)|~subset(X1231,empty_set),inference(resolution,[c00571,c00124])).
+cnf(c00711,plain,subset(X1322,X1323)|~proper_subset(X1322,empty_set),inference(resolution,[c00573,c00094])).
+cnf(c00712,plain,set_union2(empty_set,empty_set)=skf18,inference(resolution,[c00583,c00217])).
+cnf(c00713,plain,empty(set_union2(set_union2(empty_set,empty_set),set_union2(empty_set,empty_set))),inference(resolution,[c00583,c00423])).
+cnf(c00714,plain,disjoint(set_union2(empty_set,empty_set),X532),inference(resolution,[c00331,c00583])).
+cnf(c00715,plain,disjoint(X602,set_union2(empty_set,empty_set)),inference(resolution,[c00335,c00583])).
+cnf(c00716,plain,~empty(X3749)|X3749=set_union2(empty_set,empty_set),inference(resolution,[c00583,c00064])).
+cnf(c00717,plain,empty(set_intersection2(set_union2(empty_set,empty_set),set_union2(empty_set,empty_set))),inference(resolution,[c00583,c00394])).
+cnf(c00718,plain,set_union2(skf18,skf18)=empty_set,inference(resolution,[c00584,c00113])).
+cnf(c00719,plain,subset(set_union2(skf18,skf18),X433),inference(resolution,[c00584,c00305])).
+cnf(c00720,plain,disjoint(set_union2(skf18,skf18),X539),inference(resolution,[c00331,c00584])).
+cnf(c00721,plain,disjoint(X603,set_union2(skf18,skf18)),inference(resolution,[c00335,c00584])).
+cnf(c00722,plain,empty(set_union2(set_union2(skf18,skf18),set_union2(skf18,skf18))),inference(resolution,[c00584,c00423])).
+cnf(c00723,plain,~empty(X3775)|X3775=set_union2(skf18,skf18),inference(resolution,[c00584,c00064])).
+cnf(c00724,plain,empty_set=set_union2(skf18,skf18),inference(resolution,[c00467,c00584])).
+cnf(c00725,plain,empty(set_intersection2(set_union2(skf18,skf18),set_union2(skf18,skf18))),inference(resolution,[c00584,c00394])).
+cnf(c00726,plain,empty(set_difference(X921,X921)),inference(resolution,[c00586,c00129])).
+cnf(c00727,plain,in(skf32(skf42,skf44),skf43),inference(resolution,[c00588,c00332])).
+cnf(c00728,plain,~proper_subset(empty_set,set_intersection2(skf44,skf43)),inference(resolution,[c00592,c00081])).
+cnf(c00729,plain,proper_subset(empty_set,X1949)|X1949=skf18,inference(resolution,[c00412,c00597])).
+cnf(c00730,plain,subset(skf4(skf18),skf4(empty_set)),inference(resolution,[c00598,c00120])).
+cnf(c00731,plain,subset(skf4(empty_set),skf4(skf18)),inference(resolution,[c00598,c00122])).
+cnf(c00732,plain,~proper_subset(skf4(empty_set),skf4(skf18)),inference(resolution,[c00598,c00081])).
+cnf(c00733,plain,subset(set_difference(set_difference(X3266,X3266),X3267),X3268),inference(resolution,[c00629,c00294])).
+cnf(c00734,plain,disjoint(X3261,set_difference(set_difference(X3262,X3262),X3263)),inference(resolution,[c00629,c00336])).
+cnf(c00735,plain,disjoint(set_difference(set_difference(X3258,X3258),X3259),X3260),inference(resolution,[c00629,c00333])).
+cnf(c00736,plain,~proper_subset(set_union2(set_difference(X1807,X1807),X1808),X1808),inference(resolution,[c00630,c00081])).
+cnf(c00737,plain,subset(X1805,set_union2(set_difference(X1806,X1806),X1805)),inference(resolution,[c00630,c00120])).
+cnf(c00738,plain,subset(set_union2(set_difference(X1803,X1803),X1804),X1804),inference(resolution,[c00630,c00122])).
+cnf(c00739,plain,X1796=set_union2(set_difference(X1797,X1797),X1796),inference(resolution,[c00630,c00054])).
+cnf(c00740,plain,subset(set_intersection2(set_difference(X3531,X3531),X3532),X3533),inference(resolution,[c00631,c00082])).
+cnf(c00741,plain,subset(set_intersection2(X3534,set_difference(X3535,X3535)),X3536),inference(resolution,[c00631,c00506])).
+cnf(c00742,plain,skf18=X1713|~proper_subset(X1713,skf18),inference(resolution,[c00634,c00094])).
+cnf(c00743,plain,proper_subset(skf18,X1423)|X1423=skf18,inference(resolution,[c00634,c00054])).
+cnf(c00744,plain,proper_subset(skf18,X1438)|subset(X1438,skf18),inference(resolution,[c00634,c00120])).
+cnf(c00745,plain,skf18=X1717|~subset(X1717,skf18),inference(resolution,[c00634,c00124])).
+cnf(c00746,plain,skf18=set_intersection2(skf18,X619),inference(resolution,[c00635,c00054])).
+cnf(c00747,plain,~proper_subset(set_intersection2(skf18,X624),skf18),inference(resolution,[c00635,c00081])).
+cnf(c00748,plain,set_intersection2(skf44,skf43)=skf18,inference(resolution,[c00594,c00636])).
+cnf(c00749,plain,set_intersection2(X739,empty_set)=skf18,inference(resolution,[c00636,c00471])).
+cnf(c00750,plain,set_difference(empty_set,X744)=skf18,inference(resolution,[c00636,c00470])).
+cnf(c00751,plain,set_intersection2(empty_set,X747)=skf18,inference(resolution,[c00636,c00527])).
+cnf(c00752,plain,set_difference(skf42,skf43)=skf18,inference(resolution,[c00475,c00636])).
+cnf(c00753,plain,set_difference(X726,X726)=skf18,inference(resolution,[c00636,c00474])).
+cnf(c00754,plain,set_intersection2(skf43,skf44)=skf18,inference(resolution,[c00545,c00636])).
+cnf(c00755,plain,subset(set_union2(skf18,X297),X297),inference(resolution,[c00637,c00122])).
+cnf(c00756,plain,~in(X2565,X2566)|in(X2565,set_union2(skf18,set_union2(X2566,X2567))),inference(resolution,[c00637,c00077])).
+cnf(c00757,plain,X293=set_union2(skf18,X293),inference(resolution,[c00637,c00054])).
+cnf(c00758,plain,~in(X2576,X2577)|~in(X2576,X2578)|in(X2576,set_union2(skf18,set_intersection2(X2577,X2578))),inference(resolution,[c00637,c00058])).
+cnf(c00759,plain,~in(X2568,set_union2(skf18,set_difference(X2569,X2570)))|~in(X2568,X2570),inference(resolution,[c00637,c00104])).
+cnf(c00760,plain,~in(X2586,X2587)|in(X2586,X2588)|in(X2586,set_union2(skf18,set_difference(X2587,X2588))),inference(resolution,[c00637,c00105])).
+cnf(c00761,plain,disjoint(X650,set_union2(skf18,empty_set)),inference(resolution,[c00336,c00637])).
+cnf(c00762,plain,~in(X2572,set_union2(skf18,set_difference(X2573,X2574)))|in(X2572,X2573),inference(resolution,[c00637,c00108])).
+cnf(c00763,plain,disjoint(set_union2(skf18,empty_set),X642),inference(resolution,[c00333,c00637])).
+cnf(c00764,plain,~in(X2604,set_union2(skf18,set_intersection2(X2605,X2606)))|in(X2604,X2606),inference(resolution,[c00637,c00063])).
+cnf(c00765,plain,~in(X2598,X2599)|in(X2598,set_union2(skf18,set_union2(X2600,X2599))),inference(resolution,[c00637,c00078])).
+cnf(c00766,plain,~in(X2579,set_union2(skf18,set_intersection2(X2580,X2581)))|in(X2579,X2580),inference(resolution,[c00637,c00062])).
+cnf(c00767,plain,~in(X2591,set_union2(skf18,set_union2(X2592,X2593)))|in(X2591,X2592)|in(X2591,X2593),inference(resolution,[c00637,c00076])).
+cnf(c00768,plain,~proper_subset(set_union2(skf18,X299),X299),inference(resolution,[c00637,c00081])).
+cnf(c00769,plain,subset(X298,set_union2(skf18,X298)),inference(resolution,[c00637,c00120])).
+cnf(c00770,plain,subset(set_union2(skf18,empty_set),X345),inference(resolution,[c00637,c00294])).
+cnf(c00771,plain,set_difference(skf18,X710)=skf18,inference(resolution,[c00638,c00054])).
+cnf(c00772,plain,~proper_subset(skf18,set_difference(skf18,X714)),inference(resolution,[c00638,c00081])).
+cnf(c00773,plain,~proper_subset(set_difference(skf18,X443),empty_set),inference(resolution,[c00639,c00081])).
+cnf(c00774,plain,disjoint(set_difference(skf18,X471),X472),inference(resolution,[c00333,c00639])).
+cnf(c00775,plain,empty_set=set_difference(skf18,X434),inference(resolution,[c00639,c00054])).
+cnf(c00776,plain,subset(set_difference(skf18,X336),X337),inference(resolution,[c00639,c00294])).
+cnf(c00777,plain,subset(set_intersection2(skf18,X398),X399),inference(resolution,[c00640,c00082])).
+cnf(c00778,plain,subset(set_union2(empty_set,skf18),X617),inference(resolution,[c00640,c00406])).
+cnf(c00779,plain,~proper_subset(X2383,set_intersection2(X2383,set_intersection2(X2383,X2383))),inference(resolution,[c00642,c00081])).
+cnf(c00780,plain,~proper_subset(X2349,set_union2(set_union2(X2349,X2349),X2349)),inference(resolution,[c00651,c00081])).
+cnf(c00781,plain,empty_set=set_intersection2(skf18,X657),inference(resolution,[c00663,c00054])).
+cnf(c00782,plain,~proper_subset(set_intersection2(skf18,X664),empty_set),inference(resolution,[c00663,c00081])).
+cnf(c00783,plain,disjoint(set_intersection2(skf18,X542),X543),inference(resolution,[c00663,c00333])).
+cnf(c00784,plain,disjoint(X544,set_intersection2(skf18,X545)),inference(resolution,[c00663,c00336])).
+cnf(c00785,plain,set_intersection2(X556,skf18)=empty_set,inference(resolution,[c00664,c00136])).
+cnf(c00786,plain,~in(X580,X581)|~in(X580,skf18),inference(resolution,[c00126,c00664])).
+cnf(c00787,plain,~proper_subset(skf42,empty_set),inference(resolution,[c00665,c00094])).
+cnf(c00788,plain,~subset(skf42,empty_set),inference(resolution,[c00665,c00124])).
+cnf(c00789,plain,in(skf4(skf42),skf43),inference(resolution,[c00588,c00666])).
+cnf(c00790,plain,~in(skf42,skf4(skf42)),inference(resolution,[c00666,c00072])).
+cnf(c00791,plain,~proper_subset(skf44,empty_set),inference(resolution,[c00671,c00094])).
+cnf(c00792,plain,~subset(skf44,empty_set),inference(resolution,[c00671,c00124])).
+cnf(c00793,plain,~in(skf44,skf4(skf44)),inference(resolution,[c00672,c00072])).
+cnf(c00794,plain,empty(set_intersection2(empty_set,X2192)),inference(resolution,[c00683,c00129])).
+cnf(c00795,plain,in(skf13(empty_set,X1865,X1866),X1866)|empty_set=set_intersection2(X1865,X1866),inference(resolution,[c00694,c00061])).
+cnf(c00796,plain,in(skf16(empty_set,X1932,X1933),X1932)|empty_set=set_difference(X1932,X1933),inference(resolution,[c00107,c00694])).
+cnf(c00797,plain,in(skf13(X1859,X1860,empty_set),X1859)|X1859=set_intersection2(X1860,empty_set),inference(resolution,[c00694,c00061])).
+cnf(c00798,plain,in(skf13(empty_set,X1853,X1854),X1853)|empty_set=set_intersection2(X1853,X1854),inference(resolution,[c00694,c00060])).
+cnf(c00799,plain,in(skf16(X1974,empty_set,X1975),X1974)|X1974=set_difference(empty_set,X1975),inference(resolution,[c00107,c00694])).
+cnf(c00800,plain,in(skf7(X1847,empty_set,X1848),X1847)|in(skf7(X1847,empty_set,X1848),X1848)|X1847=set_union2(empty_set,X1848),inference(resolution,[c00694,c00073])).
+cnf(c00801,plain,in(skf7(X1837,X1838,empty_set),X1837)|in(skf7(X1837,X1838,empty_set),X1838)|X1837=set_union2(X1838,empty_set),inference(resolution,[c00694,c00073])).
+cnf(c00802,plain,in(skf13(X1849,empty_set,X1850),X1849)|X1849=set_intersection2(empty_set,X1850),inference(resolution,[c00694,c00060])).
+cnf(c00803,plain,in(skf25(X3315,empty_set),X3315)|X3315=empty_set,inference(resolution,[c00132,c00694])).
+cnf(c00804,plain,in(skf7(empty_set,X1845,X1846),X1845)|in(skf7(empty_set,X1845,X1846),X1846)|empty_set=set_union2(X1845,X1846),inference(resolution,[c00694,c00073])).
+cnf(c00805,plain,in(skf25(empty_set,X3264),X3264)|empty_set=X3264,inference(resolution,[c00132,c00694])).
+cnf(c00806,plain,empty_set=set_union2(empty_set,skf18),inference(resolution,[c00705,c00467])).
+cnf(c00807,plain,disjoint(set_union2(empty_set,skf18),X973),inference(resolution,[c00705,c00331])).
+cnf(c00808,plain,disjoint(X971,set_union2(empty_set,skf18)),inference(resolution,[c00705,c00335])).
+cnf(c00809,plain,skf18=set_union2(empty_set,empty_set),inference(resolution,[c00712,c00054])).
+cnf(c00810,plain,~proper_subset(set_union2(empty_set,empty_set),skf18),inference(resolution,[c00712,c00081])).
+cnf(c00811,plain,~proper_subset(set_union2(skf18,skf18),empty_set),inference(resolution,[c00718,c00081])).
+cnf(c00812,plain,~proper_subset(empty_set,set_union2(skf18,skf18)),inference(resolution,[c00724,c00081])).
+cnf(c00813,plain,empty(set_union2(empty_set,set_difference(X1817,X1817))),inference(resolution,[c00553,c00726])).
+cnf(c00814,plain,empty(set_difference(set_difference(X1758,X1758),empty_set)),inference(resolution,[c00726,c00532])).
+cnf(c00815,plain,empty(set_union2(set_difference(X1749,X1749),empty_set)),inference(resolution,[c00726,c00421])).
+cnf(c00816,plain,~empty(X1754)|X1754=set_difference(X1755,X1755),inference(resolution,[c00726,c00064])).
+cnf(c00817,plain,~in(skf32(skf42,skf44),skf44),inference(resolution,[c00727,c00446])).
+cnf(c00818,plain,~in(skf43,skf32(skf42,skf44)),inference(resolution,[c00727,c00072])).
+cnf(c00819,plain,X2442=skf18|~proper_subset(X2442,empty_set),inference(resolution,[c00729,c00094])).
+cnf(c00820,plain,proper_subset(empty_set,X2477)|~proper_subset(X2477,skf18),inference(resolution,[c00729,c00081])).
+cnf(c00821,plain,X2446=skf18|~subset(X2446,empty_set),inference(resolution,[c00729,c00124])).
+cnf(c00822,plain,~proper_subset(X2358,set_union2(set_difference(X2359,X2359),X2358)),inference(resolution,[c00739,c00081])).
+cnf(c00823,plain,X2031=skf18|~proper_subset(X2031,skf18),inference(resolution,[c00743,c00094])).
+cnf(c00824,plain,proper_subset(skf18,X2070)|~proper_subset(X2070,skf18),inference(resolution,[c00743,c00081])).
+cnf(c00825,plain,proper_subset(skf18,X2048)|X2048=empty_set,inference(resolution,[c00743,c00456])).
+cnf(c00826,plain,proper_subset(skf18,X1452)|subset(X1452,X1453),inference(resolution,[c00744,c00640])).
+cnf(c00827,plain,skf18=set_difference(skf42,skf43),inference(resolution,[c00745,c00475])).
+cnf(c00828,plain,skf18=X2224|proper_subset(empty_set,X2224),inference(resolution,[c00745,c00573])).
+cnf(c00829,plain,~proper_subset(skf18,set_intersection2(skf18,X680)),inference(resolution,[c00746,c00081])).
+cnf(c00830,plain,skf18=set_intersection2(skf44,skf43),inference(resolution,[c00748,c00054])).
+cnf(c00831,plain,~proper_subset(set_intersection2(skf44,skf43),skf18),inference(resolution,[c00748,c00081])).
+cnf(c00832,plain,skf18=set_intersection2(X756,empty_set),inference(resolution,[c00749,c00054])).
+cnf(c00833,plain,~proper_subset(set_intersection2(X762,empty_set),skf18),inference(resolution,[c00749,c00081])).
+cnf(c00834,plain,~proper_subset(set_difference(empty_set,X769),skf18),inference(resolution,[c00750,c00081])).
+cnf(c00835,plain,skf18=set_difference(empty_set,X763),inference(resolution,[c00750,c00054])).
+cnf(c00836,plain,skf18=set_intersection2(empty_set,X777),inference(resolution,[c00751,c00054])).
+cnf(c00837,plain,~proper_subset(set_intersection2(empty_set,X780),skf18),inference(resolution,[c00751,c00081])).
+cnf(c00838,plain,~proper_subset(set_difference(skf42,skf43),skf18),inference(resolution,[c00752,c00081])).
+cnf(c00839,plain,~proper_subset(set_difference(X731,X731),skf18),inference(resolution,[c00753,c00081])).
+cnf(c00840,plain,skf18=set_difference(X727,X727),inference(resolution,[c00753,c00054])).
+cnf(c00841,plain,skf18=set_intersection2(skf43,skf44),inference(resolution,[c00754,c00054])).
+cnf(c00842,plain,~proper_subset(set_intersection2(skf43,skf44),skf18),inference(resolution,[c00754,c00081])).
+cnf(c00843,plain,subset(set_intersection2(set_union2(skf18,X3088),X3089),set_intersection2(X3088,X3089)),inference(resolution,[c00755,c00137])).
+cnf(c00844,plain,set_difference(set_union2(skf18,X3082),X3082)=empty_set,inference(resolution,[c00755,c00097])).
+cnf(c00845,plain,set_union2(set_union2(skf18,X3069),X3069)=X3069,inference(resolution,[c00755,c00071])).
+cnf(c00846,plain,set_intersection2(set_union2(skf18,X3161),X3161)=set_union2(skf18,X3161),inference(resolution,[c00116,c00755])).
+cnf(c00847,plain,~subset(set_union2(skf18,X3050),X3051)|subset(set_union2(skf18,X3050),set_intersection2(X3051,X3050)),inference(resolution,[c00755,c00102])).
+cnf(c00848,plain,~subset(X3042,set_union2(skf18,X3043))|subset(X3042,X3043),inference(resolution,[c00755,c00096])).
+cnf(c00849,plain,subset(set_union2(skf18,skf42),skf43),inference(resolution,[c00230,c00755])).
+cnf(c00850,plain,subset(set_difference(set_union2(skf18,X3567),X3568),set_difference(X3567,X3568)),inference(resolution,[c00134,c00755])).
+cnf(c00851,plain,~empty(X979)|empty(set_union2(skf18,X979)),inference(resolution,[c00757,c00057])).
+cnf(c00852,plain,~in(X418,skf18)|in(X418,X419),inference(resolution,[c00757,c00077])).
+cnf(c00853,plain,~proper_subset(X317,set_union2(skf18,X317)),inference(resolution,[c00757,c00081])).
+cnf(c00854,plain,set_difference(X3133,set_union2(skf18,X3133))=empty_set,inference(resolution,[c00769,c00097])).
+cnf(c00855,plain,subset(set_intersection2(X3139,X3140),set_intersection2(set_union2(skf18,X3139),X3140)),inference(resolution,[c00769,c00137])).
+cnf(c00856,plain,set_intersection2(X3241,set_union2(skf18,X3241))=X3241,inference(resolution,[c00116,c00769])).
+cnf(c00857,plain,~subset(X3104,X3105)|subset(X3104,set_intersection2(X3105,set_union2(skf18,X3104))),inference(resolution,[c00769,c00102])).
+cnf(c00858,plain,~subset(X3097,X3098)|subset(X3097,set_union2(skf18,X3098)),inference(resolution,[c00769,c00096])).
+cnf(c00859,plain,subset(set_difference(X3695,X3696),set_difference(set_union2(skf18,X3695),X3696)),inference(resolution,[c00134,c00769])).
+cnf(c00860,plain,set_union2(X3119,set_union2(skf18,X3119))=set_union2(skf18,X3119),inference(resolution,[c00769,c00071])).
+cnf(c00861,plain,~proper_subset(set_difference(skf18,X718),skf18),inference(resolution,[c00771,c00081])).
+cnf(c00862,plain,disjoint(X486,set_difference(skf18,X487)),inference(resolution,[c00774,c00086])).
+cnf(c00863,plain,~proper_subset(empty_set,set_difference(skf18,X634)),inference(resolution,[c00775,c00081])).
+cnf(c00864,plain,~subset(X3873,set_difference(skf18,X3874))|X3873=set_difference(skf18,X3874),inference(resolution,[c00776,c00121])).
+cnf(c00865,plain,set_intersection2(set_difference(skf18,X3816),X3817)=set_difference(skf18,X3816),inference(resolution,[c00776,c00116])).
+cnf(c00866,plain,set_difference(set_difference(skf18,X3880),X3881)=empty_set,inference(resolution,[c00776,c00097])).
+cnf(c00867,plain,set_union2(set_difference(skf18,X3865),X3866)=X3866,inference(resolution,[c00776,c00071])).
+cnf(c00868,plain,set_difference(skf18,X3856)=X3857|proper_subset(set_difference(skf18,X3856),X3857),inference(resolution,[c00776,c00079])).
+cnf(c00869,plain,subset(set_intersection2(set_difference(skf18,X3885),X3886),set_intersection2(X3887,X3886)),inference(resolution,[c00776,c00137])).
+cnf(c00870,plain,~subset(X3833,set_difference(skf18,X3834))|subset(X3833,X3835),inference(resolution,[c00776,c00096])).
+cnf(c00871,plain,set_union2(empty_set,skf18)=empty_set,inference(resolution,[c00778,c00128])).
+cnf(c00872,plain,~proper_subset(empty_set,set_intersection2(skf18,X693)),inference(resolution,[c00781,c00081])).
+cnf(c00873,plain,subset(set_intersection2(X566,skf18),X567),inference(resolution,[c00785,c00294])).
+cnf(c00874,plain,disjoint(set_intersection2(X562,skf18),X563),inference(resolution,[c00785,c00333])).
+cnf(c00875,plain,~proper_subset(set_intersection2(X669,skf18),empty_set),inference(resolution,[c00785,c00081])).
+cnf(c00876,plain,empty_set=set_intersection2(X666,skf18),inference(resolution,[c00785,c00054])).
+cnf(c00877,plain,disjoint(X564,set_intersection2(X565,skf18)),inference(resolution,[c00785,c00336])).
+cnf(c00878,plain,~in(X582,skf18),inference(factoring,[c00786])).
+cnf(c00879,plain,in(skf10(skf42,empty_set),skf42),inference(resolution,[c00788,c00111])).
+cnf(c00880,plain,~skf43=empty_set,inference(resolution,[c00789,c00118])).
+cnf(c00881,plain,~in(skf43,skf4(skf42)),inference(resolution,[c00789,c00072])).
+cnf(c00882,plain,~in(skf4(skf42),skf44),inference(resolution,[c00789,c00446])).
+cnf(c00883,plain,~empty(skf43),inference(resolution,[c00789,c00119])).
+cnf(c00884,plain,in(skf10(skf44,empty_set),skf44),inference(resolution,[c00792,c00111])).
+cnf(c00885,plain,empty(set_intersection2(X2232,empty_set)),inference(resolution,[c00280,c00794])).
+cnf(c00886,plain,~proper_subset(empty_set,set_union2(empty_set,skf18)),inference(resolution,[c00806,c00081])).
+cnf(c00887,plain,~proper_subset(skf18,set_union2(empty_set,empty_set)),inference(resolution,[c00809,c00081])).
+cnf(c00888,plain,set_difference(X2282,X2282)=set_difference(X2283,X2283),inference(resolution,[c00816,c00726])).
+cnf(c00889,plain,$false,inference(resolution,[c00817,c00334])).
+cnf(c00890,plain,proper_subset(skf18,X2507)|~proper_subset(X2507,empty_set),inference(resolution,[c00825,c00081])).
+cnf(c00891,plain,X2481=empty_set|~subset(X2481,skf18),inference(resolution,[c00825,c00124])).
+cnf(c00892,plain,X2478=empty_set|~proper_subset(X2478,skf18),inference(resolution,[c00825,c00094])).
+cnf(c00893,plain,subset(X1490,X1491)|~proper_subset(X1490,skf18),inference(resolution,[c00826,c00094])).
+cnf(c00894,plain,proper_subset(skf18,skf42),inference(resolution,[c00826,c00788])).
+cnf(c00895,plain,proper_subset(skf18,skf44),inference(resolution,[c00826,c00792])).
+cnf(c00896,plain,proper_subset(skf18,X1533)|disjoint(X1533,X1534),inference(resolution,[c00826,c00710])).
+cnf(c00897,plain,proper_subset(skf18,X1503)|disjoint(X1504,X1503),inference(resolution,[c00826,c00708])).
+cnf(c00898,plain,proper_subset(skf18,X2106)|empty_set=X2106,inference(resolution,[c00826,c00414])).
+cnf(c00899,plain,~proper_subset(skf18,set_difference(skf42,skf43)),inference(resolution,[c00827,c00081])).
+cnf(c00900,plain,skf18=X2613|~proper_subset(X2613,empty_set),inference(resolution,[c00828,c00094])).
+cnf(c00901,plain,skf18=X3166|~subset(X3166,empty_set),inference(resolution,[c00828,c00124])).
+cnf(c00902,plain,proper_subset(empty_set,X2603)|~proper_subset(skf18,X2603),inference(resolution,[c00828,c00081])).
+cnf(c00903,plain,~proper_subset(skf18,set_intersection2(skf44,skf43)),inference(resolution,[c00830,c00081])).
+cnf(c00904,plain,~proper_subset(skf18,set_intersection2(X789,empty_set)),inference(resolution,[c00832,c00081])).
+cnf(c00905,plain,~proper_subset(skf18,set_difference(empty_set,X795)),inference(resolution,[c00835,c00081])).
+cnf(c00906,plain,~proper_subset(skf18,set_intersection2(empty_set,X813)),inference(resolution,[c00836,c00081])).
+cnf(c00907,plain,~proper_subset(skf18,set_difference(X735,X735)),inference(resolution,[c00840,c00081])).
+cnf(c00908,plain,~proper_subset(skf18,set_intersection2(skf43,skf44)),inference(resolution,[c00841,c00081])).
+cnf(c00909,plain,subset(set_union2(X3064,skf18),X3064),inference(resolution,[c00848,c00328])).
+cnf(c00910,plain,empty(set_union2(skf18,set_difference(X1822,X1822))),inference(resolution,[c00851,c00726])).
+cnf(c00911,plain,subset(skf42,set_union2(skf18,skf43)),inference(resolution,[c00858,c00099])).
+cnf(c00912,plain,~proper_subset(set_union2(empty_set,skf18),empty_set),inference(resolution,[c00871,c00081])).
+cnf(c00913,plain,set_intersection2(X745,skf18)=skf18,inference(resolution,[c00636,c00873])).
+cnf(c00914,plain,~proper_subset(empty_set,set_intersection2(X703,skf18)),inference(resolution,[c00876,c00081])).
+cnf(c00915,plain,~in(skf42,skf10(skf42,empty_set)),inference(resolution,[c00879,c00072])).
+cnf(c00916,plain,in(skf10(skf42,empty_set),skf43),inference(resolution,[c00588,c00879])).
+cnf(c00917,plain,in(skf4(skf43),skf43),inference(resolution,[c00880,c00117])).
+cnf(c00918,plain,proper_subset(empty_set,skf43),inference(resolution,[c00880,c00412])).
+cnf(c00919,plain,in(skf10(skf43,empty_set),skf43),inference(resolution,[c00880,c00338])).
+cnf(c00920,plain,proper_subset(skf18,skf43),inference(resolution,[c00880,c00825])).
+cnf(c00921,plain,~in(skf44,skf10(skf44,empty_set)),inference(resolution,[c00884,c00072])).
+cnf(c00922,plain,~proper_subset(set_difference(X3220,X3220),set_difference(X3221,X3221)),inference(resolution,[c00888,c00081])).
+cnf(c00923,plain,~proper_subset(skf42,skf18),inference(resolution,[c00894,c00094])).
+cnf(c00924,plain,~subset(skf42,skf18),inference(resolution,[c00894,c00124])).
+cnf(c00925,plain,~subset(skf44,skf18),inference(resolution,[c00895,c00124])).
+cnf(c00926,plain,~proper_subset(skf44,skf18),inference(resolution,[c00895,c00094])).
+cnf(c00927,plain,disjoint(X1610,X1611)|~proper_subset(X1610,skf18),inference(resolution,[c00896,c00094])).
+cnf(c00928,plain,disjoint(X1613,X1614)|~subset(X1613,skf18),inference(resolution,[c00896,c00124])).
+cnf(c00929,plain,disjoint(X1558,X1559)|~proper_subset(X1559,skf18),inference(resolution,[c00897,c00094])).
+cnf(c00930,plain,disjoint(X1564,X1565)|~subset(X1565,skf18),inference(resolution,[c00897,c00124])).
+cnf(c00931,plain,empty_set=X2516|~proper_subset(X2516,skf18),inference(resolution,[c00898,c00094])).
+cnf(c00932,plain,proper_subset(skf18,X2546)|~proper_subset(empty_set,X2546),inference(resolution,[c00898,c00081])).
+cnf(c00933,plain,empty_set=X2520|~subset(X2520,skf18),inference(resolution,[c00898,c00124])).
+cnf(c00934,plain,set_union2(X3067,skf18)=X3067,inference(resolution,[c00909,c00317])).
+cnf(c00935,plain,subset(set_union2(skf42,skf18),skf43),inference(resolution,[c00909,c00230])).
+cnf(c00936,plain,empty(set_union2(set_difference(X2583,X2583),skf18)),inference(resolution,[c00215,c00910])).
+cnf(c00937,plain,skf18=set_intersection2(X770,skf18),inference(resolution,[c00913,c00054])).
+cnf(c00938,plain,~proper_subset(set_intersection2(X773,skf18),skf18),inference(resolution,[c00913,c00081])).
+cnf(c00939,plain,~in(skf43,skf4(skf43)),inference(resolution,[c00917,c00072])).
+cnf(c00940,plain,~in(skf4(skf43),skf44),inference(resolution,[c00917,c00446])).
+cnf(c00941,plain,~proper_subset(skf43,empty_set),inference(resolution,[c00918,c00094])).
+cnf(c00942,plain,~subset(skf43,empty_set),inference(resolution,[c00918,c00124])).
+cnf(c00943,plain,~proper_subset(skf43,skf18),inference(resolution,[c00920,c00094])).
+cnf(c00944,plain,~subset(skf43,skf18),inference(resolution,[c00920,c00124])).
+cnf(c00945,plain,in(skf10(skf42,skf18),skf42),inference(resolution,[c00924,c00111])).
+cnf(c00946,plain,in(skf10(skf44,skf18),skf44),inference(resolution,[c00925,c00111])).
+cnf(c00947,plain,X3068=set_union2(X3068,skf18),inference(resolution,[c00934,c00054])).
+cnf(c00948,plain,~proper_subset(set_union2(X3072,skf18),X3072),inference(resolution,[c00934,c00081])).
+cnf(c00949,plain,~proper_subset(skf18,set_intersection2(X806,skf18)),inference(resolution,[c00937,c00081])).
+cnf(c00950,plain,in(skf10(skf43,skf18),skf43),inference(resolution,[c00944,c00111])).
+cnf(c00951,plain,in(skf10(skf42,skf18),skf43),inference(resolution,[c00588,c00945])).
+cnf(c00952,plain,~in(skf42,skf10(skf42,skf18)),inference(resolution,[c00945,c00072])).
+cnf(c00953,plain,~in(skf44,skf10(skf44,skf18)),inference(resolution,[c00946,c00072])).
+cnf(c00954,plain,~proper_subset(X3079,set_union2(X3079,skf18)),inference(resolution,[c00947,c00081])).
+cnf(c00955,plain,~empty(X3577)|empty(set_union2(X3577,skf18)),inference(resolution,[c00947,c00057])).
+cnf(c00956,plain,~in(skf43,skf10(skf42,skf18)),inference(resolution,[c00951,c00072])).
+cnf(c00957,plain,~in(skf10(skf42,skf18),skf44),inference(resolution,[c00951,c00446])).
+
+# SZS output end CNFRefutation
+# Filename           : /home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
+# Indexed            : true
+# Eval function name : PickGiven5
+# Initial clauses    : 106
+# Processed clauses  : 918
+# Factors computed   : 91
+# Resolvents computed: 28818
+# Tautologies deleted: 61
+# Forward subsumed   : 2142
+# Backward subsumed  : 36
+# SZS status Theorem
+# SZS Expected       : Theorem
+# time               : 2935ms
+
