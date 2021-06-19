@@ -44,7 +44,6 @@ public class Clause extends Derivable implements Comparable {
     public static int clauseIDcounter = 0;
     public ArrayList<Literal> literals = new ArrayList<Literal>(); 
     public String type = "plain";
-    public String name = "";
     public ArrayList<String> support = new ArrayList<String>();  // Clauses or Formulas from which this clause is derived.
     public ArrayList<String> supportsClauses = new ArrayList<String>();  // Clauses this clause supports.     
     public int depth = 0;                                        // Depth from input
@@ -117,8 +116,9 @@ public class Clause extends Derivable implements Comparable {
     public String toString() {
             
         StringBuffer result = new StringBuffer();
+        // strDerivation will contain a leading comma if non-empty
         result.append("cnf(" + name + "," + type + "," + 
-                Literal.literalList2String(literals) + "," +
+                Literal.literalList2String(literals) +
                 strDerivation() + ").");
         return result.toString();
     }
@@ -227,7 +227,7 @@ public class Clause extends Derivable implements Comparable {
     /** ***************************************************************
      */
     public Clause deepCopy() {
-                
+
         return deepCopy(0);
     }
     
@@ -235,9 +235,12 @@ public class Clause extends Derivable implements Comparable {
      * @param start is the starting index of the literal list to copy
      */
     public Clause deepCopy(int start) {
-        
+
+        Derivable d = super.deepCopy();
         Clause result = new Clause();
-        result.name = name;
+        result.name = d.name;
+        result.derivation = d.derivation;
+        result.refCount = d.refCount;
         result.type = type;
         result.rationale = rationale;
         for (int i = 0; i < support.size(); i++)  
@@ -246,7 +249,8 @@ public class Clause extends Derivable implements Comparable {
             result.literals.add(literals.get(i).deepCopy());
         if (subst != null)
             result.subst = subst.deepCopy();
-        result.derivation = this.derivation.deepCopy();
+        if (derivation != null)
+            result.derivation = this.derivation.deepCopy();
         result.refCount = this.refCount;
         return result;
     }
@@ -403,6 +407,7 @@ public class Clause extends Derivable implements Comparable {
             if (!lex.type.equals(Lexer.FullStop))
                 throw new Exception("Period expected. Instead found '" + lex.literal + "' with clause so far " + result);
             //System.out.println("INFO in Clause.parse(): completed parsing: " + this);
+            result.setDerivation(new Derivation("input",null,""));
             return result;
         }
         catch (Exception ex) {
