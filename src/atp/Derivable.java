@@ -123,7 +123,7 @@ public class Derivable {
 
     /** ***************************************************************
      * If printing of derivations is enabled, return a string
-     *         representartion suitable as part of TPTP-3 output. Otherwise
+     *         representation suitable as part of TPTP-3 output. Otherwise
      *         return the empty string.
      */
     public String strDerivation() {
@@ -156,6 +156,7 @@ public class Derivable {
      */
     public ArrayList<Derivable> linearizeDerivation(ArrayList<Derivable> res) {
 
+        //System.out.println("Derivable.linearizeDerivation(): " + this);
         if (res == null)
             res = new ArrayList<Derivable>();
         decRefCount();
