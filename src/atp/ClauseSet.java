@@ -197,7 +197,7 @@ public class ClauseSet {
      */
     public ClauseSet addEqAxioms() {
 
-        System.out.println("INFO in ClauseSet.addEqAxioms(): adding axioms");
+        System.out.println("# INFO in ClauseSet.addEqAxioms(): adding axioms");
         Signature sig = new Signature();
         sig = collectSig(sig);
 
