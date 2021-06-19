@@ -30,6 +30,16 @@ import static org.junit.Assert.*;
 public class ClauseSetTest {
 
     /** ***************************************************************
+     *  Setup function for clause/literal unit tests. Initialize
+     *  variables needed throughout the tests.
+     */
+    @BeforeClass
+    public static void setup() {
+
+        Derivable.disableDerivationOutput();
+    }
+
+    /** ***************************************************************
      */
     @Test
     public void testParse1() {
