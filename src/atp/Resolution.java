@@ -126,6 +126,12 @@ public class Resolution {
         res.support.add(clause2.name);
         clause1.supportsClauses.add(res.name);  // Keep track of clauses used to supported others
         clause2.supportsClauses.add(res.name);  // so they can't be subsumed away.
+
+        ArrayList<Derivable> supports = new ArrayList<>();
+        supports.add(clause1);
+        supports.add(clause2);
+        res.setDerivation(Derivation.flatDerivation("resolution",supports,""));
+
         res.depth = Math.max(clause1.depth,clause2.depth) + 1; 
         res.subst.addAll(sigma);
         //System.out.println("INFO in Resolution.resolution(): result " + res.toStringJustify());
@@ -162,6 +168,11 @@ public class Resolution {
         res.removeDupLits();
         res.rationale = "factoring";
         res.support.add(clause.name);
+
+        ArrayList<Derivable> supports = new ArrayList<>();
+        supports.add(clause);
+        res.setDerivation(Derivation.flatDerivation("factor",supports,""));
+
         if (ProofState.verbose) {
             System.out.println("INFO in Resolution.factor(): result Clause: " + res.printHighlight());
             System.out.println("INFO in Resolution.factor(): input Clause: " + clause);

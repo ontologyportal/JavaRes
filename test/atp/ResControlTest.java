@@ -40,6 +40,7 @@ public class ResControlTest {
     @BeforeClass
     public static void setup() {
 
+        Derivable.disableDerivationOutput();
         Clausifier.counterReset();
         Clause.resetCounter();
         System.out.println();
