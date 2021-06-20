@@ -1023,6 +1023,16 @@ public class SmallCNFization extends Clausifier {
             c.rationale = "split_conjunct";
             c.name = "cnf" + Integer.toString(Clausifier.axiomCounter++);
             c.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            //System.out.println("wFormulaClausify(): supports: " + supports);
+            c.setDerivation(Derivation.flatDerivation("split_conjunct",supports,""));
+
+            //if (c.derivation == null)
+            //    System.out.println("wFormulaClausify(): derivation is null ");
+            //if (Derivable.printDerivation == false)
+            //    System.out.println("wFormulaClausify(): derivation is false ");
             //System.out.println("wFormulaClausify(): c: " + c);
         }
         return clauses;
