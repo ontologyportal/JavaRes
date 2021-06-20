@@ -89,7 +89,7 @@ public class ProofState {
     public ProofState(ClauseSet clauses, SearchParams params) {
 
         this.params = params;
-        System.out.println("ProofState(): heuristics: " + params.heuristics);
+        System.out.println("# ProofState(): heuristics: " + params.heuristics);
         unprocessed = new HeuristicClauseSet(params.heuristics);
         if (indexed)
             processed = new IndexedClauseSet();
