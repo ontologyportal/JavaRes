@@ -216,7 +216,7 @@ public class StarExec {
     public static void compare(String dir) {
 
         Formula.defaultPath = System.getenv("TPTP");
-        System.out.println("Using default include path : " + Formula.defaultPath);
+        System.out.println("# Using default include path : " + Formula.defaultPath);
         ClauseEvaluationFunction.setupEvaluationFunctions();
         ArrayList<SearchParams> evals = new ArrayList<SearchParams>();
         SearchParams sp = new SearchParams();
