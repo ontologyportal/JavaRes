@@ -85,6 +85,7 @@ public class EqAxioms {
 		        Clause c = new Clause();
 		        c = c.parse(lex);
 		        c.rationale = "eq_axiom";
+		        c.setDerivation(new Derivation("eq_axioms",null,""));
 		        res.add(c);
 		    }
 	    }
@@ -136,6 +137,8 @@ public class EqAxioms {
 	    c.name = "funcompat" + Integer.toString(axCount++);
 	    c.literals.addAll(res);
 	    c.literals.add(concl);
+
+		c.setDerivation(new Derivation("eq_axiom",null,""));
 	    return c;
 	}
 	    
@@ -156,6 +159,7 @@ public class EqAxioms {
 	    c.literals.addAll(res);
 	    c.literals.add(neg);
 	    c.literals.add(pos);
+		c.setDerivation(new Derivation("eq_axiom",null,""));
 	    return c;
 	}
 
