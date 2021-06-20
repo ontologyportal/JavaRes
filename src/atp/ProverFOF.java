@@ -400,8 +400,8 @@ public class ProverFOF {
                 state.SZSresult = "Error (ERR) " + e.getMessage();
             return state;
         }
-        System.out.println("computeStateResults(): state: " + state.SZSresult);
-        System.out.println("computeStateResults(): cs:" + cs.SZSresult);
+        //System.out.println("computeStateResults(): state: " + state.SZSresult);
+        //System.out.println("computeStateResults(): cs:" + cs.SZSresult);
         if (state.res != null) {
             state.SZSexpected = cs.SZSexpected;
             if (Term.emptyString(state.SZSresult)) {
@@ -435,16 +435,28 @@ public class ProverFOF {
         }
         else if (opts.containsKey("proof")) {
             if (!opts.containsKey("allOpts") && !opts.containsKey("experiment")) {
-                System.out.println("# printStateResults(): " + state.res);
+                //System.out.println("# printStateResults(): " + state.res);
                 if (state.res != null) {
-                    TreeMap<String, Clause> proof = state.generateProofTree(state.res);
-                    if (query != null)
-                        System.out.println(state.extractAnswer(proof, query.get(0)));
-                    System.out.println("# SZS output start CNFRefutation");
-                    System.out.println(state.generateProof(state.res, false));
-                    System.out.println("# SZS output end CNFRefutation");
+                    //TreeMap<String, Clause> proof = state.generateProofTree(state.res);
+                    //if (query != null)
+                    //    System.out.println(state.extractAnswer(proof, query.get(0)));
+                    //System.out.println("# SZS output start CNFRefutation");
+                    //System.out.println(state.generateProof(state.res, false));
+                    //System.out.println("# SZS output end CNFRefutation");
+                    System.out.println("# -----------------");
+                    ArrayList<Derivable> proof2 = state.res.orderedDerivation();
+                    //System.out.println("printStateResults(): " + proof2.size() + " derivables");
+                    Derivable.enableDerivationOutput();
+                    for (Derivable d : proof2)
+                        System.out.println(d);
+                    Derivable.disableDerivationOutput();
                 }
                 else {
+                    ArrayList<Derivable> supports = new ArrayList<>();
+                    supports.addAll(state.processed.clauses);
+                    Derivable dummy = new Derivable("dummy",Derivation.flatDerivation("pseudoreference",supports,""));
+                    ArrayList<Derivable> sat = dummy.orderedDerivation();
+                    Derivable.enableDerivationOutput();
                     if (state.SZSresult.equals("Satisfiable"))
                         for (Clause c : state.processed.clauses)
                             System.out.println(c);
@@ -551,7 +563,7 @@ public class ProverFOF {
         int timeout = getTimeout(opts);
         //System.out.println("# ProverFOF.processTestFile(): read file");
         ClauseSet cs = Formula.file2clauses(filename,timeout);
-        System.out.println("hasConjecture: " + cs.hasConjecture + " isFOF: " + cs.isFOF);
+        System.out.println("# hasConjecture: " + cs.hasConjecture + " isFOF: " + cs.isFOF);
         //System.out.println("# ProverFOF.processTestFile(): read file completed");
         //if (cs != null) {
         //    System.out.println("# ProverFOF.processTestFile(): SZSresult: " + cs.SZSresult);
@@ -608,9 +620,10 @@ public class ProverFOF {
     /** ***************************************************************
      */
     public static void main(String[] args) {
-          
+
+        Derivable.enableDerivationOutput();
         Formula.defaultPath = System.getenv("TPTP");
-        System.out.println("Using default include path : " + Formula.defaultPath);
+        System.out.println("# Using default include path : " + Formula.defaultPath);
         if (args == null || args[0].equals("-h") || args[0].equals("--help")) {
             System.out.println(doc);
             return;
@@ -645,7 +658,9 @@ public class ProverFOF {
                 ProofState state = processTestFile(opts.get("filename"),opts,evals);
                 //System.out.println("# INFO in ProverFOF.main(): state: " + state);
                 if (state != null && state.res != null) {
+                    Derivable.enableDerivationOutput();
                     printStateResults(opts,state,null);
+                    Derivable.disableDerivationOutput();
                     //System.out.println("# SZS status Theorem for problem " + opts.get("filename"));
                 }
                 else {
