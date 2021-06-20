@@ -33,7 +33,6 @@ public class Formula extends Derivable {
     public static int formulaIdCounter = 0;
     public BareFormula form = null;
     public String type = "plain";
-    public String name = "";
     
     // TPTP file include paths
     public static String includePath = null;  
@@ -75,10 +74,11 @@ public class Formula extends Derivable {
     @Override
     public Formula deepCopy() {
 
+        Derivable d = super.deepCopy();
         Formula f = new Formula(this.form.deepCopy(),this.type);
-        f.name = this.name;
-        f.derivation = this.derivation.deepCopy();
-        f.refCount = this.refCount;
+        f.name = d.name;
+        f.derivation = d.derivation;
+        f.refCount = d.refCount;
         return f;
     }
 
@@ -87,7 +87,8 @@ public class Formula extends Derivable {
      */
     public String toString() {
 
-        return "fof(" + name + "," + type + "," + form + "," + strDerivation() + ").";
+         // strDerivation will contain a leading comma if non-empty
+        return "fof(" + name + "," + type + "," + form + strDerivation() + ").";
     }
     
     /** ***************************************************************
@@ -159,7 +160,9 @@ public class Formula extends Derivable {
         if (wform.type.equals("conjecture")) {
             BareFormula negf = new BareFormula("~", wform.form);
             Formula negw = new Formula(negf, "negated_conjecture");
-            //negw.setDerivation(flatDerivation("assume_negation",[wform],"status(cth)"));
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wform);
+            negw.setDerivation(Derivation.flatDerivation("assume_negation",supports,"status(cth)"));
             return negw;
         }
         else
