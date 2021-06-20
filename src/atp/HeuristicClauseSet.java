@@ -39,7 +39,7 @@ public class HeuristicClauseSet extends ClauseSet {
      */    
     public HeuristicClauseSet(EvalStructure efunctions) {
 
-        System.out.println("HeuristicsClauseSet using eval functions: " + efunctions);
+        System.out.println("# HeuristicsClauseSet using eval functions: " + efunctions);
         eval_functions = efunctions;
     }   
 
