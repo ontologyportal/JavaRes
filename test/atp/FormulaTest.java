@@ -38,6 +38,15 @@ public class FormulaTest {
             "fof(weird, weird, ![X]:(p(X) | ~q(X))).";
 
     /** ***************************************************************
+     * Evaluate the result of a saturation compared to the expected result.
+     */
+    @BeforeClass
+    public static void setup() {
+
+        Derivable.disableDerivationOutput();
+    }
+
+    /** ***************************************************************
      */
     @Test
     public void testWrappedFormula() {
@@ -48,7 +57,7 @@ public class FormulaTest {
             Lexer lex = new Lexer(wformulas);
             Formula f1 = Formula.parse(lex);
             System.out.println("Result 1: " + f1);
-            String expected = "fof(small,axiom,(![X]:(a(x)|(~a=b))),input).";
+            String expected = "fof(small,axiom,(![X]:(a(x)|(~a=b)))).";
             System.out.println("expected: " + expected);
             if (expected.equals(f1.toString()))
                 System.out.println("success");
@@ -59,7 +68,7 @@ public class FormulaTest {
 
             Formula f2 = Formula.parse(lex);
             System.out.println("Result 2: " + f2);
-            expected = "fof(complex,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X)),input).";
+            expected = "fof(complex,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))).";
             System.out.println("expected: " + expected);
             if (expected.equals(f2.toString()))
                 System.out.println("success");
@@ -70,7 +79,7 @@ public class FormulaTest {
 
             Formula f3 = Formula.parse(lex);
             System.out.println("Result 3: " + f3);
-            expected = "fof(clean,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X)),input).";
+            expected = "fof(clean,conjecture,((((![X]:a(X))|b(X))|(?[X]:(?[Y]:p(X,f(Y)))))<=>q(g(a),X))).";
             System.out.println("expected: " + expected);
             if (expected.equals(f3.toString()))
                 System.out.println("success");
@@ -81,7 +90,7 @@ public class FormulaTest {
 
             Formula f4 = Formula.parse(lex);
             System.out.println("Result 4: " + f4);
-            expected = "fof(queens_p,axiom,(queens_p=>(![I]:(![J]:((((le(s(n0),I)&le(I,n))&le(s(I),J))&le(J,n))=>((~p(I)=p(J)&~plus(p(I),I)=plus(p(J),J))&~minus(p(I),I)=minus(p(J),J)))))),input).";
+            expected = "fof(queens_p,axiom,(queens_p=>(![I]:(![J]:((((le(s(n0),I)&le(I,n))&le(s(I),J))&le(J,n))=>((~p(I)=p(J)&~plus(p(I),I)=plus(p(J),J))&~minus(p(I),I)=minus(p(J),J))))))).";
             System.out.println("expected: " + expected);
             if (expected.equals(f4.toString()))
                 System.out.println("success");
