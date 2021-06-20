@@ -42,6 +42,7 @@ public class ProofStateTest {
     @BeforeClass
     public static void setup() {
 
+        Derivable.disableDerivationOutput();
         ClauseEvaluationFunction.setupEvaluationFunctions();
         params = new SearchParams();
         params.delete_tautologies = true;
@@ -128,10 +129,15 @@ public class ProofStateTest {
             state.verbose = true;
             state.processClause();  // first clause has nothing in 'processed' to work with
             state.processClause();  // the one remaining clause from 'unprocessed' is the given clause and resolves with the one clause in 'processed'
-            if (state.res != null)
+            if (state.unprocessed != null)
                 System.out.println("success " + state);
-            else
+            else {
                 System.out.println("fail : # SZS GaveUp");
+                System.out.println("processed: " + state.processed);
+                System.out.println("unprocessed: " + state.unprocessed);
+            }
+            assertTrue(state.unprocessed != null);
+            System.out.println("------");
             System.out.println("INFO in in ProofStateTest.testProcessClause(): done processing");
             String actual = state.unprocessed.get(0).normalizeVarCopy().toString();
             System.out.println("actual: " + actual);
