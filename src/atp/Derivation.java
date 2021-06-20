@@ -22,8 +22,11 @@ public class Derivation extends Derivable {
     public Derivation(String op, ArrayList<Derivable> par, String stat) {
 
         super("",null);
+        //System.out.println("Derivation(): par " + par);
         operator = op;
-        parents =  par;
+        if (par != null)
+            parents.addAll(par);
+        //System.out.println("Derivation(): parents " + parents);
         status = stat;
     }
 
@@ -35,10 +38,14 @@ public class Derivation extends Derivable {
         result.operator = this.operator;
         result.status = this.status;
         result.parents = new ArrayList<Derivable>();
-        for (Derivable d : parents)
-            result.parents.add(d.deepCopy());
-        result.derivation = this.derivation.deepCopy();
+        if (parents != null) {
+            for (Derivable d : parents)
+                result.parents.add(d.deepCopy());
+        }
+        if (derivation != null)
+            result.derivation = this.derivation.deepCopy();
         result.refCount = this.refCount;
+        result.name = this.name;
         return result;
     }
 
@@ -47,6 +54,8 @@ public class Derivation extends Derivable {
      */
     public String toString() {
 
+        //System.out.println("Derivation.toString(): op: " + operator);
+        //System.out.println("Derivation.toString(): parents: " + parents);
         if (operator.equals("input"))
             return "input";
         else if (operator.equals("eq_axiom"))
@@ -87,18 +96,34 @@ public class Derivation extends Derivable {
 
     /** ***************************************************************
      * Simple convenience function: Create a derivation which directly
-     *     references all parents.
+     * references all parents.
      */
     public static Derivation flatDerivation(String operator, ArrayList<Derivable> plist, String status) {
 
+        //System.out.println("flatDerivation(): plist " + plist);
         if (Term.emptyString(status))
             status = "status(thm)";
         ArrayList<Derivable> parentlist = new ArrayList<>();
         for (Derivable d : plist) {
-            ArrayList<Derivable> dlist = new ArrayList<Derivable>();
+            ArrayList<Derivable> dlist = new ArrayList<>();
             dlist.add(d);
-            parentlist.add(new Derivation("reference", dlist, ""));
+            //System.out.println("flatDerivation(): added to dlist " + dlist);
+            Derivation der = new Derivation("reference", dlist, "");
+            //System.out.println("flatDerivation(): der " + der);
+            //System.out.println("flatDerivation(): der.operator " + der.operator);
+            //System.out.println("flatDerivation(): der.parents " + der.parents);
+            //if (der.parents.size() == 1) {
+            //    Derivable parent = der.parents.get(0);
+                //System.out.println("flatDerivation(): der.parents.get(0) " + parent);
+                //System.out.println("flatDerivation(): der.parents.get(0).name " + parent.name);
+                //System.out.println("flatDerivation(): der.parents.get(0).class " + parent.getClass());
+                //if (parent.getClass().getName().equals("atp.Formula"))
+                //    System.out.println("as formula: " + ((Formula) parent).name);
+            //}
+            parentlist.add(der);
+            //System.out.println("flatDerivation(1): parentlist " + parentlist);
         }
+        //System.out.println("flatDerivation(2): parentlist " + parentlist);
         return new Derivation(operator, parentlist, status);
     }
 }
