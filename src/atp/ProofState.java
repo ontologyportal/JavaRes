@@ -114,7 +114,7 @@ public class ProofState {
      */  
     public String toString() {
         
-        return generateStatisticsString();
+        return generateStatisticsString(new HashMap<>());
     }
     
     /** ***************************************************************
@@ -129,7 +129,7 @@ public class ProofState {
         sb.append(" eval function name : " + evalFunctionName + "\n");
         //for (int i = 0; i < unprocessed.eval_functions.eval_funs.size(); i++)
         //    sb.append(" evalFn : " + unprocessed.eval_functions.eval_funs.get(i).name + "\n");
-        sb.append(generateStatisticsString());
+        sb.append(generateStatisticsString(new HashMap<>()));
         return sb.toString();
     }
     
@@ -245,7 +245,7 @@ public class ProofState {
     /** ***************************************************************
      * Return the proof state statistics in string form ready for output.
      */  
-    public String generateStatisticsString() {
+    public String generateStatisticsString(HashMap<String,String> opts) {
 
         StringBuffer sb = new StringBuffer();
         sb.append("# Filename           : " + filename + "\n");
@@ -258,7 +258,7 @@ public class ProofState {
         sb.append("# Tautologies deleted: " + tautologies_deleted + "\n");
         sb.append("# Forward subsumed   : " + forward_subsumed + "\n");
         sb.append("# Backward subsumed  : " + backward_subsumed + "\n");
-        sb.append("# SZS status " + SZSresult + "\n");
+        sb.append("# SZS status " + SZSresult + " for " + opts.get("filename") + "\n");
         sb.append("# SZS Expected       : " + SZSexpected + "\n");
         sb.append("# time               : " + time + "ms\n");
         return sb.toString();

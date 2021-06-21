@@ -59,7 +59,7 @@ public class ProofStateTest {
         System.out.println("ProofStateTest.evalSatResult(): result: " + res);
         System.out.println("ProofStateTest.evalSatResult(): expected proof: " + provable);
 
-        System.out.println(prover.generateStatisticsString());
+        System.out.println(prover.generateStatisticsString(new HashMap<>()));
 
         if (provable) {
             if (res == null)

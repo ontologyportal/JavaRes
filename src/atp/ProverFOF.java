@@ -447,8 +447,10 @@ public class ProverFOF {
                     ArrayList<Derivable> proof2 = state.res.orderedDerivation();
                     //System.out.println("printStateResults(): " + proof2.size() + " derivables");
                     Derivable.enableDerivationOutput();
+                    System.out.println("% SZS output start CNFRefutation" + opts.get("filename"));
                     for (Derivable d : proof2)
                         System.out.println(d);
+                    System.out.println("% SZS output end CNFRefutation" + opts.get("filename"));
                     Derivable.disableDerivationOutput();
                 }
                 else {
@@ -457,9 +459,10 @@ public class ProverFOF {
                     Derivable dummy = new Derivable("dummy",Derivation.flatDerivation("pseudoreference",supports,""));
                     ArrayList<Derivable> sat = dummy.orderedDerivation();
                     Derivable.enableDerivationOutput();
-                    if (state.SZSresult.equals("Satisfiable"))
+                    if (state.SZSresult.equals("Satisfiable")) {
                         for (Clause c : state.processed.clauses)
                             System.out.println(c);
+                    }
                 }
             }
             else
@@ -469,7 +472,7 @@ public class ProverFOF {
             System.out.println(state.generateMatrixStatisticsString());
         }
         else  // (opts.containsKey("stats"))
-            System.out.println(state.generateStatisticsString());
+            System.out.println(state.generateStatisticsString(opts));
     }
     
     /** ***************************************************************
@@ -665,7 +668,7 @@ public class ProverFOF {
                 }
                 else {
                     if (state == null || Term.emptyString(state.SZSresult))
-                        System.out.println("# SZS status GaveUp for problem " + opts.get("filename"));
+                        System.out.println("% SZS status GaveUp for problem " + opts.get("filename"));
                     else
                         printStateResults(opts,state,null);
                 }

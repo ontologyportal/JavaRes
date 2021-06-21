@@ -9,6 +9,7 @@
 # ProofState(): heuristics: PickGiven5 : [SymbolCountEval21, FIFOEval]
 # HeuristicsClauseSet using eval functions: PickGiven5 : [SymbolCountEval21, FIFOEval]
 # -----------------
+% SZS output start CNFRefutation/home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
 fof(t63_xboole_1,conjecture,(![A]:(![B]:(![C]:((subset(A,B)&disjoint(B,C))=>disjoint(A,C))))),input).
 fof(f239,negated_conjecture,(~(![A]:(![B]:(![C]:((subset(A,B)&disjoint(B,C))=>disjoint(A,C)))))),inference(assume_negation, status(cth), [t63_xboole_1])).
 cnf(cnf81,negated_conjecture,~disjoint(skf42,skf44),inference(split_conjunct, status(thm), [f239])).
@@ -44,6 +45,7 @@ cnf(c9594,plain,~in(X2310,skf42)|in(X2310,skf43),inference(resolution, status(th
 cnf(c15071,plain,in(skf32(skf42,skf44),skf43),inference(resolution, status(thm), [c9594, c745])).
 cnf(c22088,plain,~in(skf32(skf42,skf44),skf44),inference(resolution, status(thm), [c15071, c774])).
 cnf(c28907,plain,$false,inference(resolution, status(thm), [c22088, c755])).
+% SZS output end CNFRefutation/home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
 # Filename           : /home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
 # Indexed            : true
 # Eval function name : PickGiven5
@@ -54,6 +56,6 @@ cnf(c28907,plain,$false,inference(resolution, status(thm), [c22088, c755])).
 # Tautologies deleted: 61
 # Forward subsumed   : 2142
 # Backward subsumed  : 36
-# SZS status Theorem
+# SZS status Theorem for /home/apease/ontology/TPTP-v7.3.0/Problems/SEU/SEU140+2.p
 # SZS Expected       : Theorem
-# time               : 7824ms
+# time               : 6032ms
