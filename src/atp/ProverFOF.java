@@ -444,24 +444,29 @@ public class ProverFOF {
                     //System.out.println(state.generateProof(state.res, false));
                     //System.out.println("# SZS output end CNFRefutation");
                     System.out.println("# -----------------");
+                    System.out.println("# SZS status " + state.SZSresult + " for " + opts.get("filename") + "\n");
                     ArrayList<Derivable> proof2 = state.res.orderedDerivation();
                     //System.out.println("printStateResults(): " + proof2.size() + " derivables");
                     Derivable.enableDerivationOutput();
-                    System.out.println("% SZS output start CNFRefutation" + opts.get("filename"));
+                    System.out.println("% SZS output start CNFRefutation for " + opts.get("filename"));
                     for (Derivable d : proof2)
                         System.out.println(d);
-                    System.out.println("% SZS output end CNFRefutation" + opts.get("filename"));
+                    System.out.println("% SZS output end CNFRefutation for " + opts.get("filename"));
                     Derivable.disableDerivationOutput();
                 }
                 else {
                     ArrayList<Derivable> supports = new ArrayList<>();
                     supports.addAll(state.processed.clauses);
+                    System.out.println("# -----------------");
+                    System.out.println("# SZS status " + state.SZSresult + " for " + opts.get("filename") + "\n");
                     Derivable dummy = new Derivable("dummy",Derivation.flatDerivation("pseudoreference",supports,""));
                     ArrayList<Derivable> sat = dummy.orderedDerivation();
                     Derivable.enableDerivationOutput();
                     if (state.SZSresult.equals("Satisfiable")) {
+                        System.out.println("% SZS output start Saturation for " + opts.get("filename"));
                         for (Clause c : state.processed.clauses)
                             System.out.println(c);
+                        System.out.println("% SZS output end Saturation for " + opts.get("filename"));
                     }
                 }
             }
