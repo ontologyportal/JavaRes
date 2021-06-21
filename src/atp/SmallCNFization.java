@@ -290,21 +290,23 @@ public class SmallCNFization extends Clausifier {
                 return new BareFormula("", Literal.string2lit("$true"));
         }
         else if (f.isQuantified()) {
-        	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): quantified");
-            // ![X] F -> F if X is not free in F
-            // ?[X] F -> F if X is not free in F
+            if (debug) System.out.println("INFO in SmallCNFization.formulaTopSimplify(): quantified " + f);
+            if (debug) System.out.println("INFO in SmallCNFization.formulaTopSimplify(): lit " + f.lit2);
+            if (debug) System.out.println("INFO in SmallCNFization.formulaTopSimplify(): child " + f.child2);
+            // ![X] F -> F if X is not in F (not free in F)
+            // ?[X] F -> F if X is not in F (not free in F)
             LinkedHashSet<Term> vars = null;
             if (f.lit2 != null)
                 vars = f.lit2.collectVars();
             else
                 f.child2.collectFreeVars();
-        	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): vars"  + vars);
-            if (vars == null || !vars.contains(f.lit1.atom)) {
+            if (debug) System.out.println("INFO in SmallCNFization.formulaTopSimplify(): vars: "  + vars);
+            if (vars != null && !vars.contains(f.lit1.atom)) {
             	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): no free vars: " + f);
             	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): lit2: " + f.lit2);
             	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): child2: " + f.child2);
                 BareFormula bfnew = new BareFormula("",f.child2,null,f.lit2,null);
-            	//System.out.println("INFO in SmallCNFization.formulaTopSimplify(): bfnew: " + bfnew);
+                if (debug) System.out.println("INFO in SmallCNFization.formulaTopSimplify(): bfnew: " + bfnew);
                 return bfnew;
             }
         }
@@ -910,19 +912,19 @@ public class SmallCNFization extends Clausifier {
      */
     public static Formula wFormulaCNF(Formula wfinput) {
 
-        //System.out.println("wFormulaCNF(): input: " + wfinput);
+        if (debug) System.out.println("wFormulaCNF(): input: " + wfinput);
         Formula wf = wfinput.deepCopy();
         //System.out.println("wFormulaCNF(): wf.form: " + wf.form);
         BareFormula f = formulaOpSimplify(wf.form);
         boolean m0 = (f != null);
         if (f == null)
             f = wf.form;
-        //System.out.println("wFormulaCNF(): after op simplify: " + f);
+        if (debug) System.out.println("wFormulaCNF(): after op simplify: " + f);
         //System.out.println("wFormulaCNF(): after op simplify child1: " + f.child1);
         //System.out.println("wFormulaCNF(): after op simplify lit1: " + f.lit1);
         //System.out.println("wFormulaCNF(): before simplify: " + f);
         BareFormula newf = formulaSimplify(f);
-        //System.out.println("wFormulaCNF(): after  simplify: " + newf);
+        if (debug) System.out.println("wFormulaCNF(): after  simplify: " + newf);
         boolean m1 = (f != null);
         if (newf != null)
             f = newf;
@@ -930,11 +932,17 @@ public class SmallCNFization extends Clausifier {
         //System.out.println("wFormulaCNF(2): after op simplify lit1: " + f.lit1);
         if (m0 || m1) {
             Formula tmp = new Formula(f, wf.type);
-            tmp.rationale = "fof_simplification";
-            tmp.support.add(wf.name);
+            //tmp.rationale = "fof_simplification";
+            //tmp.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("fof_simplification",supports,""));
+
             wf = tmp;
-            if (debug) System.out.println("simplification " + wf);
+            if (debug) System.out.println("fof_simplification " + wf);
         }
+
         newf = formulaNNF(f,true);
         //System.out.println("wFormulaCNF(): after  nnf: " + newf);
         if (newf != null) {
@@ -942,12 +950,18 @@ public class SmallCNFization extends Clausifier {
         	Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "fof_nnf";
             tmp.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("fof_nnf",supports,""));
+
             wf = tmp;
-            if (debug) System.out.println("nnf " + wf);
+            if (debug) System.out.println("fof_nnf " + wf);
         }
         newf = f.promoteChildren();
         if (newf != null)
             f = newf;
+
         newf = formulaMiniScope(f);
         //System.out.println("wFormulaCNF(): after  miniscope: " + newf);
         if (newf != null) {
@@ -955,10 +969,16 @@ public class SmallCNFization extends Clausifier {
         	Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "shift_quantors";
             tmp.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("shift_quantors",supports,""));
+
             wf = tmp;
             if (debug) System.out.println("shift_quantors " + wf);
         }
         // f = formulaVarRename(f);
+
         newf = Clausifier.standardizeVariables(f);
         //System.out.println("wFormulaCNF(): after  standardize vars: " + newf);
         if (!newf.equals(wf.form)) {
@@ -966,9 +986,15 @@ public class SmallCNFization extends Clausifier {
         	Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "variable_rename";
             tmp.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("variable_rename",supports,""));
+
             wf = tmp;
             if (debug) System.out.println("variable_rename " + wf);
         }
+
         newf = formulaSkolemize(f);
         //System.out.println("wFormulaCNF(): after  skolemize: " + newf);
         if (!newf.equals(wf.form)) {
@@ -977,9 +1003,15 @@ public class SmallCNFization extends Clausifier {
             tmp.rationale = "skolemize";
             tmp.support.add(wf.name);
             tmp.status = "status(esa)";
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("skolemize",supports,"status(esa)"));
+
             wf = tmp;
             if (debug) System.out.println("skolemize " + wf);
         }
+
         newf = formulaShiftQuantorsOut(f);
         //System.out.println("wFormulaCNF(): after  shift quantors: " + newf);
         if (!newf.equals(wf.form)) {
@@ -987,12 +1019,18 @@ public class SmallCNFization extends Clausifier {
         	Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "shift_quantors";
             tmp.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("shift_quantors",supports,""));
+
             wf = tmp;
             if (debug) System.out.println("shift_quantors " + wf);
         }
         newf = f.promoteChildren();
         if (newf != null)
             f = newf;
+
         newf = formulaDistributeDisjunctions(f);
         //System.out.println("wFormulaCNF(): after  distribute disjunctions: " + newf);
         if (newf != null && !newf.equals(wf.form)) {
@@ -1000,6 +1038,11 @@ public class SmallCNFization extends Clausifier {
         	Formula tmp = new Formula(f, wf.type);
             tmp.rationale = "distribute";
             tmp.support.add(wf.name);
+
+            ArrayList<Derivable> supports = new ArrayList<>();
+            supports.add(wf);
+            tmp.setDerivation(Derivation.flatDerivation("distribute",supports,""));
+
             wf = tmp;
             if (debug) System.out.println("distribute " + wf);
         }
@@ -1025,7 +1068,7 @@ public class SmallCNFization extends Clausifier {
             c.support.add(wf.name);
 
             ArrayList<Derivable> supports = new ArrayList<>();
-            supports.add(wf);
+            supports.add(newf);
             //System.out.println("wFormulaClausify(): supports: " + supports);
             c.setDerivation(Derivation.flatDerivation("split_conjunct",supports,""));
 
