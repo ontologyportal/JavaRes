@@ -48,10 +48,10 @@ test on TPTP problems.  It requires that the environment variable $TPTP be set
 to the location of the TPTP problems. The only external libraries needed are for
 jUnit (and its supporting hamcrest library, which are in the lib dir)
 
-java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+java -ea -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
   org.junit.runner.JUnitCore atp.UnitTestAll
 
-java -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
+java -ea -Xmx7G -cp $GITDIR/JavaRes/build/classes:$GITDIR/JavaRes/lib/*
   org.junit.runner.JUnitCore atp.ProverFOFTest
 
 -------------------------
