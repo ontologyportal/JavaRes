@@ -127,7 +127,7 @@ public class ResolutionTest {
         System.out.println("Resolution.testResolution(): ~product(e_1,e_1,e_2) successful result: " + res7);
 
         Clause res8 = Resolution.resolution(c12, 0, c13,0);
-        assert res8 != null;
+        assert res8 == null;
         System.out.println("Resolution.testResolution(): successful null result: " + res8);
     }
 
@@ -152,7 +152,7 @@ public class ResolutionTest {
         System.out.println("Resolution.testFactoring(): successful (null) result: Factor:" + f4);
 
         Clause f5 = Resolution.factor(c5,1,3);
-        assert f5 == null;
+        assert f5 != null;
         System.out.println("Resolution.testFactoring(): Expected result: cnf(c2,plain,p(X)|~q|p(a)|p(Y)). Factor:" + f5);
     }
 }
